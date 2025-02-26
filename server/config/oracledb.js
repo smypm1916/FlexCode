@@ -22,7 +22,7 @@ async function getConnection() {
    }
 }
 
-// ✅ 쿼리 실행 함수
+
 async function executeQuery(query, params = []) {
    let connection;
    try {
