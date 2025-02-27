@@ -6,7 +6,9 @@ const LoginModal = ({ onClose }) => {
   return (
     <div className="loginPage">
       <div className="login-logo">LOGO</div>
-      <div className="login-title">LOGIN</div>
+      <div className="login-title">
+        <h2>LOGIN</h2>
+      </div>
       <div className="login-id">
         <input type="text" placeholder="ID" />
       </div>
