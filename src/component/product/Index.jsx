@@ -1,13 +1,18 @@
-import React from 'react'
-import Footer from '../layout/Footer'
-import Header from '../layout/Header'
-import Products from './Products'
+import React from 'react';
+import Searchbox from '../layout/searchbox';
+import Category from './Category';
+import EventBanner from './EventBanner';
+import Pick from './Pick';
+import Shopping from './Shopping';
+
 const Index = () => {
    return (
       <>
-         <Header />
-         <Products />
-         <Footer />
+         <EventBanner />
+         <Searchbox />
+         <Category />
+         <Pick />
+         <Shopping />
       </>
    )
 }
