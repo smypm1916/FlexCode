@@ -1,21 +1,26 @@
 require("dotenv").config();
 
 const express = require("express");
+const { sequelize, connectSequelize } = require("./config/seuelize");
 const { getConnection, executeQuery } = require("./config/oracledb");
 
 const app = express();
 
 // ✅ DB 연결 테스트 라우트
-app.get("/db-test", async (req, res) => {
-   try {
-      const rows = await executeQuery("SELECT table_name FROM all_tables WHERE owner = :owner", [
-         process.env.ORACLE_USER,
-      ]);
-      res.json({ success: true, tables: rows });
-   } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
-   }
-});
+// app.get("/db-test", async (req, res) => {
+//    try {
+//       const rows = await executeQuery("SELECT table_name FROM all_tables WHERE owner = :owner", [
+//          process.env.ORACLE_USER,
+//       ]);
+//       res.json({ success: true, tables: rows });
+//    } catch (error) {
+//       res.status(500).json({ success: false, error: error.message });
+//    }
+// });
+
+// ✅ Sequelize 연결 테스트
+connectSequelize();
+
 
 // ✅ 서버 실행
 const PORT = 3000;
