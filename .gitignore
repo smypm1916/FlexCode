@@ -27,7 +27,3 @@ npmPkgs.rtf
 Wallet_G01O7S1507WX5IY9/
 # 환경변수 파일 제외
 .env
-# 패키지 락 파일 제외
-package-lock.json
-# 패키지 파일 제외
-package.json
