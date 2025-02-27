@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
-const { sequelize, connectSequelize } = require("./config/sequelize");
+const { sequelize, connectSequelize } = require("./config/seuelize");
 const { getConnection, executeQuery } = require("./config/oracledb");
 
 const app = express();
