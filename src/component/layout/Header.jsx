@@ -5,7 +5,7 @@ const Header = () => {
   const style = {
     display: "flex",
   };
-  // 모달의 화면 표시여부 상태를 관리하는 객체
+  // 모달의 화면 표시여부 상태를 관리하는 변수
   const [showModal, setShowModal] = useState(false);
 
   return (

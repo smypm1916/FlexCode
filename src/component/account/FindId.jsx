@@ -5,7 +5,7 @@ const FindId = () => {
     display: "flex",
   };
 
-  // 현재 선택된 select option이 가지고 있는 value값을 저장할 상태관리변수
+  // 현재 선택된 select option이 가지고 있는 value값을 저장할 상태관리 변수
   const [selectedTelOption, setSelectedTelOption] = useState("010");
 
   // select 태그에서 변화가 생길때마다 updateSelectValue함수를 통해 새로운 값을 selectedTelOption 변수에 저장해줌
