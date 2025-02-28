@@ -11,7 +11,7 @@ const Container = styled.div`
   transition: all 0.5s;
 
   &:hover {
-    background: red;
+    background: white;
   }
 `;
 
@@ -27,9 +27,10 @@ const Header = styled.div`
 
 // 로고 box
 const Logo = styled.div`
-  h3 {
+  img {
     margin: 0;
     font-size: 20px;
+    width: 200px;
   }
 `;
 
@@ -74,7 +75,7 @@ const App = () => {
       <Header>
         <Wrapper>
           <Logo>
-            <h3>Header</h3>
+            <img src="src\style\img\logo.png"></img>
           </Logo>
         </Wrapper>
         <Wrapper>
