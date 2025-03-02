@@ -8,8 +8,8 @@ const Searchbox = () => {
             <div id="search_box">
                <div class="search_box_inner">
                   <input class="search_box_input" type="search" placeholder="검색어 입력" />
+                  <button>검색</button>
                </div>
-               <button>검색</button>
             </div>
          </div>
       </div>
