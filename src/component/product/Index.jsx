@@ -12,9 +12,6 @@ import ProductLists from './ProductLists';
 
 
 const Index = () => {
-   const onsearch = (value) => {
-      console.log(value);
-   }
    return (
       <>
          <EventBanner />
