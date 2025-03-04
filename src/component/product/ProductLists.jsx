@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,25 +14,24 @@ const ProductLists = () => {
 
 
    // 상품 목록 조회
-   // const fetchProducts = async () => {
-   //    setLoading(true);
-
-   //    try {
-   //       const res = await axios.get(`URL`);
-   //       if (!res.ok) {
-   //          throw new Error('Failed to fetch products');
-   //       }
-   //       const json = await res.json();
-   //    }
-   //    catch (error) {
-   //       console.log('====================================');
-   //       console.log(error);
-   //       console.log('====================================');
-   //    }
-   //    finally {
-   //       setLoading(false);
-   //    }
-   // }
+   const fetchProducts = async () => {
+      setLoading(true);
+      try {
+         const res = await axios.get(`URL`);
+         if (!res.ok) {
+            throw new Error('Failed to fetch products');
+         }
+         const json = await res.json();
+      }
+      catch (error) {
+         console.log('====================================');
+         console.log(error);
+         console.log('====================================');
+      }
+      finally {
+         setLoading(false);
+      }
+   }
 
    // // 스크롤 설정
    // useEffect(() => {
@@ -46,7 +46,7 @@ const ProductLists = () => {
          {/* 상품 목록 렌더링 */}
          <div>
             {products.map((product) => {
-               <div key={product.no} onClick={() => navigate(`/product/${product.no}`)}>
+               <div key={product.no} onClick={() => navigate(`/product/no=${product.no}`)}>
                   <img src={product.image} alt={product.name} />
                   <div>
                      <h3>{product.name}</h3>

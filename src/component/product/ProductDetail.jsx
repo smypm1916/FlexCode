@@ -1,8 +1,30 @@
+import axios from "axios";
 import React from "react";
+import { useParams } from "react-router-dom";
 import Button from "../common/Button";
 import Select from "../common/Select";
-const ProductDetail = () => {
 
+const ProductDetail = () => {
+   const { id } = useParams(); // URL에서 `id` 값을 가져옴
+   const [product, setProduct] = useState(null);
+   const [loading, setLoading] = useState(true);
+   const [error, setError] = useState(null);
+
+   useEffect(() => {
+      const fetchProduct = async () => {
+         try {
+            const response = await axios.get(`URL`);
+            setProduct(response.data);
+         } catch (error) {
+            setError(error);
+         } finally {
+            setLoading(false);
+         }
+      };
+      fetchProduct();
+   }, [id]);
+
+   if (loading) return <div>Loading...</div>;
    return (
       <div>
          {/* 컨테이너 1 */}
