@@ -1,13 +1,15 @@
-import { useState } from 'react';
 import './App.css';
-import Index from './component/product';
+import Footer from './component/layout/Footer';
+import Header from './component/layout/Header';
+import Index from './component/product/Index';
+
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
+      <Header />
       <Index />
+      <Footer />
     </>
   )
 }
