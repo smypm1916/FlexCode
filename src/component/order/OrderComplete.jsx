@@ -2,7 +2,10 @@ import React from 'react'
 
 const OrderComplete = () => {
    return (
-      <div>OrderComplete</div>
+      <div>
+         <h1>OrderComplete</h1>
+         <Order status="readonly" />
+      </div>
    )
 }
 
