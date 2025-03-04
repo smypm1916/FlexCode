@@ -1,30 +1,26 @@
-import React from 'react'
-
+import React, { useState } from "react";
+import LoginModal from "../account/LoginModal";
 
 const Header = () => {
-   const headerStyle = {
-      "backgroundColor": "lightgray",
-      "border": "1px solid blue",
-      "width": "100%",
-   }
-   return (
-      <>
-         <div className="header" style={headerStyle}>
-            <div className="header-content">
-               <ul className="header-logo">
-                  <li>
-                     <img src={logo} alt="logo" />
-                  </li>
-                  <li><a href="">HOME</a></li>
-                  <li><a href="">SHOP</a></li>
-                  <li><button>로그인</button></li>
-                  <li><button>장바니</button></li>
-               </ul>
+  const style = {
+    display: "flex",
+  };
+  // 모달의 화면 표시여부 상태를 관리하는 변수
+  const [showModal, setShowModal] = useState(false);
 
-            </div>
-         </div>
-      </>
-   )
-}
+  return (
+    <div>
+      <div className="header" style={style}>
+        <div className="header-content">
+          <h3>Header</h3>
+        </div>
+        <div className="header-login-btn">
+          <button onClick={() => setShowModal(true)}>LOGIN</button>
+        </div>
+      </div>
+      {showModal && <LoginModal onClose={() => setShowModal(false)} />}
+    </div>
+  );
+};
 
-export default Header
+export default Header;
