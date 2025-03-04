@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "../layout/Button";
-import Select from "../layout/Select";
+import Button from "../common/Button";
+import Select from "../common/Select";
 const ProductDetail = () => {
 
    return (

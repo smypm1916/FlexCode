@@ -1,5 +1,5 @@
 import React from 'react';
-import Searchbox from '../layout/Searchbox';
+import Searchbox from '../common/Searchbox';
 import Category from './Category';
 import EventBanner from './EventBanner';
 import Pick from './Pick';
