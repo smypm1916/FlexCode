@@ -3,7 +3,7 @@ import React from "react";
 const Select = ({ className, options, onChange, defaultValue }) => {
   return (
     <select
-      className={`custom-select ${className}`}
+      className={`custom-select-${className}`}
       onChange={onChange}
       defaultValue={defaultValue}
     >
