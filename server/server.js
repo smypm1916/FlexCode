@@ -34,7 +34,7 @@ app.use('/api/products', productRouter);
 // });
 
 // ✅ Sequelize 연결 테스트
-// connectSequelize();
+connectSequelize();
 
 
 // 서버 실행

@@ -1,18 +1,27 @@
 import React from 'react';
-import Searchbox from '../layout/searchbox';
+import Searchbox from '../layout/Searchbox';
 import Category from './Category';
 import EventBanner from './EventBanner';
 import Pick from './Pick';
-import Shopping from './Shopping';
+import ProductLists from './ProductLists';
+
+// 상품 상태 관리
+// const [products, setProducts] = useState([
+
+// ]);
+
 
 const Index = () => {
+   const onsearch = (value) => {
+      console.log(value);
+   }
    return (
       <>
          <EventBanner />
-         <Searchbox />
+         <Searchbox onsearch={onsearch} />
          <Category />
          <Pick />
-         <Shopping />
+         <ProductLists />
       </>
    )
 }

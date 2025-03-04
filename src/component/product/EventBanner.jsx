@@ -2,7 +2,9 @@ import React from 'react';
 
 const EventBanner = () => {
    return (
-      <div>EventBanner</div>
+      <div>
+         <h1>EventBanner</h1>
+      </div>
    )
 }
 
