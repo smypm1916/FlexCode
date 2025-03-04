@@ -4,10 +4,10 @@ import React from 'react';
 
 const TextInput = ({ type, label, placeholder, value, onChange }) => {
    return (
-      <div>
+      <div className={`text-input-${className}`} >
          <label>{label}</label>
          <input type={type} placeholder={placeholder} value={value} onChange={onChange} />
-      </div>
+      </div >
    );
 };
 
