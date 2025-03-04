@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "../layout/Button";
-import Select from "../layout/Select";
+import Button from "../common/Button";
+import Select from "../common/Select";
 const ProductDetail = () => {
 
    return (
@@ -8,18 +8,24 @@ const ProductDetail = () => {
          {/* 컨테이너 1 */}
          <div>
             {/* 이미지 */}
-            <div>img</div>
+            <img src="REACT_APP_IMAGE_PATH/{path}" alt="" />
 
             {/* 상품정보 */}
             <div>
+               {/* 카테고리 */}
                <h3>{상품타입}</h3>
                <div>
-                  <h3>{상품명}</h3>
-                  <p>{상품설명}</p>
+                  <h2>{상품명}</h2>
+                  <div>판매가 {판매가} 원</div>
+                  <div>배송비 {배송비} 원</div>
+                  <div>배송 지역 {배송지역}</div>
+                  <div>배송 기간 {배송기간}</div>
                   <div>
+                     {/* 옵션 */}
                      <div>
                         <Select />
                      </div>
+                     {/* 수량 */}
                      <div>
                         <Select />
                      </div>

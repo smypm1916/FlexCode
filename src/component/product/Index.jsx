@@ -1,9 +1,8 @@
 import React from 'react';
-import Searchbox from '../layout/Searchbox';
+import Searchbox from '../common/Searchbox';
 import Category from './Category';
 import EventBanner from './EventBanner';
 import Pick from './Pick';
-import ProductLists from './ProductLists';
 
 // 상품 상태 관리
 // const [products, setProducts] = useState([
@@ -12,16 +11,14 @@ import ProductLists from './ProductLists';
 
 
 const Index = () => {
-   const onsearch = (value) => {
-      console.log(value);
-   }
    return (
       <>
          <EventBanner />
          <Searchbox onsearch={onsearch} />
          <Category />
          <Pick />
-         <ProductLists />
+         <h1>productListsWIP</h1>
+         {/* <ProductLists /> */}
       </>
    )
 }
