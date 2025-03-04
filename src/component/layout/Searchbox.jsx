@@ -1,5 +1,7 @@
 import React from 'react';
 
+// 메인페이지, 커뮤니티 사용예정
+
 const Searchbox = ({ onsearch }) => {
    return (
       <div>
