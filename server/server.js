@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
-const { sequelize, connectSequelize } = require("./config/seuelize");
+const { sequelize, connectSequelize } = require("./config/sequelize");
 const { getConnection, executeQuery } = require("./config/oracledb");
 
 const app = express();
@@ -21,16 +21,15 @@ const app = express();
 // ✅ Sequelize 연결 테스트
 connectSequelize();
 
-
 // ✅ 서버 실행
 const PORT = 3000;
 app.listen(PORT, async () => {
-   console.log(`✅ 서버가 포트 ${PORT}에서 실행 중...`);
+  console.log(`✅ 서버가 포트 ${PORT}에서 실행 중...`);
 
-   // ✅ 서버 실행 시 DB 연결 확인
-   const connection = await getConnection();
-   if (connection) {
-      console.log("✅ DB 연결 확인 완료");
-      await connection.close();
-   }
+  // ✅ 서버 실행 시 DB 연결 확인
+  const connection = await getConnection();
+  if (connection) {
+    console.log("✅ DB 연결 확인 완료");
+    await connection.close();
+  }
 });
