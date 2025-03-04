@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 
 
@@ -7,6 +9,8 @@ const ProductLists = () => {
    const [products, setProducts] = useState([]); // 상품 목록
    const [loading, setLoading] = useState(false); // 로딩 상태
    const [error, setError] = useState(null); // 에러 상태
+   const navigate = useNavigate();
+
 
    // 상품 목록 조회
    // const fetchProducts = async () => {
