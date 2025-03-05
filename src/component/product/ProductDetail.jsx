@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../common/Button";
 import Select from "../common/Select";
 
@@ -9,6 +9,7 @@ const ProductDetail = () => {
    const [product, setProduct] = useState(null);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState(null);
+   const navigate = useNavigate();
 
    useEffect(() => {
       const fetchProduct = async () => {
