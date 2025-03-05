@@ -1,15 +1,26 @@
-import { useState } from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
-import Index from './component/product';
+import Footer from './component/common/Footer';
+import Header from './component/common/Header';
+import Index from './component/product/Index';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <Index />
-    </>
+    <Router>
+      <Header />
+
+      {/* 루팅 */}
+      <Routes>
+        <Route path="/" element={<Index />} />
+        {/* <Route path="/product/:id" element={<ProductDetail />} /> */}
+        {/* <Route path="/order" element={<Order />} /> */}
+        {/* <Route path="/order/:id" element={<OrderComplete />} /> */}
+      </Routes>
+      {/* 루팅 */}
+
+      <Footer />
+    </Router>
   )
-}
+};
 
 export default App;
