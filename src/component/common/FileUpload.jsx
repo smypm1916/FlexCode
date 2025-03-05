@@ -1,12 +1,7 @@
-import React from 'react';
+import React from "react";
 
-const FileUpload = ({ label, onChange }) => {
-   return (
-      <div className="file-upload">
-         <label>{label}</label>
-         <input type="file" onChange={onChange} />
-      </div>
-   );
+const FileUpload = ({ onChange }) => {
+  return <input type="file" onChange={onChange} />;
 };
 
 export default FileUpload;

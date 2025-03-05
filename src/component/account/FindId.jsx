@@ -1,6 +1,7 @@
 import { useState } from "react";
+import Button from "../common/Button";
 
-const FindId = () => {
+const FindId = ({ onBack }) => {
   const style = {
     display: "flex",
   };
@@ -48,8 +49,8 @@ const FindId = () => {
         </div>
       </div>
       <div className="findId-btns" style={style}>
-        <button>ID 찾기</button>
-        <button>취소</button>
+        <Button className={"findId"} btnTxt={"ID찾기"} />
+        <Button className={"cancel"} btnTxt={"취소"} onClick={onBack} />
       </div>
     </div>
   );
