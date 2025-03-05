@@ -1,23 +1,30 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Order = () => {
+   const navigate = useNavigate();
    return (
       <div>
          <div>
-            {/* order */}
+            {/* 주문 상품 */}
             <div></div>
 
-            {/* total */}
+            {/* 합계 금액 */}
             <div></div>
 
-            {/* order-person */}
+            {/* 주문자 정보 */}
             <div></div>
 
-            {/* delivery */}
+            {/* 받는 사람 */}
             <div></div>
 
-            {/* pay/cancel */}
-            <Button />
+            {/* 결제/취소*/}
+            <div>
+               {/* 결제하기 */}
+               <Button />
+               {/* 돌아가기 */}
+               <Button />
+            </div>
          </div>
       </div>
    )
