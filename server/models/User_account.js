@@ -42,9 +42,6 @@ module.exports = (sequelize, DataTypes) => {
    );
 };
 
-// const { DataTypes } = require("sequelize");
-// const sequelize = require("../config/sequelize");
-
 // const User_account = sequelize.define(
 //   "User_account",
 //   {

@@ -1,3 +1,7 @@
+const Order_info = require("./Order_info");
+const Product_info = require("./Product_info");
+const Product_option = require("./Product_option");
+
 module.exports = (sequelize, DataTypes) => {
    const Order_items = sequelize.define(
       "Order_items",
@@ -48,13 +52,6 @@ module.exports = (sequelize, DataTypes) => {
    );
 };
 
-
-
-// const { DataTypes } = require("sequelize");
-// const sequelize = require("../config/sequelize");
-// const Order_info = require("./Order_info");
-// const Product_info = require("./Product_info");
-// const Product_option = require("./Product_option");
 
 // const Order_items = sequelize.define(
 //   "Order_items",

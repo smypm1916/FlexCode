@@ -39,8 +39,6 @@ module.exports = (sequelize, DataTypes) => {
   return Product_info;
 };
 
-// const { DataTypes } = require("sequelize");
-
 // const Product_info = sequelize.define(
 //   "Product_info",
 //   {

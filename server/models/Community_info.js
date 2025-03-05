@@ -1,3 +1,5 @@
+const User_account = require("./User_account");
+
 module.exports = (sequelize, DataTypes) => {
    const Community_info = sequelize.define(
       "Community_info",
@@ -47,10 +49,6 @@ module.exports = (sequelize, DataTypes) => {
    );
 };
 
-
-// const { DataTypes } = require("sequelize");
-// const sequelize = require("../config/sequelize");
-// const User_account = require("./User_account");
 
 // const Community_info = sequelize.define(
 //   "Community_info",

@@ -1,10 +1,10 @@
 import { useState } from "react";
+import Modal from "react-modal";
 import Button from "../common/Button";
+import FileUpload from "../common/FileUpload";
 import Select from "../common/Select";
 import TextInput from "../common/TextInput";
 import PostCodeModal from "./PostCodeModal";
-import Modal from "react-modal";
-import FileUpload from "../common/FileUpload";
 
 const SignUp = () => {
   const style = {
