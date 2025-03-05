@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 
 // 제품상세, 장바구니, 주문페이지에서 사용예정
 
 const CheckedProduct = () => {
+   const imgPath = process.env.REACT_APP_IMG_PATH;
+
+   const [checkedProduct, setCheckedProduct] = useState(null);
+
    return (
       <div>
          <div>

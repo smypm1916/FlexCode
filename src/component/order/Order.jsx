@@ -13,7 +13,10 @@ const Order = () => {
             <div></div>
 
             {/* 주문자 정보 */}
-            <div></div>
+            <div>
+               <TextInput />
+
+            </div>
 
             {/* 받는 사람 */}
             <div></div>
