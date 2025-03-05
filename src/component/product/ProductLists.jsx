@@ -35,6 +35,7 @@ const ProductLists = () => {
          {/* 상품 목록 렌더링 */}
          <div>
             {products.map((product) => (
+               // index 수정필요
                <div key={product.product_no} onClick={() => navigate(`/product/${product.product_no}`)}>
                   <img src={`${imgPath}/${product.product_img}`} alt={product.product_name} />
                   <div>

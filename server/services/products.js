@@ -18,5 +18,7 @@ const getProductDetail = async (product_no) => {
    });
 };
 
+// const getByCategory = async()
+
 
 module.exports = { getAllProducts, getProductDetail };
