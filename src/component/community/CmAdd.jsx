@@ -1,27 +1,31 @@
 const CmAdd = () => {
   return (
-    <div className="cm-add-container">
+    <div className="CmAddContainer">
       <div>프로필사진</div>
-      <div className="cm-add-title">
+      <div className="CmAddTitle">
         <div>
           <label>제목</label>
         </div>
-        <div className="cm-input-title">
+        <div className="CmInputTitle">
           <input type="text" placeholder="제목을 입력하세요" />
         </div>
       </div>
 
-      <div className="cm-add-description">
+      <div className="CmAddDescription">
         <div>
           <label>내용</label>
         </div>
-        <div className="cm-input-description">
+        <div className="CmInputDescription">
           <input type="text" placeholder="내용을 입력하세요" />
         </div>
       </div>
-      <div>
+      <div className="CmInputFlie">
+        <label>사진 등록</label>
+        <input type="file" />
+      </div>
+      <div className="CmBddBtn">
         <button>글쓰기</button>
-        <button>삭제하기</button>
+        <button>뒤로가기</button>
       </div>
     </div>
   );
