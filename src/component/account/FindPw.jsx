@@ -1,6 +1,7 @@
 import { useState } from "react";
+import Button from "../common/Button";
 
-const FindPw = () => {
+const FindPw = ({ onBack }) => {
   const style = {
     display: "flex",
   };
@@ -19,7 +20,7 @@ const FindPw = () => {
             <div className="findPw-name-label">
               <label>이름</label>
             </div>
-            <div className="findPw-name=input">
+            <div className="findPw-name-input">
               <input type="text" placeholder="이름을 입력하세요" />
             </div>
           </div>
@@ -32,14 +33,21 @@ const FindPw = () => {
             </div>
           </div>
           <div className="findPw-btns" style={style}>
-            <button
+            {/* <button
               onClick={() => {
                 setFinePwView("reset");
               }}
             >
               비밀번호 찾기
-            </button>
-            <button>취소</button>
+            </button> */}
+            <Button
+              className={"findPw"}
+              btnTxt={"비밀번호 재설정"}
+              onClick={() => {
+                setFinePwView("reset");
+              }}
+            />
+            <Button className={"calcel"} btnTxt={"취소"} onClick={onBack} />
           </div>
         </div>
       )}
@@ -65,8 +73,8 @@ const FindPw = () => {
             </div>
           </div>
           <div className="findPw-btns" style={style}>
-            <button>설정하기</button>
-            <button>취소</button>
+            <Button className={"resetPw"} btnTxt={"설정하기"} />
+            <Button className={"cancel"} btnTxt={"취소"} onClick={onBack} />
           </div>
         </div>
       )}
