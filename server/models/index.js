@@ -1,11 +1,11 @@
 const { sequelize } = require("../config/sequelize");
-const Product_info = require("../models/Product_info");
-const Product_option = require("../models/Product_option");
-const Cart_info = require("../models/Cart_info");
-const User_account = require("../models/User_account");
-const Order_info = require("../models/Order_info");
-const Order_items = require("../models/Order_items");
-const Community_info = require("../models/Community_info");
+const Product_info = require("./Product_info");
+const Product_option = require("./Product_option");
+const Cart_info = require("./Cart_info");
+const User_account = require("./User_account");
+const Order_info = require("./Order_info");
+const Order_items = require("./Order_items");
+const Community_info = require("./Community_info");
 
 // 1. Product_info ↔ Product_option (1:N 관계)
 Product_option.hasMany(Product_info, { foreignKey: "product_no" });
