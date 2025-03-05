@@ -9,12 +9,12 @@ const Container = styled.div`
   width: 100%;
   transition: all 0.5s;
   z-index: 100;
-  height: 100px;
 `;
 
 // header div
 const Header = styled.div`
   display: flex;
+  height: 80px;
   justify-content: space-between;
   align-items: center;
   padding: 10px 40px;
