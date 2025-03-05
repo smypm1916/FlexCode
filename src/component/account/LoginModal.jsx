@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import FindId from "./FindId";
 import FindPw from "./FindPw";
 
@@ -6,6 +7,8 @@ const LoginModal = ({ onClose }) => {
   const style = {
     display: "flex",
   };
+
+  const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
 
   const [isFindId, setIsFindId] = useState(false);
   const [isFindPw, setIsFindPw] = useState(false);
@@ -25,6 +28,11 @@ const LoginModal = ({ onClose }) => {
     setIsFindPw(false);
   };
 
+  const handleSignUp = () => {
+    navigate("/signup");
+    onClose();
+  };
+
   return isFindId ? (
     <FindId onBack={handleBackToLogin} />
   ) : isFindPw ? (
@@ -42,7 +50,11 @@ const LoginModal = ({ onClose }) => {
         <input type="password" placeholder="PW" />
       </div>
       <div className="login-links" style={style}>
-        <div className="login-link-join">회원가입</div>
+        <div className="login-link-join">
+          <a href="#" onClick={handleSignUp}>
+            회원가입
+          </a>
+        </div>
         <div className="login-link-idSearch">
           <a href="#" onClick={handleFindId}>
             ID 찾기
