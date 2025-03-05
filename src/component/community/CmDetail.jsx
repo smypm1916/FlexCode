@@ -2,11 +2,11 @@ const CmDetail = () => {
   return (
     <div className="cm-detail-container">
       <div className="cm-detail-top">
-        <div>유저프로필{userProfile}</div>
+        <div>유저프로필</div>
         <div>
           <label>제목</label>
         </div>
-        <div className="cm-title">{cmTitle}</div>
+        <div className="cm-title"></div>
       </div>
 
       <div className="cm-detail-mid">
@@ -14,15 +14,15 @@ const CmDetail = () => {
           <label>내용</label>
         </div>
         <div>
-          <div>{cmDescription}</div>
-          <div>{cmIMG}</div>
+          <div>글내용</div>
+          <div>이미지</div>
         </div>
       </div>
       <div className="cm-detail-bottom">
         <div>
           <label>작성일</label>
         </div>
-        <div>{cmDate}</div>
+        <div>25/03/05</div>
       </div>
       <div>
         <button>수정하기</button>
