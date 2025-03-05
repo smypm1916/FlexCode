@@ -2,10 +2,15 @@ body {
   margin: 0;
   padding: 0;
   background-color: white;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 #root {
-  width: 100vw;
-  height: 100vh;
+  padding-top: 120px;
+  min-height: 100vh;
+  height: fit-content;
   text-align: center;
   display: flex;
   flex-direction: column;

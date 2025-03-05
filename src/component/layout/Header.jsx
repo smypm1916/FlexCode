@@ -7,12 +7,9 @@ const Container = styled.div`
   position: fixed;
   top: 0;
   width: 100%;
-  border-bottom: 1px solid black;
   transition: all 0.5s;
-
-  &:hover {
-    background: white;
-  }
+  z-index: 100;
+  height: 100px;
 `;
 
 // header div
@@ -20,9 +17,13 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
+  padding: 10px 40px;
   color: black;
   border-bottom: 1px solid black;
+  transition: all 0.5s;
+  &:hover {
+    background: white;
+  }
 `;
 
 // 로고 box
@@ -30,7 +31,20 @@ const Logo = styled.div`
   img {
     margin: 0;
     font-size: 20px;
-    width: 200px;
+    width: 150px;
+  }
+
+  &::after {
+    transition: 0.5s;
+    content: "";
+    width: 0;
+    height: 1px;
+    display: block;
+    background: black;
+  }
+
+  &:hover::after {
+    width: 100%;
   }
 `;
 
@@ -41,16 +55,30 @@ const Wrapper = styled.div`
   gap: 10px;
 `;
 
-// 로그인 버튼
+// 로그인 모달열기 버튼
 const LoginButton = styled.button`
+  display: inline-block;
   color: black;
   cursor: pointer;
-  font-size: 15pt;
+  font-size: 12pt;
   transition: all 0.5s;
   background: none;
 
   &:hover {
-    text-decoration: underline;
+    text-decoration: none;
+  }
+
+  &::after {
+    transition: 300ms;
+    content: "";
+    width: 0;
+    height: 1px;
+    display: block;
+    background: black;
+  }
+
+  &:hover::after {
+    width: 100%;
   }
 `;
 
@@ -58,12 +86,25 @@ const LoginButton = styled.button`
 const RegisterButton = styled.button`
   color: black;
   cursor: pointer;
-  font-size: 15pt;
+  font-size: 12pt;
   transition: all 0.5s;
   background: none;
 
   &:hover {
-    text-decoration: underline;
+    text-decoration: none;
+  }
+
+  &::after {
+    transition: 0.5s;
+    content: "";
+    width: 0;
+    height: 1px;
+    display: block;
+    background: black;
+  }
+
+  &:hover::after {
+    width: 100%;
   }
 `;
 

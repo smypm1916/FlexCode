@@ -4,14 +4,27 @@ import style, { styled } from "styled-components";
 
 const Contents = styled.div`
   max-width: 1440px;
-  height: fit-content;
-  display:flex;
-  flex-direction;
-  gap:50px;
+  width: fit-content;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+`;
+
+const Box_wrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, minmax(30%, 200px));
+  width: 100%;
+  gap: 20px;
+`;
+
+const Box = styled.div`
+  height: 200px;
+  background-color: black;
 `;
 
 const Products = () => {
-  return <Contents>Products</Contents>;
+  return <Contents>main contents</Contents>;
 };
 
 export default Products;

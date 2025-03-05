@@ -13,6 +13,7 @@ const Container = styled.div`
   backdrop-filter: blur(5px); /* 배경 블러 효과 */
   z-index: 1000; /* 다른 요소들 위에 배치 */
   flex-wrap: wrap;
+  transition: ;
 `;
 
 const LoginContainer = styled.div`
@@ -89,8 +90,10 @@ const Button = styled.button`
   background-color: none;
 
   &:hover {
-    background-color: ${(props) => (props.primary ? "#d9d9d9" : "#d9d9d9")};
+    background-color: ${(props) => (props.primary ? "black" : "black")};
+    color: ${(props) => (props.primary ? "white" : "white")};
     border-color: black;
+    text-decoration: none;
   }
 
   &:focus {
