@@ -25,7 +25,7 @@ const SignUp = () => {
   `;
 
   // 상단의 페이지 제목을 감싸는 style
-  const Title = styled.h2`
+  const SignUp_Title = styled.h2`
     width: 100%;
     text-align: left;
     font-size: 40pt;
@@ -143,7 +143,7 @@ const SignUp = () => {
   `;
 
   // 속성 p의 style
-  const Text = styled.p`
+  const SignUp_Text = styled.p`
     width: fit-content;
     color: black;
   `;
@@ -151,7 +151,7 @@ const SignUp = () => {
   return (
     <Wrapper>
       <SignUpPage>
-        <Title>REGISTER</Title>
+        <SignUp_Title>REGISTER</SignUp_Title>
 
         <SignUp_Box>
           <Label>이름</Label>
@@ -171,13 +171,13 @@ const SignUp = () => {
               </Select>
             </Select_Box>
 
-            <Text>-</Text>
+            <SignUp_Text>-</SignUp_Text>
 
             <Input_Box>
               <Input type="text" placeholder="1234" />
             </Input_Box>
 
-            <Text>-</Text>
+            <SignUp_Text>-</SignUp_Text>
 
             <Input_Box>
               <Input type="text" placeholder="5678" />
@@ -190,7 +190,7 @@ const SignUp = () => {
             <Input_Box>
               <Input type="text" placeholder="EMAIL 입력" />
             </Input_Box>
-            <Text>@</Text>
+            <SignUp_Text>@</SignUp_Text>
             <Select_Box>
               <Select>
                 <option value="naver.com">naver.com</option>

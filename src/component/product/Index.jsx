@@ -1,19 +1,25 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Searchbox from "../common/Searchbox";
 import Category from "./Category";
 import EventBanner from "./EventBanner";
 import Pick from "./Pick";
-import Header from "../common/Header";
 import Footer from "../common/Footer";
+import Header from "../common/Header";
+import styled from "styled-components";
+import SignUp from "../account/SignUp";
 
 const Wrapper = styled.div`
-  display: column;
-  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 0;
   align-items: center;
+  gap: 50px;
 `;
 
 // 상품 상태 관리
-const [products, setProducts] = useState([]);
+// const [products, setProducts] = useState([]);
 
 const Index = () => {
   const navigate = useNavigate();
@@ -25,8 +31,7 @@ const Index = () => {
       <Category />
       <Pick />
       <h1>productListsWIP</h1>
-      {/* <ProductLists /> */}
-
+      {/* <SignUp /> */}
       <Footer />
     </Wrapper>
   );
