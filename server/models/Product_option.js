@@ -8,6 +8,7 @@ const Product_option = sequelize.define(
     option_no: {
       type: DataTypes.INTEGER(3),
       primaryKey: true,
+      autoIncrement: true,
       allowNull: false,
     },
     product_no: {

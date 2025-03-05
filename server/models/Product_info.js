@@ -7,6 +7,7 @@ const Product_info = sequelize.define(
     product_no: {
       type: DataTypes.INTEGER(3),
       primaryKey: true,
+      autoIncrement: true,
       allowNull: false,
     },
     product_type: {
