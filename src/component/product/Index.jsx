@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import Searchbox from "../common/Searchbox";
 import Category from "./Category";
 import EventBanner from "./EventBanner";
@@ -11,7 +10,6 @@ import Pick from "./Pick";
 // ]);
 
 const Index = () => {
-  const navigate = useNavigate();
   return (
     <>
       <EventBanner />
