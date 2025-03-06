@@ -3,7 +3,7 @@ import "./App.css";
 import Footer from "./component/common/Footer";
 import Header from "./component/common/Header";
 import Index from "./component/product/Index";
-import SignUp from "./component/account/SignUp"; // React Router 추가
+import SignUp from "./component/account/SignUp";
 
 function App() {
   return (
@@ -12,10 +12,10 @@ function App() {
       {/* 루팅 */}
       <Routes>
         <Route path="/" element={<Index />} />
-        {/* <Route path="/product/:id" element={<ProductDetail />} /> */}
+        <Route path="/product_no=/:id" element={<ProductDetail />} />
         {/* <Route path="/order" element={<Order />} /> */}
         {/* <Route path="/order/:id" element={<OrderComplete />} /> */}
-        <Route path="/signup" element={<SignUp />} />
+        {/* <Route path="/signup" element={<SignUp />} /> */}
       </Routes>
       {/* 루팅 */}
 

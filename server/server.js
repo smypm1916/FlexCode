@@ -1,11 +1,11 @@
 require("dotenv").config();
 
 const express = require("express");
-const { sequelize, connectSequelize } = require("./config/sequelize");
-const { getConnection, executeQuery } = require("./config/oracledb");
 const cors = require("cors"); // f->b cors 설정
 const morgan = require("morgan"); // 로그 기록
 const productRouter = require("./routes/products");
+const userRouter = require("./routes/user");
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -15,19 +15,13 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-
 // router
-app.use("/api/products", productRouter);
-
+// app.use("/api/products", productRouter);
+app.use("/api/users", userRouter);
 
 // 서버 실행 함수
 const startServer = async () => {
   try {
-    await connectSequelize(); // Sequelize DB 연결 확인
-    await sequelize.sync({ force: false }); // 테이블 동기화
-    console.log("DB 테이블 동기화 완료");
-
     app.listen(PORT, () => {
       console.log(`서버가 포트 ${PORT}에서 실행 중...`);
     });
