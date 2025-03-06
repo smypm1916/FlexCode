@@ -32,7 +32,6 @@ const Index = () => {
       <Pick />
       <h1>productListsWIP</h1>
       {/* <SignUp /> */}
-      <Footer />
     </Wrapper>
   );
 };

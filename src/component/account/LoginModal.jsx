@@ -1,8 +1,8 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FindId from "./FindId";
 import FindPw from "./FindPw";
+import styled from "styled-components";
 
 const Container = styled.div`
   top: 0;
@@ -174,4 +174,4 @@ const LoginModal = ({ onClose }) => {
   );
 };
 
-export default LoginPage;
+export default LoginModal;
