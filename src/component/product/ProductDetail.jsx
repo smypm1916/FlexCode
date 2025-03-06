@@ -36,6 +36,7 @@ const Container03 = styled.div`
   height: fit-content;
   display: grid;
   grid-template-columns: 1fr;
+  gap: 10px;
 `;
 
 //container01 상품 설명정보 div
@@ -125,13 +126,21 @@ const Info_Title = styled.div`
 `;
 
 const Info_Text = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   padding: 10px 20px;
   width: fit-content;
   font-size: 12pt;
   color: black;
   font-weight: 300;
+  width: -webkit-fill-available;
 `;
-
+const Info_Text_Box = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  padding: 10px 0;
+`;
 //   width: -webkit-fill-available;
 //   height: 45px;
 //   font-size: 12pt;
@@ -142,9 +151,10 @@ const Info_Text = styled.div`
 //   &.optionList {
 //     border-radius: 0;
 //   }
-// `;
+//
+`;
 
-// const Button = styled.button`
+// const Button = styled.button`;
 //   padding: 10px;
 //   border: 1px solid black;
 //   transition: all 0.5s;
@@ -222,7 +232,6 @@ const ProductDetail = () => {
             </Text_box>
             <div>
               {/* 옵션 */}
-              <div>{/* <Select /> */}</div>
               {/* 수량 */}
               <div>{/* <Select /> */}</div>
             </div>
@@ -253,74 +262,132 @@ const ProductDetail = () => {
         </Image_Wrapper>
       </Container02>
       <Divide_Box>
-        <Title>DETAIL INFO</Title>
+        <p>DETAIL INFO</p>
       </Divide_Box>
       {/* 컨테이너 3 */}
       <Container03>
         <Info_Wrapper>
           <Info_Title>
-            <Title>상세 정보</Title>
+            <p>상세 정보</p>
           </Info_Title>
           <Info_Text>
-            - RCS 인증된 재활용 아크릴 -
-            <br />
-            <br />이 소재는 다른 생산 과정에서 발생하는 아크릴 폐기물을
-            재활용하여 생산됩니다. 폐기물을 새로운 소재로 전환하는 것은 원자재
-            추출을 제한하는 데 도움이 됩니다. 재활용 콘텐츠를 검증하고
-            원자재에서 최종 제품이 만들어지기까지의 절차를 모니터링하는
-            RCS(Recycled Claim Standard)의 인증을 받았습니다.
+            <Info_Text_Box>
+              <p>상품명</p>
+              <Info_Wrapper>
+                <p>상품명 </p>
+              </Info_Wrapper>
+            </Info_Text_Box>
+            <Info_Text_Box>
+              <p>소재</p>
+              <Info_Wrapper>
+                <p>86% 면</p>
+                <p>13% 폴리에스터</p>
+                <p>1% 기타섬유</p>
+              </Info_Wrapper>
+            </Info_Text_Box>
+            <Info_Text_Box>
+              <p>
+                RCS 인증된
+                <br />
+                재활용 폴리에스터
+              </p>
+              <Info_Wrapper>
+                <p>
+                  오늘날 재활용 폴리에스터는 주로 폐기된 PET 플라스틱에서
+                  얻습니다. 플라스틱 병과 같은 다양한 제품에 널리 사용되는
+                  플라스틱 유형입니다. 재활용 소재의 사용은 폴리에스터 원자재
+                  섬유 생산을 제한하는 데 도움이 됩니다. 재활용 콘텐츠를
+                  검증하고 원자재에서 최종 제품이 만들어지기까지의 절차를
+                  모니터링하는 RCS(Recycled Claim Standard)에 따라
+                  인증되었습니다.
+                </p>
+              </Info_Wrapper>
+            </Info_Text_Box>
           </Info_Text>
         </Info_Wrapper>
         <Info_Wrapper>
+          {/* ------ */}
           <Info_Title>
-            <Title>배송, 교환 및 반품</Title>
+            <p>배송, 교환 및 반품</p>
           </Info_Title>
+          {/* ------- */}
           <Info_Text>
-            - 배송 -
-            <br />
-            <br />
-            매장으로 배송 - 무료
-            <br />
-            영업일 기준 2-3일 이내 배송.
-            <br />
-            이 옵션은 부피가 큰 HOME 상품이 포함된 주문에는 사용할 수 없습니다.
-            <br />
-            <br />
-            <Text>자택 배송</Text>
-            <br />
-            익일 배송 - ₩ 4,000
-            <br />
-            영업일 기준 2-3일 이내 배송 - ₩ 3,000
-            <br />
-            ₩ 49,000 이상 주문 시 할인되지 않은 제품에 한해 배송비는 무료입니다.
-            <br />
-            주문에 부피가 큰 HOME 제품이 포함된 경우 이에 해당되는 배송비가
-            청구됩니다.
-            <br />
-            <br />
-            - 교환 및 환불 -
-            <br />
-            구매한 제품은 주문 출고일로부터 31일 안에 반품하실 수 있습니다.
-            <br />
-            <br />
-            매장에서 반품 - 무료
-            <br />
-            <br />
-            HOME 제품은 매장에서 반품하실 수 있습니다.
-            <br />
-            <br />
-            자택 수거 서비스 - ₩ 2,900
-            <br />
-            <br />
-            반품 비용은 반품 요청 건당 적용되며 환불 금액에서 차감됩니다.
+            {/* ------- */}
+            <Info_Text_Box>
+              <p>배송</p>
+              <Info_Wrapper>
+                <p>매장으로 배송 - 무료 영업일 기준 2-3일 이내 배송.</p>
+                <p>
+                  이 옵션은 부피가 큰 HOME 상품이 포함된 주문에는 사용할 수
+                  없습니다.
+                </p>
+              </Info_Wrapper>
+            </Info_Text_Box>
+            <Info_Text_Box>
+              <p>자택 배송</p>
+              <Info_Wrapper>
+                <p>익일 배송 - ₩ 4,000 영업일 기준 2-3일 이내 배송 - ₩ 3,000</p>
+                <p>
+                  ₩ 49,000 이상 주문 시 할인되지 않은 제품에 한해 배송비는
+                  무료입니다.
+                </p>
+                <p>
+                  주문에 부피가 큰 HOME 제품이 포함된 경우 이에 해당되는
+                  배송비가 청구됩니다.
+                </p>
+              </Info_Wrapper>
+            </Info_Text_Box>
+            <Info_Text_Box>
+              <p>교환 및 환불</p>
+              <Info_Wrapper>
+                <p>
+                  구매한 제품은 주문 출고일로부터 31일 안에 반품하실 수
+                  있습니다.
+                </p>
+                <p>
+                  매장에서 반품 - 무료 HOME 제품은 매장에서 반품하실 수
+                  있습니다.
+                </p>
+                <p>
+                  자택 수거 서비스 - ₩ 2,900 반품 비용은 반품 요청 건당 적용되며
+                  환불 금액에서 차감됩니다.
+                </p>
+              </Info_Wrapper>
+            </Info_Text_Box>
           </Info_Text>
         </Info_Wrapper>
         <Info_Wrapper>
+          {/* ------ */}
           <Info_Title>
-            <Title>CAUTION</Title>
+            <p>세탁방법</p>
           </Info_Title>
+          {/* ------- */}
           <Info_Text>
-            <Text></Text>
+            {/* ------- */}
+
+            <Info_Text_Box>
+              <p>물세탁 금지</p>
+              <Info_Wrapper></Info_Wrapper>
+            </Info_Text_Box>
+            <Info_Text_Box>
+              <p>표백제 사용 금지</p>
+              <Info_Wrapper></Info_Wrapper>
+            </Info_Text_Box>
+            <Info_Text_Box>
+              <p>
+                최고 110도 <br />
+                다림질 가능{" "}
+              </p>
+              <Info_Wrapper></Info_Wrapper>
+            </Info_Text_Box>
+            <Info_Text_Box>
+              <p>테트라클로로에틸렌 드라이클리닝</p>
+              <Info_Wrapper></Info_Wrapper>
+            </Info_Text_Box>
+            <Info_Text_Box>
+              <p>건조기 사용 금지</p>
+              <Info_Wrapper></Info_Wrapper>
+            </Info_Text_Box>
           </Info_Text>
         </Info_Wrapper>
       </Container03>

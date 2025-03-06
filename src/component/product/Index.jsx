@@ -8,6 +8,7 @@ import Header from "../common/Header";
 import styled from "styled-components";
 import SignUp from "../account/SignUp";
 import ProductDetail from "./ProductDetail";
+import CmMain from "../community/CmMain";
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,12 +27,16 @@ const Index = () => {
     <Wrapper>
       <Header />
       {/* <ProductDetail /> */}
+
       <EventBanner />
       <Searchbox />
       <Category />
       <Pick />
       <h1>productListsWIP</h1>
+
       {/* <SignUp /> */}
+
+      {/* <CmMain /> */}
     </Wrapper>
   );
 };

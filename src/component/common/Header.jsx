@@ -154,7 +154,7 @@ const App = () => {
           </Logo>
           <Menu_Wrapper>
             <Menu>HOME</Menu>
-            <Menu>POST</Menu>
+            <Menu>COMMUNITY</Menu>
           </Menu_Wrapper>
         </Wrapper>
         <Menu_Wrapper>

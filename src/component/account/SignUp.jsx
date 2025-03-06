@@ -143,6 +143,7 @@ const SignUp = () => {
     }
   `;
 
+  // input이 포함된 열을 감싸는 div
   const Input_Wrapper = styled.div`
     width: -webkit-fill-available;
     display: flex;
