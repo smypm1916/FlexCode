@@ -1,5 +1,8 @@
-import React from "react";
-import styled from "styled-components";
+
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import FindId from "./FindId";
+import FindPw from "./FindPw";
 
 const Container = styled.div`
   top: 0;
@@ -111,8 +114,41 @@ const Conwrapper = styled.div`
   gap: 10px;
 `;
 
-const LoginPage = ({ onClose }) => {
-  return (
+const LoginModal = ({ onClose }) => {
+  const style = {
+    display: "flex",
+  };
+
+  const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
+
+  const [isFindId, setIsFindId] = useState(false);
+  const [isFindPw, setIsFindPw] = useState(false);
+
+  const handleFindId = () => {
+    setIsFindId(true);
+    setIsFindPw(false);
+  };
+
+  const handleFindPw = () => {
+    setIsFindPw(true);
+    setIsFindId(false);
+  };
+
+  const handleBackToLogin = () => {
+    setIsFindId(false);
+    setIsFindPw(false);
+  };
+
+  const handleSignUp = () => {
+    navigate("/signup");
+    onClose();
+  };
+
+  return isFindId ? (
+    <FindId onBack={handleBackToLogin} />
+  ) : isFindPw ? (
+    <FindPw onBack={handleBackToLogin} />
+  ) : (
     <Container>
       <LoginContainer>
         <ButtonContainer>

@@ -1,18 +1,26 @@
-import { useState } from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
-import Index from "./component/product/index";
-import { BrowserRouter, Routes, Route } from "react-router-dom"; // React Router 추가
+import Footer from "./component/common/Footer";
+import Header from "./component/common/Header";
+import Index from "./component/product/Index";
+import SignUp from "./component/account/SignUp"; // React Router 추가
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <BrowserRouter>
+    <Router>
+      <Header />
+      {/* 루팅 */}
       <Routes>
         <Route path="/" element={<Index />} />
-        {/* 필요한 다른 라우트를 여기에 추가할 수 있습니다. */}
+        {/* <Route path="/product/:id" element={<ProductDetail />} /> */}
+        {/* <Route path="/order" element={<Order />} /> */}
+        {/* <Route path="/order/:id" element={<OrderComplete />} /> */}
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
-    </BrowserRouter>
+      {/* 루팅 */}
+
+      <Footer />
+    </Router>
   );
 }
 
