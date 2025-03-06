@@ -1,4 +1,4 @@
-const User_account = require("./User_account");
+// const User_account = require("./User_account");
 
 module.exports = (sequelize, DataTypes) => {
    const Community_info = sequelize.define(
@@ -7,15 +7,16 @@ module.exports = (sequelize, DataTypes) => {
          community_no: {
             type: DataTypes.INTEGER(3),
             primaryKey: true,
+            autoIncrement: true,
             allowNull: false,
          },
          user_nickname: {
             type: DataTypes.STRING(50),
             allowNull: false,
-            references: {
-               model: User_account,
-               key: "user_nickname",
-            },
+            // references: {
+            //    model: User_account,
+            //    key: "user_nickname",
+            // },
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
          },
@@ -47,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
          collate: "utf8_general_ci",
       }
    );
+   return Community_info;
 };
 
 

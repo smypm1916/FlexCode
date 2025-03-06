@@ -18,7 +18,18 @@ const getProductDetail = async (product_no) => {
    });
 };
 
+const regProduct = async (data) => {
+   try {
+      const newProduct = await Product_info.create(data);
+      return newProduct;
+   }
+   catch (error) {
+      console.log(error);
+      throw error;
+   }
+};
+
 // const getByCategory = async()
 
 
-module.exports = { getAllProducts, getProductDetail };
+module.exports = { getAllProducts, getProductDetail, regProduct };

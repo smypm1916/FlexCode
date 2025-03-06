@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // router
 app.use("/api/products", productRouter);
-app.use("/api/order", orderRouter);
+// app.use("/api/order", orderRouter);
 
 
 // 서버 실행 함수

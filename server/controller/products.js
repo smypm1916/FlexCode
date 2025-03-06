@@ -34,4 +34,14 @@ const getCategories = async (req, res) => {
    }
 }
 
-module.exports = { getAllProducts, getProductDetail, getCategories };
+const regProduct = async (req, res) => {
+   try {
+      const productRegister = await productService.regProduct(req.body);
+      res.status(201).json({ success: true, data: productRegister });
+   }
+   catch (error) {
+      res.status(500).json({ success: false, message: error.message })
+   }
+}
+
+module.exports = { getAllProducts, getProductDetail, getCategories, regProduct };

@@ -40,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
          collate: "utf8_general_ci",
       }
    );
+   return User_account;
 };
 
 // const User_account = sequelize.define(

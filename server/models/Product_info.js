@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "product_info",
+      tableName: "PRODUCT_INFO",
       /* 인코딩 */
       charset: "utf8",
       collate: "utf8_general_ci",

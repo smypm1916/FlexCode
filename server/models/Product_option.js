@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER(3),
         allowNull: false,
         references: {
-          model: Product_info,
+          model: "PRODUCT_INFO",
           key: "product_no",
         },
         onDelete: "CASCADE",
@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "product_option",
+      tableName: "PRODUCT_OPTION",
       /* 인코딩 */
       charset: "utf8",
       collate: "utf8_general_ci",

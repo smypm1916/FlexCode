@@ -1,4 +1,4 @@
-const User_account = require("./User_account");
+// const User_account = require("./User_account");
 
 module.exports = (sequelize, DataTypes) => {
    const Order_info = sequelize.define("Order_info",
@@ -6,15 +6,16 @@ module.exports = (sequelize, DataTypes) => {
          order_no: {
             type: DataTypes.INTEGER(3),
             primaryKey: true,
+            autoIncrement: true,
             allowNull: false,
          },
          user_email: {
             type: DataTypes.STRING(100),
             allowNull: false,
-            references: {
-               model: User_account,
-               key: "user_email",
-            },
+            // references: {
+            //    model: User_account,
+            //    key: "user_email",
+            // },
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
          },
@@ -38,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
          collate: "utf8_general_ci",
       }
    );
+   return Order_info;
 };
 // const Order_info = sequelize.define(
 //   "Order_info",

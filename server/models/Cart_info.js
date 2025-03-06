@@ -1,6 +1,6 @@
-const User_account = require("./User_account");
-const Product_info = require("./Product_info");
-const Product_option = require("./Product_option");
+// const User_account = require("./User_account");
+// const Product_info = require("./Product_info");
+// const Product_option = require("./Product_option");
 
 module.exports = (sequelize, DataTypes) => {
    const Cart_info = sequelize.define(
@@ -9,20 +9,20 @@ module.exports = (sequelize, DataTypes) => {
          user_email: {
             type: DataTypes.STRING(100),
             allowNull: false,
-            references: {
-               model: User_account,
-               key: "user_email",
-            },
+            // references: {
+            //    model: User_account,
+            //    key: "user_email",
+            // },
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
          },
          product_no: {
             type: DataTypes.INTEGER(3),
             allowNull: false,
-            references: {
-               model: Product_info,
-               key: "product_no",
-            },
+            // references: {
+            //    model: Product_info,
+            //    key: "product_no",
+            // },
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
          },
@@ -33,10 +33,10 @@ module.exports = (sequelize, DataTypes) => {
          option_no: {
             type: DataTypes.INTEGER(3),
             allowNull: false,
-            references: {
-               model: Product_option,
-               key: "option_no",
-            },
+            // references: {
+            //    model: Product_option,
+            //    key: "option_no",
+            // },
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
          },
@@ -60,6 +60,7 @@ module.exports = (sequelize, DataTypes) => {
          collate: "utf8_general_ci",
       }
    );
+   return Cart_info;
 };
 
 
