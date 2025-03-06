@@ -11,20 +11,20 @@ const User_account = require("./User_account")(sequelize, DataTypes);
 
 const db = {};
 db.sequelize = sequelize;
+db.User_account = User_account;
+db.Product_info = Product_info;
+db.Product_option = Product_option;
 db.Cart_info = Cart_info;
 db.Community_info = Community_info;
 db.Order_info = Order_info;
 db.Order_items = Order_items;
-db.Product_info = Product_info;
-db.Product_option = Product_option;
-db.User_account = User_account;
 
 // `db` 객체가 정상적으로 만들어졌는지 확인
 console.log("DB 객체 확인:", db);
 
 // 1. Product_info ↔ Product_option (1:N 관계)
-db.Product_option.hasMany(db.Product_info, { foreignKey: "product_no" });
-db.Product_info.belongsTo(db.Product_option, { foreignKey: "product_no" });
+db.Product_info.hasMany(db.Product_option, { foreignKey: "product_no" });
+db.Product_option.belongsTo(db.Product_info, { foreignKey: "product_no" });
 
 // 2. User_account ↔ Cart_info (1:N 관계)
 db.User_account.hasMany(db.Cart_info, { foreignKey: "user_email" });
