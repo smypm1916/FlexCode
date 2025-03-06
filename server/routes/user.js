@@ -1,13 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const { User_account, sequelize } = require("../models"); // sequelize모델 불러옴
+const { executeQuery } = require("../config/oracledb"); // DB쿼리 실행 함수 불러옴
 
 // 이메일 중복 확인 API
 router.get("/check-email", async (req, res) => {
   try {
     const { email } = req.query; // 클라이언트에서 보낸 email 가져오기
-
-    console.log("클라이언트에서 받아온 email : " + req.query.email);
+    console.log("클라이언트에서 받아온 email : " + email);
 
     if (!email) {
       return res
@@ -16,15 +15,12 @@ router.get("/check-email", async (req, res) => {
     }
 
     // 가져온 이메일이 DB 테이블에 존재하는지 확인
-    const existingUser = await User_account.findOne({
-      attributes: ["user_email"], // user_email 조회
-      where: { user_email: email },
-      raw: true, // Sequelize의 래핑된 객체가 아닌, 원본 데이터만 반환
-    });
+    const query = `select user_email from user_account where user_email = :email`;
+    const result = await executeQuery(query, [email]);
 
-    console.log("DB에서 찾은 유저 정보 : ", existingUser);
+    console.log("DB에서 찾은 유저 정보 : ", result);
 
-    if (existingUser) {
+    if (result.length > 0) {
       // true
       return res.json({
         exists: true,
