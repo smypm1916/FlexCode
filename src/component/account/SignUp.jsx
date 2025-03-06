@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import { useState } from "react";
 import Modal from "react-modal";
 import Button from "../common/Button";
@@ -11,7 +12,178 @@ import axios from "axios";
 const SignUp = () => {
   const style = {
     display: "flex",
+    transition: "all 0.5s",
   };
+
+  // 전체를 감싸는 div
+  const Wrapper = styled.div`
+    padding: 50px;
+  `;
+
+  // wrapper 안에서 컨텐츠를 감싸는 div
+  const SignUpPage = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 1px solid black;
+    box-shadow: 0 0 30px 20px rgba(0, 0, 0, 0.05);
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    margin: 0 auto;
+  `;
+
+  // 상단의 페이지 제목을 감싸는 style
+  const SignUp_Title = styled.h2`
+    width: 100%;
+    text-align: left;
+    font-size: 40pt;
+    color: black;
+    margin: 0;
+  `;
+
+  // button용 통합 style
+  const Button = styled.button`
+    padding: 10px;
+    border: 1px solid black;
+    transition: all 0.5s;
+    color: black;
+    background-color: white;
+    text-decoration: none;
+    font-size: 12pt;
+    &:hover {
+      background-color: black;
+      color: white;
+      text-decoration: none;
+    }
+  `;
+
+  // label용 통합 style
+  const Label = styled.label`
+    width: 150px;
+    font-size: 12pt;
+    color: black;
+    text-align: left;
+    font-weight: bold;
+  `;
+
+  // Input과 이름을 감싸는 div
+  const SignUp_Box = styled.div`
+    width: -webkit-fill-available;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+  `;
+
+  // button을 감싸는 div
+  const Button_Box = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+  `;
+
+  // button_box 안에서 input을 감싸는 div
+  const Input_Box = styled.div`
+    width: -webkit-fill-available;
+    border: 1px solid black;
+    padding: 10px;
+    text-align: left;
+  `;
+
+  // input의 style
+  const Input = styled.input`
+    height: 100%;
+    font-size: 12pt;
+    color: black;
+    background: white;
+    border: none;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::file-selector-button {
+      font-size: 12pt;
+      border: 1px solid black;
+      color: black;
+      background-color: white;
+      transition: all 0.5s;
+    }
+
+    &::file-selector-button:hover {
+      background-color: black;
+      color: white;
+    }
+  `;
+  // input의 style
+  const FileUpload = styled.input`
+    height: 100%;
+    font-size: 12pt;
+    color: black;
+    background: white;
+    border: none;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::file-selector-button {
+      font-size: 12pt;
+      border: 1px solid black;
+      color: black;
+      background-color: white;
+      transition: all 0.5s;
+    }
+
+    &::file-selector-button:hover {
+      background-color: black;
+      color: white;
+    }
+  `;
+
+  // input이 포함된 열을 감싸는 div
+  const Input_Wrapper = styled.div`
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: row;
+    height: 45px;
+    align-items: center;
+    gap: 20px;
+  `;
+
+  // select의 style
+  const Select = styled.select`
+    width: 100%;
+    height: 45px;
+    font-size: 12pt;
+    padding: 10px;
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+
+    &.optionList {
+      border-radius: 0;
+    }
+  `;
+
+  // signup_box안에서 select를 감싸는 div
+  const Select_Box = styled.div`
+    width: -webkit-fill-available;
+    height: fit-content;
+    color: black;
+  `;
+
+  // 속성 p의 style
+  const SignUp_Text = styled.p`
+    width: fit-content;
+    color: black;
+  `;
+
+  // ------------------------------ 상단 style ------------------------------
 
   const customModalStyle = {
     overlay: {
@@ -203,6 +375,7 @@ const SignUp = () => {
           <label>이름</label>
         </div>
         <div className="signUp-name-input">
+          <input type="text" placeholder="이름을 입력하세요" />
           <TextInput
             type={"text"}
             name={"user_name"}
@@ -288,15 +461,9 @@ const SignUp = () => {
           />
         </div>
         <div className="signUp-email-btn">
-          <Button
-            className={"checkEmail"}
-            btnTxt={"중복확인"}
-            onClick={checkEmailDuplicate}
-          />
+          <Button className={"checkEmail"} btnTxt={"중복확인"} />
         </div>
       </div>
-      {/* 이메일 중복 확인 결과 출력 */}
-      <div>{emailCheckResult && <p>{emailCheckResult}</p>}</div>
       <div className="signUp-pw" style={style}>
         <div className="signUp-pw-label">
           <label>비밀번호</label>
@@ -309,13 +476,6 @@ const SignUp = () => {
             value={signUpForm.user_password}
             onChange={handleChange}
           />
-        </div>
-        <div className="signUp-pw-validMessage">
-          {passwordValid === false && (
-            <p style={{ color: "gray", fontSize: "10px" }}>
-              비밀번호는 영어+숫자+특수문자 조합으로 8자 이상이어야 합니다.
-            </p>
-          )}
         </div>
       </div>
       <div className="signUp-pw-check" style={style}>
@@ -331,18 +491,10 @@ const SignUp = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="signUp-pw-matchMessage">
-          {passwordMatch === false && (
-            <p style={{ color: "red", fontSize: "10px" }}>
-              비밀번호가 일치하지 않습니다.
-            </p>
-          )}
-        </div>
-        {/* <div className="signUp-pw-check-btn">
+        <div className="signUp-pw-check-btn">
           <Button className={"checkPW"} btnTxt={"비밀번호 확인"} />
-        </div> */}
+        </div>
       </div>
-
       <div className="signUp-baseAddr" style={style}>
         <div className="signUp-baseAddr-label">
           <label>기본주소</label>

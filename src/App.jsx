@@ -3,13 +3,12 @@ import "./App.css";
 import Footer from "./component/common/Footer";
 import Header from "./component/common/Header";
 import Index from "./component/product/Index";
-import ProductDetail from "./component/product/ProductDetail";
+import SignUp from "./component/account/SignUp";
 
 function App() {
   return (
     <Router>
       <Header />
-
       {/* 루팅 */}
       <Routes>
         <Route path="/" element={<Index />} />
