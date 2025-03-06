@@ -1,3 +1,7 @@
+// const User_account = require("./User_account");
+// const Product_info = require("./Product_info");
+// const Product_option = require("./Product_option");
+
 module.exports = (sequelize, DataTypes) => {
   const Cart_info = sequelize.define(
     "Cart_info",

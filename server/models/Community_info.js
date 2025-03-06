@@ -1,3 +1,5 @@
+// const User_account = require("./User_account");
+
 module.exports = (sequelize, DataTypes) => {
   const Community_info = sequelize.define(
     "Community_info",

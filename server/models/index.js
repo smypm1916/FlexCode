@@ -90,15 +90,4 @@ db.Product_option.belongsToMany(db.Order_items, {
 db.User_account.hasMany(db.Community_info, { foreignKey: "user_nickname" });
 db.Community_info.belongsTo(db.User_account, { foreignKey: "user_nickname" });
 
-// module.exports = {
-//   sequelize,
-//   Product_info,
-//   Product_option,
-//   Cart_info,
-//   User_account,
-//   Order_info,
-//   Order_items,
-//   Community_info,
-// };
-
 module.exports = db;

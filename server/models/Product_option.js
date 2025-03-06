@@ -1,3 +1,5 @@
+const Product_info = require("./Product_info");
+
 module.exports = (sequelize, DataTypes) => {
   const Product_option = sequelize.define(
     "Product_option",
@@ -12,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       product_no: {
         type: DataTypes.INTEGER(3),
         allowNull: false,
-        //         references: {
-        //           model: Product_info,
-        //           key: "product_no",
-        // },
+        references: {
+          model: "PRODUCT_INFO",
+          key: "product_no",
+        },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
         field: "PRODUCT_NO",

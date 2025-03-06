@@ -9,8 +9,7 @@ const TextInput = ({ type, name, placeholder, value, onChange }) => {
       name={name}
       placeholder={placeholder}
       value={value}
-      onChange={onChange}
-    />
+      onChange={onChange} />
   );
 };
 
