@@ -6,27 +6,25 @@ const CmAdd = () => {
   const [community_content, setContent] = useState("");
   const [community_img, setImg] = useState(null);
 
-  const handleImg = (e) => {
-    setImg(e.target.files[0]);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const formData = new FormData();
     formData.append("community_title", community_title);
     formData.append("community_content", community_content);
     if (community_img) {
       formData.append("community_img", community_img);
     }
-
     try {
-      await axios.post("http://localhost:5000/api/write", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      alert("글 작성 성공!");
+      const response = await axios.post(
+        "http://localhost:5000/api/write",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      console.log("작성 성공:", response.data);
     } catch (error) {
-      console.error("글 작성 실패:", error);
+      console.error("작성 실패:", error);
     }
   };
 
@@ -64,7 +62,7 @@ const CmAdd = () => {
         </div>
         <div className="CmInputFlie">
           <label>사진 등록</label>
-          <input type="file" onChange={handleImg} />
+          <input type="file" onChange={(e) => setImg(e.target.files[0])} />
         </div>
         <div className="CmBddBtn">
           <button type="submit">등록하기</button>
