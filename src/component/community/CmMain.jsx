@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { PaginationComponent } from "./PaginationComponent";
+import Searchbox from "../common/Searchbox";
+import Select from "../common/Select";
+
 const dummyPosts = Array.from({ length: 20 }, (_, i) => ({
   id: i + 1,
   profile: `프사`,
@@ -19,25 +22,28 @@ const CmMain = () => {
   const end = pageNum === Math.ceil(dummyPosts.length / cnt) ? -1 : start - cnt;
   const paginatedPosts = dummyPosts.slice(end + 1, start).reverse();
 
+  const searchOptions = [
+    { value: "opTitle", label: "제목" },
+    { value: "opUser", label: "작성자" },
+  ];
+
   return (
-    <div className="cm-container">
-      <div className="cm-top-ad">상단 광고</div>
-      <div className="cm-search">
-        <div className="search-select">
-          <select
-            value={selected}
+    <div className="CmContainer">
+      <div className="cmTopAd">상단 광고</div>
+      <div className="CmSearch">
+        <div className="SearchSelect">
+          <Select
+            className="search"
+            options={searchOptions}
             onChange={(e) => setSelected(e.target.value)}
-          >
-            <option value="opTitle">제목</option>
-            <option value="opUser">작성자</option>
-          </select>
+            defaultValue=""
+          />
         </div>
-        <div className="search-input">
-          <input type="text" placeholder="search" />
+        <div className="SearchInput">
+          <Searchbox />
         </div>
-        <button>SEARCH</button>
       </div>
-      <div className="cm-info">상품 리뷰</div>
+      <div>상품 리뷰</div>
 
       <ul>
         {paginatedPosts.map((post) => (
