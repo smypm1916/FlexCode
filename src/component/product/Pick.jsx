@@ -75,7 +75,7 @@ const Pick = () => {
       <Pick_Wrapper>
         <Pick_Box>
           <Pick_img>
-            <img src="src\style\img\Blue_hat.png" />
+            <img src="src\style\img\blue_hat.png" />
           </Pick_img>
           <Pick_Text>
             <Text>MD가 추천하는 핫한 액세서리</Text>

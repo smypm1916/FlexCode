@@ -18,7 +18,7 @@ const Container01 = styled.div`
 `;
 
 const Event_Wrapper = styled.div`
-  background: url("src/style/img/Launching_banner.png") no-repeat right;
+  background: url("src/style/img/launching_banner.png") no-repeat right;
   background-size: contain;
   width: 60%;
   height: 100%;
