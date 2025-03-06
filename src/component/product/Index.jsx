@@ -8,6 +8,7 @@ import Footer from "../common/Footer";
 import Header from "../common/Header";
 import styled from "styled-components";
 import SignUp from "../account/SignUp";
+import ProductDetail from "./ProductDetail";
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,6 +27,7 @@ const Index = () => {
   return (
     <Wrapper>
       <Header />
+      {/* <ProductDetail /> */}
       <EventBanner />
       <Searchbox />
       <Category />
