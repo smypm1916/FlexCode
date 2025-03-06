@@ -24,4 +24,24 @@ const getProductDetail = async (req, res) => {
    }
 };
 
-module.exports = { getAllProducts, getProductDetail };
+const getCategories = async (req, res) => {
+   try {
+      const productCategories = await productService.getCategories();
+      res.json({ success: true, data: productCategories });
+   }
+   catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+   }
+}
+
+const regProduct = async (req, res) => {
+   try {
+      const productRegister = await productService.regProduct(req.body);
+      res.status(201).json({ success: true, data: productRegister });
+   }
+   catch (error) {
+      res.status(500).json({ success: false, message: error.message })
+   }
+}
+
+module.exports = { getAllProducts, getProductDetail, getCategories, regProduct };
