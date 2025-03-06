@@ -5,17 +5,19 @@ import Button from "../common/Button";
 import Select from "../common/Select";
 
 const ProductDetail = () => {
-   const { product_no } = useParams(); // URL에서 `id` 값을 가져옴
+   const { id } = useParams(); // URL에서 `id` 값을 가져옴
    const [product, setProduct] = useState(null);
-   const [loading, setLoading] = useState(true);
+   // const [loading, setLoading] = useState(true);
    const [error, setError] = useState(null);
    const navigate = useNavigate();
+   const imgPath = import.meta.env.VITE_IMG_PATH;
+
 
    useEffect(() => {
       const fetchProduct = async () => {
          try {
-            // const response = await axios.get(`api/products/${product_no}`);
-            const response = await axios.get('api/products/1');
+            const response = await axios.get(`/api/products/${id}`);
+            // const response = await axios.get('api/products/1');
             setProduct(response.data);
          } catch (error) {
             setError(error);
@@ -24,9 +26,10 @@ const ProductDetail = () => {
          }
       };
       fetchProduct();
-   }, [id]);
+   }, []);
 
    if (loading) return <div>Loading...</div>;
+
    return (
       <div>
          {/* 컨테이너 1 */}

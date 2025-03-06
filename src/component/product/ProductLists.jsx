@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const ProductLists = () => {
    // const [page, setPage] = useState(1); // 현재 페이지
-   const [products, setProducts] = useState([]); // 상품 목록
+   const [product, setProduct] = useState([]); // 상품 목록
    // const [loading, setLoading] = useState(false); // 로딩 상태
    const [error, setError] = useState(null); // 에러 상태
    const navigate = useNavigate();
