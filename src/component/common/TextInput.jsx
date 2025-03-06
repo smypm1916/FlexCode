@@ -1,14 +1,17 @@
-import React from 'react';
+import React from "react";
 
 //  input 태그에 사용
 
-const TextInput = ({ type, label, placeholder, value, onChange }) => {
-   return (
-      <div className={`text-input-${className}`} >
-         <label>{label}</label>
-         <input type={type} placeholder={placeholder} value={value} onChange={onChange} />
-      </div >
-   );
+const TextInput = ({ type, name, placeholder, value, onChange }) => {
+  return (
+    <input
+      type={type}
+      name={name}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+    />
+  );
 };
 
-export default TextInput;  
+export default TextInput;
