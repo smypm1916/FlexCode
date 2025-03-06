@@ -49,6 +49,18 @@ const SignUp = () => {
   // 이메일 중복 확인 결과
   const [emailCheckResult, setEmailCheckResult] = useState(null);
 
+  const validatePassword = (password) => {
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
+  // 비밀번호 유효성 체크 결과
+  const [passwordValid, setPasswordValid] = useState(null);
+
+  // 비밀번호 일치 여부 체크 결과
+  const [passwordMatch, setPasswordMatch] = useState(null);
+
   const [userAddress, setUserAddress] = useState({
     base_address: "",
     detail_address: "",
@@ -90,6 +102,14 @@ const SignUp = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     console.log(name, value);
+    // 비밀번호 유효성 검사
+    if (name == "user_password") {
+      setPasswordValid(validatePassword(value)); // 유효하면 true, 아님 false
+    }
+    // 비밀번호 일치 여부 검사
+    if (name == "user_password_check") {
+      setPasswordMatch(value === signUpForm.user_password); // 비밀번호 입력 데이터랑 비교
+    }
     setSignUpForm({
       ...signUpForm,
       [name]: value,
@@ -290,6 +310,13 @@ const SignUp = () => {
             onChange={handleChange}
           />
         </div>
+        <div className="signUp-pw-validMessage">
+          {passwordValid === false && (
+            <p style={{ color: "gray", fontSize: "10px" }}>
+              비밀번호는 영어+숫자+특수문자 조합으로 8자 이상이어야 합니다.
+            </p>
+          )}
+        </div>
       </div>
       <div className="signUp-pw-check" style={style}>
         <div className="signUp-pw-check-label">
@@ -304,10 +331,18 @@ const SignUp = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="signUp-pw-check-btn">
-          <Button className={"checkPW"} btnTxt={"비밀번호 확인"} />
+        <div className="signUp-pw-matchMessage">
+          {passwordMatch === false && (
+            <p style={{ color: "red", fontSize: "10px" }}>
+              비밀번호가 일치하지 않습니다.
+            </p>
+          )}
         </div>
+        {/* <div className="signUp-pw-check-btn">
+          <Button className={"checkPW"} btnTxt={"비밀번호 확인"} />
+        </div> */}
       </div>
+
       <div className="signUp-baseAddr" style={style}>
         <div className="signUp-baseAddr-label">
           <label>기본주소</label>
