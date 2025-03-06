@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
+        field: "OPTION_NO",
       },
       product_no: {
         type: DataTypes.INTEGER(3),
@@ -17,30 +18,33 @@ module.exports = (sequelize, DataTypes) => {
         // },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
+        field: "PRODUCT_NO",
       },
       option_title: {
         type: DataTypes.STRING(100),
         allowNull: false,
+        field: "OPTION_TITLE",
       },
       option_price: {
         type: DataTypes.INTEGER(10),
         allowNull: false,
+        field: "OPTION_PRICE",
       },
       option_state: {
         type: DataTypes.INTEGER(5),
         allowNull: false,
+        field: "OPTION_STATE",
       },
     },
     {
-      tableName: "product_option",
-      /* 인코딩 */
+      tableName: "PRODUCT_OPTION",
+      freezeTableName: true,
       charset: "utf8",
       collate: "utf8_general_ci",
     }
   );
   return Product_option;
 };
-
 
 // const { DataTypes } = require("sequelize");
 // const sequelize = require("../config/sequelize");
@@ -87,4 +91,3 @@ module.exports = (sequelize, DataTypes) => {
 // );
 
 // module.exports = Product_option;
-
