@@ -6,6 +6,8 @@ import Select from "../common/Select";
 import TextInput from "../common/TextInput";
 import PostCodeModal from "./PostCodeModal";
 
+import axios from "axios";
+
 const SignUp = () => {
   const style = {
     display: "flex",
@@ -43,6 +45,9 @@ const SignUp = () => {
     email_id: "",
     email_address: "naver.com",
   });
+
+  // 이메일 중복 확인 결과
+  const [emailCheckResult, setEmailCheckResult] = useState(null);
 
   const [userAddress, setUserAddress] = useState({
     base_address: "",
@@ -127,6 +132,36 @@ const SignUp = () => {
   const full_email = `${email_id}@${email_address}`;
   console.log(full_email);
 
+  // 이메일 중복 확인 요청(axios 사용)
+  const checkEmailDuplicate = async () => {
+    if (!userEmail.email_id) {
+      alert("이메일을 입력하세요.");
+      return;
+    }
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/users/check-email`,
+        {
+          params: { email: full_email },
+        }
+      );
+
+      if (response.data.exists) {
+        // 받아온 데이터가 true일 경우
+        console.log("response 데이터 : " + response.data.exists);
+        setEmailCheckResult("이미 사용중인 이메일입니다.");
+        alert("사용중");
+      } else {
+        console.log("response 데이터 : " + response.data.exists);
+        setEmailCheckResult("사용 가능한 이메일입니다.");
+        alert("사용가능");
+      }
+    } catch (error) {
+      console.error("이메일 중복 확인 요청 실패 :", error);
+      setEmailCheckResult("오류 발생");
+    }
+  };
+
   const handleInputAddressChange = (e) => {
     const { name, value } = e.target;
     setUserAddress((prev) => ({
@@ -148,7 +183,6 @@ const SignUp = () => {
           <label>이름</label>
         </div>
         <div className="signUp-name-input">
-          <input type="text" placeholder="이름을 입력하세요" />
           <TextInput
             type={"text"}
             name={"user_name"}
@@ -234,9 +268,15 @@ const SignUp = () => {
           />
         </div>
         <div className="signUp-email-btn">
-          <Button className={"checkEmail"} btnTxt={"중복확인"} />
+          <Button
+            className={"checkEmail"}
+            btnTxt={"중복확인"}
+            onClick={checkEmailDuplicate}
+          />
         </div>
       </div>
+      {/* 이메일 중복 확인 결과 출력 */}
+      <div>{emailCheckResult && <p>{emailCheckResult}</p>}</div>
       <div className="signUp-pw" style={style}>
         <div className="signUp-pw-label">
           <label>비밀번호</label>
