@@ -4,49 +4,43 @@
 
 module.exports = (sequelize, DataTypes) => {
   const Order_items = sequelize.define(
-    "Order_items",
+    "ORDER_ITEMS",
     {
-      order_no: {
+      ORDER_NO: {
         type: DataTypes.INTEGER(3),
         allowNull: false,
         // references: {
         //    model: Order_info,
         //    key: "order_no",
         // },
-        field: "ORDER_NO",
       },
-      product_no: {
+      PRODUCT_NO: {
         type: DataTypes.INTEGER(3),
         allowNull: false,
         //   references: {
         //     model: Product_info,
         //     key: "product_no",
         //   },
-        field: "PRODUCT_NO",
       },
-      product_price: {
+      PRODUCT_PRICE: {
         type: DataTypes.INTEGER(10),
         allowNull: false,
-        field: "PRODUCT_PRICE",
       },
-      option_no: {
+      OPTION_NO: {
         type: DataTypes.INTEGER(3),
         allowNull: false,
         //   references: {
         //     model: Product_option,
         //     key: "option_no",
         //   },
-        field: "OPTION_NO",
       },
-      option_price: {
+      OPTION_PRICE: {
         type: DataTypes.INTEGER(10),
         allowNull: false,
-        field: "OPTION_PRICE",
       },
-      product_quantity: {
+      PRODUCT_QUANTITY: {
         type: DataTypes.INTEGER(3),
         allowNull: false,
-        field: "PRODUCT_QUANTITY",
       },
     },
     {

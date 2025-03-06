@@ -17,8 +17,8 @@ router.get("/check-email", async (req, res) => {
 
     // 가져온 이메일이 DB 테이블에 존재하는지 확인
     const existingUser = await User_account.findOne({
-      attributes: ["user_email"], // user_email 조회
-      where: { user_email: email },
+      attributes: ["USER_EMAIL"], // user_email 조회
+      where: { USER_EMAIL: email },
       raw: true, // Sequelize의 래핑된 객체가 아닌, 원본 데이터만 반환
     });
 

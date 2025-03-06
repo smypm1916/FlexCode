@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import Modal from "react-modal";
 import Button from "../common/Button";
@@ -5,8 +6,6 @@ import FileUpload from "../common/FileUpload";
 import Select from "../common/Select";
 import TextInput from "../common/TextInput";
 import PostCodeModal from "./PostCodeModal";
-
-import axios from "axios";
 
 const SignUp = () => {
   const style = {
@@ -140,7 +139,7 @@ const SignUp = () => {
     }
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/users/check-email`,
+        `/api/users/check-email`,
         {
           params: { email: full_email },
         }

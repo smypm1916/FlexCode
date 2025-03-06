@@ -1,38 +1,32 @@
 module.exports = (sequelize, DataTypes) => {
   const Product_info = sequelize.define(
-    "Product_info",
+    "PRODUCT_INFO",
     {
-      product_no: {
+      PRODUCT_NO: {
         type: DataTypes.INTEGER(3),
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
-        field: "PRODUCT_NO",
       },
-      product_type: {
+      PRODUCT_TYPE: {
         type: DataTypes.STRING(50),
         allowNull: false,
-        field: "PRODUCT_TYPE",
       },
-      product_name: {
+      PRODUCT_NAME: {
         type: DataTypes.STRING(100),
         allowNull: false,
-        field: "PRODUCT_NAME",
       },
-      product_price: {
+      PRODUCT_PRICE: {
         type: DataTypes.INTEGER(10),
         allowNull: false,
-        field: "PRODUCT_PRICE",
       },
-      product_date: {
+      PRODUCT_DATE: {
         type: DataTypes.DATE,
         allowNull: false,
-        field: "PRODUCT_DATE",
       },
-      product_img: {
+      PRODUCT_IMG: {
         type: DataTypes.STRING(255),
         allowNull: true,
-        field: "PRODUCT_IMG",
       },
     },
     {

@@ -5,7 +5,6 @@ const productController = require('../controller/products');
 // 모든 상품 조회
 router.get("/", productController.getAllProducts);
 
-
 // 상품 카테고리 조회
 router.get("/category", productController.getCategories);
 

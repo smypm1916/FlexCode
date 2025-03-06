@@ -1,14 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
   const Order_info = sequelize.define(
-    "Order_info",
+    "ORDER_INFO",
     {
-      order_no: {
+      ORDER_NO: {
         type: DataTypes.INTEGER(3),
         primaryKey: true,
         allowNull: false,
-        field: "ORDER_NO",
       },
-      user_email: {
+      USER_EMAIL: {
         type: DataTypes.STRING(100),
         allowNull: false,
         // references: {
@@ -17,22 +16,18 @@ module.exports = (sequelize, DataTypes) => {
         // },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
-        field: "USER_EMAIL",
       },
-      total_price: {
+      TOTAL_PRICE: {
         type: DataTypes.INTEGER(10),
         allowNull: false,
-        field: "TOTAL_PRICE",
       },
-      order_date: {
+      ORDER_DATE: {
         type: DataTypes.DATE,
         allowNull: false,
-        field: "ORDER_DATE",
       },
-      order_state: {
+      ORDER_STATE: {
         type: DataTypes.INTEGER(2),
         allowNull: false,
-        field: "ORDER_STATE",
       },
     },
     {

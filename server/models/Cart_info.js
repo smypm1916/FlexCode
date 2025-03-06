@@ -4,9 +4,9 @@
 
 module.exports = (sequelize, DataTypes) => {
   const Cart_info = sequelize.define(
-    "Cart_info",
+    "CART_INFO",
     {
-      user_email: {
+      USER_EMAIL: {
         type: DataTypes.STRING(100),
         allowNull: false,
         // references: {
@@ -15,9 +15,8 @@ module.exports = (sequelize, DataTypes) => {
         // },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
-        field: "USER_EMAIL",
       },
-      product_no: {
+      PRODUCT_NO: {
         type: DataTypes.INTEGER(3),
         allowNull: false,
         // references: {
@@ -26,14 +25,12 @@ module.exports = (sequelize, DataTypes) => {
         // },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
-        field: "PRODUCT_NO",
       },
-      product_price: {
+      PRODUCT_PRICE: {
         type: DataTypes.INTEGER(10),
         allowNull: false,
-        field: "PRODUCT_PRICE",
       },
-      option_no: {
+      OPTION_NO: {
         type: DataTypes.INTEGER(3),
         allowNull: false,
         // references: {
@@ -42,22 +39,18 @@ module.exports = (sequelize, DataTypes) => {
         // },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
-        field: "OPTION_NO",
       },
-      option_price: {
+      OPTION_PRICE: {
         type: DataTypes.INTEGER(10),
         allowNull: false,
-        field: "OPTION_PRICE",
       },
-      product_quantity: {
+      PRODUCT_QUANTITY: {
         type: DataTypes.INTEGER(3),
         allowNull: false,
-        field: "PRODUCT_QUANTITY",
       },
-      cart_date: {
+      CART_DATE: {
         type: DataTypes.DATE,
         allowNull: false,
-        field: "CART_DATE",
       },
     },
     {

@@ -1,43 +1,36 @@
 module.exports = (sequelize, DataTypes) => {
   const User_account = sequelize.define(
-    "User_account",
+    "USER_ACCOUNT",
     {
-      user_email: {
+      USER_EMAIL: {
         type: DataTypes.STRING(100),
         primaryKey: true,
         allowNull: false,
-        field: "USER_EMAIL",
       },
-      user_nickname: {
+      USER_NICKNAME: {
         type: DataTypes.STRING(50),
         unique: true,
         allowNull: false,
-        field: "USER_NICKNAME",
       },
-      user_password: {
+      USER_PASSWORD: {
         type: DataTypes.STRING(255),
         allowNull: false,
-        field: "USER_PASSWORD",
       },
-      user_name: {
+      USER_NAME: {
         type: DataTypes.STRING(50),
         allowNull: false,
-        field: "USER_NAME",
       },
-      user_addr: {
+      USER_ADDR: {
         type: DataTypes.STRING(255),
         allowNull: false,
-        field: "USER_ADDR",
       },
-      user_tel: {
+      USER_TEL: {
         type: DataTypes.STRING(20),
         allowNull: false,
-        field: "USER_TEL",
       },
-      user_profile: {
+      USER_PROFILE: {
         type: DataTypes.STRING(255),
         allowNull: false,
-        field: "USER_PROFILE",
       },
     },
     {

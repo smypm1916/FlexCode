@@ -2,15 +2,14 @@
 
 module.exports = (sequelize, DataTypes) => {
   const Community_info = sequelize.define(
-    "Community_info",
+    "COMMUNITY_INFO",
     {
-      community_no: {
+      COMMUNITY_NO: {
         type: DataTypes.INTEGER(3),
         primaryKey: true,
         allowNull: false,
-        field: "COMMUNITY_NO",
       },
-      user_nickname: {
+      USER_NICKNAME: {
         type: DataTypes.STRING(50),
         allowNull: false,
         // references: {
@@ -19,32 +18,26 @@ module.exports = (sequelize, DataTypes) => {
         // },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
-        field: "USER_NICKNAME",
       },
-      community_title: {
+      COMMUNITY_TITLE: {
         type: DataTypes.STRING(100),
         allowNull: false,
-        field: "COMMUNITY_TITLE",
       },
-      community_content: {
+      COMMUNITY_CONTENT: {
         type: DataTypes.STRING(255),
         allowNull: false,
-        field: "COMMUNITY_CONTENT",
       },
-      community_img: {
+      COMMUNITY_IMG: {
         type: DataTypes.STRING(255),
         allowNull: true,
-        field: "COMMUNITY_IMG",
       },
-      community_date: {
+      COMMUNITY_DATE: {
         type: DataTypes.DATE,
         allowNull: false,
-        field: "COMMUNITY_DATE",
       },
-      community_readcnt: {
+      COMMUNITY_READCNT: {
         type: DataTypes.INTEGER(3),
         allowNull: false,
-        field: "COMMUNITY_READCNT",
       },
     },
     {
