@@ -5,6 +5,7 @@ const cors = require("cors"); // f->b cors 설정
 const morgan = require("morgan"); // 로그 기록
 const productRouter = require("./routes/products");
 const userRouter = require("./routes/user");
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -16,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // router
 // app.use("/api/products", productRouter);
-// app.use("/api/users", userRouter);
+app.use("/api/users", userRouter);
 
 // 서버 실행 함수
 const startServer = async () => {
