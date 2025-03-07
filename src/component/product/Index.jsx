@@ -8,6 +8,7 @@ import styled from "styled-components";
 import SignUp from "../account/SignUp";
 import ProductDetail from "./ProductDetail";
 import CmMain from "../community/CmMain";
+import Category from "./Category";
 
 const Wrapper = styled.div`
   display: flex;
