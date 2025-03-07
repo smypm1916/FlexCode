@@ -145,15 +145,19 @@ const LoginModal = ({ onClose }) => {
   };
 
   return isFindId ? (
-    <FindId onBack={handleBackToLogin} />
+    <Container>
+      <FindId onBack={handleBackToLogin} />
+    </Container>
   ) : isFindPw ? (
-    <FindPw onBack={handleBackToLogin} />
+    <Container>
+      <FindPw onBack={handleBackToLogin} />
+    </Container>
   ) : (
     <Container>
       <LoginContainer>
         <ButtonContainer>
           <ButtonClose onClick={onClose}>
-            <img src="src\style\img\closebutton.png"></img>
+            <img src="src/style/img/closebutton.png" alt="닫기 버튼" />
           </ButtonClose>
         </ButtonContainer>
         <Title>LOGIN</Title>
@@ -161,9 +165,16 @@ const LoginModal = ({ onClose }) => {
           <InputField type="text" placeholder="ID" />
           <InputField type="password" placeholder="PW" />
           <LinksContainer>
-            <div>회원가입</div>
-            <div>ID 찾기</div>
-            <div>비밀번호 찾기</div>
+            <div>
+              {/* ✅ 회원가입 클릭 시 signup 페이지로 이동 */}
+              <a onClick={() => navigate("/signup")}>회원가입</a>
+            </div>
+            <div>
+              <a onClick={handleFindId}>ID 찾기</a>
+            </div>
+            <div>
+              <a onClick={handleFindPw}>비밀번호 찾기</a>
+            </div>
           </LinksContainer>
         </Conwrapper>
         <ButtonContainer>
