@@ -152,6 +152,21 @@ const Info_Text_Box = styled.div`
 //     border-radius: 0;
 //   }
 //
+`;
+
+// const Button = styled.button`;
+//   padding: 10px;
+//   border: 1px solid black;
+//   transition: all 0.5s;
+//   color: black;
+//   background-color: white;
+//   text-decoration: none;
+//   font-size: 12pt;
+//   &:hover {
+//     background-color: black;
+//     color: white;
+//     text-decoration: none;
+//   }
 // `;
 
 const ProductDetail = () => {
