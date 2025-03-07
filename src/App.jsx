@@ -2,8 +2,9 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import Footer from "./component/common/Footer";
 import Header from "./component/common/Header";
-import Index from "./component/product/Index";
+import Index from "./component/product/index";
 import SignUp from "./component/account/SignUp";
+import ProductDetail from "./component/product/ProductDetail";
 
 function App() {
   return (
