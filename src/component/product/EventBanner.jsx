@@ -1,6 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import {} from "../../style/EventBanner_Style";
+import {
+  Container_Banner,
+  Event_Wrapper,
+  Logo,
+  Title,
+  Text,
+} from "../../style/EventBanner_Style";
 
 const EventBanner = () => {
   return (
