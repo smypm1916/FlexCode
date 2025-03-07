@@ -17,7 +17,7 @@ function App() {
         <Route path="/product_no=/:id" element={<ProductDetail />} />
         {/* <Route path="/order" element={<Order />} /> */}
         {/* <Route path="/order/:id" element={<OrderComplete />} /> */}
-        {/* <Route path="/signup" element={<SignUp />} /> */}
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
       {/* 루팅 */}
 
