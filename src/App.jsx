@@ -5,6 +5,7 @@ import Header from "./component/common/Header";
 import Index from "./component/product/Index";
 import SignUp from "./component/account/SignUp";
 import ProductDetail from "./component/product/ProductDetail";
+import ProductLists from "./component/product/ProductLists";
 
 function App() {
   return (
