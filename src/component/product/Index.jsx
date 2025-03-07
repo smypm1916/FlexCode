@@ -26,17 +26,16 @@ const Index = () => {
   return (
     <Wrapper>
       <Header />
-      {/* <ProductDetail /> */}
+      <ProductDetail />
 
-      <EventBanner />
-      <Searchbox />
-      <h1>Category</h1>
+      {/* <EventBanner /> */}
+      {/* <Searchbox /> */}
+      {/* <h1>Category</h1> */}
       {/* <Category /> */}
-      <Pick />
-      <h1>productListsWIP</h1>
+      {/* <Pick /> */}
+      {/* <h1>productListsWIP</h1> */}
 
       {/* <SignUp /> */}
-      <ProductLists />
       {/* <CmMain /> */}
     </Wrapper>
   );

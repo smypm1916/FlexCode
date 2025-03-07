@@ -43,26 +43,6 @@ const Category_Box = styled.div`
 `;
 
 const Category = () => {
-  return (
-    <Container03>
-      <Title>CATEGORY</Title>
-      <Category_Wrapper>
-        <Category_Box>cat1</Category_Box>
-        <Category_Box>cat2</Category_Box>
-        <Category_Box>cat3</Category_Box>
-        <Category_Box>cat4</Category_Box>
-        <Category_Box>cat5</Category_Box>
-        <Category_Box>cat6</Category_Box>
-      </Category_Wrapper>
-    </Container03>
-  );
-};
-
-export default Category;
-import React from 'react';
-import ProductsByCategory from './ProductsByCategory';
-
-const Category = () => {
    const [category, setCategory] = useState([]);
 
    useEffect(() => {
@@ -73,35 +53,18 @@ const Category = () => {
    }, []);
    return (
       <div>
-         <h1>Category</h1>
-         <div>
-            <div onClick={()}>
-               <span>cat1</span>
-               <img src="" alt="" />
-            </div>
-            <div onClick={()}>
-               <span>cat2</span>
-               <img src="" alt="" />
-            </div>
-            <div onClick={()}>
-               <span>cat3</span>
-               <img src="" alt="" />
-            </div>
-            <div onClick={()}>
-               <span>cat4</span>
-               <img src="" alt="" />
-            </div>
-            <div onClick={()}>
-               <span>cat5</span>
-               <img src="" alt="" />
-            </div>
-            <div onClick={()}>
-               <span>cat6</span>
-               <img src="" alt="" />
-            </div>
-            <ProductsByCategory />
+      <Container03>
+      <Title>CATEGORY</Title>
+      <Category_Wrapper>
+        <Category_Box>cat1</Category_Box>
+        <Category_Box>cat2</Category_Box>
+        <Category_Box>cat3</Category_Box>
+        <Category_Box>cat4</Category_Box>
+        <Category_Box>cat5</Category_Box>
+        <Category_Box>cat6</Category_Box>
+      </Category_Wrapper>
+    </Container03>
          </div>
-      </div>
    )
 }
 
