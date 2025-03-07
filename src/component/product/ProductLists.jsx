@@ -1,7 +1,17 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
+// MD's PICK 컨테이너
+const Container05 = styled.div`
+  width: 100%;
+  max-width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+`;
 
 const ProductLists = () => {
    // const [page, setPage] = useState(1); // 현재 페이지
@@ -23,12 +33,13 @@ const ProductLists = () => {
       }
    }
 
-   // 스크롤 설정
-   useEffect(() => {
-      fetchProducts();
-   }, []);
+  // 스크롤 설정
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-   return (
+  return (
+    <Container05>
       <div>
          <h1>Shopping</h1>
          Products
@@ -46,8 +57,8 @@ const ProductLists = () => {
             ))}
          </div>
       </div>
-   )
-}
-
+    </Container05>
+  );
+};
 
 export default ProductLists;

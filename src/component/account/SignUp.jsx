@@ -1,15 +1,189 @@
+import styled from "styled-components";
 import { useState } from "react";
+import Modal from "react-modal";
 import Button from "../common/Button";
+import FileUpload from "../common/FileUpload";
 import Select from "../common/Select";
 import TextInput from "../common/TextInput";
 import PostCodeModal from "./PostCodeModal";
-import Modal from "react-modal";
-import FileUpload from "../common/FileUpload";
+
+import axios from "axios";
 
 const SignUp = () => {
   const style = {
     display: "flex",
+    transition: "all 0.5s",
   };
+
+  // 전체를 감싸는 div
+  const Wrapper = styled.div`
+    padding: 50px;
+  `;
+
+  // wrapper 안에서 컨텐츠를 감싸는 div
+  const SignUpPage = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 1px solid black;
+    box-shadow: 0 0 30px 20px rgba(0, 0, 0, 0.05);
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    margin: 0 auto;
+  `;
+
+  // 상단의 페이지 제목을 감싸는 style
+  const SignUp_Title = styled.h2`
+    width: 100%;
+    text-align: left;
+    font-size: 40pt;
+    color: black;
+    margin: 0;
+  `;
+
+  // button용 통합 style
+  const Button = styled.button`
+    padding: 10px;
+    border: 1px solid black;
+    transition: all 0.5s;
+    color: black;
+    background-color: white;
+    text-decoration: none;
+    font-size: 12pt;
+    &:hover {
+      background-color: black;
+      color: white;
+      text-decoration: none;
+    }
+  `;
+
+  // label용 통합 style
+  const Label = styled.label`
+    width: 150px;
+    font-size: 12pt;
+    color: black;
+    text-align: left;
+    font-weight: bold;
+  `;
+
+  // Input과 이름을 감싸는 div
+  const SignUp_Box = styled.div`
+    width: -webkit-fill-available;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+  `;
+
+  // button을 감싸는 div
+  const Button_Box = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+  `;
+
+  // button_box 안에서 input을 감싸는 div
+  const Input_Box = styled.div`
+    width: -webkit-fill-available;
+    border: 1px solid black;
+    padding: 10px;
+    text-align: left;
+  `;
+
+  // input의 style
+  const Input = styled.input`
+    height: 100%;
+    font-size: 12pt;
+    color: black;
+    background: white;
+    border: none;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::file-selector-button {
+      font-size: 12pt;
+      border: 1px solid black;
+      color: black;
+      background-color: white;
+      transition: all 0.5s;
+    }
+
+    &::file-selector-button:hover {
+      background-color: black;
+      color: white;
+    }
+  `;
+  // input의 style
+  const FileUpload = styled.input`
+    height: 100%;
+    font-size: 12pt;
+    color: black;
+    background: white;
+    border: none;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::file-selector-button {
+      font-size: 12pt;
+      border: 1px solid black;
+      color: black;
+      background-color: white;
+      transition: all 0.5s;
+    }
+
+    &::file-selector-button:hover {
+      background-color: black;
+      color: white;
+    }
+  `;
+
+  // input이 포함된 열을 감싸는 div
+  const Input_Wrapper = styled.div`
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: row;
+    height: 45px;
+    align-items: center;
+    gap: 20px;
+  `;
+
+  // select의 style
+  const Select = styled.select`
+    width: 100%;
+    height: 45px;
+    font-size: 12pt;
+    padding: 10px;
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+
+    &.optionList {
+      border-radius: 0;
+    }
+  `;
+
+  // signup_box안에서 select를 감싸는 div
+  const Select_Box = styled.div`
+    width: -webkit-fill-available;
+    height: fit-content;
+    color: black;
+  `;
+
+  // 속성 p의 style
+  const SignUp_Text = styled.p`
+    width: fit-content;
+    color: black;
+  `;
+
+  // ------------------------------ 상단 style ------------------------------
 
   const customModalStyle = {
     overlay: {
@@ -43,6 +217,21 @@ const SignUp = () => {
     email_id: "",
     email_address: "naver.com",
   });
+
+  // 이메일 중복 확인 결과
+  const [emailCheckResult, setEmailCheckResult] = useState(null);
+
+  const validatePassword = (password) => {
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
+  // 비밀번호 유효성 체크 결과
+  const [passwordValid, setPasswordValid] = useState(null);
+
+  // 비밀번호 일치 여부 체크 결과
+  const [passwordMatch, setPasswordMatch] = useState(null);
 
   const [userAddress, setUserAddress] = useState({
     base_address: "",
@@ -85,6 +274,14 @@ const SignUp = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     console.log(name, value);
+    // 비밀번호 유효성 검사
+    if (name == "user_password") {
+      setPasswordValid(validatePassword(value)); // 유효하면 true, 아님 false
+    }
+    // 비밀번호 일치 여부 검사
+    if (name == "user_password_check") {
+      setPasswordMatch(value === signUpForm.user_password); // 비밀번호 입력 데이터랑 비교
+    }
     setSignUpForm({
       ...signUpForm,
       [name]: value,
@@ -126,6 +323,36 @@ const SignUp = () => {
 
   const full_email = `${email_id}@${email_address}`;
   console.log(full_email);
+
+  // 이메일 중복 확인 요청(axios 사용)
+  const checkEmailDuplicate = async () => {
+    if (!userEmail.email_id) {
+      alert("이메일을 입력하세요.");
+      return;
+    }
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/users/check-email`,
+        {
+          params: { email: full_email },
+        }
+      );
+
+      if (response.data.exists) {
+        // 받아온 데이터가 true일 경우
+        console.log("response 데이터 : " + response.data.exists);
+        setEmailCheckResult("이미 사용중인 이메일입니다.");
+        alert("사용중");
+      } else {
+        console.log("response 데이터 : " + response.data.exists);
+        setEmailCheckResult("사용 가능한 이메일입니다.");
+        alert("사용가능");
+      }
+    } catch (error) {
+      console.error("이메일 중복 확인 요청 실패 :", error);
+      setEmailCheckResult("오류 발생");
+    }
+  };
 
   const handleInputAddressChange = (e) => {
     const { name, value } = e.target;
