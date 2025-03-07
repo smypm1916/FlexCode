@@ -1,6 +1,6 @@
 const userService = require("../services/userService");
 
-// 이미지 중복 체크
+// 이메일 중복 체크
 const checkEmail = async (req, res) => {
   try {
     const { email } = req.query;
