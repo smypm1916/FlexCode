@@ -2,7 +2,8 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import Footer from "./component/common/Footer";
 import Header from "./component/common/Header";
-import Index from "./component/product/Index";
+import Index from "./component/product/index";
+import SignUp from "./component/account/SignUp";
 // import ProductDetail from "./component/product/ProductDetail";
 // import Order from "./component/order/Order";
 // import OrderComplete from "./component/order/OrderComplete";
@@ -13,7 +14,6 @@ function App() {
   return (
     <Router>
       <Header />
-
       {/* 루팅 */}
       <Routes>
         <Route path="/" element={<Index />} />
