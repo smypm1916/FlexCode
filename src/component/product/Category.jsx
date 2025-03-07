@@ -43,17 +43,16 @@ const Category_Box = styled.div`
 `;
 
 const Category = () => {
-   const [category, setCategory] = useState([]);
+  const [category, setCategory] = useState([]);
 
-   useEffect(() => {
-      const fetchCategory = async () => {
-         const response = await axios.get("/api/products/category");
-         setCategory(response.data);
-      }
-   }, []);
-   return (
-      <div>
-      <Container03>
+  useEffect(() => {
+    const fetchCategory = async () => {
+      const response = await axios.get("/api/products/category");
+      setCategory(response.data);
+    };
+  }, []);
+  return (
+    <Container03>
       <Title>CATEGORY</Title>
       <Category_Wrapper>
         <Category_Box>cat1</Category_Box>
@@ -64,8 +63,7 @@ const Category = () => {
         <Category_Box>cat6</Category_Box>
       </Category_Wrapper>
     </Container03>
-         </div>
-   )
-}
+  );
+};
 
 export default Category;
