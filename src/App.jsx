@@ -1,14 +1,9 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
+import SignUp from "./component/account/SignUp";
 import Footer from "./component/common/Footer";
 import Header from "./component/common/Header";
-import Index from "./component/product/index";
-import SignUp from "./component/account/SignUp";
-// import ProductDetail from "./component/product/ProductDetail";
-// import Order from "./component/order/Order";
-// import OrderComplete from "./component/order/OrderComplete";
-// import LoginModal from "./component/account/LoginModal";
-import SignUp from "./component/account/SignUp";
+import Index from "./component/product/Index";
 
 function App() {
   return (
@@ -21,6 +16,7 @@ function App() {
         {/* <Route path="/product_no=/:id" element={<ProductDetail />} /> */}
         {/* <Route path="/order" element={<Order />} /> */}
         {/* <Route path="/order/:id" element={<OrderComplete />} /> */}
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
       {/* 루팅 */}
 
