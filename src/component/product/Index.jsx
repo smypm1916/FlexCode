@@ -26,10 +26,6 @@ const Index = () => {
       <Category />
       <Pick />
       <ProductLists />
-      {/* <ProductDetail /> */}
-
-      {/* <SignUp /> */}
-      {/* <CmMain /> */}
     </Wrapper>
   );
 };

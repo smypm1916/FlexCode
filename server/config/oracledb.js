@@ -23,16 +23,15 @@ async function getConnection() {
   }
 }
 
-async function executeQuery(query, params = []) {
+async function executeQuery(query, params = {}, options = { autoCommit: true, outFormat: oracledb.OUT_FORMAT_OBJECT }) {
   let connection;
   try {
     connection = await getConnection();
-    const result = await connection.execute(query, params, {
-      autoCommit: true,
-    });
+    const result = await connection.execute(query, params, options);
     return result.rows;
   } catch (error) {
     console.error("❌ 쿼리 실행 실패:", error);
+    throw error;
   } finally {
     if (connection) {
       await connection.close();

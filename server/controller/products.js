@@ -4,7 +4,8 @@ const productService = require('../services/products');
 async function getAllProducts(req, res) {
    try {
       const productsLists = await productService.getAllProducts();
-      res.status(200).json({ success: true, data: productsLists });
+      // res.status(200).json({ success: true, data: productsLists });
+      res.status(200).json(productsLists);
    } catch (error) {
       console.error('controller error', error);
       res.status(500).json({ success: false, message: error.message });
@@ -16,6 +17,7 @@ async function getProductDetail(req, res) {
    try {
       const productDetail = await productService.getProductDetail(req.params.product_no);
       if (!req.params.product_no) {
+         // res.data object
          return res.status(400).json({ success: false, message: "product_no 필요" });
       }
       if (!productDetail) {
@@ -47,6 +49,6 @@ async function regProduct(req, res) {
    catch (error) {
       res.status(500).json({ success: false, message: error.message })
    }
-}
+};
 
 module.exports = { getAllProducts, getProductDetail, regProduct };

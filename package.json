@@ -3,15 +3,13 @@
   "private": true,
   "version": "0.0.0",
   "type": "commonjs",
-  "proxy": "http://localhost:8080",
   "scripts": {
     "dev:vite": "vite --host",
     "dev:server": "nodemon server/server.js",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:server\"",
-    "dev:proxy": "concurrently \"npm run dev:vite\" \"npm run dev:server-proxy\""
+    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:server\""
   },
   "dependencies": {
     "axios": "^1.8.1",

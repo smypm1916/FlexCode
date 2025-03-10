@@ -1,5 +1,7 @@
 const dbConfig = require("../config/oracledb");
 const oracledb = require("oracledb");
+const { executeQuery } = require('../config/oracledb');
+
 
 /**
  * product_info 테이블
@@ -13,12 +15,11 @@ const oracledb = require("oracledb");
 
 //  상품 전체 조회
 async function getAllProducts() {
-  // let connection;
   try {
-    const result = await oracledb.executeQuery('SELECT * FROM PRODUCT_INFO', [], {
+    const result = await executeQuery('SELECT * FROM PRODUCT_INFO', {}, {
       outFormat: oracledb.OUT_FORMAT_OBJECT
     });
-    console.log('get products list success!!!');
+    console.log('get products list success!!!', result);
     return result.rows;
   }
   catch (error) {
@@ -32,7 +33,7 @@ async function getProductDetail(product_no) {
   const query = `SELECT * FROM PRODUCT_INFO where PRODUCT_NO= :product_no`;
   const binds = { product_no };
   try {
-    const result = await oracledb.executeQuery(query, binds);
+    const result = await executeQuery(query, binds);
     console.log('detail read success!!!');
 
   }
@@ -44,7 +45,7 @@ async function getProductDetail(product_no) {
 
 // 상품 등록
 async function regProduct(product) {
-  const query = `INSERT INTO PRODUCT_INFO(PRODUCT_NO,PRODUCT_TYPE,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_DATE,PRODUCT_IMG) VALUES(PRODUCT_INFO_SEQ.nextVal,:PRODUCT_TYPE,:PRODUCT_NAME,:PRODUCT_PRICE,SYSDATE,:PRODUCT_IMG)`;
+  const query = `INSERT INTO PRODUCT_INFO(PRODUCT_NO,PRODUCT_TYPE,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_DATE,PRODUCT_IMG) VALUES(PRODUCT_NO_SEQ.nextVal,:PRODUCT_TYPE,:PRODUCT_NAME,:PRODUCT_PRICE,SYSDATE,:PRODUCT_IMG)`;
   const binds = {
     PRODUCT_TYPE: product.type,
     PRODUCT_NAME: product.name,
@@ -53,13 +54,14 @@ async function regProduct(product) {
   };
 
   try {
-    const result = await oracledb.executeQuery(query, binds);
+    const result = await executeQuery(query, binds);
     console.log('insert success');
   }
   catch (error) {
     console.error(error);
     throw error;
   }
+  return;
 }
 
 // 카테고리별 상품조회
