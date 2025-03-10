@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const oracledb = require('./config/oracledb')
 const express = require("express");
 const cors = require("cors"); // f->b cors 설정
 const morgan = require("morgan"); // 로그 기록
@@ -16,16 +17,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // router
-// app.use("/api/products", productRouter);
+app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 
 // 서버 실행 함수
 const startServer = async () => {
   try {
-    // await connectSequelize(); // Sequelize DB 연결 확인
-    // await sequelize.sync({ force: false }); // 테이블 동기화
-    await getConnection();
-    await executeQuery("SELECT 1 FROM DUAL");
+    await oracledb.getConnection();
+    await oracledb.executeQuery("SELECT 1 FROM DUAL");
     console.log("DB 연결 성공");
 
 

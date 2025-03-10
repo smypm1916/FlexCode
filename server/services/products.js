@@ -1,33 +1,40 @@
-const db = require("../models");
-const Product_info = db.Product_info;
-const Product_option = db.Product_option;
+// const { getConnection } = require("oracledb");
+// const db = require("../models");
+// const Product_info = db.Product_info;
+// const Product_option = db.Product_option;
 
+const productModel = require('../models/product_info');
 
-const getAllProducts = async () => {
-   return await Product_info.findAll();
-};
-
-const getProductDetail = async (product_no) => {
-   return await Product_info.findByPk(product_no, {
-      include: [
-         {
-            model: Product_option,
-            attributes: ["option_no", "option_title", "option_price"],
-         }
-      ]
-   });
-};
-
-const regProduct = async (data) => {
+async function getAllProducts() {
    try {
-      const newProduct = await Product_info.create(data);
-      return newProduct;
+      const products = await productModel.getAllProducts();
+      return products;
+   } catch (error) {
+      console.error('service error', error);
+      throw error;
    }
-   catch (error) {
-      console.log(error);
+}
+
+async function getProductDetail(product_no) {
+   try {
+      return await productModel.getProductDetail(product_no);
+      return product;
+   } catch (error) {
+      console.error('service error', error);
       throw error;
    }
 };
+
+async function regProduct(product) {
+   try {
+      return await productModel.regProduct(product);
+      return product;
+   } catch (error) {
+      console.error('service error', error);
+      throw error;
+   }
+};
+
 
 // const getByCategory = async()
 
