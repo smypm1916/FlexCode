@@ -1,10 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const CmAdd = () => {
   const [community_title, setTitle] = useState("");
   const [community_content, setContent] = useState("");
   const [community_img, setImg] = useState(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,40 +35,34 @@ const CmAdd = () => {
       <div>프로필사진</div>
       <form onSubmit={handleSubmit}>
         <div className="CmAddTitle">
-          <div>
-            <label>제목</label>
-          </div>
-          <div className="CmInputTitle">
-            <input
-              type="text"
-              name="community_title"
-              value={community_title}
-              placeholder="제목을 입력하세요"
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
+          <label>제목</label>
+          <input
+            type="text"
+            name="community_title"
+            value={community_title}
+            placeholder="제목을 입력하세요"
+            onChange={(e) => setTitle(e.target.value)}
+          />
         </div>
 
         <div className="CmAddDescription">
-          <div>
-            <label>내용</label>
-          </div>
-          <div className="CmInputDescription">
-            <textarea
-              name="community_content"
-              value={community_content}
-              placeholder="내용을 입력하세요"
-              onChange={(e) => setContent(e.target.value)}
-            />
-          </div>
+          <label>내용</label>
+          <textarea
+            name="community_content"
+            value={community_content}
+            placeholder="내용을 입력하세요"
+            onChange={(e) => setContent(e.target.value)}
+          />
         </div>
-        <div className="CmInputFlie">
+        <div className="CmAddFlie">
           <label>사진 등록</label>
           <input type="file" onChange={(e) => setImg(e.target.files[0])} />
         </div>
         <div className="CmBddBtn">
           <button type="submit">등록하기</button>
-          <button>뒤로가기</button>
+          <button type="button" onClick={() => navigate("/community")}>
+            뒤로가기
+          </button>
         </div>
       </form>
     </div>

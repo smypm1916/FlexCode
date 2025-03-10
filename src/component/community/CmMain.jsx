@@ -3,6 +3,7 @@ import { PaginationComponent } from "./PaginationComponent";
 import Searchbox from "../common/Searchbox";
 import Select from "../common/Select";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 // 버튼 스타일
 const Button = styled.button`
@@ -30,7 +31,7 @@ const Button_Box = styled.div`
 `;
 
 // select 스타일
-const Select = styled.select`
+const Select_Box = styled.select`
   height: 45px;
   font-size: 12pt;
   padding: 10px;
@@ -135,6 +136,8 @@ const dummyPosts = Array.from({ length: 20 }, (_, i) => ({
 }));
 
 const CmMain = () => {
+  const navigate = useNavigate();
+
   const [selected, setSelected] = useState("");
   const [pageNum, setPageNum] = useState(1);
   const cnt = 6; // 한 페이지당 개수
@@ -172,12 +175,11 @@ const CmMain = () => {
         <Input_Wrapper>
           <div className="search-select">
             <Select
+              options={searchOptions}
               value={selected}
               onChange={(e) => setSelected(e.target.value)}
-            >
-              <option value="opTitle">제목</option>
-              <option value="opUser">작성자</option>
-            </Select>
+              defaultValue=""
+            />
           </div>
           <Search_Box>
             <Input_Box>
@@ -196,7 +198,13 @@ const CmMain = () => {
         </ul>
         <Wrapper></Wrapper>
         <Button_Box>
-          <Button>글쓰기</Button>
+          <Button
+            onClick={() => {
+              navigate("/CmAdd");
+            }}
+          >
+            글쓰기
+          </Button>
         </Button_Box>
         {/* ✅ 페이징 컴포넌트 추가 */}
         <PaginationComponent

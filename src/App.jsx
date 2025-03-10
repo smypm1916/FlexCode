@@ -5,6 +5,8 @@ import Header from "./component/common/Header";
 import Index from "./component/product/index";
 import SignUp from "./component/account/SignUp";
 import ProductDetail from "./component/product/ProductDetail";
+import CmMain from "./component/community/CmMain";
+import CmAdd from "./component/community/CmAdd";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         {/* <Route path="/order" element={<Order />} /> */}
         {/* <Route path="/order/:id" element={<OrderComplete />} /> */}
         {/* <Route path="/signup" element={<SignUp />} /> */}
+        {/* <Route path="/community" element={<CmMain />} /> */}
+        {/* <Route path="/CmAdd" element={<CmAdd />} /> */}
       </Routes>
       {/* 루팅 */}
 

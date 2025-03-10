@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import LoginModal from "../account/LoginModal";
+import { useNavigate } from "react-router-dom";
 
 //상단의 header 전체를 묶는 div
 const Container = styled.div`
@@ -145,6 +146,8 @@ const Menu_Wrapper = styled.div`
 const App = () => {
   const [showModal, setShowModal] = useState(false);
 
+  const navigate = useNavigate();
+
   return (
     <Container>
       <Headerdiv>
@@ -154,7 +157,7 @@ const App = () => {
           </Logo>
           <Menu_Wrapper>
             <Menu>HOME</Menu>
-            <Menu>COMMUNITY</Menu>
+            <Menu onClick={() => navigate("/community")}>COMMUNITY</Menu>
           </Menu_Wrapper>
         </Wrapper>
         <Menu_Wrapper>
