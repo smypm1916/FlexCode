@@ -1,13 +1,14 @@
 import React from "react";
+import styled from "styled-components";
 import Searchbox from "../common/Searchbox";
 import EventBanner from "./EventBanner";
 import Pick from "./Pick";
 import Footer from "../common/Footer";
 import Header from "../common/Header";
-import styled from "styled-components";
 import SignUp from "../account/SignUp";
 import ProductDetail from "./ProductDetail";
 import CmMain from "../community/CmMain";
+import Category from "./Category";
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,14 +27,13 @@ const Index = () => {
   return (
     <Wrapper>
       <Header />
-      <ProductDetail />
+      {/* <ProductDetail /> */}
 
-      {/* <EventBanner /> */}
-      {/* <Searchbox /> */}
-      {/* <h1>Category</h1> */}
-      {/* <Category /> */}
-      {/* <Pick /> */}
-      {/* <h1>productListsWIP</h1> */}
+      <EventBanner />
+      <Searchbox />
+      <Category />
+      <Pick />
+      <ProductLists />
 
       {/* <SignUp /> */}
       {/* <CmMain /> */}
