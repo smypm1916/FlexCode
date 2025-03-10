@@ -2,11 +2,12 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import Footer from "./component/common/Footer";
 import Header from "./component/common/Header";
-import Index from "./component/product/index";
+import Index from "./component/product/Index";
 import SignUp from "./component/account/SignUp";
 import ProductDetail from "./component/product/ProductDetail";
 import CmMain from "./component/community/CmMain";
 import CmAdd from "./component/community/CmAdd";
+import ProductLists from "./component/product/ProductLists";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         {/* <Route path="/signup" element={<SignUp />} /> */}
         {/* <Route path="/community" element={<CmMain />} /> */}
         {/* <Route path="/CmAdd" element={<CmAdd />} /> */}
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
       {/* 루팅 */}
 

@@ -13,11 +13,11 @@ const PostCodeModal = ({ onClose, onSelectAddress }) => {
   return (
     <div>
       <DaumPostcodeEmbed onComplete={completeHandler} />
-      <Button
+      {/* <Button
         className={"addressModalClose"}
         btnTxt={"닫기"}
         onClick={onClose}
-      />
+      /> */}
     </div>
   );
 };
