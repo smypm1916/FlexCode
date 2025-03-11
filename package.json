@@ -31,8 +31,6 @@
     "react-dom": "^19.0.0",
     "react-modal": "^3.16.3",
     "react-router-dom": "^7.2.0",
-    "sequelize": "^6.37.5",
-    "sequelize-cli": "^6.6.2",
     "styled-components": "^6.1.15",
     "winston": "^3.17.0"
   },
