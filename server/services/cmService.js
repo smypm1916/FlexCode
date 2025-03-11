@@ -21,6 +21,44 @@ const getPosts = async () => {
 //   const result = await executeQuery(query);
 //   return result;
 
-const regPost = async () => {};
+// const regPost = async ({
+//   community_title,
+//   community_content,
+//   community_img,
+// }) => {
+//   const query = `INSERT INTO COMMUNITY (TITLE, CONTENT, IMG)
+//   VALUES (?, ?, ?)`;
+//   const values = [community_title, community_content, community_img];
+//   await db.execute(query, values);
+// };
 
-module.exports = { getPosts };
+const regPost = async ({
+  community_title,
+  community_content,
+  community_img,
+}) => {
+  const query = `
+  INSERT INTO ${community_info.tableName}(
+  ${community_info.columns.community_title},
+  ${community_info.columns.community_content},
+  ${community_info.columns.community_img},
+  ${community_info.columns.community_date},
+  ${community_info.columns.community_readcnt},
+  ) VALUES (
+   :community_title,
+   :community_content,
+   :community_img,
+   SYSDATE,
+   0)
+  `;
+
+  const values = {
+    community_title,
+    community_content,
+    community_img,
+  };
+
+  await executeQuery(query, values);
+};
+
+module.exports = { getPosts, regPost };

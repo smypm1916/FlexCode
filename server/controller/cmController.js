@@ -8,9 +8,17 @@ const getPosts = async (req, res) => {
 
 const cmAdd = async (req, res) => {
   try {
-    const CmReg = await cmService.regPost(req.body);
+    const { community_title, community_content } = req.body;
+    const community_img = req.file ? req.file.fileName : null;
+
+    const CmReg = await cmService.regPost({
+      community_title,
+      community_content,
+      community_img,
+    });
     res.status(201).json({ success: true, data: CmReg });
   } catch (error) {
+    console.error("작성 실패:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

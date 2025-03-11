@@ -18,13 +18,14 @@ const CmAdd = () => {
     }
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/post/write",
+        "http://localhost:8080/api/post/write",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
       console.log("작성 성공:", response.data);
+      console.log(response);
     } catch (error) {
       console.error("작성 실패:", error);
     }
