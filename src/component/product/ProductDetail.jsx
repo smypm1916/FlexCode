@@ -27,27 +27,27 @@ import {
 } from "../../style/Product_detail_style";
 
 const ProductDetail = () => {
-  const { id } = useParams(); // URL에서 `id` 값을 가져옴
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  // const { id } = useParams(); // URL에서 `id` 값을 가져옴
+  // const [product, setProduct] = useState(null);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const response = await axios.get(`URL`);
-        setProduct(response.data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProduct();
-  }, [id]);
+  // useEffect(() => {
+  //   const fetchProduct = async () => {
+  //     try {
+  //       const response = await axios.get(`URL`);
+  //       setProduct(response.data);
+  //     } catch (error) {
+  //       setError(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchProduct();
+  // }, [id]);
 
-  if (loading) return <div>Loading...</div>;
+  // if (loading) return <div>Loading...</div>;
   return (
     <Wrapper>
       {/* 컨테이너 1 */}
