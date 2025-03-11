@@ -2,12 +2,12 @@ const oracledb = require("../config/oracledb");
 
 /**
  * order_items 테이블
- * order_no(fk)
- * product_no(fk)
- * product_price
- * option_no(fk)
- * option_price
- * product_quantity
+ * order_no(fk) : number(3)
+ * product_no(fk) : number(3)
+ * product_price : number(10)
+ * option_no(fk) : number(13)
+ * option_price : number(10)
+ * product_quantity : number(3)
  */
 
 const order_items = {

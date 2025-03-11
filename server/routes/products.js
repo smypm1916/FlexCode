@@ -5,9 +5,6 @@ const productController = require('../controller/products');
 // 모든 상품 조회
 router.get("/lists", productController.getAllProducts);
 
-// 상품 카테고리 조회
-// router.get("/category", productController.getCategories);
-
 // 특정 상품 조회
 router.get("/:product_no", productController.getProductDetail);
 
@@ -17,5 +14,7 @@ router.post("/reg", productController.regProduct);
 // 상품 삭제
 router.delete("/del/:product_no", productController.deleteProductByPk);
 
+// 상품 카테고리
+router.get("/cat", productController.getCategories);
 
 module.exports = router;

@@ -2,10 +2,7 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container_Style, Title } from "../../style/Common_Style";
-import {
-  ProductList_ItemBox,
-  ProductList_Wrapper,
-} from "../../style/ProductLists_Style";
+import { ProductList_ItemBox, ProductList_Wrapper } from "../../style/ProductLists_Style";
 
 const ProductLists = () => {
   const [page, setPage] = useState(1); // 현재 페이지
@@ -17,21 +14,20 @@ const ProductLists = () => {
   const imgPath = import.meta.env.VITE_IMG_PATH;
   const loader = useRef(null); // IntersectionObserver가 감지 요소 ref
 
-  // 상품 목록 조회
-  const fetchProducts = async () => {
+  // 페이지 번호를 받아 해당 페이지의 상품들을 불러오는 함수
+  const fetchProducts = async (pageToFetch) => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `http://localhost:8080/api/products/lists?page=${page}&limit=9`,
+        `http://localhost:8080/api/products/lists?page=${pageToFetch}&limit=9`,
         { headers: { Accept: "application/json" } }
       );
       console.log("API 응답:", res.data);
       if (res.data && res.data.success) {
-        // res.data.data가 undefined이면 빈 배열을 사용
         const newProducts = res.data.data || [];
         setProducts((prev) => [...prev, ...newProducts]);
-        // 새로 불러온 상품 개수가 9개면 다음 페이지 로드 가능
         setHasMore(newProducts.length === 9);
+        setPage(pageToFetch); // 현재 페이지 업데이트
       }
     } catch (error) {
       console.log("fetchProductError", error);
@@ -41,21 +37,22 @@ const ProductLists = () => {
     }
   };
 
-  // 페이지 번호 변경 시 상품 로드
+  // 초기 로드시 1페이지 데이터만 불러옴 (마운트 시 한 번 실행)
   useEffect(() => {
-    fetchProducts();
-  }, [page]);
+    fetchProducts(1);
+  }, []);
 
-  // 스크롤이 마지막 요소에 도달 시 다음 페이지 로드
+  // 스크롤이 마지막 요소에 도달하면 다음 페이지 데이터를 불러옴
   useEffect(() => {
     const options = {
       root: null,
       rootMargin: "20px",
       threshold: 1.0,
     };
+
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && hasMore && !loading) {
-        setPage((prev) => prev + 1);
+        fetchProducts(page + 1);
       }
     }, options);
 
@@ -68,12 +65,11 @@ const ProductLists = () => {
         observer.unobserve(currentLoader);
       }
     };
-  }, [hasMore, loading]);
+  }, [page, hasMore, loading]);
 
   return (
     <Container_Style>
       <Title>SHOPPING</Title>
-      {/* 상품 목록 렌더링 */}
       {products.map((product) => (
         <ProductList_Wrapper
           key={product.PRODUCT_NO}

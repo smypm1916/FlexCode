@@ -1,16 +1,5 @@
 const productService = require('../services/products');
 
-// 전체 상품 조회
-// async function getAllProducts(req, res) {
-//    try {
-//       const productsLists = await productService.getAllProducts();
-//       res.status(200).json({ success: true, data: productsLists });
-//       // res.status(200).json(productsLists);
-//    } catch (error) {
-//       console.error('controller error', error);
-//       res.status(500).json({ success: false, message: error.message });
-//    }
-// };
 async function getAllProducts(req, res) {
    try {
       const page = Number(req.query.page) || 1;
@@ -41,15 +30,15 @@ async function getProductDetail(req, res) {
 };
 
 // 카테고리별 상품 조회 
-// async function getCategories(req, res) {
-//    try {
-//       const productCategories = await productService.getCategories();
-//       res.json({ success: true, data: productCategories });
-//    }
-//    catch (error) {
-//       res.status(500).json({ success: false, message: error.message });
-//    }
-// }
+async function getCategories(req, res) {
+   try {
+      const productCategories = await productService.getCategories;
+      res.status(200).json({ success: true, data: productCategories });
+   }
+   catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+   }
+}
 
 // 상품 등록
 async function regProduct(req, res) {
@@ -63,7 +52,7 @@ async function regProduct(req, res) {
    }
 };
 
-// 상품삭제
+// 상품 삭제
 async function deleteProductByPk(req, res) {
    try {
       const productDelete = await productService.deleteProductByPk(req.body);
@@ -74,4 +63,4 @@ async function deleteProductByPk(req, res) {
    }
 }
 
-module.exports = { getAllProducts, getProductDetail, regProduct, deleteProductByPk };
+module.exports = { getAllProducts, getProductDetail, regProduct, deleteProductByPk, getCategories };

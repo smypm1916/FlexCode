@@ -5,12 +5,12 @@ const { executeQuery } = require('../config/oracledb');
 
 /**
  * product_info 테이블
- * product_no(pk)
- * product_type
- * product_name
- * product_price
- * product_date
- * product_img
+ * product_no(pk) : number(3)
+ * product_type : varchar2(50)
+ * product_name : varchar2(100)
+ * product_price : number(10)
+ * product_date : timestamp
+ * product_img : varchar2(255)
  */
 
 //  상품 전체 조회
@@ -63,7 +63,6 @@ async function getProductDetail(product_no) {
 async function regProduct(product) {
   // destructuring
   const { product_type, product_name, product_price, product_img } = product;
-  // const query = `INSERT INTO PRODUCT_INFO(PRODUCT_NO,PRODUCT_TYPE,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_DATE,PRODUCT_IMG) VALUES(PRODUCT_NO_SEQ.nextVal,:PRODUCT_TYPE,:PRODUCT_NAME,:PRODUCT_PRICE,SYSDATE,:PRODUCT_IMG)`;
   const query = `INSERT INTO PRODUCT_INFO(PRODUCT_NO,PRODUCT_TYPE,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_DATE,PRODUCT_IMG) VALUES(product_no_seq.nextVal,:product_type,:product_name,:product_price,SYSDATE,:product_img)`;
   const binds = {
     PRODUCT_TYPE: product_type,
@@ -74,7 +73,7 @@ async function regProduct(product) {
 
   try {
     const result = await executeQuery(query, binds);
-    console.log('insert success');
+    console.log('product insert success');
   }
   catch (error) {
     console.error(error);
@@ -86,8 +85,9 @@ async function regProduct(product) {
 // 상품 삭제
 async function deleteProductByPk(product_no) {
   const query = `DELETE FROM PRODUCT_INFO WHERE PRODUCT_NO= :product_no`
+  const binds = {product_no};
   try {
-    const result = await executeQuery(query);
+    const result = await executeQuery(query,binds);
     console.log('Delete Success!!!');
   } catch (error) {
     console.log('Delete Failed', error);
@@ -96,6 +96,20 @@ async function deleteProductByPk(product_no) {
 }
 
 // 카테고리별 상품조회
+async function getCategories() {
+  // 중복 제거
+  const query = `SELECT DISTINCT PRODUCT_TYPE FROM PRODUCT_INFO`;
+  try {
+    const rows = await executeQuery(query, {}, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
+    });
+    console.log('get categories success!!!', rows);
+    return rows;
+  } catch (error) {
+    console.error('category get failed', error);
+    throw error;
+  }
+}
 
 
 const product_info = {
@@ -111,5 +125,5 @@ const product_info = {
 };
 
 module.exports = {
-  getAllProducts, getProductDetail, regProduct, deleteProductByPk
+  getAllProducts, getProductDetail, regProduct, deleteProductByPk, getCategories
 };
