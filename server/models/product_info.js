@@ -32,11 +32,11 @@ async function getAllProducts(page, limit) {
     const offset = (page - 1) * limit;
     const query = `SELECT * FROM PRODUCT_INFO OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY`;
     const binds = { offset, limit };
-    const result = await executeQuery(query, binds, {
+    const rows = await executeQuery(query, binds, {
       outFormat: oracledb.OUT_FORMAT_OBJECT
     });
-    console.log('get products list success!!!', result);
-    return result.rows;
+    console.log('get products list success!!!', rows);
+    return rows;
   }
   catch (error) {
     console.error(error);
@@ -51,7 +51,7 @@ async function getProductDetail(product_no) {
   try {
     const result = await executeQuery(query, binds);
     console.log('detail read success!!!');
-
+    return result.rows;
   }
   catch (error) {
     console.error(error);

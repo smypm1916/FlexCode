@@ -76,18 +76,18 @@ const ProductLists = () => {
       {/* 상품 목록 렌더링 */}
       {products.map((product) => (
         <ProductList_Wrapper
-          key={product.product_no}
-          onClick={() => navigate(`/product/${product.product_no}`)}
+          key={product.PRODUCT_NO}
+          onClick={() => navigate(`/product/${product.PRODUCT_NO}`)}
         >
           <ProductList_ItemBox>
             <img
-              src={`${imgPath}/${product.product_img}`}
-              alt={product.product_name}
+              src={`${imgPath}/${product.PRODUCT_IMG}`}
+              alt={product.PRODUCT_NAME}
             />
             <div>
-              <h3>{product.product_name}</h3>
-              <p>{product.product_type}</p>
-              <p>{product.product_price} 원</p>
+              <h3>{product.PRODUCT_NAME}</h3>
+              <p>{product.PRODUCT_TYPE}</p>
+              <p>{product.PRODUCT_PRICE} 원</p>
             </div>
           </ProductList_ItemBox>
         </ProductList_Wrapper>
