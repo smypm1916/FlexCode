@@ -346,7 +346,7 @@ const SignUp = () => {
     }
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/users/check-email`,
+        `/api/users/check-email`,
         {
           params: { email: full_email },
         }
