@@ -20,7 +20,6 @@ const Index = () => {
   return (
     <Wrapper>
       <Header />
-
       <EventBanner />
       <Searchbox />
       <Category />

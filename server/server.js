@@ -26,11 +26,6 @@ app.use("/api/users", userRouter);
 // 서버 실행 함수
 const startServer = async () => {
   try {
-    // await oracledb.getConnection();
-    // it oracledb.executeQuery("SELECT 1 FROM DUAL");
-    // console.log("DB 연결 성공");
-
-
     app.listen(PORT, () => {
       console.log(`서버가 포트 ${PORT}에서 실행 중...`);
     });

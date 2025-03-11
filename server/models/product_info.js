@@ -96,6 +96,20 @@ async function deleteProductByPk(product_no) {
 }
 
 // 카테고리별 상품조회
+async function getCategories() {
+  // 중복 제거
+  const query = `SELECT DISTINCT PRODUCT_TYPE FROM PRODUCT_INFO`;
+  try {
+    const rows = await executeQuery(query, {}, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
+    });
+    console.log('get categories success!!!', rows);
+    return rows;
+  } catch (error) {
+    console.error('category get failed', error);
+    throw error;
+  }
+}
 
 
 const product_info = {
@@ -111,5 +125,5 @@ const product_info = {
 };
 
 module.exports = {
-  getAllProducts, getProductDetail, regProduct, deleteProductByPk
+  getAllProducts, getProductDetail, regProduct, deleteProductByPk, getCategories
 };

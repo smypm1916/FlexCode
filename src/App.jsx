@@ -13,7 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/signup" element={<SignUp />} />
-        {/* <Route path="/product_no=/:product_no" element={<ProductDetail />} /> */}
+        {/* <Route path="/detail/:product_no" element={<ProductDetail />} /> */}
         {/* <Route path="/order" element={<Order />} /> */}
         {/* <Route path="/order/:id" element={<OrderComplete />} /> */}
       </Routes>

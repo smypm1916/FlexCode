@@ -1,20 +1,9 @@
 const productModel = require('../models/product_info');
 
-// async function getAllProducts() {
-//    try {
-//       const products = await productModel.getAllProducts();
-//       return products;
-//    } catch (error) {
-//       console.error('service error', error);
-//       throw error;
-//    }
-// };
-
 // 상품 리스트 조회
 async function getAllProducts(page, limit) {
    try {
-      const products = await productModel.getAllProducts(page, limit);
-      return products;
+      return await productModel.getAllProducts(page, limit);
    } catch (error) {
       console.error('service error', error);
       throw error;
@@ -52,7 +41,14 @@ async function deleteProductByPk(product_no) {
 };
 
 
-// // const getByCategory = async()
+async function getCategories() {
+   try {
+      return await productModel.getCategories;
+   } catch (error) {
+      console.error('category load error', error);
+      throw error;
+   }
+}
 
 
-module.exports = { getAllProducts, getProductDetail, regProduct, deleteProductByPk };
+module.exports = { getAllProducts, getProductDetail, regProduct, deleteProductByPk, getCategories };
