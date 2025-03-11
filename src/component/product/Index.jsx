@@ -1,14 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import Header from "../common/Header";
 import Searchbox from "../common/Searchbox";
+import Category from "./Category";
 import EventBanner from "./EventBanner";
 import Pick from "./Pick";
-import Footer from "../common/Footer";
-import Header from "../common/Header";
-import SignUp from "../account/SignUp";
-import ProductDetail from "./ProductDetail";
-import CmMain from "../community/CmMain";
-import Category from "./Category";
+import ProductLists from "./ProductLists";
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,24 +16,15 @@ const Wrapper = styled.div`
   gap: 50px;
 `;
 
-import ProductLists from "./ProductLists";
-// 상품 상태 관리
-// const [products, setProducts] = useState([]);
-
 const Index = () => {
   return (
     <Wrapper>
       <Header />
-      {/* <ProductDetail /> */}
-
       <EventBanner />
       <Searchbox />
       <Category />
       <Pick />
       <ProductLists />
-
-      {/* <SignUp /> */}
-      {/* <CmMain /> */}
     </Wrapper>
   );
 };

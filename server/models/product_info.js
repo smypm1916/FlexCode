@@ -1,14 +1,116 @@
-const oracledb = require("../config/oracledb");
+const dbConfig = require("../config/oracledb");
+const oracledb = require("oracledb");
+const { executeQuery } = require('../config/oracledb');
+
 
 /**
  * product_info 테이블
- * product_no(pk)
- * product_type
- * product_name
- * product_price
- * product_date
- * product_img
+ * product_no(pk) : number(3)
+ * product_type : varchar2(50)
+ * product_name : varchar2(100)
+ * product_price : number(10)
+ * product_date : timestamp
+ * product_img : varchar2(255)
  */
+
+//  상품 전체 조회
+// async function getAllProducts() {
+//   try {
+//     const result = await executeQuery('SELECT * FROM PRODUCT_INFO', {}, {
+//       outFormat: oracledb.OUT_FORMAT_OBJECT
+//     });
+//     console.log('get products list success!!!', result);
+//     return result.rows;
+//   }
+//   catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// }
+async function getAllProducts(page, limit) {
+  try {
+    const offset = (page - 1) * limit;
+    const query = `SELECT * FROM PRODUCT_INFO OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY`;
+    const binds = { offset, limit };
+    const rows = await executeQuery(query, binds, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
+    });
+    console.log('get products list success!!!', rows);
+    return rows;
+  }
+  catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+// 단일 상품 상세 조회
+async function getProductDetail(product_no) {
+  const query = `SELECT * FROM PRODUCT_INFO where PRODUCT_NO= :product_no`;
+  const binds = { product_no };
+  try {
+    const result = await executeQuery(query, binds);
+    console.log('detail read success!!!');
+    return result.rows;
+  }
+  catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+// 상품 등록
+async function regProduct(product) {
+  // destructuring
+  const { product_type, product_name, product_price, product_img } = product;
+  const query = `INSERT INTO PRODUCT_INFO(PRODUCT_NO,PRODUCT_TYPE,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_DATE,PRODUCT_IMG) VALUES(product_no_seq.nextVal,:product_type,:product_name,:product_price,SYSDATE,:product_img)`;
+  const binds = {
+    PRODUCT_TYPE: product_type,
+    PRODUCT_NAME: product_name,
+    PRODUCT_PRICE: product_price,
+    PRODUCT_IMG: product_img,
+  };
+
+  try {
+    const result = await executeQuery(query, binds);
+    console.log('product insert success');
+  }
+  catch (error) {
+    console.error(error);
+    throw error;
+  }
+  return;
+}
+
+// 상품 삭제
+async function deleteProductByPk(product_no) {
+  const query = `DELETE FROM PRODUCT_INFO WHERE PRODUCT_NO= :product_no`
+  const binds = {product_no};
+  try {
+    const result = await executeQuery(query,binds);
+    console.log('Delete Success!!!');
+  } catch (error) {
+    console.log('Delete Failed', error);
+  }
+  return;
+}
+
+// 카테고리별 상품조회
+async function getCategories() {
+  // 중복 제거
+  const query = `SELECT DISTINCT PRODUCT_TYPE FROM PRODUCT_INFO`;
+  try {
+    const rows = await executeQuery(query, {}, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
+    });
+    console.log('get categories success!!!', rows);
+    return rows;
+  } catch (error) {
+    console.error('category get failed', error);
+    throw error;
+  }
+}
+
 
 const product_info = {
   tableName: "PRODUCT_INFO",
@@ -22,4 +124,6 @@ const product_info = {
   },
 };
 
-module.exports = product_info;
+module.exports = {
+  getAllProducts, getProductDetail, regProduct, deleteProductByPk, getCategories
+};

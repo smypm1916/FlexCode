@@ -1,33 +1,54 @@
-// const db = require("../models");
-// const Product_info = db.Product_info;
-// const Product_option = db.Product_option;
+const productModel = require('../models/product_info');
 
-// const getAllProducts = async () => {
-//    return await Product_info.findAll();
-// };
+// 상품 리스트 조회
+async function getAllProducts(page, limit) {
+   try {
+      return await productModel.getAllProducts(page, limit);
+   } catch (error) {
+      console.error('service error', error);
+      throw error;
+   }
+}
 
-// const getProductDetail = async (product_no) => {
-//    return await Product_info.findByPk(product_no, {
-//       include: [
-//          {
-//             model: Product_option,
-//             attributes: ["option_no", "option_title", "option_price"],
-//          }
-//       ]
-//    });
-// };
+// 상품 상세
+async function getProductDetail(product_no) {
+   try {
+      return await productModel.getProductDetail(product_no);
+   } catch (error) {
+      console.error('service error', error);
+      throw error;
+   }
+};
 
-// const regProduct = async (data) => {
-//    try {
-//       const newProduct = await Product_info.create(data);
-//       return newProduct;
-//    }
-//    catch (error) {
-//       console.log(error);
-//       throw error;
-//    }
-// };
+// 상품 등록
+async function regProduct(product) {
+   try {
+      return await productModel.regProduct(product);
+   } catch (error) {
+      console.error('product reg service error', error);
+      throw error;
+   }
+};
 
-// // const getByCategory = async()
+// 상품 삭제
+async function deleteProductByPk(product_no) {
+   try {
+      return await productModel.deleteProductByPk(product_no);
+   } catch (error) {
+      console.error('delete service error', error);
+      throw error;
+   }
+};
 
-// module.exports = { getAllProducts, getProductDetail, regProduct };
+
+async function getCategories() {
+   try {
+      return await productModel.getCategories;
+   } catch (error) {
+      console.error('category load error', error);
+      throw error;
+   }
+}
+
+
+module.exports = { getAllProducts, getProductDetail, regProduct, deleteProductByPk, getCategories };

@@ -2,11 +2,11 @@ const oracledb = require("../config/oracledb");
 
 /**
  * order_info 테이블
- * order_no(pk)
- * user_email(fk)
- * total_price
- * order_date
- * order_state
+ * order_no(pk) : number(3)
+ * user_email(fk) : varchar2(100) / user_account
+ * total_price : number(10)
+ * order_date : timestamp
+ * order_state : number(5)
  */
 
 const order_info = {
