@@ -7,16 +7,7 @@ import {
   ProductList_ItemBox,
   ProductList_Wrapper,
 } from "../../style/ProductLists_Style";
-
-// MD's PICK 컨테이너
-const Container05 = styled.div`
-  width: 100%;
-  max-width: 60%;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-`;
+import { Text_wrapper } from "../../style/ProductLists_Style";
 
 const ProductLists = () => {
   // // const [page, setPage] = useState(1); // 현재 페이지
@@ -58,11 +49,11 @@ const ProductLists = () => {
               alt={product.product_name}
             /> */}
           <img src="" alt="" />
-          <div>
+          <Text_wrapper>
             <h3>product.product_name</h3>
             <p>product.product_type</p>
             <p>product.product_price 원</p>
-          </div>
+          </Text_wrapper>
         </ProductList_ItemBox>
         {/* ))} */}
       </ProductList_Wrapper>

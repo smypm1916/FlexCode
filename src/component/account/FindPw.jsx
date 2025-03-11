@@ -1,5 +1,13 @@
 import { useState } from "react";
 import Button from "../common/Button";
+import {
+  Container_Modal,
+  Input_Box,
+  Input_Style,
+  Input_Wrapper,
+  Modal_Wrapper,
+} from "../../style/Common_Style";
+import { Title } from "../../style/Modal_Style";
 
 const FindPw = ({ onBack }) => {
   const style = {
@@ -10,28 +18,28 @@ const FindPw = ({ onBack }) => {
   const [findPwView, setFinePwView] = useState("check");
 
   return (
-    <div className="findPwPage">
+    <Container_Modal>
       {findPwView === "check" && (
-        <div className="findPwPage-checkInfo">
+        <Modal_Wrapper>
           <div className="findPw-title">
-            <h2>비밀번호 찾기</h2>
+            <Title>비밀번호 찾기</Title>
           </div>
-          <div className="findPw-name" style={style}>
+          <Input_Wrapper>
             <div className="findPw-name-label">
               <label>이름</label>
             </div>
-            <div className="findPw-name-input">
-              <input type="text" placeholder="이름을 입력하세요" />
-            </div>
-          </div>
-          <div className="findPw-email" style={style}>
+            <Input_Box>
+              <Input_Style type="text" placeholder="이름을 입력하세요" />
+            </Input_Box>
+          </Input_Wrapper>
+          <Input_Wrapper>
             <div className="findPw-email-label">
               <label>EMAIL</label>
             </div>
             <div className="findPw-email-input">
               <input type="text" placeholder="EMAIL을 입력하세요" />
             </div>
-          </div>
+          </Input_Wrapper>
           <div className="findPw-btns" style={style}>
             {/* <button
               onClick={() => {
@@ -49,10 +57,10 @@ const FindPw = ({ onBack }) => {
             />
             <Button className={"calcel"} btnTxt={"취소"} onClick={onBack} />
           </div>
-        </div>
+        </Modal_Wrapper>
       )}
       {findPwView === "reset" && (
-        <div className="findPwPage-resetPw">
+        <Modal_Wrapper>
           <div className="findPw-title">
             <h2>비밀번호 재설정</h2>
           </div>
@@ -76,9 +84,9 @@ const FindPw = ({ onBack }) => {
             <Button className={"resetPw"} btnTxt={"설정하기"} />
             <Button className={"cancel"} btnTxt={"취소"} onClick={onBack} />
           </div>
-        </div>
+        </Modal_Wrapper>
       )}
-    </div>
+    </Container_Modal>
   );
 };
 

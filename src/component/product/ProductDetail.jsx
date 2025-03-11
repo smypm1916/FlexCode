@@ -5,6 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import Button from "../common/Button";
 import Select from "../common/Select";
 import styled from "styled-components";
+import { Button_Wrapper_100 } from "../../style/Common_Style";
+
 import {
   Wrapper,
   Container01,
@@ -13,7 +15,6 @@ import {
   Text_wrapper,
   Container02,
   Divide_Box,
-  Button_Wrapper,
   Text,
   Title,
   Product_Title,
@@ -99,10 +100,10 @@ const ProductDetail = () => {
           </div>
 
           {/* 버튼 */}
-          <Button_Wrapper>
+          <Button_Wrapper_100>
             <Button btnTxt="바로구매" />
             <Button btnTxt="장바구니" />
-          </Button_Wrapper>
+          </Button_Wrapper_100>
         </Product_Wrapper>
       </Container01>
       <Divide_Box>

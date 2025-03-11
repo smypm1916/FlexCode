@@ -4,8 +4,9 @@ import {
   Input_Style,
   Container_Style,
   Title,
+  Input_Box,
 } from "../../style/Common_Style";
-import { Search_Box, Input_Box } from "../../style/SearchBox_Style";
+import { Search_Box } from "../../style/SearchBox_Style";
 
 // 메인페이지, 커뮤니티 사용예정
 const onSearch = (value) => {

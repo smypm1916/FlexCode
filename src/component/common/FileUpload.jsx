@@ -1,7 +1,8 @@
 import React from "react";
+import { Input_Style } from "../../style/Common_Style";
 
 const FileUpload = ({ onChange }) => {
-  return <input type="file" onChange={onChange} />;
+  return <Input_Style type="file" onChange={onChange} />;
 };
 
 export default FileUpload;

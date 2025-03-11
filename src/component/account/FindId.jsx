@@ -1,7 +1,16 @@
 import { useState } from "react";
 import Button from "../common/Button";
-
-const FindId = ({ onBack }) => {
+import {
+  Container_Modal,
+  Input_Box,
+  Input_Style,
+  Modal_Wrapper,
+  Select_Style,
+  Input_Wrapper,
+} from "../../style/Common_Style";
+import { Button_Wrapper } from "../../style/Product_detail_style";
+import { Phone_Box, Title } from "../../style/Modal_Style";
+const FindId = ({ onBack, onClose }) => {
   const style = {
     display: "flex",
   };
@@ -17,42 +26,49 @@ const FindId = ({ onBack }) => {
   };
 
   return (
-    <div className="findIdPage">
-      <div className="findId-title">
-        <h2>ID 찾기</h2>
-      </div>
-      <div className="findId-name" style={style}>
-        <div className="findId-name-label">
-          <label>이름</label>
+    <Container_Modal>
+      <Modal_Wrapper>
+        <div>
+          <Title>ID 찾기</Title>
         </div>
-        <div className="findId-name-input">
-          <input type="text" placeholder="이름을 입력하세요" />
-        </div>
-      </div>
-      <div className="findId-tel" style={style}>
-        <div className="findId-tel-label">
-          <label>TEL</label>
-        </div>
-        <div className="findId-tel-select">
-          <select value={selectedTelOption} onChange={updateSelectValue}>
-            <option value="010">010</option>
-            <option value="011">011</option>
-            <option value="02">02</option>
-            <option value="031">031</option>
-          </select>
-        </div>
-        <div className="findId-tel-middle">
-          <input type="text" placeholder="1234" />
-        </div>
-        <div className="findId-tel-last">
-          <input type="text" placeholder="5678" />
-        </div>
-      </div>
-      <div className="findId-btns" style={style}>
-        <Button className={"findId"} btnTxt={"ID찾기"} />
-        <Button className={"cancel"} btnTxt={"취소"} onClick={onBack} />
-      </div>
-    </div>
+        <Input_Wrapper>
+          <div className="findId-name-label">
+            <label>이름</label>
+          </div>
+          <Input_Box>
+            <Input_Style type="text" placeholder="이름을 입력하세요" />
+          </Input_Box>
+        </Input_Wrapper>
+        <Input_Wrapper>
+          <div className="findId-tel-label">
+            <label>TEL</label>
+          </div>
+          <Phone_Box>
+            <Select_Style
+              value={selectedTelOption}
+              onChange={updateSelectValue}
+            >
+              <option value="010">010</option>
+              <option value="011">011</option>
+              <option value="02">02</option>
+              <option value="031">031</option>
+            </Select_Style>
+            <label>-</label>
+            <Input_Box>
+              <Input_Style type="text" placeholder="1234" />
+            </Input_Box>
+            <label>-</label>
+            <Input_Box>
+              <Input_Style type="text" placeholder="5678" />
+            </Input_Box>
+          </Phone_Box>
+        </Input_Wrapper>
+        <Button_Wrapper>
+          <Button className={"findId"} btnTxt={"ID찾기"} />
+          <Button className={"cancel"} btnTxt={"취소"} onClick={onBack} />
+        </Button_Wrapper>
+      </Modal_Wrapper>
+    </Container_Modal>
   );
 };
 

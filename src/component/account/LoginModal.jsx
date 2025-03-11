@@ -4,41 +4,19 @@ import FindId from "./FindId";
 import FindPw from "./FindPw";
 import styled from "styled-components";
 
-const Container = styled.div`
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.25); /* 반투명 배경 */
-  backdrop-filter: blur(5px); /* 배경 블러 효과 */
-  z-index: 1000; /* 다른 요소들 위에 배치 */
-  flex-wrap: wrap;
-  transition: ;
-`;
-
-const LoginContainer = styled.div`
-  width: 40%;
-  margin: 50px auto;
-  background: white;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  color: black;
-  letter-spacing: 1px;
-  padding: 50px;
-  display: flex;
-  flex-direction: column;
-  gap: 21px;
-  flex-wrap: wrap;
-`;
+import {
+  Container_Modal,
+  Input_Box,
+  Input_Style,
+  Modal_Wrapper,
+} from "../../style/Common_Style";
 
 const Logo = styled.div`
   font-size: 24px;
   font-weight: bold;
 `;
 
-const Title = styled.h2`
+export const Title = styled.h2`
   font-size: 40pt;
   margin: 0;
   text-align: left;
@@ -145,16 +123,16 @@ const LoginModal = ({ onClose }) => {
   };
 
   return isFindId ? (
-    <Container>
+    <Container_Modal>
       <FindId onBack={handleBackToLogin} />
-    </Container>
+    </Container_Modal>
   ) : isFindPw ? (
-    <Container>
+    <Container_Modal>
       <FindPw onBack={handleBackToLogin} />
-    </Container>
+    </Container_Modal>
   ) : (
-    <Container>
-      <LoginContainer>
+    <Container_Modal>
+      <Modal_Wrapper>
         <ButtonContainer>
           <ButtonClose onClick={onClose}>
             <img src="src/style/img/closebutton.png" alt="닫기 버튼" />
@@ -162,8 +140,12 @@ const LoginModal = ({ onClose }) => {
         </ButtonContainer>
         <Title>LOGIN</Title>
         <Conwrapper>
-          <InputField type="text" placeholder="ID" />
-          <InputField type="password" placeholder="PW" />
+          <Input_Box>
+            <Input_Style type="text" placeholder="ID" />
+          </Input_Box>
+          <Input_Box>
+            <Input_Style type="password" placeholder="PW" />
+          </Input_Box>
           <LinksContainer>
             <div>
               {/* ✅ 회원가입 클릭 시 signup 페이지로 이동 */}
@@ -180,8 +162,8 @@ const LoginModal = ({ onClose }) => {
         <ButtonContainer>
           <Button primary>LOGIN</Button>
         </ButtonContainer>
-      </LoginContainer>
-    </Container>
+      </Modal_Wrapper>
+    </Container_Modal>
   );
 };
 
