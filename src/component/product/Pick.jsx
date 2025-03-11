@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import { Container_Style, Title } from "../../style/Common_Style";
 import {
   Pick_Box,
   Pick_img,
@@ -7,7 +7,6 @@ import {
   Pick_Wrapper,
   Text,
 } from "../../style/Pick_Style";
-import { Container_Style, Title } from "../../style/Common_Style";
 
 const Pick = () => {
   return (
