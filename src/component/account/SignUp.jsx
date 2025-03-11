@@ -1,13 +1,15 @@
 import styled from "styled-components";
 import { useState } from "react";
 import Modal from "react-modal";
+import axios from "axios";
+
 import Button from "../common/Button";
 import FileUpload from "../common/FileUpload";
 import Select from "../common/Select";
 import TextInput from "../common/TextInput";
 import PostCodeModal from "./PostCodeModal";
 
-import axios from "axios";
+// 스타일 컴포넌트 정의
 
 // 전체를 감싸는 div
 const Wrapper = styled.div`
@@ -222,6 +224,9 @@ const SignUp = () => {
   // 이메일 중복 확인 결과
   const [emailCheckResult, setEmailCheckResult] = useState(null);
 
+  // 닉네임 중복 확인 결과
+  const [nicknameCheckResult, setNicknameCheckResult] = useState(null);
+
   const validatePassword = (password) => {
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -241,6 +246,13 @@ const SignUp = () => {
 
   const [isPostCodeOpen, setIsPostCodeOpen] = useState(false);
 
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]; // 사용자가 선택한 파일
+    setSelectedFile(file);
+  };
+
   const handleOpenPostCode = () => {
     setIsPostCodeOpen(true);
   };
@@ -259,11 +271,11 @@ const SignUp = () => {
   };
 
   const {
-    username,
-    userpassword,
+    user_name,
+    user_password,
     user_password_check,
-    usernickname,
-    userprofileimg,
+    user_nickname,
+    user_profileimg,
   } = signUpForm;
 
   const { first_tel, mid_tel, last_tel } = userTel;
@@ -353,6 +365,33 @@ const SignUp = () => {
     }
   };
 
+  // 닉네임 중복 확인 요청
+  const checkNicknameDuplicate = async () => {
+    if (!user_nickname) {
+      alert("닉네임을 입력하세요.");
+      return;
+    }
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/users/check-nickname`,
+        {
+          params: { nickname: user_nickname },
+        }
+      );
+      if (response.data.exists) {
+        // 받아온 데이터가 true일 경우
+        console.log("response 데이터 : " + response.data.exists);
+        setNicknameCheckResult("이미 사용중인 닉네임입니다.");
+      } else {
+        console.log("response 데이터 : " + response.data.exists);
+        setNicknameCheckResult("사용 가능한 닉네임입니다.");
+      }
+    } catch (error) {
+      console.error("닉네임 중복 확인 요청 실패 : ", error);
+      setNicknameCheckResult("오류발생");
+    }
+  };
+
   const handleInputAddressChange = (e) => {
     const { name, value } = e.target;
     setUserAddress((prev) => ({
@@ -364,6 +403,69 @@ const SignUp = () => {
   const full_address = `${base_address},${detail_address}`;
   console.log(full_address);
 
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    // 필수 입력값 확인
+    if (
+      !user_name ||
+      !mid_tel ||
+      !last_tel ||
+      !base_address ||
+      !detail_address
+    ) {
+      alert("회원가입시 필요한 필수항목을 입력해주세요.");
+      return;
+    }
+    if (emailCheckResult !== "사용 가능한 이메일입니다.") {
+      alert("이메일 중복확인을 해주세요.");
+      return;
+    }
+    if (!passwordValid) {
+      alert("비밀번호는 영어+숫자+특수문자 조합으로 8자 이상이어야 합니다.");
+      return;
+    }
+    if (!passwordMatch) {
+      alert("비밀번호 일치여부를 확인해주세요.");
+      return;
+    }
+    if (nicknameCheckResult !== "사용 가능한 닉네임입니다.") {
+      alert("닉네임 중복확인을 해주세요.");
+      return;
+    }
+
+    try {
+      // FormData 생성
+      const userFormData = new FormData();
+      userFormData.append("user_email", full_email);
+      userFormData.append("user_nickname", user_nickname);
+      userFormData.append("user_password", user_password_check);
+      userFormData.append("user_name", user_name);
+      userFormData.append("user_addr", full_address);
+      userFormData.append("user_tel", full_tel);
+
+      if (selectedFile) {
+        userFormData.append("user_profile", selectedFile);
+      }
+
+      // API 요청 전 데이터 확인
+      for (let [key, value] of userFormData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+
+      const response = await axios.post(
+        "http://localhost:8080/api/users/register",
+        userFormData,
+        {
+          headers: { "Content-Type": "multiparg/form-data" },
+        }
+      );
+      alert(response.data.message);
+    } catch (error) {
+      console.error("회원가입 요청 실패:", error);
+      alert("회원가입 중 오류가 발생했습니다.");
+    }
+  };
+
   return (
     <div className="signUpPage">
       <div className="signUp-title">
@@ -374,7 +476,6 @@ const SignUp = () => {
           <label>이름</label>
         </div>
         <div className="signUp-name-input">
-          <input type="text" placeholder="이름을 입력하세요" />
           <TextInput
             type={"text"}
             name={"user_name"}
@@ -554,22 +655,38 @@ const SignUp = () => {
           <label>닉네임 설정</label>
         </div>
         <div className="signUp-nickname-input">
-          <input type="text" placeholder="닉네임을 입력하세요" />
+          <TextInput
+            type={"text"}
+            name={"user_nickname"}
+            placeholder={"닉네임 입력"}
+            value={user_nickname}
+            onChange={handleChange}
+          />
         </div>
         <div className="signUp-nickname-btn">
-          <Button className={"checkNickname"} btnTxt={"중복확인"} />
+          <Button
+            className={"checkNickname"}
+            btnTxt={"중복확인"}
+            onClick={checkNicknameDuplicate}
+          />
         </div>
+        {/*닉네임 중복 확인 결과 출력 */}
+        {nicknameCheckResult && <p>{nicknameCheckResult}</p>}
       </div>
       <div className="signUp-profileImg" style={style}>
         <div className="signUp-profileImg-label">
           <label>프로필 사진</label>
         </div>
         <div className="signUp-profileImg-input">
-          <FileUpload />
+          <FileUpload accpet={"image/*"} onChange={handleFileChange} />
         </div>
       </div>
       <div className="signUp-btns" style={style}>
-        <Button className={"signUp"} btnTxt={"회원가입"} />
+        <Button
+          className={"signUp"}
+          btnTxt={"회원가입"}
+          onClick={handleRegister}
+        />
         <Button className={"cancel"} btnTxt={"취소"} />
       </div>
     </div>

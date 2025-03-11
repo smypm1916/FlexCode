@@ -52,7 +52,7 @@ async function deleteProductByPk(product_no) {
 };
 
 
-// const getByCategory = async()
+// // const getByCategory = async()
 
 
 module.exports = { getAllProducts, getProductDetail, regProduct, deleteProductByPk };

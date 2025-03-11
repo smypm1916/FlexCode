@@ -1,7 +1,7 @@
 import React from "react";
 
-const FileUpload = ({ onChange }) => {
-  return <input type="file" onChange={onChange} />;
+const FileUpload = ({ accpet, onChange }) => {
+  return <input type="file" accept={accpet} onChange={onChange} />;
 };
 
 export default FileUpload;
