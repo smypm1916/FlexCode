@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PaginationComponent } from "./PaginationComponent";
 import Searchbox from "../common/Searchbox";
 import Select from "../common/Select";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import CmPost from "./CmPost";
 
 // 버튼 스타일
 const Button = styled.button`
@@ -126,31 +128,32 @@ const Title = styled.h2`
   letter-spacing: 2px;
 `;
 
-const dummyPosts = Array.from({ length: 20 }, (_, i) => ({
-  id: i + 1,
-  profile: `프사`,
-  title: `게시글 ${i + 1}`,
-  img: `이미지`,
-  user: `작성자`,
-  date: `25/03/04`,
-}));
-
 const CmMain = () => {
   const navigate = useNavigate();
 
   const [selected, setSelected] = useState("");
   const [pageNum, setPageNum] = useState(1);
-  const cnt = 6; // 한 페이지당 개수
+  const cnt = 3; // 한 페이지당 개수
+  const [posts, setPosts] = useState([]);
 
   // 현재 페이지 게시글 필터링
-  const start = dummyPosts.length - cnt * (pageNum - 1);
-  const end = pageNum === Math.ceil(dummyPosts.length / cnt) ? -1 : start - cnt;
-  const paginatedPosts = dummyPosts.slice(end + 1, start).reverse();
-
+  const start = posts.length - cnt * (pageNum - 1);
+  const end = pageNum === Math.ceil(posts.length / cnt) ? -1 : start - cnt;
+  const paginatedPosts = posts.slice(end + 1, start).reverse();
+  const getPosts = async () => {
+    console.log("진입?");
+    const response = await axios.get("http://localhost:8080/api/post/paging");
+    console.log(response);
+    setPosts(response.data);
+  };
   const searchOptions = [
     { value: "opTitle", label: "제목" },
     { value: "opUser", label: "작성자" },
   ];
+
+  useEffect(() => {
+    getPosts();
+  }, []);
 
   return (
     <div className="CmContainer">
@@ -190,11 +193,9 @@ const CmMain = () => {
         </Input_Wrapper>
 
         <ul>
-          {paginatedPosts.map((post) => (
-            <li key={post.id} className="border p-2 mb-2">
-              {post.profile} {post.title} {post.img} {post.user} {post.date}
-            </li>
-          ))}
+          {paginatedPosts.map((post) => {
+            return <CmPost post={post} />;
+          })}
         </ul>
         <Wrapper></Wrapper>
         <Button_Box>
@@ -208,7 +209,7 @@ const CmMain = () => {
         </Button_Box>
         {/* ✅ 페이징 컴포넌트 추가 */}
         <PaginationComponent
-          totalItems={dummyPosts.length}
+          totalItems={posts.length}
           itemsPerPage={cnt}
           onPageChange={setPageNum}
         />

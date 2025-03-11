@@ -18,7 +18,7 @@ const CmAdd = () => {
     }
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/write",
+        "http://localhost:5000/api/post/write",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

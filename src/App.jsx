@@ -20,8 +20,8 @@ function App() {
         {/* <Route path="/order" element={<Order />} /> */}
         {/* <Route path="/order/:id" element={<OrderComplete />} /> */}
         {/* <Route path="/signup" element={<SignUp />} /> */}
-        {/* <Route path="/community" element={<CmMain />} /> */}
-        {/* <Route path="/CmAdd" element={<CmAdd />} /> */}
+        <Route path="/community" element={<CmMain />} />
+        <Route path="/CmAdd" element={<CmAdd />} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>
       {/* 루팅 */}

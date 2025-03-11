@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const userControlle = require("../controller/userController");
+const userController = require("../controller/userController");
 
 // 이메일 중복 확인
-router.get("/check-email", userControlle.checkEmail);
+router.get("/check-email", userController.checkEmail);
 
 module.exports = router;
