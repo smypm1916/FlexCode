@@ -1,33 +1,14 @@
-const optionModel = require('../models/product_option');
+const express = require("express");
+const router = express.Router();
+const optionController = require('../controller/options');
 
-// 옵션 리스트 조회
-async function getOptionProduct(option_no) {
-   try {
-      return await optionModel.getOptionProduct(option_no);
-   } catch (error) {
-      console.error('option read service error', error);
-      throw error;
-   }
-}
+// 옵션 선택
+router.get("/:option_no", optionController.getOptionProduct);
 
 // 옵션 등록
-async function regOption(optProduct) {
-   try {
-      return await optionModel.regOption(optProduct);
-   } catch (error) {
-      console.error('option reg service error', error);
-      throw error;
-   }
-};
+router.post("/reg", optionController.regOption);
 
 // 옵션 삭제
-async function deleteOption(option_no) {
-   try {
-      return await optionModel.deleteOption(option_no);
-   } catch (error) {
-      console.error('option reg service error', error);
-      throw error;
-   }
-};
+router.delete("/del/:option_no", optionController.deleteOption);
 
-module.exports = { getOptionProduct, regOption, deleteOption };
+module.exports = router;
