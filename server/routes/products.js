@@ -14,5 +14,8 @@ router.get("/:product_no", productController.getProductDetail);
 // 상품 등록
 router.post("/reg", productController.regProduct);
 
+// 상품 삭제
+router.delete("/del/:product_no", productController.deleteProductByPk);
+
 
 module.exports = router;

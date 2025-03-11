@@ -1,16 +1,27 @@
 const productService = require('../services/products');
 
 // 전체 상품 조회
+// async function getAllProducts(req, res) {
+//    try {
+//       const productsLists = await productService.getAllProducts();
+//       res.status(200).json({ success: true, data: productsLists });
+//       // res.status(200).json(productsLists);
+//    } catch (error) {
+//       console.error('controller error', error);
+//       res.status(500).json({ success: false, message: error.message });
+//    }
+// };
 async function getAllProducts(req, res) {
    try {
-      const productsLists = await productService.getAllProducts();
-      // res.status(200).json({ success: true, data: productsLists });
-      res.status(200).json(productsLists);
+      const page = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 9;
+      const productsLists = await productService.getAllProducts(page, limit);
+      res.status(200).json({ success: true, data: productsLists });
    } catch (error) {
       console.error('controller error', error);
       res.status(500).json({ success: false, message: error.message });
    }
-};
+}
 
 // 단일 상품 조회
 async function getProductDetail(req, res) {
@@ -45,10 +56,22 @@ async function regProduct(req, res) {
    try {
       const productRegister = await productService.regProduct(req.body);
       res.status(201).json({ success: true, message: 'product insert success!!!' });
+      return;
    }
    catch (error) {
       res.status(500).json({ success: false, message: error.message })
    }
 };
 
-module.exports = { getAllProducts, getProductDetail, regProduct };
+// 상품삭제
+async function deleteProductByPk(req, res) {
+   try {
+      const productDelete = await productService.deleteProductByPk(req.body);
+      res.status(201).json({ success: true, message: 'product delete success!!!' });
+      return;
+   } catch (error) {
+      res.status(500).json({ success: false, message: error.message })
+   }
+}
+
+module.exports = { getAllProducts, getProductDetail, regProduct, deleteProductByPk };

@@ -14,9 +14,25 @@ const { executeQuery } = require('../config/oracledb');
  */
 
 //  상품 전체 조회
-async function getAllProducts() {
+// async function getAllProducts() {
+//   try {
+//     const result = await executeQuery('SELECT * FROM PRODUCT_INFO', {}, {
+//       outFormat: oracledb.OUT_FORMAT_OBJECT
+//     });
+//     console.log('get products list success!!!', result);
+//     return result.rows;
+//   }
+//   catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// }
+async function getAllProducts(page, limit) {
   try {
-    const result = await executeQuery('SELECT * FROM PRODUCT_INFO', {}, {
+    const offset = (page - 1) * limit;
+    const query = `SELECT * FROM PRODUCT_INFO OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY`;
+    const binds = { offset, limit };
+    const result = await executeQuery(query, binds, {
       outFormat: oracledb.OUT_FORMAT_OBJECT
     });
     console.log('get products list success!!!', result);
@@ -45,12 +61,15 @@ async function getProductDetail(product_no) {
 
 // 상품 등록
 async function regProduct(product) {
-  const query = `INSERT INTO PRODUCT_INFO(PRODUCT_NO,PRODUCT_TYPE,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_DATE,PRODUCT_IMG) VALUES(PRODUCT_NO_SEQ.nextVal,:PRODUCT_TYPE,:PRODUCT_NAME,:PRODUCT_PRICE,SYSDATE,:PRODUCT_IMG)`;
+  // destructuring
+  const { product_type, product_name, product_price, product_img } = product;
+  // const query = `INSERT INTO PRODUCT_INFO(PRODUCT_NO,PRODUCT_TYPE,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_DATE,PRODUCT_IMG) VALUES(PRODUCT_NO_SEQ.nextVal,:PRODUCT_TYPE,:PRODUCT_NAME,:PRODUCT_PRICE,SYSDATE,:PRODUCT_IMG)`;
+  const query = `INSERT INTO PRODUCT_INFO(PRODUCT_NO,PRODUCT_TYPE,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_DATE,PRODUCT_IMG) VALUES(product_no_seq.nextVal,:product_type,:product_name,:product_price,SYSDATE,:product_img)`;
   const binds = {
-    PRODUCT_TYPE: product.type,
-    PRODUCT_NAME: product.name,
-    PRODUCT_PRICE: product.price,
-    PRODUCT_IMG: product.img,
+    PRODUCT_TYPE: product_type,
+    PRODUCT_NAME: product_name,
+    PRODUCT_PRICE: product_price,
+    PRODUCT_IMG: product_img,
   };
 
   try {
@@ -64,21 +83,33 @@ async function regProduct(product) {
   return;
 }
 
+// 상품 삭제
+async function deleteProductByPk(product_no) {
+  const query = `DELETE FROM PRODUCT_INFO WHERE PRODUCT_NO= :product_no`
+  try {
+    const result = await executeQuery(query);
+    console.log('Delete Success!!!');
+  } catch (error) {
+    console.log('Delete Failed', error);
+  }
+  return;
+}
+
 // 카테고리별 상품조회
 
 
-// const product_info = {
-//   tableName: "PRODUCT_INFO",
-//   columns: {
-//     product_no: "PRODUCT_NO",
-//     product_type: "PRODUCT_TYPE",
-//     product_name: "PRODUCT_NAME",
-//     product_price: "PRODUCT_PRICE",
-//     product_date: "PRODUCT_DATE",
-//     product_img: "PRODUCT_IMG",
-//   },
-// };
+const product_info = {
+  tableName: "PRODUCT_INFO",
+  columns: {
+    product_no: "PRODUCT_NO",
+    product_type: "PRODUCT_TYPE",
+    product_name: "PRODUCT_NAME",
+    product_price: "PRODUCT_PRICE",
+    product_date: "PRODUCT_DATE",
+    product_img: "PRODUCT_IMG",
+  },
+};
 
 module.exports = {
-  getAllProducts, getProductDetail, regProduct
+  getAllProducts, getProductDetail, regProduct, deleteProductByPk
 };
