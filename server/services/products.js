@@ -25,7 +25,7 @@ async function regProduct(product) {
    try {
       return await productModel.regProduct(product);
    } catch (error) {
-      console.error('service error', error);
+      console.error('product reg service error', error);
       throw error;
    }
 };
