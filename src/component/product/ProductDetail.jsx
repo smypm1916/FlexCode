@@ -26,10 +26,13 @@ import Select from "../common/Select";
 
 
 const ProductDetail = () => {
-  const { product_no } = useParams(); // URL에서 `id` 값을 가져옴
+  const { PRODUCT_NO } = useParams(); // URL에서 `id` 값을 가져옴
+  console.log('====================================');
+  console.log(PRODUCT_NO);
+  console.log('====================================');
   const [product, setProduct] = useState(null);
-  const { selectedOption, setSelectedOption } = useState(null);
-  const { options, setOptions } = useState([]);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [options, setOptions] = useState([]);
   // const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -43,7 +46,7 @@ const ProductDetail = () => {
   // 상품 정보 조회
   const fetchProductDetail = async () => {
     try {
-      const res = await axios.get(`/api/products/${product_no}`, { headers: { Accept: "application/json" } });
+      const res = await axios.get(`/api/products/${PRODUCT_NO}`, { headers: { Accept: "application/json" } });
       setProduct(res.data.data);
       console.log("API 응답:", res.data);
     } catch (error) {
@@ -55,9 +58,12 @@ const ProductDetail = () => {
   // 상품 옵션 취득
   const fetchOptions = async () => {
     try {
-      const resOptions = await axios.get(`/api/options/${product_no}`, { headers: { Accept: "application/json" } });
-      setOptions(resOptions.data.data);
+      const resOptions = await axios.get(`/api/options/${PRODUCT_NO}`, { headers: { Accept: "application/json" } });
       console.log("OPTION API 응답:", resOptions.data);
+      if (resOptions.data && resOptions.data.success) {
+        const newOptions = resOptions.data.data || [];
+        setOptions((prev) => [...prev, ...newOptions]);
+      }
     } catch (error) {
       console.error('detail option load error', error);
       setError(error);
@@ -65,9 +71,10 @@ const ProductDetail = () => {
   };
 
   useEffect(() => {
-    fetchProductDetail();
-    fetchOptions();
-  }, [product_no]);
+    if (PRODUCT_NO) {
+      fetchOptions();
+    }
+  }, [PRODUCT_NO]);
 
 
 
@@ -114,10 +121,10 @@ const ProductDetail = () => {
               {/* 옵션 */}
               <Select className={"optionName"} options={
                 [{ value: "", label: "---" },
-                options.map((option) => ({
+                Array.isArray(options) ? options.map((option) => ({
                   value: option.option_no,
                   label: `${option.option_title}(+${option.option_price} 원)`,
-                })),
+                })) : []
                 ]} onChange={onChangeHandler} />
               {/* 수량 */}
               <Select className={"optionState"} options={1} />

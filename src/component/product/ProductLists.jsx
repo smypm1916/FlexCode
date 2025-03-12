@@ -73,7 +73,7 @@ const ProductLists = () => {
       {products.map((product) => (
         <ProductList_Wrapper
           key={product.PRODUCT_NO}
-          onClick={() => navigate(`/product/${product.PRODUCT_NO}`)}
+          onClick={() => navigate(`/detail/${product.PRODUCT_NO}`)}
         >
           <ProductList_ItemBox>
             <img
