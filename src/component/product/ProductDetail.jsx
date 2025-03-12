@@ -37,7 +37,7 @@ const ProductDetail = () => {
     try {
       const res = await axios.get(`/api/products/${product_no}`, { headers: { Accept: "application/json" } });
       setProduct(res.data);
-      console.log("API 응답:", res.data);
+      console.log("API 응답:", res.data.data);
     } catch (error) {
       console.error('detail load error', error);
     }
@@ -48,7 +48,7 @@ const ProductDetail = () => {
   const fetchOptions = async () => {
     try {
       const resOptions = await axios.get(`/api/options/${product_no}`, { headers: { Accept: "application/json" } });
-      setOptions(resOptions.data);
+      setOptions(resOptions.data.data);
       console.log("OPTION API 응답:", resOptions.data);
     } catch (error) {
       console.error('detail option load error', error);
@@ -61,7 +61,6 @@ const ProductDetail = () => {
     fetchOptions();
   }, []);
 
-  // if (loading) return <div>Loading...</div>;
   return (
     <Wrapper>
       {/* 컨테이너 1 */}
