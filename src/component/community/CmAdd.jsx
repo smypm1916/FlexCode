@@ -1,33 +1,54 @@
+import {
+  Button_Wrapper_100,
+  Container_Style,
+  Input_Box,
+  Input_Style,
+  Input_Wrapper,
+  Textarea_Style,
+  Wrapper,
+  Title,
+} from "../../style/Common_Style";
+import { List_Profile, Profile_Img } from "../../style/List_Style";
+import Button from "../common/Button";
+import FileUpload from "../common/FileUpload";
+
 const CmAdd = () => {
   return (
-    <div className="CmAddContainer">
-      <div>프로필사진</div>
-      <div className="CmAddTitle">
-        <div>
-          <label>제목</label>
-        </div>
-        <div className="CmInputTitle">
-          <input type="text" placeholder="제목을 입력하세요" />
-        </div>
-      </div>
+    <Wrapper className="cmadd">
+      <Container_Style>
+        <Title>WRITE</Title>
+        <List_Profile>
+          <Profile_Img>프사</Profile_Img>
+        </List_Profile>
+        <Input_Wrapper>
+          <div>
+            <label>제목</label>
+          </div>
+          <Input_Box>
+            <Input_Style type="text" placeholder="제목을 입력하세요" />
+          </Input_Box>
+        </Input_Wrapper>
 
-      <div className="CmAddDescription">
-        <div>
-          <label>내용</label>
-        </div>
-        <div className="CmInputDescription">
-          <input type="text" placeholder="내용을 입력하세요" />
-        </div>
-      </div>
-      <div className="CmInputFlie">
-        <label>사진 등록</label>
-        <input type="file" />
-      </div>
-      <div className="CmBddBtn">
-        <button>글쓰기</button>
-        <button>뒤로가기</button>
-      </div>
-    </div>
+        <Input_Wrapper>
+          <div>
+            <label>내용</label>
+          </div>
+          <Input_Box>
+            <Textarea_Style type="textarea" placeholder="내용을 입력하세요" />
+          </Input_Box>
+        </Input_Wrapper>
+        <Input_Wrapper>
+          <label>사진 등록</label>
+          <Input_Box>
+            <FileUpload type="file" />
+          </Input_Box>
+        </Input_Wrapper>
+        <Button_Wrapper_100>
+          <Button btnTxt={"글쓰기"}>글쓰기</Button>
+          <Button btnTxt={"뒤로가기"}>뒤로가기</Button>
+        </Button_Wrapper_100>
+      </Container_Style>
+    </Wrapper>
   );
 };
 export default CmAdd;

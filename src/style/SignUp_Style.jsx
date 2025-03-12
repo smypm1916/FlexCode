@@ -59,6 +59,6 @@ export const Email_Box = styled.div`
 
 export const Post_Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 3fr 2fr 2fr;
+  grid-template-columns: 3fr 4fr;
   gap: 20px;
 `;

@@ -112,10 +112,9 @@ export const Button_Register = styled.button`
 `;
 
 // 메뉴 text
-export const Menu = styled.div`
+export const Menu = styled.h4`
   color: black;
   margin: 0;
-  letter-spacing: 2px;
   cursor: pointer;
   transition: all 0.5s;
   &:hover {

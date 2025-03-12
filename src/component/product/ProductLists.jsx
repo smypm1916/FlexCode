@@ -5,6 +5,7 @@ import { Container_Style, Title } from "../../style/Common_Style";
 import {
   ProductList_ItemBox,
   ProductList_Wrapper,
+  System_message,
 } from "../../style/ProductLists_Style";
 import { Text_wrapper } from "../../style/ProductLists_Style";
 
@@ -74,28 +75,29 @@ const ProductLists = () => {
   return (
     <Container_Style>
       <Title>SHOPPING</Title>
-      {products.map((product) => (
-        <ProductList_Wrapper
-          key={product.PRODUCT_NO}
-          onClick={() => navigate(`/product/${product.PRODUCT_NO}`)}
-        >
-          <ProductList_ItemBox>
+      <System_message>
+        {loading && <div>Loading...</div>}
+        {error && <div>Error: {error.message}</div>}
+        <div ref={loader} />
+      </System_message>
+      <ProductList_Wrapper>
+        {products.map((product) => (
+          <ProductList_ItemBox
+            key={product.PRODUCT_NO}
+            onClick={() => navigate(`/product/${product.PRODUCT_NO}`)}
+          >
             <img
               src={`${imgPath}/${product.PRODUCT_IMG}`}
               alt={product.PRODUCT_NAME}
             />
-            <img src="" alt="" />
-            <div>
+            <Text_wrapper>
               <h3>{product.PRODUCT_NAME}</h3>
               <p>{product.PRODUCT_TYPE}</p>
               <p>{product.PRODUCT_PRICE} 원</p>
-            </div>
+            </Text_wrapper>
           </ProductList_ItemBox>
-        </ProductList_Wrapper>
-      ))}
-      {loading && <div>Loading...</div>}
-      {error && <div>Error: {error.message}</div>}
-      <div ref={loader} />
+        ))}
+      </ProductList_Wrapper>
     </Container_Style>
   );
 };

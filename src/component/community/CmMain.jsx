@@ -7,8 +7,17 @@ import {
   Button_Pagination,
   Pagination_List,
   Pagination_Wrapper,
+  Search_Box,
+  Container01,
 } from "../../style/Community_Style";
 import Button from "../common/Button";
+import { Container_Style, Wrapper } from "../../style/Common_Style";
+import {
+  List_Column,
+  List_Content,
+  List_Profile,
+  Profile_Img,
+} from "../../style/List_Style";
 
 // button을 감싸는 div
 const Button_Box = styled.div`
@@ -30,26 +39,6 @@ const Select = styled.select`
   &.optionList {
     border-radius: 0;
   }
-`;
-
-// 커뮤니티 메인 페이지
-const Wrapper = styled.div`
-  max-width: 100%;
-  width: 60%;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 80px;
-  gap: 20px;
-`;
-
-// 상단 광고
-const Container01 = styled.div`
-  width: 100%;
-  height: 100px;
-  background-color: #bb9393;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 `;
 
 const Input = styled.input`
@@ -98,14 +87,6 @@ const Input_Wrapper = styled.div`
   gap: 20px;
 `;
 
-const Search_Box = styled.div`
-  height: fit-content;
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  gap: 20px;
-  align-items: center;
-`;
-
 const Title = styled.h2`
   width: 100%;
   text-align: left;
@@ -134,44 +115,55 @@ const CmMain = () => {
   const paginatedPosts = dummyPosts.slice(end + 1, start).reverse();
 
   return (
-    <Wrapper>
-      <Container01>상단 광고</Container01>
-      <Title>REVIEW</Title>
-      <Input_Wrapper>
-        <div className="search-select">
-          <Select
-            value={selected}
-            onChange={(e) => setSelected(e.target.value)}
-          >
-            <option value="opTitle">제목</option>
-            <option value="opUser">작성자</option>
-          </Select>
-        </div>
-        <Search_Box>
-          <Input_Box>
-            <Input type="text" placeholder="search" />
-          </Input_Box>
-          <Button>SEARCH</Button>
-        </Search_Box>
-      </Input_Wrapper>
+    <Wrapper className="community">
+      <Container_Style>
+        <Container01>상단 광고</Container01>
+        <Title>COMMUNITY</Title>
+        <Input_Wrapper>
+          <div className="search-select">
+            <Select
+              value={selected}
+              onChange={(e) => setSelected(e.target.value)}
+            >
+              <option value="opTitle">제목</option>
+              <option value="opUser">작성자</option>
+            </Select>
+          </div>
+          <Search_Box>
+            <Input_Box>
+              <Input type="text" placeholder="search" />
+            </Input_Box>
+            <Button btnTxt={"SEARCH"}>SEARCH</Button>
+          </Search_Box>
+        </Input_Wrapper>
 
-      <ul>
-        {paginatedPosts.map((post) => (
-          <Pagination_List key={post.id} className="border p-2 mb-2">
-            <p>{post.profile}</p> <p>{post.title}</p> <p>{post.img}</p>{" "}
-            <p>{post.user}</p> <p>{post.date}</p>
-          </Pagination_List>
-        ))}
-      </ul>
-      <Button_Box>
-        <Button>글쓰기</Button>
-      </Button_Box>
-      {/* ✅ 페이징 컴포넌트 추가 */}
-      <PaginationComponent
-        totalItems={dummyPosts.length}
-        itemsPerPage={cnt}
-        onPageChange={setPageNum}
-      />
+        <ul>
+          {paginatedPosts.map((post) => (
+            <Pagination_List key={post.id} className="border p-2 mb-2">
+              <List_Column>
+                <List_Profile>
+                  <Profile_Img>{post.profile}</Profile_Img>
+                  <p>{post.user}</p>
+                  <p>{post.title}</p>
+                </List_Profile>
+                <p>{post.date}</p>
+              </List_Column>
+              <List_Content>
+                <p>{post.img}</p>{" "}
+              </List_Content>
+            </Pagination_List>
+          ))}
+        </ul>
+        <Button_Box>
+          <Button btnTxt={"글쓰기"}>글쓰기</Button>
+        </Button_Box>
+        {/* ✅ 페이징 컴포넌트 추가 */}
+        <PaginationComponent
+          totalItems={dummyPosts.length}
+          itemsPerPage={cnt}
+          onPageChange={setPageNum}
+        />
+      </Container_Style>
     </Wrapper>
   );
 };

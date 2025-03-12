@@ -13,6 +13,7 @@ import {
   Container_Style,
   Input_Wrapper,
   Wrapper,
+  BaseAddress,
 } from "../../style/Common_Style";
 
 import {
@@ -455,14 +456,14 @@ const SignUp = () => {
               btnTxt={"도로명/지번 주소검색"}
               onClick={handleOpenPostCode}
             />
-            <div className="signUp-baseAddr-input">
+            <BaseAddress>
               <Input_Style
                 type={"text"}
                 name={"base_address"}
                 value={userAddress.base_address}
                 readOnly
               />
-            </div>
+            </BaseAddress>
             <Modal
               isOpen={isPostCodeOpen}
               onRequestClose={handleClosePostCode}

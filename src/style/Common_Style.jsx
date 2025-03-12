@@ -3,7 +3,13 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   width: 100%;
-  padding: 80px 0;
+  min-height: calc(100vh - 100px);
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: Center;
+  gap: 50px;
+  margin-bottom: 80px;
 `;
 
 export const Title = styled.h2`
@@ -11,7 +17,6 @@ export const Title = styled.h2`
   text-align: left;
   color: black;
   margin: 0;
-  letter-spacing: 2px;
 `;
 
 // contents 를 묶는 container의 style
@@ -159,4 +164,33 @@ export const Modal_Wrapper = styled.div`
 
 export const ButtonClose = styled.div`
   padding: 0;
+`;
+
+// --------------------etc--------------
+
+export const Textarea_Style = styled.textarea`
+  max-width: 100%;
+  width: 100%;
+  border: none;
+  height: 200px;
+  resize: none;
+  font-size: 12pt;
+
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    width: 2px;
+    background-color: #bb9393;
+  }
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+export const BaseAddress = styled.div`
+  display: flex;
+  align-items: center;
 `;
