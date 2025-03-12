@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Button_Wrapper,
@@ -24,32 +25,41 @@ import Button from "../common/Button";
 const ProductDetail = () => {
   const { product_no } = useParams(); // URL에서 `id` 값을 가져옴
   const [product, setProduct] = useState(null);
+  const { options, setOptions } = useState([]);
   // const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const imgPath = import.meta.env.VITE_IMG_PATH;
 
+
+  // 상품 정보 조회
   const fetchProductDetail = async () => {
     try {
-      const res = await axios.get(`/api/products/${product_no}`);
+      const res = await axios.get(`/api/products/${product_no}`, { headers: { Accept: "application/json" } });
       setProduct(res.data);
+      console.log("API 응답:", res.data);
     } catch (error) {
       console.error('detail load error', error);
     }
   };
 
-  // useEffect(() => {
-  //   const fetchProduct = async () => {
-  //     try {
-  //       const response = await axios.get(`URL`);
-  //       setProduct(response.data);
-  //     } catch (error) {
-  //       setError(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchProduct();
-  // }, [id]);
+  // 최초 상품 로드 시 같이 실행 -> 셀렉터 선택 시에 장바구니에 옵션 추가
+  // 상품 옵션 취득
+  const fetchOptions = async () => {
+    try {
+      const resOptions = await axios.get(`/api/options/${product_no}`, { headers: { Accept: "application/json" } });
+      setOptions(resOptions.data);
+      console.log("OPTION API 응답:", resOptions.data);
+    } catch (error) {
+      console.error('detail option load error', error);
+      setError(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProductDetail();
+    fetchOptions();
+  }, []);
 
   // if (loading) return <div>Loading...</div>;
   return (
