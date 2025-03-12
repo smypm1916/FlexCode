@@ -21,8 +21,11 @@ const Index = () => {
   return (
     <Wrapper>
       <Header />
+
       <CmMain />
       {/* <EventBanner />
+
+
       <Searchbox />
       <Category />
       <Pick />

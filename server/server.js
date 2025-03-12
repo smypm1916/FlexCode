@@ -6,6 +6,7 @@ const cors = require("cors"); // f->b cors 설정
 const morgan = require("morgan"); // 로그 기록
 const productRouter = require("./routes/products");
 const userRouter = require("./routes/user");
+const optionRouter = require("./routes/options");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -22,15 +23,11 @@ app.use(express.urlencoded({ extended: false }));
 // router
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
+app.use("/api/options", optionRouter);
 
 // 서버 실행 함수
 const startServer = async () => {
   try {
-    // await oracledb.getConnection();
-    // it oracledb.executeQuery("SELECT 1 FROM DUAL");
-    // console.log("DB 연결 성공");
-
-
     app.listen(PORT, () => {
       console.log(`서버가 포트 ${PORT}에서 실행 중...`);
     });

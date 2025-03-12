@@ -1,6 +1,4 @@
-import axios from "axios";
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../common/Button";
 import Select from "../common/Select";
@@ -8,30 +6,47 @@ import styled from "styled-components";
 import { Button_Wrapper_100 } from "../../style/Common_Style";
 
 import {
-  Wrapper,
+  Button_Wrapper,
   Container01,
-  Product_Wrapper,
-  Image_Wrapper,
-  Text_wrapper,
   Container02,
   Divide_Box,
+  Button_Wrapper,
   Text,
   Title,
   Product_Title,
   Text_box,
   Container03,
+  Divide_Box,
+  Image_Wrapper,
   Info_Text,
   Info_Text_Box,
   Info_Title,
   Info_Wrapper,
+  Product_Title,
+  Product_Wrapper,
+  Text,
+  Text_box,
+  Text_wrapper,
+  Title,
+  Wrapper,
 } from "../../style/Product_detail_style";
+import Button from "../common/Button";
 
 const ProductDetail = () => {
-  // const { id } = useParams(); // URL에서 `id` 값을 가져옴
-  // const [product, setProduct] = useState(null);
+  const { product_no } = useParams(); // URL에서 `id` 값을 가져옴
+  const [product, setProduct] = useState(null);
   // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
-  // const navigate = useNavigate();
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const fetchProductDetail = async () => {
+    try {
+      const res = await axios.get(`/api/products/${product_no}`);
+      setProduct(res.data);
+    } catch (error) {
+      console.error("detail load error", error);
+    }
+  };
 
   // useEffect(() => {
   //   const fetchProduct = async () => {
