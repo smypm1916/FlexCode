@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import LoginModal from "../account/LoginModal";
+import { useNavigate } from "react-router-dom";
 import {
   Container,
   Headerdiv,
@@ -15,6 +16,8 @@ import {
 const App = () => {
   const [showModal, setShowModal] = useState(false);
 
+  const navigate = useNavigate();
+
   return (
     <Container>
       <Headerdiv>
@@ -24,7 +27,7 @@ const App = () => {
           </Logo>
           <Menu_Wrapper>
             <Menu>HOME</Menu>
-            <Menu>COMMUNITY</Menu>
+            <Menu onClick={() => navigate("/community")}>COMMUNITY</Menu>
           </Menu_Wrapper>
         </Wrapper>
         <Menu_Wrapper>

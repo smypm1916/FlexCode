@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PaginationComponent } from "./PaginationComponent";
+import Searchbox from "../common/Searchbox";
+import Select from "../common/Select";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import CmPost from "./CmPost";
 
 // 버튼 스타일
 const Button = styled.button`
@@ -28,7 +33,7 @@ const Button_Box = styled.div`
 `;
 
 // select 스타일
-const Select = styled.select`
+const Select_Box = styled.select`
   height: 45px;
   font-size: 12pt;
   padding: 10px;
@@ -123,65 +128,105 @@ const Title = styled.h2`
   letter-spacing: 2px;
 `;
 
-const dummyPosts = Array.from({ length: 20 }, (_, i) => ({
-  id: i + 1,
-  profile: `프사`,
-  title: `게시글 ${i + 1}`,
-  img: `이미지`,
-  user: `작성자`,
-  date: `25/03/04`,
-}));
-
 const CmMain = () => {
+  const navigate = useNavigate();
+  const cnt = 3; // 한 페이지당 개수
   const [selected, setSelected] = useState("");
   const [pageNum, setPageNum] = useState(1);
-  const cnt = 6; // 한 페이지당 개수
 
-  // 현재 페이지 게시글 필터링
-  const start = dummyPosts.length - cnt * (pageNum - 1);
-  const end = pageNum === Math.ceil(dummyPosts.length / cnt) ? -1 : start - cnt;
-  const paginatedPosts = dummyPosts.slice(end + 1, start).reverse();
+  const [posts, setPosts] = useState([]);
+  const [paginatedPosts, setPaginatedPosts] = useState([]);
+  const filterPosts = () => {
+    if (posts.length === 0) return [];
+    // 12 - 3 * (1-1)    start = 12
+    const start = posts.length - cnt * (pageNum - 1);
+    12 / 3 ? -1 : 12 - 3;
+    9;
+    const end = pageNum === Math.ceil(posts.length / cnt) ? 0 : start - cnt;
+    return posts.slice(end, start).reverse();
+    9 + 1, 12;
+  };
+  const getPosts = async () => {
+    console.log("진입?");
+    const response = await axios.get("http://localhost:8080/api/post/paging");
+    console.log(response);
+    setPosts(response.data);
+  };
+  const searchOptions = [
+    { value: "opTitle", label: "제목" },
+    { value: "opUser", label: "작성자" },
+  ];
+
+  useEffect(() => {
+    getPosts();
+  }, []);
+
+  useEffect(() => {
+    // posts 상태가 바뀌면 필터링 실행
+    setPaginatedPosts(filterPosts());
+    console.log(paginatedPosts);
+  }, [posts, pageNum]);
 
   return (
-    <Wrapper>
-      <Container01>상단 광고</Container01>
-      <Title>REVIEW</Title>
-      <Input_Wrapper>
-        <div className="search-select">
+    <div className="CmContainer">
+      <div className="cmTopAd">상단 광고</div>
+      <div className="CmSearch">
+        <div className="SearchSelect">
           <Select
-            value={selected}
+            className="search"
+            options={searchOptions}
             onChange={(e) => setSelected(e.target.value)}
-          >
-            <option value="opTitle">제목</option>
-            <option value="opUser">작성자</option>
-          </Select>
+            defaultValue=""
+          />
         </div>
-        <Search_Box>
-          <Input_Box>
-            <Input type="text" placeholder="search" />
-          </Input_Box>
-          <Button>SEARCH</Button>
-        </Search_Box>
-      </Input_Wrapper>
+        <div className="SearchInput">
+          <Searchbox />
+        </div>
+      </div>
+      <div>상품 리뷰</div>
+      <Wrapper>
+        <Container01>상단 광고</Container01>
+        <Title>REVIEW</Title>
+        <Input_Wrapper>
+          <div className="search-select">
+            <Select
+              options={searchOptions}
+              value={selected}
+              onChange={(e) => setSelected(e.target.value)}
+              defaultValue=""
+            />
+          </div>
+          <Search_Box>
+            <Input_Box>
+              <Input type="text" placeholder="search" />
+            </Input_Box>
+            <Button>SEARCH</Button>
+          </Search_Box>
+        </Input_Wrapper>
 
-      <ul>
-        {paginatedPosts.map((post) => (
-          <li key={post.id} className="border p-2 mb-2">
-            {post.profile} {post.title} {post.img} {post.user} {post.date}
-          </li>
-        ))}
-      </ul>
-      <Wrapper></Wrapper>
-      <Button_Box>
-        <Button>글쓰기</Button>
-      </Button_Box>
-      {/* ✅ 페이징 컴포넌트 추가 */}
-      <PaginationComponent
-        totalItems={dummyPosts.length}
-        itemsPerPage={cnt}
-        onPageChange={setPageNum}
-      />
-    </Wrapper>
+        <ul>
+          {paginatedPosts.map((post) => {
+            return <CmPost post={post} />;
+          })}
+        </ul>
+        <Wrapper></Wrapper>
+        <Button_Box>
+          <Button
+            onClick={() => {
+              navigate("/CmAdd");
+            }}
+          >
+            글쓰기
+          </Button>
+        </Button_Box>
+        {/* ✅ 페이징 컴포넌트 추가 */}
+        <PaginationComponent
+          totalItems={posts.length}
+          itemsPerPage={cnt}
+          onPageChange={setPageNum}
+        />
+      </Wrapper>
+    </div>
   );
 };
 
