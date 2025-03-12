@@ -3,8 +3,8 @@ const optionService = require('../services/options');
 // 옵션 조회
 async function getOptionProduct(req, res) {
    try {
-      const optionDetail = await optionService.getOptionProduct(req.params.option_no);
-      if (!req.params.option_no) {
+      const optionDetail = await optionService.getOptionProduct(req.params.product_no);
+      if (!req.params.product_no) {
          return res.status(400).json({ success: false, message: "option_no 필요" });
       }
       if (!productDetail) {

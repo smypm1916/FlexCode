@@ -1,9 +1,9 @@
 const optionModel = require('../models/product_option');
 
 // 옵션 리스트 조회
-async function getOptionProduct(option_no) {
+async function getOptionProduct(product_no) {
    try {
-      return await optionModel.getOptionProduct(option_no);
+      return await optionModel.getOptionProduct(product_no);
    } catch (error) {
       console.error('option read service error', error);
       throw error;
