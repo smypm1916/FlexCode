@@ -6,16 +6,19 @@ const cors = require("cors"); // f->b cors 설정
 const morgan = require("morgan"); // 로그 기록
 const productRouter = require("./routes/products");
 const userRouter = require("./routes/user");
+const cmRouter = require("./routes/community");
 const optionRouter = require("./routes/options");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
 // middleware
-app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -23,6 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 // router
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
+app.use("/api/post", cmRouter);
 app.use("/api/options", optionRouter);
 
 // 서버 실행 함수

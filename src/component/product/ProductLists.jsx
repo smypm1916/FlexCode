@@ -73,32 +73,29 @@ const ProductLists = () => {
   }, [page, hasMore, loading]);
 
   return (
-    <Container_Style>
-      <Title>SHOPPING</Title>
-      <System_message>
-        {loading && <div>Loading...</div>}
-        {error && <div>Error: {error.message}</div>}
-        <div ref={loader} />
-      </System_message>
-      <ProductList_Wrapper>
+    <Wrapper>
+      <Container_Style>
+        <Title>SHOPPING</Title>
         {products.map((product) => (
-          <ProductList_ItemBox
+          <ProductList_Wrapper
             key={product.PRODUCT_NO}
             onClick={() => navigate(`/product/${product.PRODUCT_NO}`)}
           >
-            <img
-              src={`${imgPath}/${product.PRODUCT_IMG}`}
-              alt={product.PRODUCT_NAME}
-            />
-            <Text_wrapper>
-              <h3>{product.PRODUCT_NAME}</h3>
-              <p>{product.PRODUCT_TYPE}</p>
-              <p>{product.PRODUCT_PRICE} 원</p>
-            </Text_wrapper>
-          </ProductList_ItemBox>
+            <ProductList_ItemBox>
+              <img
+                src={`${imgPath}/${product.PRODUCT_IMG}`}
+                alt={product.PRODUCT_NAME}
+              />
+              <Text_wrapper>
+                <h3>{product.PRODUCT_NAME}</h3>
+                <p>{product.PRODUCT_TYPE}</p>
+                <p>{product.PRODUCT_PRICE} 원</p>
+              </Text_wrapper>
+            </ProductList_ItemBox>
+          </ProductList_Wrapper>
         ))}
-      </ProductList_Wrapper>
-    </Container_Style>
+      </Container_Style>
+    </Wrapper>
   );
 };
 
