@@ -21,23 +21,31 @@ import {
   Wrapper,
 } from "../../style/Product_detail_style";
 import Button from "../common/Button";
+import Select from "../common/Select";
+
+
 
 const ProductDetail = () => {
   const { product_no } = useParams(); // URL에서 `id` 값을 가져옴
   const [product, setProduct] = useState(null);
+  const { selectedOption, setSelectedOption } = useState(null);
   const { options, setOptions } = useState([]);
   // const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const imgPath = import.meta.env.VITE_IMG_PATH;
 
+  const onChangeHandler = (e) => {
+    const optionSelected = options.find(option => option.option_no === parseInt(e.target.value));
+    setSelectedOption(selected);
+  };
 
   // 상품 정보 조회
   const fetchProductDetail = async () => {
     try {
       const res = await axios.get(`/api/products/${product_no}`, { headers: { Accept: "application/json" } });
-      setProduct(res.data);
-      console.log("API 응답:", res.data.data);
+      setProduct(res.data.data);
+      console.log("API 응답:", res.data);
     } catch (error) {
       console.error('detail load error', error);
     }
@@ -59,7 +67,9 @@ const ProductDetail = () => {
   useEffect(() => {
     fetchProductDetail();
     fetchOptions();
-  }, []);
+  }, [product_no]);
+
+
 
   return (
     <Wrapper>
@@ -102,14 +112,21 @@ const ProductDetail = () => {
             </Text_box>
             <div>
               {/* 옵션 */}
+              <Select className={"optionName"} options={
+                [{ value: "", label: "---" },
+                options.map((option) => ({
+                  value: option.option_no,
+                  label: `${option.option_title}(+${option.option_price} 원)`,
+                })),
+                ]} onChange={onChangeHandler} />
               {/* 수량 */}
-              <div>{/* <Select /> */}</div>
+              <Select className={"optionState"} options={1} />
             </div>
           </Text_wrapper>
 
-          {/* 선택 정보 */}
+          {/* 상품 선택 정보 */}
           <div>
-            <div>{/* 장바구니 추가, 별도 컴포넌트 */}</div>
+            {/* <CheckedProduct /> */}
           </div>
 
           {/* 버튼 */}
