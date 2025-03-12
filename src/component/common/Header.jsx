@@ -8,8 +8,8 @@ import {
   Logo,
   Menu_Wrapper,
   Menu,
-  LoginButton,
-  RegisterButton,
+  Button_Login,
+  Button_Register,
 } from "../../style/Header_Style";
 
 const App = () => {
@@ -28,8 +28,8 @@ const App = () => {
           </Menu_Wrapper>
         </Wrapper>
         <Menu_Wrapper>
-          <LoginButton onClick={() => setShowModal(true)}>LOGIN</LoginButton>
-          <RegisterButton>REGISTER</RegisterButton>
+          <Button_Login onClick={() => setShowModal(true)}>LOGIN</Button_Login>
+          <Button_Register>REGISTER</Button_Register>
         </Menu_Wrapper>
       </Headerdiv>
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}

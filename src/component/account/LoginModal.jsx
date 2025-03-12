@@ -57,7 +57,8 @@ const ButtonContainer = styled.div`
   flex-direction: row;
 `;
 
-const Button = styled.button`
+const Button_Modal_Login = styled.button`
+  width: -webkit-fill-available;
   background-color: ${(props) => (props.primary ? "white" : "white")};
   color: ${(props) => (props.primary ? "black" : "black")};
   padding: 10px 15px;
@@ -72,7 +73,7 @@ const Button = styled.button`
 
   &:hover {
     background-color: ${(props) => (props.primary ? "black" : "black")};
-    color: ${(props) => (props.primary ? "white" : "white")};
+    color: ${(props) => (props.primary ? "#BB9393" : "white")};
     border-color: black;
     text-decoration: none;
   }
@@ -160,7 +161,7 @@ const LoginModal = ({ onClose }) => {
           </LinksContainer>
         </Conwrapper>
         <ButtonContainer>
-          <Button primary>LOGIN</Button>
+          <Button_Modal_Login primary>LOGIN</Button_Modal_Login>
         </ButtonContainer>
       </Modal_Wrapper>
     </Container_Modal>

@@ -23,7 +23,6 @@ import {
   Post_Wrapper,
   Phone_Box,
 } from "../../style/SignUp_Style";
-import axios from "axios";
 import { Button_Wrapper } from "../../style/Product_detail_style";
 
 const SignUp = () => {

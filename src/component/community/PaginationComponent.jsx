@@ -1,5 +1,10 @@
 import { useState } from "react";
-
+import {
+  Button_After,
+  Button_Before,
+  Button_Pagination,
+  Pagination_Wrapper,
+} from "../../style/Community_Style";
 export function PaginationComponent({
   totalItems,
   itemsPerPage,
@@ -14,17 +19,17 @@ export function PaginationComponent({
   };
 
   return (
-    <div className="flex gap-2 mt-4">
-      <button
+    <Pagination_Wrapper>
+      <Button_Before
         onClick={() => handlePageChange(pageNum - 1)}
         disabled={pageNum === 1}
         className="border px-3 py-1"
       >
         이전
-      </button>
+      </Button_Before>
 
       {Array.from({ length: pageCount }, (_, i) => i + 1).map((num) => (
-        <button
+        <Button_Pagination
           key={num}
           onClick={() => handlePageChange(num)}
           className={`border px-3 py-1 ${
@@ -32,16 +37,17 @@ export function PaginationComponent({
           }`}
         >
           {num}
-        </button>
+        </Button_Pagination>
       ))}
 
-      <button
+      <Button_After
         onClick={() => handlePageChange(pageNum + 1)}
         disabled={pageNum === pageCount}
         className="border px-3 py-1"
       >
+        {" "}
         다음
-      </button>
-    </div>
+      </Button_After>
+    </Pagination_Wrapper>
   );
 }

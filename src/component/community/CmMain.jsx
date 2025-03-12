@@ -1,23 +1,14 @@
 import { useState } from "react";
 import { PaginationComponent } from "./PaginationComponent";
 import styled from "styled-components";
-
-// 버튼 스타일
-const Button = styled.button`
-  height: 45px;
-  padding: 10px;
-  border: 1px solid black;
-  transition: all 0.5s;
-  color: black;
-  background-color: white;
-  text-decoration: none;
-  font-size: 12pt;
-  &:hover {
-    background-color: black;
-    color: white;
-    text-decoration: none;
-  }
-`;
+import {
+  Button_After,
+  Button_Before,
+  Button_Pagination,
+  Pagination_List,
+  Pagination_Wrapper,
+} from "../../style/Community_Style";
+import Button from "../common/Button";
 
 // button을 감싸는 div
 const Button_Box = styled.div`
@@ -166,12 +157,12 @@ const CmMain = () => {
 
       <ul>
         {paginatedPosts.map((post) => (
-          <li key={post.id} className="border p-2 mb-2">
-            {post.profile} {post.title} {post.img} {post.user} {post.date}
-          </li>
+          <Pagination_List key={post.id} className="border p-2 mb-2">
+            <p>{post.profile}</p> <p>{post.title}</p> <p>{post.img}</p>{" "}
+            <p>{post.user}</p> <p>{post.date}</p>
+          </Pagination_List>
         ))}
       </ul>
-      <Wrapper></Wrapper>
       <Button_Box>
         <Button>글쓰기</Button>
       </Button_Box>

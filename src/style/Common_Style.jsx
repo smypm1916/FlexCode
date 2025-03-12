@@ -40,7 +40,7 @@ export const Button_Style = styled.button`
   font-size: 12pt;
   &:hover {
     background-color: black;
-    color: white;
+    color: #bb9393;
     text-decoration: none;
   }
 `;

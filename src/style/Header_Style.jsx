@@ -38,9 +38,9 @@ export const Logo = styled.div`
     transition: 0.5s;
     content: "";
     width: 0;
-    height: 1px;
+    height: 5px;
     display: block;
-    background: black;
+    background: #bb9393;
   }
 
   &:hover::after {
@@ -57,7 +57,7 @@ export const Wrapper = styled.div`
 `;
 
 // 로그인 모달열기 버튼
-export const LoginButton = styled.button`
+export const Button_Login = styled.button`
   display: inline-block;
   color: black;
   cursor: pointer;
@@ -85,7 +85,7 @@ export const LoginButton = styled.button`
 `;
 
 // 회원가입 바로가기 버튼
-export const RegisterButton = styled.button`
+export const Button_Register = styled.button`
   color: black;
   cursor: pointer;
   font-size: 12pt;
@@ -117,14 +117,18 @@ export const Menu = styled.div`
   margin: 0;
   letter-spacing: 2px;
   cursor: pointer;
+  transition: all 0.5s;
+  &:hover {
+    color: #bb9393;
+  }
 
   &::after {
     transition: 0.5s;
     content: "";
     width: 0;
-    height: 1px;
+    height: 2px;
     display: block;
-    background: black;
+    background: #bb9393;
   }
 
   &:hover::after {

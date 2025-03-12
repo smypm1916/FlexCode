@@ -6,6 +6,7 @@ import Category from "./Category";
 import EventBanner from "./EventBanner";
 import Pick from "./Pick";
 import ProductLists from "./ProductLists";
+import CmMain from "../community/CmMain";
 
 const Wrapper = styled.div`
   display: flex;
@@ -20,12 +21,12 @@ const Index = () => {
   return (
     <Wrapper>
       <Header />
-
-      <EventBanner />
+      <CmMain />
+      {/* <EventBanner />
       <Searchbox />
       <Category />
       <Pick />
-      <ProductLists />
+      <ProductLists /> */}
     </Wrapper>
   );
 };
