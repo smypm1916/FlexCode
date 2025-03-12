@@ -19,11 +19,11 @@ const Post = styled.div`
 
 const CmPost = ({ post }) => {
   return (
-    <Post key={post.community_no}>
-      <div>{post.community_title}</div>
-      <div>{post.community_img}</div>
-      <div>작성자 {post.user_nickname}님</div>
-      <div>날짜 {post.community_date}</div>
+    <Post key={post.COMMUNITY_NO}>
+      <div>{post.COMMUNITY_TITLE}</div>
+      <div>{post.COMMUNITY_IMG}</div>
+      <div>작성자 {post.USER_NICKNAME}님</div>
+      <div>날짜 {post.COMMUNITY_DATE}</div>
     </Post>
   );
 };

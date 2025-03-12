@@ -8,10 +8,10 @@ const getPosts = async (req, res) => {
 
 const cmAdd = async (req, res) => {
   try {
-    const { community_title, community_content } = req.body;
-    const community_img = req.file ? req.file.fileName : null;
-
+    const { community_title, community_content, user_nickname } = req.body;
+    const community_img = req.file ? req.file.filename : null;
     const CmReg = await cmService.regPost({
+      user_nickname,
       community_title,
       community_content,
       community_img,

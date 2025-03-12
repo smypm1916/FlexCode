@@ -11,6 +11,7 @@ const CmAdd = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
+    formData.append("user_nickname", "hamu");
     formData.append("community_title", community_title);
     formData.append("community_content", community_content);
     if (community_img) {
@@ -24,6 +25,7 @@ const CmAdd = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
+      // console.log(formData);
       console.log("작성 성공:", response.data);
       console.log(response);
     } catch (error) {

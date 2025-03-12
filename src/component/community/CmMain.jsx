@@ -130,16 +130,22 @@ const Title = styled.h2`
 
 const CmMain = () => {
   const navigate = useNavigate();
-
+  const cnt = 3; // 한 페이지당 개수
   const [selected, setSelected] = useState("");
   const [pageNum, setPageNum] = useState(1);
-  const cnt = 3; // 한 페이지당 개수
-  const [posts, setPosts] = useState([]);
 
-  // 현재 페이지 게시글 필터링
-  const start = posts.length - cnt * (pageNum - 1);
-  const end = pageNum === Math.ceil(posts.length / cnt) ? -1 : start - cnt;
-  const paginatedPosts = posts.slice(end + 1, start).reverse();
+  const [posts, setPosts] = useState([]);
+  const [paginatedPosts, setPaginatedPosts] = useState([]);
+  const filterPosts = () => {
+    if (posts.length === 0) return [];
+    // 12 - 3 * (1-1)    start = 12
+    const start = posts.length - cnt * (pageNum - 1);
+    12 / 3 ? -1 : 12 - 3;
+    9;
+    const end = pageNum === Math.ceil(posts.length / cnt) ? 0 : start - cnt;
+    return posts.slice(end, start).reverse();
+    9 + 1, 12;
+  };
   const getPosts = async () => {
     console.log("진입?");
     const response = await axios.get("http://localhost:8080/api/post/paging");
@@ -154,6 +160,12 @@ const CmMain = () => {
   useEffect(() => {
     getPosts();
   }, []);
+
+  useEffect(() => {
+    // posts 상태가 바뀌면 필터링 실행
+    setPaginatedPosts(filterPosts());
+    console.log(paginatedPosts);
+  }, [posts, pageNum]);
 
   return (
     <div className="CmContainer">
