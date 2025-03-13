@@ -1,9 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Button from "../common/Button";
 import Select from "../common/Select";
-import styled from "styled-components";
 import {
   Wrapper,
   Button_Wrapper_100,
@@ -26,7 +24,6 @@ import {
 } from "../../style/Product_detail_style";
 import Button from "../common/Button";
 import CheckedProduct from "../common/CheckedProduct";
-import Select from "../common/Select";
 
 const ProductDetail = () => {
   const { PRODUCT_NO } = useParams(); // URL에서 `id` 값을 가져옴
@@ -162,10 +159,10 @@ const ProductDetail = () => {
             </div>
 
             {/* 버튼 */}
-            <Button_Wrapper>
+            <Button_Wrapper_100>
               <Button btnTxt="바로구매" />
               <Button btnTxt="장바구니" onClick />
-            </Button_Wrapper>
+            </Button_Wrapper_100>
           </Product_Wrapper>
         </Container01>
         <Divide_Box>

@@ -28,7 +28,6 @@ export const ProductList_ItemBox = styled.div`
 `;
 
 export const Text_wrapper = styled.div`
-  width: -webkit-fill-available;
   display: flex;
   flex-direction: column;
   gap: 5px;

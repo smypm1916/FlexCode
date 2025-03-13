@@ -7,8 +7,8 @@ import {
   Logo,
   Menu,
   Menu_Wrapper,
-  RegisterButton,
-  Wrapper,
+  Button_Register,
+  Button_Login,
 } from "../../style/Header_Style";
 import LoginModal from "../account/LoginModal";
 // import Cart from "./Cart";
@@ -88,24 +88,21 @@ const App = () => {
   };
 
   return (
-    <Container>
-      <Headerdiv>
-        <Wrapper>
-          <Logo onClick={() => navigate("/")}>
-            <img src="src\style\img\logo.png"></img>
-          </Logo>
-          <Menu_Wrapper>
-            <Menu onClick={() => navigate("/")}>HOME</Menu>
-            <Menu onClick={() => navigate("/community")}>COMMUNITY</Menu>
-          </Menu_Wrapper>
-        </Wrapper>
-        <Menu_Wrapper>
-          <LoginButton onClick={() => setShowModal(true)}>LOGIN</LoginButton>
-          <RegisterButton>REGISTER</RegisterButton>
-        </Menu_Wrapper>
-      </Headerdiv>
+    <Wrapper_Header>
+      <Logo onClick={() => navigate("/")}>
+        <img src="src\style\img\logo.png"></img>
+      </Logo>
+      <Menu_Wrapper>
+        <Menu onClick={() => navigate("/")}>HOME</Menu>
+        <Menu onClick={() => navigate("/community")}>COMMUNITY</Menu>
+      </Menu_Wrapper>
+      <Menu_Wrapper>
+        <Button_Login onClick={() => setShowModal(true)}>LOGIN</Button_Login>
+        <Button_Register>REGISTER</Button_Register>
+      </Menu_Wrapper>
+
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}
-    </Container>
+    </Wrapper_Header>
   );
 };
 
