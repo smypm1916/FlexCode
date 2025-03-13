@@ -146,7 +146,7 @@ const ProductDetail = () => {
           {/* 버튼 */}
           <Button_Wrapper>
             <Button btnTxt="바로구매" />
-            <Button btnTxt="장바구니" />
+            <Button btnTxt="장바구니" onClick />
           </Button_Wrapper>
         </Product_Wrapper>
       </Container01>
