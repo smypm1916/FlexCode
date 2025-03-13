@@ -16,4 +16,7 @@ router.post(
   userController.registerUser
 );
 
+// 로그인처리
+router.post("/login", userController.loginUser);
+
 module.exports = router;

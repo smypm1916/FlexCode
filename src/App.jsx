@@ -1,16 +1,17 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
-import SignUp from "./component/account/SignUp";
 import Footer from "./component/common/Footer";
 import Header from "./component/common/Header";
 import CmAdd from "./component/community/CmAdd";
 import CmMain from "./component/community/CmMain";
 import Order from "./component/order/Order";
 import Index from "./component/product/Index";
+import SignUp from "./component/account/SignUp";
+import SignUpSuccess from "./component/account/SignUpSuccess";
 import ProductDetail from "./component/product/ProductDetail";
+import ProductLists from "./component/product/ProductLists";
 
 function App() {
-
   return (
     <Router>
       <Header />
