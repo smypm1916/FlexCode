@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 // 카테고리 컨테이너 제목
 export const Title = styled.h2`
-  width: 100%;
   text-align: left;
   color: black;
   margin: 0;
@@ -11,8 +10,7 @@ export const Title = styled.h2`
 
 // 카테고리 컨테이너
 export const Container03 = styled.div`
-  width: 100%;
-  max-width: 60%;
+  width: 60%;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -21,7 +19,6 @@ export const Container03 = styled.div`
 
 // 카테고리 컨테이너 안에서 카테고리를 감싸는 div
 export const Category_Wrapper = styled.div`
-  width: 100%;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 20px;

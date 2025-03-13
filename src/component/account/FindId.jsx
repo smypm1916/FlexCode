@@ -6,6 +6,17 @@ import Select from "../common/Select";
 import axios from "axios";
 
 const FindId = ({ onBack }) => {
+import {
+  Container_Modal,
+  Input_Box,
+  Input_Style,
+  Modal_Wrapper,
+  Select_Style,
+  Input_Wrapper,
+} from "../../style/Common_Style";
+import { Button_Wrapper } from "../../style/Product_detail_style";
+import { Phone_Box, Title } from "../../style/Modal_Style";
+const FindId = ({ onBack, onClose }) => {
   const style = {
     display: "flex",
   };
@@ -166,6 +177,49 @@ const FindId = ({ onBack }) => {
         <Button className={"cancel"} btnTxt={"취소"} onClick={onBack} />
       </div>
     </div>
+    // <Container_Modal>
+    //   <Modal_Wrapper>
+    //     <div>
+    //       <Title>ID 찾기</Title>
+    //     </div>
+    //     <Input_Wrapper>
+    //       <div className="findId-name-label">
+    //         <label>이름</label>
+    //       </div>
+    //       <Input_Box>
+    //         <Input_Style type="text" placeholder="이름을 입력하세요" />
+    //       </Input_Box>
+    //     </Input_Wrapper>
+    //     <Input_Wrapper>
+    //       <div className="findId-tel-label">
+    //         <label>TEL</label>
+    //       </div>
+    //       <Phone_Box>
+    //         <Select_Style
+    //           value={selectedTelOption}
+    //           onChange={updateSelectValue}
+    //         >
+    //           <option value="010">010</option>
+    //           <option value="011">011</option>
+    //           <option value="02">02</option>
+    //           <option value="031">031</option>
+    //         </Select_Style>
+    //         <label>-</label>
+    //         <Input_Box>
+    //           <Input_Style type="text" placeholder="1234" />
+    //         </Input_Box>
+    //         <label>-</label>
+    //         <Input_Box>
+    //           <Input_Style type="text" placeholder="5678" />
+    //         </Input_Box>
+    //       </Phone_Box>
+    //     </Input_Wrapper>
+    //     <Button_Wrapper>
+    //       <Button className={"findId"} btnTxt={"ID찾기"} />
+    //       <Button className={"cancel"} btnTxt={"취소"} onClick={onBack} />
+    //     </Button_Wrapper>
+    //   </Modal_Wrapper>
+    // </Container_Modal>
   );
 };
 
