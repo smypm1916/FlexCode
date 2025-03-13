@@ -9,7 +9,14 @@ const morgan = require("morgan");
 
 const productRouter = require("./routes/products");
 const userRouter = require("./routes/user");
-
+const cartRouter = require("./routes/cart");
+const cmRouter = require("./routes/community");
+const optionRouter = require("./routes/options");
+const orderRouter = require("./routes/order");
+const session = require("express-session");
+const { createClient } = require("redis");
+const RedisStore = require("connect-redis").default;
+const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 8080;
 const server = http.createServer(app);
@@ -62,6 +69,18 @@ io.on("connection", (socket) => {
 });
 
 // ✅ WebSocket 설정 후, `express` 미들웨어 등록
+// redis세션
+app.use(
+  session({
+    store: new RedisStore({ client: redisClient }),
+    secret: "cart-key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 30 * 60 * 1000 }, // 30분 유지
+  })
+);
+
+// middleware
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -75,6 +94,10 @@ app.use(express.urlencoded({ extended: false }));
 // ✅ 라우터 등록
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
+app.use("/api/post", cmRouter);
+app.use("/api/options", optionRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/order", orderRouter);
 
 // ✅ 서버 실행 함수
 const startServer = async () => {
@@ -88,5 +111,4 @@ const startServer = async () => {
   }
 };
 
-// ✅ 서버 실행
 startServer();

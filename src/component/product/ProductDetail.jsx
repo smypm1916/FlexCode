@@ -1,52 +1,88 @@
 import axios from "axios";
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Button from "../common/Button";
-import Select from "../common/Select";
-import styled from "styled-components";
 import {
-  Wrapper,
-  Container01,
-  Product_Wrapper,
-  Image_Wrapper,
-  Text_wrapper,
-  Container02,
-  Divide_Box,
   Button_Wrapper,
-  Text,
-  Title,
-  Product_Title,
-  Text_box,
+  Container01,
+  Container02,
   Container03,
+  Divide_Box,
+  Image_Wrapper,
   Info_Text,
   Info_Text_Box,
   Info_Title,
   Info_Wrapper,
+  Product_Title,
+  Product_Wrapper,
+  Text,
+  Text_box,
+  Text_wrapper,
+  Title,
+  Wrapper,
 } from "../../style/Product_detail_style";
+import Button from "../common/Button";
+import Select from "../common/Select";
+
+
 
 const ProductDetail = () => {
-  // const { id } = useParams(); // URL에서 `id` 값을 가져옴
-  // const [product, setProduct] = useState(null);
+  const { PRODUCT_NO } = useParams(); // URL에서 `id` 값을 가져옴
+  console.log('====================================');
+  console.log(PRODUCT_NO);
+  console.log('====================================');
+  const [product, setProduct] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [options, setOptions] = useState([]);
   // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
-  // const navigate = useNavigate();
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const imgPath = import.meta.env.VITE_IMG_PATH;
 
-  // useEffect(() => {
-  //   const fetchProduct = async () => {
-  //     try {
-  //       const response = await axios.get(`URL`);
-  //       setProduct(response.data);
-  //     } catch (error) {
-  //       setError(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchProduct();
-  // }, [id]);
+  const onRemove = (option_no) => {
 
-  // if (loading) return <div>Loading...</div>;
+
+  }
+
+  const onChangeHandler = (e) => {
+    const optionSelected = options.find(option => option.option_no === parseInt(e.target.value));
+    setSelectedOption(selected);
+  };
+
+  // 상품 정보 조회
+  const fetchProductDetail = async () => {
+    try {
+      const res = await axios.get(`/api/products/${PRODUCT_NO}`, { headers: { Accept: "application/json" } });
+      setProduct(res.data.data);
+      console.log("API 응답:", res.data);
+    } catch (error) {
+      console.error('detail load error', error);
+    }
+  };
+
+  // 최초 상품 로드 시 같이 실행 -> 셀렉터 선택 시에 장바구니에 옵션 추가
+  // 상품 옵션 취득
+  const fetchOptions = async () => {
+    try {
+      const resOptions = await axios.get(`/api/options/${PRODUCT_NO}`, { headers: { Accept: "application/json" } });
+      console.log("OPTION API 응답:", resOptions.data);
+      if (resOptions.data && resOptions.data.success) {
+        const newOptions = resOptions.data.data || [];
+        setOptions((prev) => [...prev, ...newOptions]);
+      }
+    } catch (error) {
+      console.error('detail option load error', error);
+      setError(error);
+    }
+  };
+
+  useEffect(() => {
+    if (PRODUCT_NO) {
+      fetchOptions();
+    }
+  }, [PRODUCT_NO]);
+
+
+
   return (
     <Wrapper>
       {/* 컨테이너 1 */}
@@ -88,14 +124,21 @@ const ProductDetail = () => {
             </Text_box>
             <div>
               {/* 옵션 */}
+              <Select className={"optionName"} options={
+                [{ value: "", label: "---" },
+                Array.isArray(options) ? options.map((option) => ({
+                  value: option.option_no,
+                  label: `${option.option_title}(+${option.option_price} 원)`,
+                })) : []
+                ]} onChange={onChangeHandler} />
               {/* 수량 */}
-              <div>{/* <Select /> */}</div>
+              <Select className={"optionState"} options={1} />
             </div>
           </Text_wrapper>
 
-          {/* 선택 정보 */}
+          {/* 상품 선택 정보 */}
           <div>
-            <div>{/* 장바구니 추가, 별도 컴포넌트 */}</div>
+            {/* <CheckedProduct /> */}
           </div>
 
           {/* 버튼 */}

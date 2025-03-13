@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import DaumPostcodeEmbed from "react-daum-postcode";
-import Button from "../common/Button";
 
 const PostCodeModal = ({ onClose, onSelectAddress }) => {
   const completeHandler = (data) => {

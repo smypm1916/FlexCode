@@ -7,16 +7,18 @@ import { useNavigate } from "react-router-dom";
 import {
   Container,
   Headerdiv,
-  Wrapper,
-  Logo,
-  Menu_Wrapper,
-  Menu,
   LoginButton,
+  Logo,
+  Menu,
+  Menu_Wrapper,
   RegisterButton,
   ProfileWrapper, // 추가
   ProfileImg,
   LogoutButton,
+  Wrapper,
 } from "../../style/Header_Style";
+import LoginModal from "../account/LoginModal";
+// import Cart from "./Cart";
 
 const App = () => {
   const [showModal, setShowModal] = useState(false);
@@ -96,12 +98,12 @@ const App = () => {
     <Container>
       <Headerdiv>
         <Wrapper>
-          <Logo>
+          <Logo onClick={() => navigate("/")}>
             <img src="src\style\img\logo.png"></img>
           </Logo>
           <Menu_Wrapper>
-            <Menu>HOME</Menu>
-            <Menu>COMMUNITY</Menu>
+            <Menu onClick={() => navigate("/")}>HOME</Menu>
+            <Menu onClick={() => navigate("/community")}>COMMUNITY</Menu>
           </Menu_Wrapper>
         </Wrapper>
         {/* 로그인 여부에 따라 UI 변경 */}
@@ -121,8 +123,8 @@ const App = () => {
             </RegisterButton>
           </Menu_Wrapper>
         )}
+        {/*로그인 모달에 로그인 성공 시 호출할 함수 전달 */}
       </Headerdiv>
-      {/*로그인 모달에 로그인 성공 시 호출할 함수 전달 */}
       {showModal && (
         <LoginModal
           onClose={() => setShowModal(false)}
