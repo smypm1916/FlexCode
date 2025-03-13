@@ -1,3 +1,16 @@
+import {
+  Button_Wrapper_100,
+  Container_Style,
+  Input_Box,
+  Input_Style,
+  Input_Wrapper,
+  Textarea_Style,
+  Wrapper,
+  Title,
+} from "../../style/Common_Style";
+import { List_Profile, Profile_Img } from "../../style/List_Style";
+import Button from "../common/Button";
+import FileUpload from "../common/FileUpload";
 import { useState } from "react";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -34,41 +47,54 @@ const CmAdd = () => {
   };
 
   return (
-    <div className="CmAddContainer">
-      <div>프로필사진</div>
+    <Wrapper className="cm" id="add">
       <form onSubmit={handleSubmit}>
-        <div className="CmAddTitle">
-          <label>제목</label>
-          <input
-            type="text"
-            name="community_title"
-            value={community_title}
-            placeholder="제목을 입력하세요"
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
+        <Container_Style>
+          <Title>WRITE</Title>
+          <List_Profile>
+            <Profile_Img>프사</Profile_Img>
+          </List_Profile>
+          <Input_Wrapper>
+            <div className="CmAddTitle">
+              <label>제목</label>
+            </div>
+            <Input_Box>
+              <Input_Style type="text" placeholder="제목을 입력하세요" />
+            </Input_Box>
+          </Input_Wrapper>
 
-        <div className="CmAddDescription">
-          <label>내용</label>
-          <textarea
-            name="community_content"
-            value={community_content}
-            placeholder="내용을 입력하세요"
-            onChange={(e) => setContent(e.target.value)}
-          />
-        </div>
-        <div className="CmAddFlie">
-          <label>사진 등록</label>
-          <input type="file" onChange={(e) => setImg(e.target.files[0])} />
-        </div>
-        <div className="CmBddBtn">
-          <button type="submit">등록하기</button>
-          <button type="button" onClick={() => navigate("/community")}>
-            뒤로가기
-          </button>
-        </div>
+          <Input_Wrapper>
+            <div>
+              <label>내용</label>
+            </div>
+            <Input_Box>
+              <Textarea_Style
+                type="textarea"
+                name="community_content"
+                value={community_content}
+                placeholder="내용을 입력하세요"
+                onChange={(e) => setContent(e.target.value)}
+              />
+            </Input_Box>
+          </Input_Wrapper>
+          <Input_Wrapper>
+            <label>사진 등록</label>
+            <Input_Box>
+              <FileUpload
+                type="file"
+                onChange={(e) => setImg(e.target.files[0])}
+              />
+            </Input_Box>
+          </Input_Wrapper>
+          <Button_Wrapper_100>
+            <Button btnTxt={"글쓰기"}>글쓰기</Button>
+            <Button btnTxt={"뒤로가기"} onClick={() => navigate("/community")}>
+              뒤로가기
+            </Button>
+          </Button_Wrapper_100>
+        </Container_Style>
       </form>
-    </div>
+    </Wrapper>
   );
 };
 export default CmAdd;

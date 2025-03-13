@@ -1,26 +1,24 @@
 import styled from "styled-components";
 
 //상단의 header 전체를 묶는 div
-export const Container = styled.div`
+export const Wrapper_Header = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  min-width: 720px;
+  width: -webkit-fill-available;
+  width: -moz-available;
+  height: 100px;
+  align-items: center;
   transition: all 0.5s;
   z-index: 100;
-`;
-
-// header div
-export const Headerdiv = styled.div`
-  display: flex;
-  height: 80px;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 40px;
-  color: black;
+  display: grid;
+  grid-template-columns: 1fr 8fr 1fr;
+  padding: 0 50px;
+  gap: 80px;
   border-bottom: 1px solid black;
-  background: rgba(255, 255, 255, 0.8);
-  transition: all 0.5s;
+  background: rgba(255, 255, 255, 0.5);
+
   &:hover {
     background: white;
   }
@@ -38,9 +36,9 @@ export const Logo = styled.div`
     transition: 0.5s;
     content: "";
     width: 0;
-    height: 1px;
+    height: 5px;
     display: block;
-    background: black;
+    background: #bb9393;
   }
 
   &:hover::after {
@@ -48,16 +46,8 @@ export const Logo = styled.div`
   }
 `;
 
-// 회원가입, 로그인 div
-export const Wrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 120px;
-  align-items: center;
-`;
-
 // 로그인 모달열기 버튼
-export const LoginButton = styled.button`
+export const Button_Login = styled.button`
   display: inline-block;
   color: black;
   cursor: pointer;
@@ -85,7 +75,7 @@ export const LoginButton = styled.button`
 `;
 
 // 회원가입 바로가기 버튼
-export const RegisterButton = styled.button`
+export const Button_Register = styled.button`
   color: black;
   cursor: pointer;
   font-size: 12pt;
@@ -112,19 +102,22 @@ export const RegisterButton = styled.button`
 `;
 
 // 메뉴 text
-export const Menu = styled.div`
+export const Menu = styled.h4`
   color: black;
   margin: 0;
-  letter-spacing: 2px;
   cursor: pointer;
+  transition: all 0.5s;
+  &:hover {
+    color: #bb9393;
+  }
 
   &::after {
     transition: 0.5s;
     content: "";
     width: 0;
-    height: 1px;
+    height: 2px;
     display: block;
-    background: black;
+    background: #bb9393;
   }
 
   &:hover::after {

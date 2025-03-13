@@ -1,88 +1,26 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FindId from "./FindId";
 import FindPw from "./FindPw";
 import styled from "styled-components";
 
-import TextInput from "../common/TextInput";
-import axios from "axios";
+import {
+  Container_Modal,
+  Input_Box,
+  Input_Style,
+  Modal_Wrapper,
+  Title,
+} from "../../style/Common_Style";
 
-const Container = styled.div`
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.25); /* 반투명 배경 */
-  backdrop-filter: blur(5px); /* 배경 블러 효과 */
-  z-index: 1000; /* 다른 요소들 위에 배치 */
-  flex-wrap: wrap;
-  transition: ;
-`;
-
-const LoginContainer = styled.div`
-  width: 40%;
-  margin: 50px auto;
-  background: white;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  color: black;
-  letter-spacing: 1px;
-  padding: 50px;
-  display: flex;
-  flex-direction: column;
-  gap: 21px;
-  flex-wrap: wrap;
-`;
-
-const Logo = styled.div`
-  font-size: 24px;
-  font-weight: bold;
-`;
-
-const Title = styled.h2`
-  font-size: 40pt;
-  margin: 0;
-  text-align: left;
-`;
-
-const InputField = styled.div`
-  width: -webkit-fill-available;
-  padding: 10px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  background-color: white;
-  border: 1px solid black;
-  color: black;
-  &:focus {
-    outline: none;
-  }
-  &:placeholder {
-    font-size: 12pt;
-  }
-`;
-
-const LinksContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  font-size: 12px;
-  color: black;
-  cursor: pointer;
-  letter-spacing: 0;
-
-  div:hover {
-    text-decoration: underline;
-  }
-`;
+import { Link_box } from "../../style/Modal_Style";
 
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
 `;
 
-const Button = styled.button`
+const Button_Modal_Login = styled.button`
+  width: -webkit-fill-available;
   background-color: ${(props) => (props.primary ? "white" : "white")};
   color: ${(props) => (props.primary ? "black" : "black")};
   padding: 10px 15px;
@@ -97,7 +35,7 @@ const Button = styled.button`
 
   &:hover {
     background-color: ${(props) => (props.primary ? "black" : "black")};
-    color: ${(props) => (props.primary ? "white" : "white")};
+    color: ${(props) => (props.primary ? "#BB9393" : "white")};
     border-color: black;
     text-decoration: none;
   }
@@ -211,16 +149,16 @@ const LoginModal = ({ onClose }) => {
   };
 
   return isFindId ? (
-    <Container>
+    <Container_Modal>
       <FindId onBack={handleBackToLogin} />
-    </Container>
+    </Container_Modal>
   ) : isFindPw ? (
-    <Container>
+    <Container_Modal>
       <FindPw onBack={handleBackToLogin} />
-    </Container>
+    </Container_Modal>
   ) : (
-    <Container>
-      <LoginContainer>
+    <Container_Modal>
+      <Modal_Wrapper>
         <ButtonContainer>
           <ButtonClose onClick={onClose}>
             <img src="src/style/img/closebutton.png" alt="닫기 버튼" />
@@ -228,44 +166,24 @@ const LoginModal = ({ onClose }) => {
         </ButtonContainer>
         <Title>LOGIN</Title>
         <Conwrapper>
-          <InputField>
-            <TextInput
-              type={"text"}
-              name={"login_email"}
-              placeholder={"EMAIL"}
-              value={login_email}
-              onChange={handleChange}
-            />
-          </InputField>
-          <InputField>
-            <TextInput
-              type={"password"}
-              name={"login_password"}
-              placeholder={"PW"}
-              value={login_password}
-              onChange={handleChange}
-            />
-          </InputField>
-          <LinksContainer>
-            <div>
-              {/* ✅ 회원가입 클릭 시 signup 페이지로 이동 */}
-              <a onClick={() => navigate("/signup")}>회원가입</a>
-            </div>
-            <div>
-              <a onClick={handleFindId}>ID 찾기</a>
-            </div>
-            <div>
-              <a onClick={handleFindPw}>비밀번호 찾기</a>
-            </div>
-          </LinksContainer>
+          <Input_Box>
+            <Input_Style type="text" placeholder="ID" />
+          </Input_Box>
+          <Input_Box>
+            <Input_Style type="password" placeholder="PW" />
+          </Input_Box>
+          <Link_box>
+            {/* ✅ 회원가입 클릭 시 signup 페이지로 이동 */}
+            <a onClick={() => navigate("/signup")}>회원가입</a>
+            <a onClick={handleFindId}>ID 찾기</a>
+            <a onClick={handleFindPw}>비밀번호 찾기</a>
+          </Link_box>
         </Conwrapper>
         <ButtonContainer>
-          <Button primary onClick={handleLogin}>
-            LOGIN
-          </Button>
+          <Button_Modal_Login primary>LOGIN</Button_Modal_Login>
         </ButtonContainer>
-      </LoginContainer>
-    </Container>
+      </Modal_Wrapper>
+    </Container_Modal>
   );
 };
 
