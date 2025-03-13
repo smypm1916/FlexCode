@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from "react";
-import io from "socket.io-client";
 import { jwtDecode } from "jwt-decode";
-import styled from "styled-components";
-import LoginModal from "../account/LoginModal";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import io from "socket.io-client";
 import {
   Container,
   Headerdiv,
   LoginButton,
   Logo,
-  Menu,
-  Menu_Wrapper,
-  RegisterButton,
-  ProfileWrapper, // 추가
-  ProfileImg,
   LogoutButton,
+  Menu,
+  Menu_Wrapper, // 추가
+  ProfileImg,
+  ProfileWrapper,
+  RegisterButton,
   Wrapper,
 } from "../../style/Header_Style";
 import LoginModal from "../account/LoginModal";
