@@ -1,3 +1,16 @@
+import {
+  Button_Wrapper_100,
+  Container_Style,
+  Input_Wrapper,
+  Wrapper,
+} from "../../style/Common_Style";
+import Button from "../common/Button";
+import {
+  List_Content,
+  List_Profile,
+  Profile_Img,
+} from "../../style/List_Style";
+
 import { useEffect, useState } from "react";
 
 const CmDetail = () => {
@@ -16,48 +29,58 @@ const CmDetail = () => {
   }, []);
 
   return (
-    <div className="CmDetailContainer">
-      {posts.map((post) => (
-        <div key={post.community_id}>
-          <div className="CmDetailTop">
-            <div>유저프로필</div>
-            <div>
-              <label>제목</label>
-            </div>
-            <div className="CmTitle">{post.community_title}</div>
+    <Wrapper className="cm" id="post">
+      <Container_Style>
+        {/* {posts.map((post) => ( */}
+        {/* <List_Profile key={post.community_id}> */}
+        <List_Profile>
+          <Profile_Img>프사</Profile_Img>
+          <label>유저</label>
+        </List_Profile>
+        <Input_Wrapper>
+          <div>
+            <label>작성일</label>
           </div>
-
-          <div className="CmDetailMid">
-            <div>
-              <label>내용</label>
-            </div>
-            <div className="CmContent">
-              <div>{post.community_content}</div>
-              <div>
-                {" "}
-                {post.cm_img && (
-                  <img
-                    src={post.community_img}
-                    alt="업로드 이미지"
-                    width="200"
-                  />
-                )}
-              </div>
-            </div>
+          <div>25/03/05</div>
+        </Input_Wrapper>
+        <Input_Wrapper>
+          <label>제목</label>
+          <div className="CmTitle">제목입니다</div>
+        </Input_Wrapper>
+        <Input_Wrapper>
+          <div>
+            <label>내용</label>
           </div>
-          <div className="CmDetailBottom">
+          <List_Content>
+            {/* <div>{post.community_content}</div> */}
+            <div>post.community_content</div>
             <div>
-              <label>작성일</label>
+              {/* {" "}
+                  {post.cm_img && (
+                    <img
+                      src={post.community_img}
+                      alt="업로드 이미지"
+                      width="200"
+                    />
+                  )} */}
+              <img />
             </div>
-            <div>{post.community_date}</div>
+          </List_Content>
+        </Input_Wrapper>
+        <Input_Wrapper>
+          <div>
+            <label>작성일</label>
           </div>
-        </div>
-      ))}
-      <div className="CmDetailBtn">
-        <button>수정하기</button>
-        <button>삭제하기</button>
-      </div>
-    </div>
+          {/* <div>{post.community_date}</div> */}
+          <div>post.community_date</div>
+        </Input_Wrapper>
+        <Button_Wrapper_100>
+          <Button btnTxt={"수정하기"}>수정하기</Button>
+          <Button btnTxt={"삭제하기"}>삭제하기</Button>
+        </Button_Wrapper_100>
+        {/* ))} */}
+      </Container_Style>
+    </Wrapper>
   );
 };
 export default CmDetail;

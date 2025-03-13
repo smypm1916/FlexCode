@@ -23,7 +23,6 @@ export const Pick_Box = styled.div`
 // MD's PICK 상품품 이미지
 export const Pick_img = styled.div`
   width: 100%;
-  height: 200px;
   background-color: #d9d9d9;
   display: flex;
   justify-content: center;

@@ -3,17 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import {
-  Container,
-  Headerdiv,
-  LoginButton,
+  Wrapper_Header,
   Logo,
-  LogoutButton,
   Menu,
-  Menu_Wrapper, // 추가
-  ProfileImg,
-  ProfileWrapper,
-  RegisterButton,
-  Wrapper,
+  Menu_Wrapper,
+  Button_Register,
+  Button_Login,
 } from "../../style/Header_Style";
 import LoginModal from "../account/LoginModal";
 // import Cart from "./Cart";
@@ -93,43 +88,21 @@ const App = () => {
   };
 
   return (
-    <Container>
-      <Headerdiv>
-        <Wrapper>
-          <Logo onClick={() => navigate("/")}>
-            <img src="src\style\img\logo.png"></img>
-          </Logo>
-          <Menu_Wrapper>
-            <Menu onClick={() => navigate("/")}>HOME</Menu>
-            <Menu onClick={() => navigate("/community")}>COMMUNITY</Menu>
-          </Menu_Wrapper>
-        </Wrapper>
-        {/* 로그인 여부에 따라 UI 변경 */}
-        {isLoggedIn ? (
-          <Menu_Wrapper>
-            <Menu onClick={() => navigate("/cart")}>CART</Menu>
-            <ProfileWrapper onClick={() => navigate("/mypage")}>
-              <ProfileImg src={profileImg} alt="profile" />
-            </ProfileWrapper>
-            <LogoutButton onClick={handleLogout}>LOGOUT</LogoutButton>
-          </Menu_Wrapper>
-        ) : (
-          <Menu_Wrapper>
-            <LoginButton onClick={() => setShowModal(true)}>LOGIN</LoginButton>
-            <RegisterButton onClick={() => navigate("/signup")}>
-              REGISTER
-            </RegisterButton>
-          </Menu_Wrapper>
-        )}
-        {/*로그인 모달에 로그인 성공 시 호출할 함수 전달 */}
-      </Headerdiv>
-      {showModal && (
-        <LoginModal
-          onClose={() => setShowModal(false)}
-          onLoginSuccess={handleLoginSuccess}
-        />
-      )}
-    </Container>
+    <Wrapper_Header>
+      <Logo onClick={() => navigate("/")}>
+        <img src="src\style\img\logo.png"></img>
+      </Logo>
+      <Menu_Wrapper>
+        <Menu onClick={() => navigate("/")}>HOME</Menu>
+        <Menu onClick={() => navigate("/community")}>COMMUNITY</Menu>
+      </Menu_Wrapper>
+      <Menu_Wrapper>
+        <Button_Login onClick={() => setShowModal(true)}>LOGIN</Button_Login>
+        <Button_Register>REGISTER</Button_Register>
+      </Menu_Wrapper>
+
+      {showModal && <LoginModal onClose={() => setShowModal(false)} />}
+    </Wrapper_Header>
   );
 };
 
