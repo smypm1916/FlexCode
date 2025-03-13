@@ -9,10 +9,10 @@ const userRouter = require("./routes/user");
 const cartRouter = require('./routes/cart');
 const cmRouter = require("./routes/community");
 const optionRouter = require("./routes/options");
+const orderRouter = require('./routes/order');
 const session = require('express-session');
 const { createClient } = require('redis');
 const RedisStore = require('connect-redis').default;
-const orderRouter = require('./routes/order');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
