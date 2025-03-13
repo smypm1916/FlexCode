@@ -252,7 +252,7 @@ const LoginModal = ({ onClose }) => {
               <a onClick={() => navigate("/signup")}>회원가입</a>
             </div>
             <div>
-              <a onClick={handleFindId}>ID 찾기</a>
+              <a onClick={handleFindId}>이메일 찾기</a>
             </div>
             <div>
               <a onClick={handleFindPw}>비밀번호 찾기</a>

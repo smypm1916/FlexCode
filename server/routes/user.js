@@ -19,4 +19,7 @@ router.post(
 // 로그인처리
 router.post("/login", userController.loginUser);
 
+// 이메일찾기
+router.post("/findId", userController.findId);
+
 module.exports = router;
