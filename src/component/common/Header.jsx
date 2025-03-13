@@ -17,7 +17,6 @@ import {
   LogoutButton,
   Wrapper,
 } from "../../style/Header_Style";
-import LoginModal from "../account/LoginModal";
 // import Cart from "./Cart";
 
 const App = () => {

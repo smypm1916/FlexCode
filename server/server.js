@@ -63,22 +63,22 @@ io.on("connection", (socket) => {
   });
 
   socket.on("forceLogout", () => {
-    console.log("🚨 강제 로그아웃 이벤트 발생");
+    console.log("강제 로그아웃 이벤트 발생");
     io.emit("forceLogout");
   });
 });
 
-// ✅ WebSocket 설정 후, `express` 미들웨어 등록
+// WebSocket 설정 후, `express` 미들웨어 등록
 // redis세션
-app.use(
-  session({
-    store: new RedisStore({ client: redisClient }),
-    secret: "cart-key",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 30 * 60 * 1000 }, // 30분 유지
-  })
-);
+// app.use(
+//   session({
+//     store: new RedisStore({ client: redisClient }),
+//     secret: "cart-key",
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: { maxAge: 30 * 60 * 1000 }, // 30분 유지
+//   })
+// );
 
 // middleware
 app.use(
@@ -91,7 +91,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// ✅ 라우터 등록
+// 라우터 등록
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/post", cmRouter);
@@ -99,15 +99,15 @@ app.use("/api/options", optionRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
 
-// ✅ 서버 실행 함수
+// 서버 실행 함수
 const startServer = async () => {
   try {
     server.listen(PORT, () => {
-      console.log(`🚀 서버가 포트 ${PORT}에서 실행 중...`);
-      console.log("✅ WebSocket 서버 실행 완료!");
+      console.log(`서버가 포트 ${PORT}에서 실행 중...`);
+      console.log("WebSocket 서버 실행 완료!");
     });
   } catch (error) {
-    console.error("❌ 서버 시작 중 오류 발생:", error);
+    console.error("서버 시작 중 오류 발생:", error);
   }
 };
 
