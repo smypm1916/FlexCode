@@ -47,9 +47,9 @@ async function deleteOption(option_no) {
 }
 
 // 옵션 조회
-async function getOptionProduct(option_no) {
-  const query = 'SELECT * FROM OPTION_NO WHERE OPTION_NO= :option_no';
-  const binds = { option_no };
+async function getOptionProduct(product_no) {
+  const query = 'SELECT * FROM PRODUCT_OPTION WHERE PRODUCT_NO= :product_no';
+  const binds = { product_no };
   try {
     const result = await executeQuery(query, binds);
     console.log('getOptionProduct success!!!');
