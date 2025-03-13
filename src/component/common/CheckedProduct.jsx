@@ -1,32 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from './Button';
-// 제품상세, 장바구니, 주문페이지에서 사용예정
 
-const CheckedProduct = ({ product_name, options, count }) => {
-   const imgPath = import.meta.env.VITE_IMG_PATH;
+const CheckedProduct = ({ product, options, count = 1, onRemove }) => {
+   const [countState, setCountState] = useState(count);
+   const [error, setError] = useState(null);
+   const navigate = useNavigate();
+
+   const countUp = () => {
+      setCountState((prev) => prev + 1);
+   }
+   const countDown = () => {
+      setCountState((prev) => prev > 1 ? prev - 1 : 1);
+   }
 
    return (
-      <>
+      <div>
          <div>
             <div>
-               {/* 상품명 */}
-               {product_name}
+               <h4 onClick={() => navigate(`/detail/${product.PRODUCT_NO}`)}>
+                  {product.product_name}
+               </h4>
             </div>
             <div>
-               {/* 상품옵션 */}
-               <div>
-                  <div>{옵션명}</div>
-                  <div>{옵션가격}</div>
-                  <div>{count}</div>
-               </div>
-               {/* 상품삭제 */}
-               <div>
-                  <Button btnTxt="X" />
-               </div>
+               {options && options.length > 0 ? (
+                  options.map((option, index) => (
+                     <div key={index}>
+                        <div>
+                           <div>{option.option_title}</div>
+                           <div>{option.option_price}</div>
+                           <div>{count}</div>
+                           <div>
+                              <button onClick={countDown}>-</button>
+                              <span style={{ margin: "0 10px" }}>{count}</span>
+                              <button onClick={countUp}>+</button>
+                           </div>
+                        </div>
+                        <div>
+                           <Button btnTxt="X" onClick={() => onRemove(option.option_no)} />
+                        </div>
+                     </div>
+                  ))
+               ) : (
+                  <p>선택된 옵션이 없습니다.</p>
+               )}
             </div>
          </div>
-      </>
-   )
+      </div >
+   );
 }
 
 export default CheckedProduct;

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import Modal from "react-modal";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import Button from "../common/Button";
 import FileUpload from "../common/FileUpload";
@@ -180,12 +181,12 @@ const SignUp_Text = styled.p`
 `;
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const style = {
     display: "flex",
     transition: "all 0.5s",
   };
-
-  // ------------------------------ 상단 style ------------------------------
 
   const customModalStyle = {
     overlay: {
@@ -345,7 +346,7 @@ const SignUp = () => {
     }
     try {
       const response = await axios.get(
-        `/api/users/check-email`,
+        `http://localhost:8080/api/users/check-email`,
         {
           params: { email: full_email },
         }
@@ -459,7 +460,35 @@ const SignUp = () => {
           headers: { "Content-Type": "multiparg/form-data" },
         }
       );
-      alert(response.data.message);
+      if (response.data.success) {
+        setSignUpForm({
+          user_name: "",
+          user_password: "",
+          user_password_check: "",
+          user_nickname: "",
+          user_profileimg: "",
+        });
+        setUserTel({
+          first_tel: "010",
+          mid_tel: "",
+          last_tel: "",
+        });
+        setUserEmail({
+          email_id: "",
+          email_address: "naver.com",
+        });
+        setUserAddress({
+          base_address: "",
+          detail_address: "",
+        });
+        setSelectedFile(null);
+        setEmailCheckResult(null);
+        setNicknameCheckResult(null);
+        setPasswordValid(null);
+        setPasswordMatch(null);
+
+        navigate("/signup-success"); // 회원가입 완료 페이지로 이동
+      }
     } catch (error) {
       console.error("회원가입 요청 실패:", error);
       alert("회원가입 중 오류가 발생했습니다.");
@@ -687,7 +716,11 @@ const SignUp = () => {
           btnTxt={"회원가입"}
           onClick={handleRegister}
         />
-        <Button className={"cancel"} btnTxt={"취소"} />
+        <Button
+          className={"cancel"}
+          btnTxt={"취소"}
+          onClick={() => navigate("/")}
+        />
       </div>
     </div>
   );

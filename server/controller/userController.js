@@ -71,4 +71,32 @@ const registerUser = async (req, res) => {
   }
 };
 
-module.exports = { checkEmail, checkNickname, registerUser };
+// 로그인
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    console.log("로그인 요청:", { email, password });
+
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ success: false, message: "이메일과 비밀번호를 입력하세요." });
+    }
+
+    const result = await userService.loginUser(email, password);
+
+    if (result.success) {
+      console.log("로그인 성공:", result);
+      return res.status(200).json(result);
+    } else {
+      console.log("로그인 실패:", result);
+      return res.status(401).json(result);
+    }
+  } catch (error) {
+    console.error("로그인 컨트롤러 오류:", error);
+    res.status(500).json({ success: false, message: "서버 오류 발생" });
+  }
+};
+
+module.exports = { checkEmail, checkNickname, registerUser, loginUser };
