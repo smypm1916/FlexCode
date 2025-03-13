@@ -165,6 +165,36 @@ const LoginModal = ({ onClose }) => {
         </ButtonContainer>
         <Title>LOGIN</Title>
         <Conwrapper>
+          <InputField>
+            <TextInput
+              type={"text"}
+              name={"login_email"}
+              placeholder={"EMAIL"}
+              value={login_email}
+              onChange={handleChange}
+            />
+          </InputField>
+          <InputField>
+            <TextInput
+              type={"password"}
+              name={"login_password"}
+              placeholder={"PW"}
+              value={login_password}
+              onChange={handleChange}
+            />
+          </InputField>
+          <LinksContainer>
+            <div>
+              {/* ✅ 회원가입 클릭 시 signup 페이지로 이동 */}
+              <a onClick={() => navigate("/signup")}>회원가입</a>
+            </div>
+            <div>
+              <a onClick={handleFindId}>이메일 찾기</a>
+            </div>
+            <div>
+              <a onClick={handleFindPw}>비밀번호 찾기</a>
+            </div>
+          </LinksContainer>
           <Input_Box>
             <Input_Style type="text" placeholder="ID" />
           </Input_Box>

@@ -2,6 +2,7 @@ import { jwtDecode } from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
+import LoginModal from "../account/LoginModal";
 import {
   Wrapper_Header,
   Logo,
@@ -10,7 +11,6 @@ import {
   Button_Register,
   Button_Login,
 } from "../../style/Header_Style";
-import LoginModal from "../account/LoginModal";
 // import Cart from "./Cart";
 
 const App = () => {
@@ -18,7 +18,7 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileImg, setProfileImg] = useState(null);
   // const [isLoading, setIsLoading] = useState(true); // 로딩상태
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
   // 로그인 상태 확인
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -33,7 +33,6 @@ const App = () => {
       setIsLoggedIn(false);
       setProfileImg(null);
     }
-    // setIsLoading(false); // 로딩 완료 후 상태 변경
   }, [sessionStorage.getItem("token"), sessionStorage.getItem("profile")]);
 
   // WebSocket연결(한번만실행)
@@ -98,7 +97,7 @@ const App = () => {
       </Menu_Wrapper>
       <Menu_Wrapper>
         <Button_Login onClick={() => setShowModal(true)}>LOGIN</Button_Login>
-        <Button_Register onClick={() => Navigate("/signup")}>
+        <Button_Register onClick={() => navigate("/signup")}>
           REGISTER
         </Button_Register>
       </Menu_Wrapper>

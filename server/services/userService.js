@@ -101,4 +101,26 @@ const loginUser = async (email, password) => {
   }
 };
 
-module.exports = { checkEmail, checkNickname, registerUser, loginUser };
+const findId = async (name, tel) => {
+  try {
+    console.log("이메일 찾기 조건 이름, 전화번호:", name, tel);
+    const query = `select user_email from user_account where user_name = :name and user_tel = :tel`;
+    const result = await executeQuery(query, { name, tel });
+
+    console.log("이메일찾기 DB 조회 결과:", result);
+
+    // 이메일 존재 여부 확인
+    if (result.length === 0) {
+      console.log("로그인 실패: 등록되지 않은 이메일");
+      return { success: false, message: "등록되지 않은 이메일입니다." };
+    }
+
+    const user_email = result;
+    return { success: true, user_email };
+  } catch (error) {
+    console.error("이메일 찾기 서비스 오류:", error);
+    throw new Error("이메일 찾기 처리 중 오류가 발생했습니다.");
+  }
+};
+
+module.exports = { checkEmail, checkNickname, registerUser, loginUser, findId };
