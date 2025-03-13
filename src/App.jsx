@@ -1,16 +1,24 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
+import Index from "./component/product/index";
+import ProductDetail from "./component/product/ProductDetail";
+import OrderComplete from "./component/order/OrderComplete";
+import Order from "./component/order/Order";
+import CmMain from "./component/community/CmMain";
+import CmAdd from "./component/community/CmAdd";
+import CmDetail from "./component/community/CmDetail";
 import SignUp from "./component/account/SignUp";
 import SignUpSuccess from "./component/account/SignUpSuccess";
+// ---------------Hearder, Footer----------------
+import Header from "./component/common/Header";
 import Footer from "./component/common/Footer";
 import Header from "./component/common/Header";
 import CmAdd from "./component/community/CmAdd";
 import CmMain from "./component/community/CmMain";
 import Order from "./component/order/Order";
 import OrderComplete from "./component/order/OrderComplete";
-import Index from "./component/product/Index";
 import ProductDetail from "./component/product/ProductDetail";
-import CmDetail from "./component/community/CmDetail";
+
 function App() {
   return (
     <Router>
@@ -21,7 +29,6 @@ function App() {
         <Route path="/detail/:product_no" element={<ProductDetail />} />
         <Route path="/order" element={<Order />} />
         <Route path="/order-complete" element={<OrderComplete />} />
-        <Route path="/signup" element={<SignUp />} />
         <Route path="/community" element={<CmMain />} />
         <Route path="/CmAdd" element={<CmAdd />} />
         <Route path="/CmDetail" element={<CmDetail />} />

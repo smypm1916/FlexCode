@@ -5,7 +5,9 @@ import { Container_Style, Title } from "../../style/Common_Style";
 import {
   ProductList_ItemBox,
   ProductList_Wrapper,
+  System_message,
 } from "../../style/ProductLists_Style";
+import { Text_wrapper } from "../../style/ProductLists_Style";
 
 const ProductLists = () => {
   const [page, setPage] = useState(1); // 현재 페이지
@@ -77,27 +79,29 @@ const ProductLists = () => {
   return (
     <Container_Style>
       <Title>SHOPPING</Title>
-      {products.map((product) => (
-        <ProductList_Wrapper
-          key={product.PRODUCT_NO}
-          onClick={() => navigate(`/detail/${product.PRODUCT_NO}`)}
-        >
-          <ProductList_ItemBox>
+      <ProductList_Wrapper>
+        {products.map((product) => (
+          // 제품의 가격, 이미지, 정보를 표시하는 box
+          <ProductList_ItemBox
+            key={product.PRODUCT_NO}
+            onClick={() => navigate(`/product/${product.PRODUCT_NO}`)}
+          >
             <img
               src={`${imgPath}/${product.PRODUCT_IMG}`}
               alt={product.PRODUCT_NAME}
             />
-            <div>
+            {/* 제품의 정보 text를 묶는 wrapper */}
+            <Text_wrapper>
               <h3>{product.PRODUCT_NAME}</h3>
               <p>{product.PRODUCT_TYPE}</p>
               <p>{product.PRODUCT_PRICE} 원</p>
-            </div>
+            </Text_wrapper>
           </ProductList_ItemBox>
-        </ProductList_Wrapper>
-      ))}
-      {loading && <div>Loading...</div>}
-      {error && <div>Error: {error.message}</div>}
-      <div ref={loader} />
+        ))}
+        {loading && <System_message>Loading...</System_message>}
+        {error && <System_message>Error: {error.message}</System_message>}
+        <div ref={loader} />
+      </ProductList_Wrapper>
     </Container_Style>
   );
 };
