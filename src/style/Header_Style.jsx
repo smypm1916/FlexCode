@@ -139,3 +139,33 @@ export const Menu_Wrapper = styled.div`
   gap: 20px;
   align-items: center;
 `;
+
+// 프로필 이미지 감싸는 컨테이너
+export const ProfileWrapper = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+`;
+
+// 프로필 이미지 스타일
+export const ProfileImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+// 로그아웃 버튼 스타일
+export const LogoutButton = styled.button`
+  background-color: transparent;
+  border: none;
+  color: black;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+
+  &:hover {
+    color: red;
+  }
+`;
