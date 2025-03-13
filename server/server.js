@@ -17,7 +17,7 @@ const orderRouter = require('./routes/order');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-
+// redis세션
 app.use(session({
   store: new RedisStore({ client: redisClient }),
   secret: "cart-key",
@@ -57,5 +57,4 @@ const startServer = async () => {
   }
 };
 
-//서버 실행
 startServer();
