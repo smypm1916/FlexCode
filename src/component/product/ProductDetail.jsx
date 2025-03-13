@@ -21,6 +21,7 @@ import {
   Wrapper,
 } from "../../style/Product_detail_style";
 import Button from "../common/Button";
+import CheckedProduct from "../common/CheckedProduct";
 import Select from "../common/Select";
 
 
@@ -31,7 +32,7 @@ const ProductDetail = () => {
   console.log(PRODUCT_NO);
   console.log('====================================');
   const [product, setProduct] = useState(null);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState([]);
   const [options, setOptions] = useState([]);
   // const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -39,8 +40,9 @@ const ProductDetail = () => {
   const imgPath = import.meta.env.VITE_IMG_PATH;
 
   const onRemove = (option_no) => {
-
-
+    setSelectedOption((prev) => {
+      prev.filter((option) => option.option_no !== option_no)
+    });
   }
 
   const onChangeHandler = (e) => {
@@ -138,13 +140,13 @@ const ProductDetail = () => {
 
           {/* 상품 선택 정보 */}
           <div>
-            {/* <CheckedProduct /> */}
+            <CheckedProduct />
           </div>
 
           {/* 버튼 */}
           <Button_Wrapper>
             <Button btnTxt="바로구매" />
-            <Button btnTxt="장바구니" />
+            <Button btnTxt="장바구니" onClick />
           </Button_Wrapper>
         </Product_Wrapper>
       </Container01>

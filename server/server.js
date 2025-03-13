@@ -13,10 +13,13 @@ const cartRouter = require("./routes/cart");
 const cmRouter = require("./routes/community");
 const optionRouter = require("./routes/options");
 const orderRouter = require("./routes/order");
+
+const redis = require("redis");
 const session = require("express-session");
 const { createClient } = require("redis");
-const RedisStore = require("connect-redis").default;
+const { RedisStore } = require("connect-redis");
 const path = require("path");
+const { log } = require("console");
 const app = express();
 const PORT = process.env.PORT || 8080;
 const server = http.createServer(app);
@@ -68,17 +71,17 @@ io.on("connection", (socket) => {
   });
 });
 
-// WebSocket 설정 후, `express` 미들웨어 등록
 // redis세션
-// app.use(
-//   session({
-//     store: new RedisStore({ client: redisClient }),
-//     secret: "cart-key",
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: { maxAge: 30 * 60 * 1000 }, // 30분 유지
-//   })
-// );
+const redisClient = createClient({
+  url: "redis://127.0.0.1",
+}); // 기본 Redis 포트로 변경
+
+redisClient
+  .connect()
+  .then(() => {
+    console.log("Redis Connected");
+  })
+  .catch(console.error);
 
 // middleware
 app.use(
@@ -90,6 +93,15 @@ app.use(
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(
+  session({
+    store: new RedisStore({ client: redisClient, disableTouch: true }),
+    secret: "cart-key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 30 * 60 * 1000 }, // 30분 유지
+  })
+);
 
 // 라우터 등록
 app.use("/api/products", productRouter);

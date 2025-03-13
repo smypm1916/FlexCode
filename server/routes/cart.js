@@ -1,13 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const { createClient } = require("redis");
-
-const redisClient = createClient({
-   url: "redis://localhost:6379", // 기본 Redis 포트로 변경
-});
-
-redisClient.connect().catch(console.error);
-
 const CART_TTL = 2592000; // 30일 (초 단위)
 
 //  장바구니 키 가져오는 함수 (user_email 또는 session 기반)

@@ -3,15 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import Button from './Button';
 
 const CheckedProduct = ({ product, options, count = 1, onRemove }) => {
-   const [count, setCount] = useState(count);
+   const [countState, setCountState] = useState(count);
    const [error, setError] = useState(null);
    const navigate = useNavigate();
 
    const countUp = () => {
-      setCount((prev) => prev + 1);
+      setCountState((prev) => prev + 1);
    }
    const countDown = () => {
-      setCount((prev) => prev > 1 ? prev - 1 : 1);
+      setCountState((prev) => prev > 1 ? prev - 1 : 1);
    }
 
    return (
