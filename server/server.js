@@ -13,7 +13,7 @@ const orderRouter = require('./routes/order');
 const session = require('express-session');
 const { createClient } = require('redis');
 const RedisStore = require('connect-redis').default;
-
+const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 8080;
 

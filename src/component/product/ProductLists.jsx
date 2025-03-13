@@ -2,7 +2,10 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container_Style, Title } from "../../style/Common_Style";
-import { ProductList_ItemBox, ProductList_Wrapper } from "../../style/ProductLists_Style";
+import {
+  ProductList_ItemBox,
+  ProductList_Wrapper,
+} from "../../style/ProductLists_Style";
 
 const ProductLists = () => {
   const [page, setPage] = useState(1); // 현재 페이지
