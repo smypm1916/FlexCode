@@ -3,6 +3,7 @@ const productModel = require('../models/product_info');
 // 상품 리스트 조회
 async function getAllProducts(page, limit) {
    try {
+      console.log(`Fetching products for page(S): ${page}, limit: ${limit}`);
       return await productModel.getAllProducts(page, limit);
    } catch (error) {
       console.error('service error', error);

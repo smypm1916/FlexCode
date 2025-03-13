@@ -14,24 +14,11 @@ const { executeQuery } = require('../config/oracledb');
  */
 
 //  상품 전체 조회
-// async function getAllProducts() {
-//   try {
-//     const result = await executeQuery('SELECT * FROM PRODUCT_INFO', {}, {
-//       outFormat: oracledb.OUT_FORMAT_OBJECT
-//     });
-//     console.log('get products list success!!!', result);
-//     return result.rows;
-//   }
-//   catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// }
 async function getAllProducts(page, limit) {
+  const offset = Math.max((Number(page) - 1) * Number(limit), 0);
+  const query = `SELECT * FROM PRODUCT_INFO OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY`;
+  const binds = { offset, limit };
   try {
-    const offset = Math.max((Number(page) - 1) * Number(limit), 0);
-    const query = `SELECT * FROM PRODUCT_INFO OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY`;
-    const binds = { offset, limit: Number(limit) };
     const rows = await executeQuery(query, binds, {
       outFormat: oracledb.OUT_FORMAT_OBJECT
     });

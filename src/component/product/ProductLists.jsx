@@ -6,8 +6,8 @@ import {
   ProductList_ItemBox,
   ProductList_Wrapper,
   System_message,
+  Text_wrapper,
 } from "../../style/ProductLists_Style";
-import { Text_wrapper } from "../../style/ProductLists_Style";
 
 const ProductLists = () => {
   const [page, setPage] = useState(1); // 현재 페이지
@@ -53,28 +53,19 @@ const ProductLists = () => {
 
   // 스크롤이 마지막 요소에 도달하면 다음 페이지 데이터를 불러옴
   useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: "20px",
-      threshold: 1.0,
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !loading) {
+          fetchProducts(page + 1);
+        }
+      },
+      { root: null, rootMargin: "20px", threshold: 1.0 }
+    );
 
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && hasMore && !loading) {
-        fetchProducts(page + 1);
-      }
-    }, options);
+    if (loader.current) observer.observe(loader.current);
 
-    const currentLoader = loader.current;
-    if (currentLoader) {
-      observer.observe(currentLoader);
-    }
-    return () => {
-      if (currentLoader) {
-        observer.unobserve(currentLoader);
-      }
-    };
-  }, [hasMore, loading]);
+    return () => observer.disconnect();
+  }, [hasMore, loading, page]); // page 추가하여 최신 상태 유지
 
   return (
     <Container_Style>

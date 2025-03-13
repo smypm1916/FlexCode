@@ -25,7 +25,7 @@ const Cart = () => {
                <CheckedProduct />
             </div>
             <div>
-               <Button btnTxt="구매하기" onClick={toOrder} />
+               <Button btnTxt="주문하기" onClick={toOrder} />
             </div>
          </div>
       </div>

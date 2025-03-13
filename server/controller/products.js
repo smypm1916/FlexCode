@@ -2,9 +2,9 @@ const productService = require('../services/products');
 
 // 전체 상품 조회
 async function getAllProducts(req, res) {
+   const page = Math.max(Number(req.query.page) || 1, 1);
+   const limit = Math.max(Number(req.query.limit) || 9, 1);
    try {
-      const page = Number(req.query.page) || 1;
-      const limit = Number(req.query.limit) || 9;
       const productsLists = await productService.getAllProducts(page, limit);
       res.status(200).json({ success: true, data: productsLists });
    } catch (error) {
