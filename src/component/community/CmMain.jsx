@@ -18,14 +18,6 @@ import {
 } from "../../style/List_Style";
 import { Container_Style, Wrapper } from "../../style/Common_Style";
 
-// button을 감싸는 div
-const Button_Box = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  align-items: center;
-`;
-
 // select 스타일
 const Select_Box = styled.select`
   height: 45px;
@@ -99,9 +91,10 @@ const CmMain = () => {
   const cnt = 6; // 한 페이지당 개수
   const [selected, setSelected] = useState("");
   const [pageNum, setPageNum] = useState(1);
-
+  const [allPosts, setAllPosts] = useState([]); // 원본 데이터 저장
   const [posts, setPosts] = useState([]);
   const [paginatedPosts, setPaginatedPosts] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
   const filterPosts = () => {
     if (posts.length === 0) return [];
     // 12 - 3 * (1-1)    start = 12
@@ -115,13 +108,27 @@ const CmMain = () => {
   const getPosts = async () => {
     console.log("진입?");
     const response = await axios.get("http://localhost:8080/api/post/paging");
-    console.log(response);
+    setAllPosts(response.data); // 원본 데이터 저장
     setPosts(response.data);
+    console.log("전체 ---");
   };
   const searchOptions = [
     { value: "opTitle", label: "제목" },
     { value: "opUser", label: "작성자" },
   ];
+
+  const searchHandler = () => {
+    if (!searchKeyword) {
+      setPosts(allPosts);
+      return;
+    }
+
+    const filtered = allPosts.filter((post) =>
+      post.COMMUNITY_TITLE.includes(searchKeyword)
+    );
+
+    setPosts(filtered);
+  };
 
   useEffect(() => {
     getPosts();
@@ -130,29 +137,40 @@ const CmMain = () => {
   useEffect(() => {
     // posts 상태가 바뀌면 필터링 실행
     setPaginatedPosts(filterPosts());
+    console.log("솔팅 결과");
     console.log(paginatedPosts);
+    console.log("--------");
+    console.log(posts);
   }, [posts, pageNum]);
 
   return (
     <Wrapper>
       <Container_Style>
         <Container01>상단 광고</Container01>
-        <Title>REVIEW</Title>
         <Input_Wrapper>
           <div className="search-select">
             <Select
-              value={selected}
+              options={searchOptions}
+              value={searchOptions.find((option) => option.value === selected)}
               onChange={(e) => setSelected(e.target.value)}
               defaultValue=""
             />
           </div>
           <Search_Box>
             <Input_Box>
-              <Input type="text" placeholder="search" />
+              <Input
+                type="text"
+                placeholder="search"
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
+              />
             </Input_Box>
-            <Button btnTxt={"SEARCH"}>SEARCH</Button>
+            <Button onClick={searchHandler} btnTxt={"SEARCH"}>
+              SEARCH
+            </Button>
           </Search_Box>
         </Input_Wrapper>
+
         <ul>
           {paginatedPosts.map((post) => (
             <Pagination_List key={post.id} className="border p-2 mb-2">

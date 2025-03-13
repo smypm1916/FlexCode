@@ -73,27 +73,32 @@ const ProductLists = () => {
   }, [page, hasMore, loading]);
 
   return (
-    <Container_Style>
-      <Title>SHOPPING</Title>
-      <ProductList_Wrapper>
-        {products.map((product) => (
-          <ProductList_ItemBox
-            key={product.PRODUCT_NO}
-            onClick={() => navigate(`/product/${product.PRODUCT_NO}`)}
-          >
-            <img
-              src={`${imgPath}/${product.PRODUCT_IMG}`}
-              alt={product.PRODUCT_NAME}
-            />
-            <Text_wrapper>
-              <h3>{product.PRODUCT_NAME}</h3>
-              <p>{product.PRODUCT_TYPE}</p>
-              <p>{product.PRODUCT_PRICE} 원</p>
-            </Text_wrapper>
-          </ProductList_ItemBox>
-        ))}
-      </ProductList_Wrapper>
-    </Container_Style>
+    <Wrapper>
+      <Container_Style>
+        <Title>SHOPPING</Title>
+        <ProductList_Wrapper>
+          {products.map((product) => (
+            <ProductList_ItemBox
+              key={product.PRODUCT_NO}
+              onClick={() => navigate(`/product/${product.PRODUCT_NO}`)}
+            >
+              <img
+                src={`${imgPath}/${product.PRODUCT_IMG}`}
+                alt={product.PRODUCT_NAME}
+              />
+              <Text_wrapper>
+                <h3>{product.PRODUCT_NAME}</h3>
+                <p>{product.PRODUCT_TYPE}</p>
+                <p>{product.PRODUCT_PRICE} 원</p>
+              </Text_wrapper>
+            </ProductList_ItemBox>
+          ))}
+          {loading && <System_message>Loading...</System_message>}
+          {error && <System_message>Error: {error.message}</System_message>}
+          <System_message ref={loader} />
+        </ProductList_Wrapper>
+      </Container_Style>
+    </Wrapper>
   );
 };
 
