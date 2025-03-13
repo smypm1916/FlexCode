@@ -2,6 +2,7 @@ import { jwtDecode } from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
+import LoginModal from "../account/LoginModal";
 import {
   Container,
   Headerdiv,
@@ -21,7 +22,6 @@ const App = () => {
   const [showModal, setShowModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileImg, setProfileImg] = useState(null);
-  // const [isLoading, setIsLoading] = useState(true); // 로딩상태
   const navigate = useNavigate();
   // 로그인 상태 확인
   useEffect(() => {
@@ -37,7 +37,6 @@ const App = () => {
       setIsLoggedIn(false);
       setProfileImg(null);
     }
-    // setIsLoading(false); // 로딩 완료 후 상태 변경
   }, [sessionStorage.getItem("token"), sessionStorage.getItem("profile")]);
 
   // WebSocket연결(한번만실행)
