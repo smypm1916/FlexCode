@@ -7,7 +7,7 @@ const Cart = () => {
    const navigate = useNavigate();
    const toOrder = () => {
       // 가져갈 데이터 추가필요
-      navigate('/order');
+      navigate('/order', {});
    }
    return (
       <div>
@@ -24,7 +24,9 @@ const Cart = () => {
             <div>
                <CheckedProduct />
             </div>
-            <div><Button btnTxt={구매하기} onClick={toOrder}></Button></div>
+            <div>
+               <Button btnTxt="구매하기" onClick={toOrder} />
+            </div>
          </div>
       </div>
    )

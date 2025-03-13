@@ -18,7 +18,7 @@ function App() {
       {/* 루팅 */}
       <Routes>
         <Route path="/" element={<Index />} />
-        <Route path="/detail/:PRODUCT_NO" element={<ProductDetail />} />
+        <Route path="/detail/:product_no" element={<ProductDetail />} />
         <Route path="/order" element={<Order />} />
         <Route path="/order-complete" element={<OrderComplete />} />
         <Route path="/signup" element={<SignUp />} />

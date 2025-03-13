@@ -29,9 +29,9 @@ const { executeQuery } = require('../config/oracledb');
 // }
 async function getAllProducts(page, limit) {
   try {
-    const offset = (page - 1) * limit;
+    const offset = Math.max((Number(page) - 1) * Number(limit), 0);
     const query = `SELECT * FROM PRODUCT_INFO OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY`;
-    const binds = { offset, limit };
+    const binds = { offset, limit: Number(limit) };
     const rows = await executeQuery(query, binds, {
       outFormat: oracledb.OUT_FORMAT_OBJECT
     });
@@ -85,9 +85,9 @@ async function regProduct(product) {
 // 상품 삭제
 async function deleteProductByPk(product_no) {
   const query = `DELETE FROM PRODUCT_INFO WHERE PRODUCT_NO= :product_no`
-  const binds = {product_no};
+  const binds = { product_no };
   try {
-    const result = await executeQuery(query,binds);
+    const result = await executeQuery(query, binds);
     console.log('Delete Success!!!');
   } catch (error) {
     console.log('Delete Failed', error);
@@ -97,8 +97,10 @@ async function deleteProductByPk(product_no) {
 
 // 카테고리별 상품조회
 async function getCategories() {
-  // 중복 제거
-  const query = `SELECT DISTINCT PRODUCT_TYPE FROM PRODUCT_INFO`;
+  //  병렬 실행 방지
+  await executeQuery("ALTER SESSION DISABLE PARALLEL QUERY", {});
+  // 중복 제거 + 데이터 타입 변환
+  const query = `SELECT DISTINCT TO_CHAR(PRODUCT_TYPE) AS PRODUCT_TYPE FROM PRODUCT_INFO`;
   try {
     const rows = await executeQuery(query, {}, {
       outFormat: oracledb.OUT_FORMAT_OBJECT

@@ -1,5 +1,6 @@
 const productService = require('../services/products');
 
+// 전체 상품 조회
 async function getAllProducts(req, res) {
    try {
       const page = Number(req.query.page) || 1;

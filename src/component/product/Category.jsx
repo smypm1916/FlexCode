@@ -12,9 +12,12 @@ const Category = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get('/api/products/cat', { headers: { Accept: "application/json" } });
+      const res = await axios.get(`http://localhost:8080/api/products/cat`, { headers: { Accept: "application/json" } });
       console.log(res.data);
-      setCategories(res.data.data);
+      if (res.data && res.data.success) {
+        const newCategories = res.data.data || [];
+        setCategories((prev) => [...prev, ...newCategories]);
+      }
     } catch (error) {
       console.error('fetch category error', error);
       setError(error);
@@ -29,21 +32,16 @@ const Category = () => {
   return (
     <Container_Style>
       <Title>CATEGORY</Title>
-      {categories.map((category, i) => (
-        <Category_Wrapper key={i}>
-          <Category_Box>
+      <Category_Wrapper>
+        {categories.map((category, i) => (
+          <Category_Box key={i}>
             {/* <img
               src={`${imgPath}/${product.PRODUCT_IMG}`}
             /> */}
             {category.PRODUCT_TYPE}
           </Category_Box>
-          {/* <Category_Box>cat2</Category_Box>
-          <Category_Box>cat3</Category_Box>
-          <Category_Box>cat4</Category_Box>
-          <Category_Box>cat5</Category_Box>
-          <Category_Box>cat6</Category_Box> */}
-        </Category_Wrapper>
-      ))}
+        ))}
+      </Category_Wrapper>
     </Container_Style>
   );
 };

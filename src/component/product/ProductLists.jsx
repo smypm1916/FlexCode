@@ -19,6 +19,9 @@ const ProductLists = () => {
 
   // 페이지 번호를 받아 해당 페이지의 상품들을 불러오는 함수
   const fetchProducts = async (pageToFetch) => {
+    // 중복 요청 방지
+    if (pageToFetch <= page) return;
+
     try {
       setLoading(true);
       const res = await axios.get(
@@ -26,6 +29,7 @@ const ProductLists = () => {
         { headers: { Accept: "application/json" } }
       );
       console.log("API 응답:", res.data);
+
       if (res.data && res.data.success) {
         const newProducts = res.data.data || [];
         setProducts((prev) => [...prev, ...newProducts]);
@@ -68,7 +72,7 @@ const ProductLists = () => {
         observer.unobserve(currentLoader);
       }
     };
-  }, [page, hasMore, loading]);
+  }, [hasMore, loading]);
 
   return (
     <Container_Style>

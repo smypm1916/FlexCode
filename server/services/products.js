@@ -40,7 +40,7 @@ async function deleteProductByPk(product_no) {
    }
 };
 
-
+// 카테고리 조회
 async function getCategories() {
    try {
       return await productModel.getCategories;
