@@ -131,7 +131,7 @@ const Title = styled.h2`
 const CmMain = () => {
   const navigate = useNavigate();
   const cnt = 6; // 한 페이지당 개수
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState("opTitle");
   const [pageNum, setPageNum] = useState(1);
   const [allPosts, setAllPosts] = useState([]); // 원본 데이터 저장
   const [posts, setPosts] = useState([]);
@@ -164,11 +164,15 @@ const CmMain = () => {
       setPosts(allPosts);
       return;
     }
-
-    const filtered = allPosts.filter((post) =>
-      post.COMMUNITY_TITLE.includes(searchKeyword)
-    );
-
+    setPosts([]);
+    const filtered = allPosts.filter((post) => {
+      console.log(searchKeyword);
+      console.log(selected);
+      if (selected === "opTitle")
+        return post.COMMUNITY_TITLE.includes(searchKeyword);
+      else return post.USER_NICKNAME.includes(searchKeyword);
+    });
+    console.log(filtered);
     setPosts(filtered);
   };
 
@@ -176,6 +180,11 @@ const CmMain = () => {
     getPosts();
   }, []);
 
+  useEffect(() => {
+    setSearchKeyword(""); // 검색어 초기화
+    setPosts(allPosts); // 상태 초기화
+    console.log(selected);
+  }, [selected]);
   useEffect(() => {
     // posts 상태가 바뀌면 필터링 실행
     setPaginatedPosts(filterPosts());
