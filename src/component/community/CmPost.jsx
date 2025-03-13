@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 const Post = styled.div`
   width: 100%;
@@ -18,12 +19,18 @@ const Post = styled.div`
 `;
 
 const CmPost = ({ post }) => {
+  const navigate = useNavigate();
   const imgPath = import.meta.env.VITE_IMG_PATH;
   const imgStyle = {
     width: "100px",
   };
   return (
-    <Post key={post.COMMUNITY_NO}>
+    <Post
+      key={post.COMMUNITY_NO}
+      onClick={() => {
+        navigate(`/CmDetail/${post.COMMUNITY_NO}`);
+      }}
+    >
       <div>{post.COMMUNITY_TITLE}</div>
       <div>
         <img style={imgStyle} src={`${imgPath}/${post.COMMUNITY_IMG}`} />
