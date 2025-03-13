@@ -1,11 +1,10 @@
 import { useState } from "react";
-
 import Button from "../common/Button";
 import TextInput from "../common/TextInput";
 import Select from "../common/Select";
 import axios from "axios";
 
-const FindId = ({ onBack }) => {
+// 스타일 임포트
 import {
   Container_Modal,
   Input_Box,
@@ -16,15 +15,11 @@ import {
 } from "../../style/Common_Style";
 import { Button_Wrapper } from "../../style/Product_detail_style";
 import { Phone_Box, Title } from "../../style/Modal_Style";
+
 const FindId = ({ onBack, onClose }) => {
-  const style = {
-    display: "flex",
-  };
-
+  // 상태 관리
   const [findEmail, setFindEmail] = useState(null);
-
   const [userName, setUserName] = useState("");
-  console.log(userName);
 
   const [userTel, setUserTel] = useState({
     first_tel: "010",
@@ -33,193 +28,124 @@ const FindId = ({ onBack, onClose }) => {
   });
 
   const { first_tel, mid_tel, last_tel } = userTel;
+  const full_tel = `${first_tel}-${mid_tel}-${last_tel}`;
 
+  // 전화번호 변경 핸들러
   const handleSelectTelChange = (e) => {
-    setUserTel((prev) => ({
-      ...prev,
-      first_tel: e.target.value,
-    }));
+    setUserTel((prev) => ({ ...prev, first_tel: e.target.value }));
   };
 
   const handleInputTelChange = (e) => {
     const { name, value } = e.target;
-    setUserTel((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setUserTel((prev) => ({ ...prev, [name]: value }));
   };
 
-  const full_tel = `${first_tel}-${mid_tel}-${last_tel}`;
-  console.log(full_tel);
-
+  // 이메일 찾기 API 요청
   const handleFindId = async (e) => {
     e.preventDefault();
-    // 필수 입력값 확인
+
     if (!userName) {
       alert("이름을 입력해주세요.");
       return;
     }
-    if (!mid_tel) {
+    if (!mid_tel || !last_tel) {
       alert("전화번호를 입력해주세요.");
       return;
     }
-    if (!last_tel) {
-      alert("전화번호를 입력해주세요");
-      return;
-    }
-    try {
-      //findIdData 생성
-      const findIdData = {
-        name: userName,
-        tel: full_tel,
-      };
-      console.log("보낼 데이터 : ", findIdData);
 
-      // API요청
+    try {
+      const findIdData = { name: userName, tel: full_tel };
+      console.log("보낼 데이터:", findIdData);
+
       const response = await axios.post(
         "http://localhost:8080/api/users/findId",
         findIdData,
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         }
       );
-      console.log("이메일 찾기 성공:", response.data);
 
-      // API 응답 데이터 상태 저장
-      if (response.data.success) {
-        setFindEmail(response.data.user_email[0].USER_EMAIL);
-      } else {
-        setFindEmail("이메일을 찾을 수 없습니다.");
-      }
+      console.log("이메일 찾기 응답:", response.data);
+      setFindEmail(
+        response.data.success
+          ? response.data.user_email[0].USER_EMAIL
+          : "이메일을 찾을 수 없습니다."
+      );
     } catch (error) {
       console.error("이메일 찾기 실패:", error);
+      setFindEmail("서버 오류 발생");
     }
   };
 
   return (
-    <div className="findIdPage">
-      <div className="findId-title">
-        <h2>이메일 찾기</h2>
-      </div>
-      <div className="findId-name" style={style}>
-        <div className="findId-name-label">
+    <Container_Modal>
+      <Modal_Wrapper>
+        <Title>이메일 찾기</Title>
+
+        {/* 이름 입력 */}
+        <Input_Wrapper>
           <label>이름</label>
-        </div>
-        <div className="findId-name-input">
-          <TextInput
-            type={"text"}
-            name={"input_name"}
-            placeholder={"이름을 입력하세요"}
-            value={userName}
-            onChange={(e) => {
-              setUserName(e.target.value);
-            }}
-          />
-        </div>
-      </div>
-      <div className="findId-tel" style={style}>
-        <div className="findId-tel-label">
+          <Input_Box>
+            <Input_Style
+              type="text"
+              placeholder="이름을 입력하세요"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+            />
+          </Input_Box>
+        </Input_Wrapper>
+
+        {/* 전화번호 입력 */}
+        <Input_Wrapper>
           <label>TEL</label>
-        </div>
-        <div className="findId-tel-select">
-          <Select
-            className={"selectTel"}
-            options={[
-              { value: "010", label: "010" },
-              { value: "011", label: "011" },
-              { value: "02", label: "02" },
-              { value: "031", label: "031" },
-            ]}
-            defaultValue={"010"}
-            onChange={handleSelectTelChange}
-          />
-        </div>
-        <div>
-          <label>-</label>
-        </div>
-        <div className="findId-tel-middle">
-          <TextInput
-            type={"text"}
-            name={"mid_tel"}
-            placeholder={"1234"}
-            value={mid_tel}
-            onChange={handleInputTelChange}
-          />
-        </div>
-        <div>
-          <label>-</label>
-        </div>
-        <div className="findId-tel-last">
-          <TextInput
-            type={"text"}
-            name={"last_tel"}
-            placeholder={"5678"}
-            value={last_tel}
-            onChange={handleInputTelChange}
-          />
-        </div>
-      </div>
-      <div className="findId-result">
+          <Phone_Box>
+            <Select_Style value={first_tel} onChange={handleSelectTelChange}>
+              <option value="010">010</option>
+              <option value="011">011</option>
+              <option value="02">02</option>
+              <option value="031">031</option>
+            </Select_Style>
+            <label>-</label>
+            <Input_Box>
+              <Input_Style
+                type="text"
+                name="mid_tel"
+                placeholder="1234"
+                value={mid_tel}
+                onChange={handleInputTelChange}
+              />
+            </Input_Box>
+            <label>-</label>
+            <Input_Box>
+              <Input_Style
+                type="text"
+                name="last_tel"
+                placeholder="5678"
+                value={last_tel}
+                onChange={handleInputTelChange}
+              />
+            </Input_Box>
+          </Phone_Box>
+        </Input_Wrapper>
+
+        {/* 이메일 결과 출력 */}
         {findEmail && (
-          <div className="email-result">
+          <div className="findId-result">
             <h3>{findEmail}</h3>
           </div>
         )}
-      </div>
-      <div className="findId-btns" style={style}>
-        <Button
-          className={"findId"}
-          btnTxt={"이메일찾기"}
-          onClick={handleFindId}
-        />
-        <Button className={"cancel"} btnTxt={"취소"} onClick={onBack} />
-      </div>
-    </div>
-    // <Container_Modal>
-    //   <Modal_Wrapper>
-    //     <div>
-    //       <Title>ID 찾기</Title>
-    //     </div>
-    //     <Input_Wrapper>
-    //       <div className="findId-name-label">
-    //         <label>이름</label>
-    //       </div>
-    //       <Input_Box>
-    //         <Input_Style type="text" placeholder="이름을 입력하세요" />
-    //       </Input_Box>
-    //     </Input_Wrapper>
-    //     <Input_Wrapper>
-    //       <div className="findId-tel-label">
-    //         <label>TEL</label>
-    //       </div>
-    //       <Phone_Box>
-    //         <Select_Style
-    //           value={selectedTelOption}
-    //           onChange={updateSelectValue}
-    //         >
-    //           <option value="010">010</option>
-    //           <option value="011">011</option>
-    //           <option value="02">02</option>
-    //           <option value="031">031</option>
-    //         </Select_Style>
-    //         <label>-</label>
-    //         <Input_Box>
-    //           <Input_Style type="text" placeholder="1234" />
-    //         </Input_Box>
-    //         <label>-</label>
-    //         <Input_Box>
-    //           <Input_Style type="text" placeholder="5678" />
-    //         </Input_Box>
-    //       </Phone_Box>
-    //     </Input_Wrapper>
-    //     <Button_Wrapper>
-    //       <Button className={"findId"} btnTxt={"ID찾기"} />
-    //       <Button className={"cancel"} btnTxt={"취소"} onClick={onBack} />
-    //     </Button_Wrapper>
-    //   </Modal_Wrapper>
-    // </Container_Modal>
+
+        {/* 버튼 */}
+        <Button_Wrapper>
+          <Button
+            className="findId"
+            btnTxt="이메일 찾기"
+            onClick={handleFindId}
+          />
+          <Button className="cancel" btnTxt="취소" onClick={onBack} />
+        </Button_Wrapper>
+      </Modal_Wrapper>
+    </Container_Modal>
   );
 };
 
