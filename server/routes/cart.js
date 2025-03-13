@@ -8,6 +8,8 @@ const redisClient = createClient({
 
 redisClient.connect().catch(console.error);
 
+const CART_TTL = 2592000; // 유효 기간 30일 (초 단위)
+
 // 장바구니에 상품 추가
 router.post("/add", async (req, res) => {
    const { user_email, product_no, product_price, option_no, option_price, product_quantity } = req.body;
@@ -21,7 +23,8 @@ router.post("/add", async (req, res) => {
       cart_date: new Date().toISOString()
    }));
 
-   res.json({ success: true });
+   await redisClient.expire(key, CART_TTL);
+   res.json({ success: true, message: "장바구니에 추가되었습니다." });
 });
 
 // 장바구니 조회
