@@ -11,6 +11,7 @@ import {
   Wrapper,
 } from "../../style/Header_Style";
 import LoginModal from "../account/LoginModal";
+// import Cart from "./Cart";
 
 const App = () => {
   const [showModal, setShowModal] = useState(false);
@@ -31,6 +32,8 @@ const App = () => {
         </Wrapper>
         <Menu_Wrapper>
           <LoginButton onClick={() => setShowModal(true)}>LOGIN</LoginButton>
+          <Cart />
+          {/* 로그인 상태일 경우 회원가입 버튼 숨기기 로직 필요 */}
           <RegisterButton>REGISTER</RegisterButton>
         </Menu_Wrapper>
       </Headerdiv>

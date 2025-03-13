@@ -5,10 +5,12 @@ import Footer from "./component/common/Footer";
 import Header from "./component/common/Header";
 import CmAdd from "./component/community/CmAdd";
 import CmMain from "./component/community/CmMain";
+import Order from "./component/order/Order";
 import Index from "./component/product/Index";
 import ProductDetail from "./component/product/ProductDetail";
 
 function App() {
+
   return (
     <Router>
       <Header />
@@ -16,8 +18,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/detail/:PRODUCT_NO" element={<ProductDetail />} />
-        {/* <Route path="/order" element={<Order />} /> */}
-        {/* <Route path="/order/:id" element={<OrderComplete />} /> */}
+        <Route path="/order" element={<Order />} />
+        <Route path="/order/:id" element={<OrderComplete />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/community" element={<CmMain />} />
         <Route path="/CmAdd" element={<CmAdd />} />
