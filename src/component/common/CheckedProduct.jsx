@@ -24,8 +24,8 @@ const CheckedProduct = ({ product, options, count = 1, onRemove }) => {
             </div>
             <div>
                {options && options.length > 0 ? (
-                  options.map((option) => (
-                     <div key={option.option_no}>
+                  options.map((option, index) => (
+                     <div key={index}>
                         <div>
                            <div>{option.option_title}</div>
                            <div>{option.option_price}</div>
@@ -46,7 +46,7 @@ const CheckedProduct = ({ product, options, count = 1, onRemove }) => {
                )}
             </div>
          </div>
-      </div>
+      </div >
    );
 }
 

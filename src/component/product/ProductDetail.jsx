@@ -38,6 +38,11 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const imgPath = import.meta.env.VITE_IMG_PATH;
 
+  const onRemove = (option_no) => {
+
+
+  }
+
   const onChangeHandler = (e) => {
     const optionSelected = options.find(option => option.option_no === parseInt(e.target.value));
     setSelectedOption(selected);
