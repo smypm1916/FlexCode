@@ -23,4 +23,13 @@ const cmAdd = async (req, res) => {
   }
 };
 
+// const searchPosts = async (req, res) = >{
+//   try {
+
+//   } catch (error) {
+
+//   }
+
+// };
+
 module.exports = { getPosts, cmAdd };

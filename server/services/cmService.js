@@ -2,7 +2,20 @@ const { executeQuery } = require("../config/oracledb");
 const community_info = require("../models/community_info");
 
 const getPosts = async () => {
-  const query = `select * from ${community_info.tableName} order by ${community_info.columns.community_date}`;
+  const query = `
+  SELECT 
+    community_no,
+    user_nickname,
+    community_title,
+    community_content,
+    community_img,
+    TO_CHAR(${community_info.columns.community_date}, 'YYYY/MM/DD') AS community_date,
+    community_readcnt
+  FROM 
+    ${community_info.tableName}
+  ORDER BY 
+    ${community_info.columns.community_date}
+`;
   return await executeQuery(query);
 };
 
