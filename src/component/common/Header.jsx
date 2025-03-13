@@ -17,6 +17,7 @@ const App = () => {
   const [showModal, setShowModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileImg, setProfileImg] = useState(null);
+  // const [isLoading, setIsLoading] = useState(true); // 로딩상태
   const navigate = useNavigate();
   // 로그인 상태 확인
   useEffect(() => {
@@ -87,16 +88,18 @@ const App = () => {
 
   return (
     <Wrapper_Header>
-      <Logo onClick={() => navigate("/")}>
+      <Logo onClick={() => Navigate("/")}>
         <img src="src\style\img\logo.png"></img>
       </Logo>
       <Menu_Wrapper>
-        <Menu onClick={() => navigate("/")}>HOME</Menu>
-        <Menu onClick={() => navigate("/community")}>COMMUNITY</Menu>
+        <Menu onClick={() => Navigate("/")}>HOME</Menu>
+        <Menu onClick={() => Navigate("/community")}>COMMUNITY</Menu>
       </Menu_Wrapper>
       <Menu_Wrapper>
         <Button_Login onClick={() => setShowModal(true)}>LOGIN</Button_Login>
-        <Button_Register>REGISTER</Button_Register>
+        <Button_Register onClick={() => navigate("/signup")}>
+          REGISTER
+        </Button_Register>
       </Menu_Wrapper>
 
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}

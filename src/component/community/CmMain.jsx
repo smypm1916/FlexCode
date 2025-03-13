@@ -23,8 +23,13 @@ import {
 } from "../../style/Common_Style";
 import TextInput from "../common/TextInput";
 import CmAdd from "./CmAdd";
+import CmPost from "./CmPost";
 
-const CmMain = () => {
+const CmMain = ({ post }) => {
+  const imgPath = import.meta.env.VITE_IMG_PATH;
+  const imgStyle = {
+    width: "100px",
+  };
   const navigate = useNavigate();
   const cnt = 6; // 한 페이지당 개수
   const [selected, setSelected] = useState("");
@@ -81,6 +86,8 @@ const CmMain = () => {
     console.log(posts);
   }, [posts, pageNum]);
 
+  const Navigate = useNavigate();
+
   return (
     <Wrapper className="cm" id="community">
       <Container_Style>
@@ -109,29 +116,18 @@ const CmMain = () => {
           </Search_Box>
         </Input_Wrapper>
 
-        <ul>
-          {paginatedPosts.map((post) => (
-            <Pagination_List key={post.id} className="border p-2 mb-2">
-              <List_Column>
-                <List_Profile>
-                  <Profile_Img>{post.profile}</Profile_Img>
-                  <p>{post.user}</p>
-                  <p>{post.title}</p>
-                </List_Profile>
-                <p>{post.date}</p>
-              </List_Column>
-              <List_Content>
-                <p>{post.img}</p>{" "}
-              </List_Content>
-            </Pagination_List>
-          ))}
-        </ul>
+        {paginatedPosts.map((post) => {
+          return <CmPost post={post} />;
+        })}
+
         <Input_Wrapper>
-          <Button btnTxt={"글쓰기"}>글쓰기</Button>
+          <Button btnTxt={"글쓰기"} onClick={() => Navigate("/CmAdd")}>
+            글쓰기
+          </Button>
         </Input_Wrapper>
         {/* ✅ 페이징 컴포넌트 추가 */}
         <PaginationComponent
-          totalItems={setAllPosts.length}
+          totalItems={posts.length}
           itemsPerPage={cnt}
           onPageChange={setPageNum}
         />

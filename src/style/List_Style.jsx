@@ -13,9 +13,8 @@ export const Profile_Img = styled.div`
 
 export const List_Column = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 3fr 2fr 2fr;
   align-items: center;
 `;
 
@@ -24,6 +23,7 @@ export const List_Profile = styled.div`
   flex-direction: row;
   gap: 20px;
   align-items: center;
+  justify-content: space-around;
 `;
 
 export const List_Content = styled.div`
