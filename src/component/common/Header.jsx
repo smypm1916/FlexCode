@@ -32,9 +32,9 @@ const App = () => {
         </Wrapper>
         <Menu_Wrapper>
           <LoginButton onClick={() => setShowModal(true)}>LOGIN</LoginButton>
+          <Cart />
+          {/* 로그인 상태일 경우 회원가입 버튼 숨기기 로직 필요 */}
           <RegisterButton>REGISTER</RegisterButton>
-          {/* 로그인 상태일 경우 Cart컴포넌트 호출 로직 필요*/}
-          {/* <Cart /> */}
         </Menu_Wrapper>
       </Headerdiv>
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}
