@@ -11,6 +11,7 @@ import {
   Wrapper,
 } from "../../style/Header_Style";
 import LoginModal from "../account/LoginModal";
+// import Cart from "./Cart";
 
 const App = () => {
   const [showModal, setShowModal] = useState(false);
@@ -32,6 +33,8 @@ const App = () => {
         <Menu_Wrapper>
           <LoginButton onClick={() => setShowModal(true)}>LOGIN</LoginButton>
           <RegisterButton>REGISTER</RegisterButton>
+          {/* 로그인 상태일 경우 Cart컴포넌트 호출 로직 필요*/}
+          {/* <Cart /> */}
         </Menu_Wrapper>
       </Headerdiv>
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}
