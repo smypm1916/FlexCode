@@ -18,10 +18,16 @@ const Post = styled.div`
 `;
 
 const CmPost = ({ post }) => {
+  const imgPath = import.meta.env.VITE_IMG_PATH;
+  const imgStyle = {
+    width: "100px",
+  };
   return (
     <Post key={post.COMMUNITY_NO}>
       <div>{post.COMMUNITY_TITLE}</div>
-      <div>{post.COMMUNITY_IMG}</div>
+      <div>
+        <img style={imgStyle} src={`${imgPath}/${post.COMMUNITY_IMG}`} />
+      </div>
       <div>작성자 {post.USER_NICKNAME}님</div>
       <div>날짜 {post.COMMUNITY_DATE}</div>
     </Post>

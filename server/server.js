@@ -8,7 +8,7 @@ const productRouter = require("./routes/products");
 const userRouter = require("./routes/user");
 const cmRouter = require("./routes/community");
 const optionRouter = require("./routes/options");
-
+const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 8080;
 
