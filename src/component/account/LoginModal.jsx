@@ -85,6 +85,69 @@ const LoginModal = ({ onClose }) => {
     onClose();
   };
 
+  const [loginForm, setLoginForm] = useState({
+    login_email: "",
+    login_password: "",
+  });
+
+  const { login_email, login_password } = loginForm;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    console.log(name, value);
+    setLoginForm({
+      ...loginForm,
+      [name]: value,
+    });
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    // 필수 입력값 확인
+    if (!login_email) {
+      alert("이메일을 입력해주세요.");
+      return;
+    }
+    if (!login_password) {
+      alert("패스워드를 입력해주세요.");
+      return;
+    }
+
+    try {
+      // 로그인 API 요청
+      const response = await axios.post(
+        "http://localhost:8080/api/users/login",
+        {
+          email: login_email,
+          password: login_password,
+        }
+      );
+      console.log("로그인 응답:", response.data);
+
+      // 로그인 성공 시 토큰 저장 & 메인 페이지 이동
+      if (response.data.success) {
+        sessionStorage.setItem("token", response.data.token); // JWT 토큰 저장
+        sessionStorage.setItem(
+          "profile",
+          response.data.profile || "default-profile.png"
+        );
+        alert("로그인 성공");
+        navigate("/"); // 메인 페이지로 이동
+        onClose();
+      } else {
+        console.log(response.data.message);
+        alert("로그인 실패");
+      }
+    } catch (error) {
+      console.error("로그인 요청 실패:", error);
+      alert("이메일 또는 패스워드를 확인해주세요.");
+      setLoginForm({
+        login_email: "",
+        login_password: "",
+      });
+    }
+  };
+
   return isFindId ? (
     <Container_Modal>
       <FindId onBack={handleBackToLogin} />

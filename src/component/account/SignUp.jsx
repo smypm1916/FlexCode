@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Modal from "react-modal";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import Button from "../common/Button";
 import FileUpload from "../common/FileUpload";
@@ -8,7 +9,6 @@ import Select from "../common/Select";
 import TextInput from "../common/TextInput";
 import PostCodeModal from "./PostCodeModal";
 import {
-  Input_Style,
   Input_Box,
   Container_Style,
   Input_Wrapper,
@@ -28,12 +28,12 @@ import { Button_Wrapper } from "../../style/Product_detail_style";
 import { Navigate } from "react-router-dom";
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const style = {
     display: "flex",
     transition: "all 0.5s",
   };
-
-  // ------------------------------ 상단 style ------------------------------
 
   const customModalStyle = {
     overlay: {
@@ -192,9 +192,12 @@ const SignUp = () => {
       return;
     }
     try {
-      const response = await axios.get(`/api/users/check-email`, {
-        params: { email: full_email },
-      });
+      const response = await axios.get(
+        `http://localhost:8080/api/users/check-email`,
+        {
+          params: { email: full_email },
+        }
+      );
 
       if (response.data.exists) {
         // 받아온 데이터가 true일 경우
@@ -304,7 +307,35 @@ const SignUp = () => {
           headers: { "Content-Type": "multiparg/form-data" },
         }
       );
-      alert(response.data.message);
+      if (response.data.success) {
+        setSignUpForm({
+          user_name: "",
+          user_password: "",
+          user_password_check: "",
+          user_nickname: "",
+          user_profileimg: "",
+        });
+        setUserTel({
+          first_tel: "010",
+          mid_tel: "",
+          last_tel: "",
+        });
+        setUserEmail({
+          email_id: "",
+          email_address: "naver.com",
+        });
+        setUserAddress({
+          base_address: "",
+          detail_address: "",
+        });
+        setSelectedFile(null);
+        setEmailCheckResult(null);
+        setNicknameCheckResult(null);
+        setPasswordValid(null);
+        setPasswordMatch(null);
+
+        navigate("/signup-success"); // 회원가입 완료 페이지로 이동
+      }
     } catch (error) {
       console.error("회원가입 요청 실패:", error);
       alert("회원가입 중 오류가 발생했습니다.");
@@ -322,7 +353,7 @@ const SignUp = () => {
             <label>이름</label>
           </div>
           <Input_Box>
-            <Input_Style
+            <TextInput
               type={"text"}
               name={"user_name"}
               placeholder={"이름을 입력하세요"}
@@ -350,7 +381,7 @@ const SignUp = () => {
               />
               <label>-</label>
               <Input_Box>
-                <Input_Style
+                <TextInput
                   type={"text"}
                   name={"mid_tel"}
                   placeholder={"1234"}
@@ -360,7 +391,7 @@ const SignUp = () => {
               </Input_Box>
               <label>-</label>
               <Input_Box>
-                <Input_Style
+                <TextInput
                   type={"text"}
                   name={"last_tel"}
                   placeholder={"5678"}
@@ -377,7 +408,7 @@ const SignUp = () => {
           <Email_Input>
             <Email_Box>
               <Input_Box>
-                <Input_Style
+                <TextInput
                   type={"text"}
                   name={"email_id"}
                   placeholder={"EMAIL 입력"}
@@ -416,7 +447,7 @@ const SignUp = () => {
             <label>비밀번호</label>
           </div>
           <Input_Box>
-            <Input_Style
+            <TextInput
               type={"password"}
               name={"user_password"}
               placeholder={"비밀번호를 입력하세요"}
@@ -433,7 +464,7 @@ const SignUp = () => {
             <label>비밀번호 확인</label>
           </div>
           <Input_Box>
-            <Input_Style
+            <TextInput
               type={"password"}
               name={"user_password_check"}
               placeholder={"비밀번호를 입력하세요"}
@@ -458,7 +489,7 @@ const SignUp = () => {
               onClick={handleOpenPostCode}
             />
             <BaseAddress>
-              <Input_Style
+              <TextInput
                 type={"text"}
                 name={"base_address"}
                 value={userAddress.base_address}
@@ -482,7 +513,7 @@ const SignUp = () => {
             <label>상세주소</label>
           </div>
           <Input_Box>
-            <Input_Style
+            <TextInput
               type={"text"}
               name={"detail_address"}
               placeholder={"상세주소를 입력하세요"}
@@ -497,9 +528,10 @@ const SignUp = () => {
           </div>
           <Nickname_Box>
             <Input_Box>
-              <Input_Style type="text" placeholder="닉네임을 입력하세요" />
+              <TextInput type="text" placeholder="닉네임을 입력하세요" />
             </Input_Box>
             <Button className={"checkNickname"} btnTxt={"중복확인"} />
+            {nicknameCheckResult && <p>{nicknameCheckResult}</p>}
           </Nickname_Box>
         </Input_Wrapper>
         <Input_Wrapper>

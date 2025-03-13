@@ -24,6 +24,9 @@ import {
   Product_Wrapper,
   Text_wrapper,
 } from "../../style/Product_detail_style";
+import Button from "../common/Button";
+import CheckedProduct from "../common/CheckedProduct";
+import Select from "../common/Select";
 
 const ProductDetail = () => {
   const { PRODUCT_NO } = useParams(); // URL에서 `id` 값을 가져옴
@@ -31,12 +34,18 @@ const ProductDetail = () => {
   console.log(PRODUCT_NO);
   console.log("====================================");
   const [product, setProduct] = useState(null);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState([]);
   const [options, setOptions] = useState([]);
   // const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const imgPath = import.meta.env.VITE_IMG_PATH;
+
+  const onRemove = (option_no) => {
+    setSelectedOption((prev) => {
+      prev.filter((option) => option.option_no !== option_no);
+    });
+  };
 
   const onChangeHandler = (e) => {
     const optionSelected = options.find(
@@ -147,11 +156,16 @@ const ProductDetail = () => {
               <div>{/* 장바구니 추가, 별도 컴포넌트 */}</div>
             </div>
 
+            {/* 상품 선택 정보 */}
+            <div>
+              <CheckedProduct />
+            </div>
+
             {/* 버튼 */}
-            <Button_Wrapper_100>
+            <Button_Wrapper>
               <Button btnTxt="바로구매" />
-              <Button btnTxt="장바구니" />
-            </Button_Wrapper_100>
+              <Button btnTxt="장바구니" onClick />
+            </Button_Wrapper>
           </Product_Wrapper>
         </Container01>
         <Divide_Box>
@@ -176,20 +190,6 @@ const ProductDetail = () => {
               <p>상세 정보</p>
             </Info_Title>
             <Info_Text>
-              <Info_Text_Box>
-                <p>상품명</p>
-                <Info_Wrapper>
-                  <p>상품명 </p>
-                </Info_Wrapper>
-              </Info_Text_Box>
-              <Info_Text_Box>
-                <p>소재</p>
-                <Info_Wrapper>
-                  <p>86% 면</p>
-                  <p>13% 폴리에스터</p>
-                  <p>1% 기타섬유</p>
-                </Info_Wrapper>
-              </Info_Text_Box>
               <Info_Text_Box>
                 <p>
                   RCS 인증된
