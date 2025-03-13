@@ -13,7 +13,7 @@ import { Wrapper } from "../../style/Common_Style";
 
 const Index = () => {
   return (
-    <Wrapper className="home">
+    <Wrapper className="cm" id="home">
       {/* <CmAdd /> */}
       <Header />
 

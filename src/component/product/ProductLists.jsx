@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container_Style, Title, Wrapper } from "../../style/Common_Style";
+import { Container_Style, Title } from "../../style/Common_Style";
 import {
   ProductList_ItemBox,
   ProductList_Wrapper,
@@ -73,32 +73,32 @@ const ProductLists = () => {
   }, [page, hasMore, loading]);
 
   return (
-    <Wrapper>
-      <Container_Style>
-        <Title>SHOPPING</Title>
-        <ProductList_Wrapper>
-          {products.map((product) => (
-            <ProductList_ItemBox
-              key={product.PRODUCT_NO}
-              onClick={() => navigate(`/product/${product.PRODUCT_NO}`)}
-            >
-              <img
-                src={`${imgPath}/${product.PRODUCT_IMG}`}
-                alt={product.PRODUCT_NAME}
-              />
-              <Text_wrapper>
-                <h3>{product.PRODUCT_NAME}</h3>
-                <p>{product.PRODUCT_TYPE}</p>
-                <p>{product.PRODUCT_PRICE} 원</p>
-              </Text_wrapper>
-            </ProductList_ItemBox>
-          ))}
-          {loading && <System_message>Loading...</System_message>}
-          {error && <System_message>Error: {error.message}</System_message>}
-          <System_message ref={loader} />
-        </ProductList_Wrapper>
-      </Container_Style>
-    </Wrapper>
+    <Container_Style>
+      <Title>SHOPPING</Title>
+      <ProductList_Wrapper>
+        {products.map((product) => (
+          // 제품의 가격, 이미지, 정보를 표시하는 box
+          <ProductList_ItemBox
+            key={product.PRODUCT_NO}
+            onClick={() => navigate(`/product/${product.PRODUCT_NO}`)}
+          >
+            <img
+              src={`${imgPath}/${product.PRODUCT_IMG}`}
+              alt={product.PRODUCT_NAME}
+            />
+            {/* 제품의 정보 text를 묶는 wrapper */}
+            <Text_wrapper>
+              <h3>{product.PRODUCT_NAME}</h3>
+              <p>{product.PRODUCT_TYPE}</p>
+              <p>{product.PRODUCT_PRICE} 원</p>
+            </Text_wrapper>
+          </ProductList_ItemBox>
+        ))}
+        {loading && <System_message>Loading...</System_message>}
+        {error && <System_message>Error: {error.message}</System_message>}
+        <div ref={loader} />
+      </ProductList_Wrapper>
+    </Container_Style>
   );
 };
 

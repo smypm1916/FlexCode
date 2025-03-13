@@ -1,26 +1,24 @@
 import styled from "styled-components";
 
 //상단의 header 전체를 묶는 div
-export const Container = styled.div`
+export const Wrapper_Header = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  min-width: 720px;
+  width: -webkit-fill-available;
+  width: -moz-available;
+  height: 100px;
+  align-items: center;
   transition: all 0.5s;
   z-index: 100;
-`;
-
-// header div
-export const Headerdiv = styled.div`
-  display: flex;
-  height: 80px;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 40px;
-  color: black;
+  display: grid;
+  grid-template-columns: 1fr 8fr 1fr;
+  padding: 0 50px;
+  gap: 80px;
   border-bottom: 1px solid black;
-  background: rgba(255, 255, 255, 0.8);
-  transition: all 0.5s;
+  background: rgba(255, 255, 255, 0.5);
+
   &:hover {
     background: white;
   }
@@ -46,14 +44,6 @@ export const Logo = styled.div`
   &:hover::after {
     width: 100%;
   }
-`;
-
-// 회원가입, 로그인 div
-export const Wrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 120px;
-  align-items: center;
 `;
 
 // 로그인 모달열기 버튼

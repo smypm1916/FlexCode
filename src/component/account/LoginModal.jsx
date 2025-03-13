@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FindId from "./FindId";
 import FindPw from "./FindPw";
 import styled from "styled-components";
@@ -9,48 +9,10 @@ import {
   Input_Box,
   Input_Style,
   Modal_Wrapper,
+  Title,
 } from "../../style/Common_Style";
 
-const Logo = styled.div`
-  font-size: 24px;
-  font-weight: bold;
-`;
-
-export const Title = styled.h2`
-  font-size: 40pt;
-  margin: 0;
-  text-align: left;
-`;
-
-const InputField = styled.input`
-  width: -webkit-fill-available;
-  padding: 10px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  background-color: white;
-  border: 1px solid black;
-  color: black;
-  &:focus {
-    outline: none;
-  }
-  &:placeholder {
-    font-size: 12pt;
-  }
-`;
-
-const LinksContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  font-size: 12px;
-  color: black;
-  cursor: pointer;
-  letter-spacing: 0;
-
-  div:hover {
-    text-decoration: underline;
-  }
-`;
+import { Link_box } from "../../style/Modal_Style";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -147,18 +109,12 @@ const LoginModal = ({ onClose }) => {
           <Input_Box>
             <Input_Style type="password" placeholder="PW" />
           </Input_Box>
-          <LinksContainer>
-            <div>
-              {/* ✅ 회원가입 클릭 시 signup 페이지로 이동 */}
-              <a onClick={() => navigate("/signup")}>회원가입</a>
-            </div>
-            <div>
-              <a onClick={handleFindId}>ID 찾기</a>
-            </div>
-            <div>
-              <a onClick={handleFindPw}>비밀번호 찾기</a>
-            </div>
-          </LinksContainer>
+          <Link_box>
+            {/* ✅ 회원가입 클릭 시 signup 페이지로 이동 */}
+            <a onClick={() => navigate("/signup")}>회원가입</a>
+            <a onClick={handleFindId}>ID 찾기</a>
+            <a onClick={handleFindPw}>비밀번호 찾기</a>
+          </Link_box>
         </Conwrapper>
         <ButtonContainer>
           <Button_Modal_Login primary>LOGIN</Button_Modal_Login>

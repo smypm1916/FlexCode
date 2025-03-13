@@ -2,7 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  width: 100%;
+  min-width: 720px;
+  width: -webkit-fill-available;
+  width: -moz-available;
   min-height: calc(100vh - 100px);
   height: fit-content;
   display: flex;
@@ -10,18 +12,59 @@ export const Wrapper = styled.div`
   justify-content: Center;
   gap: 50px;
   margin-bottom: 80px;
+
+  //각 page별 Wrapper의 공용 style
+  &.cm::after {
+    width: 100%;
+    display: inline-block;
+    color: rgba(187, 147, 147, 0.15);
+    position: fixed;
+    top: 0;
+    left: -20px;
+    margin: 0;
+    padding: 0;
+    font-size: 50vh;
+    font-weight: bold;
+    pointer-events: none;
+    line-height: 100vh;
+    z-index: -1;
+  }
+
+  // index(메인페이지)의 Wrapper 전용 스타일
+  &#home::after {
+    content: "GENDER_";
+    white-space: pre;
+  }
+
+  // signup(회원가입)의 Wrapper 전용 스타일
+  &#register::after {
+    content: "REGISTER";
+  }
+
+  // CmAdd(게시물 작성)의 Wrapper 전용 스타일
+  &#add::after {
+    content: "WRITE";
+  }
+
+  // CmMain(커뮤니티 메인페이지)의 Wrapper 전용 스타일
+  &#community::after {
+    content: "COMMUNITY";
+  }
+
+  // CmDetail(게시물 상세페이지)의 전용 스타일
+  &#post::after {
+    content: "POST";
+  }
 `;
 
+// 각 Container 별 용도의 Title
 export const Title = styled.h2`
-  width: 80%;
-  text-align: left;
   color: black;
   margin: 0;
 `;
 
 // contents 를 묶는 container의 style
 export const Container_Style = styled.div`
-  max-width: 100%;
   width: 60%;
   display: flex;
   flex-direction: column;
@@ -35,12 +78,13 @@ export const Container_Style = styled.div`
 // 버튼의 style
 export const Button_Style = styled.button`
   width: -webkit-fill-available;
+  width: -moz-available;
   height: 45px;
   padding: 10px;
   border: 1px solid black;
   transition: all 0.5s;
   color: black;
-  background-color: white;
+  background: none;
   text-decoration: none;
   font-size: 12pt;
   &:hover {
@@ -62,13 +106,14 @@ export const Button_Wrapper_100 = styled.div`
 // select의 style
 export const Select_Style = styled.select`
   width: -webkit-fill-available;
+  width: -moz-available;
   height: 45px;
   font-size: 12pt;
   padding: 10px;
-  background-color: white;
   color: black;
   border: none;
   border-bottom: 1px solid black;
+  background: none;
 
   &.optionList {
     border-radius: 0;
@@ -81,10 +126,10 @@ export const Select_Style = styled.select`
 // input의 style
 export const Input_Style = styled.input`
   width: -webkit-fill-available;
-
+  width: -moz-available;
+  background: none;
   font-size: 12pt;
   color: black;
-  background: white;
   border: none;
 
   &:focus {
@@ -95,7 +140,7 @@ export const Input_Style = styled.input`
     font-size: 12pt;
     border: 1px solid black;
     color: black;
-    background-color: white;
+    background-color: none;
     transition: all 0.5s;
   }
 
@@ -136,12 +181,13 @@ export const Container_Modal = styled.div`
 
 export const Input_Box = styled.div`
   width: -webkit-fill-available;
+  width: -moz-available;
   height: -webkit-fill-available;
+  height: -moz-available;
   border: none;
   border-bottom: 1px solid black;
   padding: 10px;
   text-align: left;
-  background: white;
 `;
 
 // -------------------------NickName--------------------------------
@@ -189,13 +235,16 @@ export const Textarea_Style = styled.textarea`
   height: 200px;
   resize: none;
   font-size: 12pt;
-
+  scrollbar-width: 2px;
+  scrollbar-color: #bb9393;
+  background: none;
+  transition: all 0.5s;
   &::-webkit-scrollbar {
-    width: 2px;
+    width: 5px;
   }
 
   &::-webkit-scrollbar-thumb {
-    width: 2px;
+    width: 5px;
     background-color: #bb9393;
   }
 

@@ -47,16 +47,15 @@ const CmAdd = () => {
   };
 
   return (
-    <Wrapper className="cmadd">
-      <Container_Style>
-        <form onSubmit={handleSubmit}>
+    <Wrapper className="cm" id="add">
+      <form onSubmit={handleSubmit}>
+        <Container_Style>
           <Title>WRITE</Title>
           <List_Profile>
             <Profile_Img>프사</Profile_Img>
           </List_Profile>
           <Input_Wrapper>
-            <div className="CmAddTitle"></div>
-            <div>
+            <div className="CmAddTitle">
               <label>제목</label>
             </div>
             <Input_Box>
@@ -80,9 +79,11 @@ const CmAdd = () => {
           </Input_Wrapper>
           <Input_Wrapper>
             <label>사진 등록</label>
-            <input type="file" onChange={(e) => setImg(e.target.files[0])} />
             <Input_Box>
-              <FileUpload type="file" />
+              <FileUpload
+                type="file"
+                onChange={(e) => setImg(e.target.files[0])}
+              />
             </Input_Box>
           </Input_Wrapper>
           <Button_Wrapper_100>
@@ -91,8 +92,8 @@ const CmAdd = () => {
               뒤로가기
             </Button>
           </Button_Wrapper_100>
-        </form>
-      </Container_Style>
+        </Container_Style>
+      </form>
     </Wrapper>
   );
 };

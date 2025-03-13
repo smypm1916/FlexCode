@@ -11,16 +11,16 @@ const Category = () => {
   const imgPath = import.meta.env.VITE_IMG_PATH;
 
   const fetchCategories = async () => {
-    try {
-      const res = await axios.get("/api/products/cat", {
-        headers: { Accept: "application/json" },
-      });
-      console.log(res.data);
-      setCategories(res.data.data);
-    } catch (error) {
-      // console.error('fetch category error', error);
-      setError(error);
-    }
+    // try {
+    //   const res = await axios.get("/api/products/cat", {
+    //     headers: { Accept: "application/json" },
+    //   });
+    //   console.log(res.data);
+    //   setCategories(res.data.data);
+    // } catch (error) {
+    //   // console.error('fetch category error', error);
+    //   setError(error);
+    // }
   };
 
   useEffect(() => {

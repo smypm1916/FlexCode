@@ -25,6 +25,7 @@ import {
   Phone_Box,
 } from "../../style/SignUp_Style";
 import { Button_Wrapper } from "../../style/Product_detail_style";
+import { Navigate } from "react-router-dom";
 
 const SignUp = () => {
   const style = {
@@ -311,7 +312,7 @@ const SignUp = () => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper className="cm" id="register">
       <Container_Style>
         <div className="signUp-title">
           <h2>회원가입</h2>
@@ -515,7 +516,11 @@ const SignUp = () => {
             btnTxt={"회원가입"}
             onClick={handleRegister}
           />
-          <Button className={"cancel"} btnTxt={"취소"} />
+          <Button
+            className={"cancel"}
+            btnTxt={"취소"}
+            onClick={() => Navigate("/")}
+          />
         </Button_Wrapper>
       </Container_Style>
     </Wrapper>

@@ -1,14 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
-  max-width: 1440px;
-  width: 60%;
-  display: flex;
-  flex-direction: column;
-  padding-top: 80px;
-  gap: 80px;
-`;
 // 상품 정보 컨테이너
 export const Container01 = styled.div`
   width: 100%;

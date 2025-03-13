@@ -24,3 +24,21 @@ export const Title = styled.h2`
 export const ButtonClose = styled.div`
   padding: 0;
 `;
+
+export const Link_box = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  font-size: 12px;
+  color: black;
+  letter-spacing: 0;
+
+  a {
+    width: fit-content;
+    cursor: pointer;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+`;

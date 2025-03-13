@@ -5,7 +5,11 @@ import {
   Wrapper,
 } from "../../style/Common_Style";
 import Button from "../common/Button";
-import { List_Profile, Profile_Img } from "../../style/List_Style";
+import {
+  List_Content,
+  List_Profile,
+  Profile_Img,
+} from "../../style/List_Style";
 
 import { useEffect, useState } from "react";
 
@@ -25,7 +29,7 @@ const CmDetail = () => {
   }, []);
 
   return (
-    <Wrapper>
+    <Wrapper className="cm" id="post">
       <Container_Style>
         {/* {posts.map((post) => ( */}
         {/* <List_Profile key={post.community_id}> */}
@@ -47,7 +51,7 @@ const CmDetail = () => {
           <div>
             <label>내용</label>
           </div>
-          <div className="CmContent">
+          <List_Content>
             {/* <div>{post.community_content}</div> */}
             <div>post.community_content</div>
             <div>
@@ -61,7 +65,7 @@ const CmDetail = () => {
                   )} */}
               <img />
             </div>
-          </div>
+          </List_Content>
         </Input_Wrapper>
         <Input_Wrapper>
           <div>

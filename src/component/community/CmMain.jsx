@@ -3,7 +3,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { PaginationComponent } from "./PaginationComponent";
 import Select from "../common/Select";
-import styled from "styled-components";
 import {
   Pagination_List,
   Search_Box,
@@ -16,75 +15,14 @@ import {
   List_Profile,
   Profile_Img,
 } from "../../style/List_Style";
-import { Container_Style, Wrapper } from "../../style/Common_Style";
-
-// select 스타일
-const Select_Box = styled.select`
-  height: 45px;
-  font-size: 12pt;
-  padding: 10px;
-  background-color: white;
-  color: black;
-  border: 1px solid black;
-
-  &.optionList {
-    border-radius: 0;
-  }
-`;
-
-const Input = styled.input`
-  width: 100%;
-  height: 100%;
-  font-size: 12pt;
-  color: black;
-  background: white;
-  border: none;
-
-  &:focus {
-    outline: none;
-  }
-
-  &::file-selector-button {
-    font-size: 12pt;
-    border: 1px solid black;
-    color: black;
-    background-color: white;
-    transition: all 0.5s;
-  }
-
-  &::file-selector-button:hover {
-    background-color: black;
-    color: white;
-  }
-`;
-
-// search의 검색창 input을 감싸는 div
-const Input_Box = styled.div`
-  width: -webkit-fill-available;
-  border: none;
-  border-bottom: 1px solid black;
-  padding: 10px;
-  text-align: left;
-`;
-
-// input이 포함된 열을 감싸는 div
-const Input_Wrapper = styled.div`
-  width: -webkit-fill-available;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  height: 45px;
-  align-items: center;
-  gap: 20px;
-`;
-
-const Title = styled.h2`
-  width: 100%;
-  text-align: left;
-  color: black;
-  margin: 0;
-  letter-spacing: 2px;
-`;
+import {
+  Container_Style,
+  Wrapper,
+  Input_Wrapper,
+  Input_Box,
+} from "../../style/Common_Style";
+import TextInput from "../common/TextInput";
+import CmAdd from "./CmAdd";
 
 const CmMain = () => {
   const navigate = useNavigate();
@@ -144,7 +82,7 @@ const CmMain = () => {
   }, [posts, pageNum]);
 
   return (
-    <Wrapper>
+    <Wrapper className="cm" id="community">
       <Container_Style>
         <Container01>상단 광고</Container01>
         <Input_Wrapper>
@@ -158,7 +96,7 @@ const CmMain = () => {
           </div>
           <Search_Box>
             <Input_Box>
-              <Input
+              <TextInput
                 type="text"
                 placeholder="search"
                 value={searchKeyword}
@@ -192,11 +130,11 @@ const CmMain = () => {
           <Button btnTxt={"글쓰기"}>글쓰기</Button>
         </Input_Wrapper>
         {/* ✅ 페이징 컴포넌트 추가 */}
-        {/* <PaginationComponent
-          totalItems={dummyPosts.length}
+        <PaginationComponent
+          totalItems={setAllPosts.length}
           itemsPerPage={cnt}
           onPageChange={setPageNum}
-        /> */}
+        />
       </Container_Style>
     </Wrapper>
   );
