@@ -27,13 +27,12 @@ const CmDetail = () => {
   return (
     <Wrapper>
       <Container_Style>
-        {posts.map((post) => (
-          <List_Profile key={post.community_id}>
-            <Profile_Img>프사</Profile_Img>
-            <label>유저</label>
-          </List_Profile>
-        ))}
-
+        {/* {posts.map((post) => ( */}
+        {/* <List_Profile key={post.community_id}> */}
+        <List_Profile>
+          <Profile_Img>프사</Profile_Img>
+          <label>유저</label>
+        </List_Profile>
         <Input_Wrapper>
           <div>
             <label>작성일</label>
@@ -42,20 +41,25 @@ const CmDetail = () => {
         </Input_Wrapper>
         <Input_Wrapper>
           <label>제목</label>
-          <div className="CmTitle">{post.community_title}</div>
+          <div className="CmTitle">제목입니다</div>
         </Input_Wrapper>
-
         <Input_Wrapper>
           <div>
             <label>내용</label>
           </div>
           <div className="CmContent">
-            <div>{post.community_content}</div>
+            {/* <div>{post.community_content}</div> */}
+            <div>post.community_content</div>
             <div>
-              {" "}
-              {post.cm_img && (
-                <img src={post.community_img} alt="업로드 이미지" width="200" />
-              )}
+              {/* {" "}
+                  {post.cm_img && (
+                    <img
+                      src={post.community_img}
+                      alt="업로드 이미지"
+                      width="200"
+                    />
+                  )} */}
+              <img />
             </div>
           </div>
         </Input_Wrapper>
@@ -63,12 +67,14 @@ const CmDetail = () => {
           <div>
             <label>작성일</label>
           </div>
-          <div>{post.community_date}</div>
+          {/* <div>{post.community_date}</div> */}
+          <div>post.community_date</div>
         </Input_Wrapper>
         <Button_Wrapper_100>
           <Button btnTxt={"수정하기"}>수정하기</Button>
           <Button btnTxt={"삭제하기"}>삭제하기</Button>
         </Button_Wrapper_100>
+        {/* ))} */}
       </Container_Style>
     </Wrapper>
   );

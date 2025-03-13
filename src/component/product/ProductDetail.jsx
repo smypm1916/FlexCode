@@ -4,20 +4,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import Button from "../common/Button";
 import Select from "../common/Select";
 import styled from "styled-components";
-import { Button_Wrapper_100, Container_Style } from "../../style/Common_Style";
+import {
+  Wrapper,
+  Button_Wrapper_100,
+  Container_Style,
+} from "../../style/Common_Style";
 
 import {
-  Button_Wrapper,
   Container01,
   Container02,
   Divide_Box,
-  Button_Wrapper,
-  Text,
-  Title,
-  Product_Title,
-  Text_box,
   Container03,
-  Divide_Box,
   Image_Wrapper,
   Info_Text,
   Info_Text_Box,
@@ -25,14 +22,8 @@ import {
   Info_Wrapper,
   Product_Title,
   Product_Wrapper,
-  Text,
-  Text_box,
   Text_wrapper,
-  Title,
-  Wrapper,
 } from "../../style/Product_detail_style";
-import Button from "../common/Button";
-import Select from "../common/Select";
 
 const ProductDetail = () => {
   const { PRODUCT_NO } = useParams(); // URL에서 `id` 값을 가져옴

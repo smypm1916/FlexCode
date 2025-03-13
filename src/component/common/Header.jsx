@@ -3,13 +3,12 @@ import { useNavigate } from "react-router-dom";
 import {
   Container,
   Headerdiv,
-  LoginButton,
   Logo,
-  Menu,
   Menu_Wrapper,
   Menu,
   Button_Login,
   Button_Register,
+  Wrapper,
 } from "../../style/Header_Style";
 import LoginModal from "../account/LoginModal";
 
@@ -32,7 +31,9 @@ const App = () => {
         </Wrapper>
         <Menu_Wrapper>
           <Button_Login onClick={() => setShowModal(true)}>LOGIN</Button_Login>
-          <Button_Register>REGISTER</Button_Register>
+          <Button_Register onclick={() => navigate("/signup")}>
+            REGISTER
+          </Button_Register>
         </Menu_Wrapper>
       </Headerdiv>
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}

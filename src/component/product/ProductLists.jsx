@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container_Style, Title } from "../../style/Common_Style";
+import { Container_Style, Title, Wrapper } from "../../style/Common_Style";
 import {
   ProductList_ItemBox,
   ProductList_Wrapper,
@@ -73,29 +73,27 @@ const ProductLists = () => {
   }, [page, hasMore, loading]);
 
   return (
-    <Wrapper>
-      <Container_Style>
-        <Title>SHOPPING</Title>
+    <Container_Style>
+      <Title>SHOPPING</Title>
+      <ProductList_Wrapper>
         {products.map((product) => (
-          <ProductList_Wrapper
+          <ProductList_ItemBox
             key={product.PRODUCT_NO}
             onClick={() => navigate(`/product/${product.PRODUCT_NO}`)}
           >
-            <ProductList_ItemBox>
-              <img
-                src={`${imgPath}/${product.PRODUCT_IMG}`}
-                alt={product.PRODUCT_NAME}
-              />
-              <Text_wrapper>
-                <h3>{product.PRODUCT_NAME}</h3>
-                <p>{product.PRODUCT_TYPE}</p>
-                <p>{product.PRODUCT_PRICE} 원</p>
-              </Text_wrapper>
-            </ProductList_ItemBox>
-          </ProductList_Wrapper>
+            <img
+              src={`${imgPath}/${product.PRODUCT_IMG}`}
+              alt={product.PRODUCT_NAME}
+            />
+            <Text_wrapper>
+              <h3>{product.PRODUCT_NAME}</h3>
+              <p>{product.PRODUCT_TYPE}</p>
+              <p>{product.PRODUCT_PRICE} 원</p>
+            </Text_wrapper>
+          </ProductList_ItemBox>
         ))}
-      </Container_Style>
-    </Wrapper>
+      </ProductList_Wrapper>
+    </Container_Style>
   );
 };
 

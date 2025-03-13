@@ -1,27 +1,22 @@
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import CmPost from "./CmPost";
 import { useEffect, useState } from "react";
 import { PaginationComponent } from "./PaginationComponent";
 import Select from "../common/Select";
 import styled from "styled-components";
 import {
-  Button_After,
-  Button_Before,
-  Button_Pagination,
   Pagination_List,
-  Pagination_Wrapper,
   Search_Box,
   Container01,
 } from "../../style/Community_Style";
 import Button from "../common/Button";
-import { Container_Style, Wrapper } from "../../style/Common_Style";
 import {
   List_Column,
   List_Content,
   List_Profile,
   Profile_Img,
 } from "../../style/List_Style";
+import { Container_Style, Wrapper } from "../../style/Common_Style";
 
 // button을 감싸는 div
 const Button_Box = styled.div`
@@ -101,7 +96,7 @@ const Title = styled.h2`
 
 const CmMain = () => {
   const navigate = useNavigate();
-  const cnt = 3; // 한 페이지당 개수
+  const cnt = 6; // 한 페이지당 개수
   const [selected, setSelected] = useState("");
   const [pageNum, setPageNum] = useState(1);
 
@@ -140,50 +135,51 @@ const CmMain = () => {
 
   return (
     <Wrapper>
-      <Container01>상단 광고</Container01>
-      <Title>REVIEW</Title>
-      <Input_Wrapper>
-        <div className="search-select">
-          <Select
-            value={selected}
-            onChange={(e) => setSelected(e.target.value)}
-            defaultValue=""
-          />
-        </div>
-        <Search_Box>
-          <Input_Box>
-            <Input type="text" placeholder="search" />
-          </Input_Box>
-          <Button>SEARCH</Button>
-        </Search_Box>
-      </Input_Wrapper>
-      <ul>
-        {paginatedPosts.map((post) => (
-          <Pagination_List key={post.id} className="border p-2 mb-2">
-            <List_Column>
-              <List_Profile>
-                <Profile_Img>{post.profile}</Profile_Img>
-                <p>{post.user}</p>
-                <p>{post.title}</p>
-              </List_Profile>
-              <p>{post.date}</p>
-            </List_Column>
-            <List_Content>
-              <p>{post.img}</p>{" "}
-            </List_Content>
-          </Pagination_List>
-        ))}
-      </ul>
-      <Wrapper></Wrapper>
-      <Button_Box>
-        <Button>글쓰기</Button>
-      </Button_Box>
-      // {/* ✅ 페이징 컴포넌트 추가 */}
-      <PaginationComponent
-        totalItems={dummyPosts.length}
-        itemsPerPage={cnt}
-        onPageChange={setPageNum}
-      />
+      <Container_Style>
+        <Container01>상단 광고</Container01>
+        <Title>REVIEW</Title>
+        <Input_Wrapper>
+          <div className="search-select">
+            <Select
+              value={selected}
+              onChange={(e) => setSelected(e.target.value)}
+              defaultValue=""
+            />
+          </div>
+          <Search_Box>
+            <Input_Box>
+              <Input type="text" placeholder="search" />
+            </Input_Box>
+            <Button btnTxt={"SEARCH"}>SEARCH</Button>
+          </Search_Box>
+        </Input_Wrapper>
+        <ul>
+          {paginatedPosts.map((post) => (
+            <Pagination_List key={post.id} className="border p-2 mb-2">
+              <List_Column>
+                <List_Profile>
+                  <Profile_Img>{post.profile}</Profile_Img>
+                  <p>{post.user}</p>
+                  <p>{post.title}</p>
+                </List_Profile>
+                <p>{post.date}</p>
+              </List_Column>
+              <List_Content>
+                <p>{post.img}</p>{" "}
+              </List_Content>
+            </Pagination_List>
+          ))}
+        </ul>
+        <Input_Wrapper>
+          <Button btnTxt={"글쓰기"}>글쓰기</Button>
+        </Input_Wrapper>
+        {/* ✅ 페이징 컴포넌트 추가 */}
+        {/* <PaginationComponent
+          totalItems={dummyPosts.length}
+          itemsPerPage={cnt}
+          onPageChange={setPageNum}
+        /> */}
+      </Container_Style>
     </Wrapper>
   );
 };

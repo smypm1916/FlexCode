@@ -162,6 +162,20 @@ export const Modal_Wrapper = styled.div`
   flex-wrap: wrap;
 `;
 
+export const Post_Modal_Wrapper = styled.div`
+  width: fit;
+  margin: 50px auto;
+  background: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  color: black;
+  letter-spacing: 1px;
+  display: flex;
+
+  flex-direction: column;
+  gap: 21px;
+  flex-wrap: wrap;
+`;
+
 export const ButtonClose = styled.div`
   padding: 0;
 `;
