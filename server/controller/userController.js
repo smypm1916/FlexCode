@@ -99,4 +99,32 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { checkEmail, checkNickname, registerUser, loginUser };
+// 이메일 찾기
+const findId = async (req, res) => {
+  try {
+    const { name, tel } = req.body;
+
+    console.log("이메일 찾기 요청:", { name, tel });
+
+    if (!name || !tel) {
+      return res
+        .status(400)
+        .json({ success: false, message: "이름과 전화번호를 입력하세요" });
+    }
+
+    const result = await userService.findId(name, tel);
+
+    if (result.success) {
+      console.log("이메일 찾기 성공:", result);
+      return res.status(200).json(result);
+    } else {
+      console.log("이메일 찾기 실패:", result);
+      return res.status(200).json(result);
+    }
+  } catch (error) {
+    console.error("이메일 찾기 컨트롤러 오류:", error);
+    res.status(500).json({ success: false, message: "서버 오류 발생" });
+  }
+};
+
+module.exports = { checkEmail, checkNickname, registerUser, loginUser, findId };
