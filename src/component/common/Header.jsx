@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import LoginModal from "../account/LoginModal";
 import {
-  Wrapper_Header,
+  Button_Login,
+  Button_Register,
   Logo,
   Menu,
   Menu_Wrapper,
-  Button_Register,
-  Button_Login,
+  Wrapper_Header,
 } from "../../style/Header_Style";
 // import Cart from "./Cart";
 
@@ -97,7 +97,7 @@ const App = () => {
       </Menu_Wrapper>
       <Menu_Wrapper>
         <Button_Login onClick={() => setShowModal(true)}>LOGIN</Button_Login>
-        <Button_Register onClick={() => navigate("/signup")}>
+        <Button_Register onClick={() => navigate("/signup")} onClick={() => navigate("/signup")}>
           REGISTER
         </Button_Register>
       </Menu_Wrapper>
