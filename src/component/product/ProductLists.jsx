@@ -23,7 +23,6 @@ const ProductLists = () => {
   const fetchProducts = async (pageToFetch) => {
     console.log(`${pageToFetch} 페이지 로드 중...`);
     // 중복 요청 방지
-    // if (pageToFetch <= page) return;
     if (loading || !hasMore) return;
 
     try {
