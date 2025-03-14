@@ -21,8 +21,11 @@ const ProductLists = () => {
 
   // 페이지 번호를 받아 해당 페이지의 상품들을 불러오는 함수
   const fetchProducts = async (pageToFetch) => {
+    console.log(`${pageToFetch} 페이지 로드 중...`);
     // 중복 요청 방지
-    if (pageToFetch <= page) return;
+    // if (pageToFetch <= page) return;
+    if (loading || !hasMore) return;
+
     try {
       setLoading(true);
       const res = await axios.get(
@@ -35,7 +38,7 @@ const ProductLists = () => {
         const newProducts = res.data.data || [];
         setProducts((prev) => [...prev, ...newProducts]);
         setHasMore(newProducts.length === 9);
-        setPage(pageToFetch); // 현재 페이지 업데이트
+        setPage((prev) => prev + 1); // 현재 페이지 업데이트
       }
     } catch (error) {
       console.log("fetchProductError", error);
@@ -45,7 +48,7 @@ const ProductLists = () => {
     }
   };
 
-  // 초기 로드시 1페이지 데이터만 불러옴 (마운트 시 한 번 실행)
+  // 초기 로드시 1페이지 데이터만 불러옴 
   useEffect(() => {
     fetchProducts(1);
   }, []);
@@ -55,7 +58,7 @@ const ProductLists = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore && !loading) {
-          fetchProducts(page + 1);
+          fetchProducts(page);
         }
       },
       { root: null, rootMargin: "20px", threshold: 1.0 }
