@@ -23,10 +23,11 @@ const cmAdd = async (req, res) => {
   }
 };
 
-const showPost = async (req, res) => {
-  const { postNum } = req.query;
-  const viewPost = await cmService.showPost();
+const detailPost = async (req, res) => {
+  console.log(req);
+  const viewPost = await cmService.detailPost(req.params.id);
+  console.log(viewPost);
   return res.json(viewPost);
 };
 
-module.exports = { getPosts, cmAdd };
+module.exports = { getPosts, cmAdd, detailPost };

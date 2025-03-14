@@ -13,71 +13,58 @@ import {
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
+import axios from "axios";
 const CmDetail = () => {
-  const { COMMUNITY_NO } = useParams();
-  const [posts, setPosts] = useState();
-
-  const fetchPosts = async () => {
+  const { id } = useParams();
+  const [post, setPost] = useState();
+  const imgPath = import.meta.env.VITE_IMG_PATH;
+  const fetchPost = async (id) => {
     try {
-      const response = await axios.get(`/DetailPage/${COMMUNITY_NO}`, {
-        params: { postNum: COMMUNITY_NO },
-      });
-      setPosts(response.data);
+      const response = await axios.get(
+        `http://localhost:8080/api/post/DetailPage/${id}`
+      );
+      console.log(response.data[0]);
+
+      setPost(response.data[0]);
     } catch (error) {
-      console.err("게시글 불러오기 실패:", error);
+      console.error("게시글 불러오기 실패:", error);
     }
   };
 
   useEffect(() => {
-    fetchPosts();
-  }, [COMMUNITY_NO]);
-
+    console.log(id);
+    fetchPost(id);
+  }, [id]);
+  if (!post) {
+    return <div>Loading...</div>;
+  }
   return (
     <Wrapper className="cm" id="post">
       <Container_Style>
-        {/* {posts.map((post) => ( */}
-        {/* <List_Profile key={post.community_id}> */}
         <List_Profile>
           <Profile_Img>프사</Profile_Img>
-          <label>유저</label>
+          <label>{post.USER_NICKNAME}</label>
         </List_Profile>
         <Input_Wrapper>
           <div>
             <label>작성일</label>
           </div>
-          <div>25/03/05</div>
+          <div>{post.COMMUNITY_DATE}</div>
         </Input_Wrapper>
         <Input_Wrapper>
           <label>제목</label>
-          <div className="CmTitle">제목입니다</div>
+          <div className="CmTitle">{post.COMMUNITY_TITLE}</div>
         </Input_Wrapper>
         <Input_Wrapper>
           <div>
             <label>내용</label>
           </div>
           <List_Content>
-            {/* <div>{post.community_content}</div> */}
-            <div>post.community_content</div>
+            <div>{post.COMMUNITY_CONTENT}</div>
             <div>
-              {/* {" "}
-                  {post.cm_img && (
-                    <img
-                      src={post.community_img}
-                      alt="업로드 이미지"
-                      width="200"
-                    />
-                  )} */}
-              <img />
+              <img src={`${imgPath}/${post.COMMUNITY_IMG}`} />
             </div>
           </List_Content>
-        </Input_Wrapper>
-        <Input_Wrapper>
-          <div>
-            <label>작성일</label>
-          </div>
-          {/* <div>{post.community_date}</div> */}
-          <div>post.community_date</div>
         </Input_Wrapper>
         <Button_Wrapper_100>
           <Button btnTxt={"수정하기"}>수정하기</Button>

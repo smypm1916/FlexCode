@@ -25,7 +25,7 @@ function App() {
         <Route path="/order-complete" element={<OrderComplete />} />
         <Route path="/community" element={<CmMain />} />
         <Route path="/CmAdd" element={<CmAdd />} />
-        <Route path="/CmDetail" element={<CmDetail />} />
+        <Route path="/CmDetail/:id" element={<CmDetail />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signup-success" element={<SignUpSuccess />} />
       </Routes>

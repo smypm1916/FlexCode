@@ -88,12 +88,12 @@ const App = () => {
 
   return (
     <Wrapper_Header>
-      <Logo onClick={() => Navigate("/")}>
+      <Logo onClick={() => navigate("/")}>
         <img src="src\style\img\logo.png"></img>
       </Logo>
       <Menu_Wrapper>
-        <Menu onClick={() => Navigate("/")}>HOME</Menu>
-        <Menu onClick={() => Navigate("/community")}>COMMUNITY</Menu>
+        <Menu onClick={() => navigate("/")}>HOME</Menu>
+        <Menu onClick={() => navigate("/community")}>COMMUNITY</Menu>
       </Menu_Wrapper>
       <Menu_Wrapper>
         <Button_Login onClick={() => setShowModal(true)}>LOGIN</Button_Login>

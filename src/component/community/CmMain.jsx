@@ -24,6 +24,7 @@ import {
 import TextInput from "../common/TextInput";
 import CmAdd from "./CmAdd";
 import Searchbox from "../common/Searchbox";
+import CmPost from "./CmPost";
 const CmMain = () => {
   const navigate = useNavigate();
   const cnt = 6; // 한 페이지당 개수
@@ -47,6 +48,7 @@ const CmMain = () => {
     console.log("진입?");
     const response = await axios.get("http://localhost:8080/api/post/paging");
     setAllPosts(response.data); // 원본 데이터 저장
+    console.log("받아온 데이터:", response.data);
     setPosts(response.data);
     console.log("전체 ---");
   };
@@ -126,11 +128,6 @@ const CmMain = () => {
           return <CmPost post={post} />;
         })}
 
-        <ul>
-          {paginatedPosts.map((post) => {
-            return <CmPost post={post} />;
-          })}
-        </ul>
         <Input_Wrapper>
           <Button btnTxt={"글쓰기"} onClick={() => Navigate("/CmAdd")}>
             글쓰기

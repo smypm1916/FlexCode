@@ -15,7 +15,7 @@ const CmPost = ({ post }) => {
   return (
     <ul>
       <Pagination_List
-        onClick={() => Navigate("/CmPost")}
+        onClick={() => navigate("/CmDetail/" + post.COMMUNITY_NO)}
         key={post.COMMUNITY_NO}
         className="border p-2 mb-2"
       >

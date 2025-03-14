@@ -54,9 +54,18 @@ const regPost = async ({
   await executeQuery(query, values);
 };
 
-const showPost = async () => {
-  const query = `SELECT * FROM COMMUNITY_INFO WHERE COMMUNITY_NO = `;
-  return await executeQuery(query);
+const detailPost = async (id) => {
+  const query = `SELECT 
+    community_no,
+    user_nickname,
+    community_title,
+    community_content,
+    community_img,
+    TO_CHAR(${community_info.columns.community_date}, 'YYYY/MM/DD') AS community_date,
+    community_readcnt
+  FROM 
+    ${community_info.tableName} WHERE ${community_info.columns.community_no} =:id`;
+  return await executeQuery(query, [id]);
 };
 
-module.exports = { getPosts, regPost, showPost };
+module.exports = { getPosts, regPost, detailPost };
