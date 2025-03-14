@@ -28,7 +28,7 @@ import { Button_Wrapper } from "../../style/Product_detail_style";
 import { Navigate } from "react-router-dom";
 
 const SignUp = () => {
-  const navigate = useNavigate();
+  const Navigate = useNavigate();
 
   const style = {
     display: "flex",
@@ -531,9 +531,9 @@ const SignUp = () => {
               <TextInput type="text" placeholder="닉네임을 입력하세요" />
             </Input_Box>
             <Button className={"checkNickname"} btnTxt={"중복확인"} />
-            {nicknameCheckResult && <p>{nicknameCheckResult}</p>}
           </Nickname_Box>
         </Input_Wrapper>
+        {nicknameCheckResult && <p>{nicknameCheckResult}</p>}
         <Input_Wrapper>
           <div className="signUp-profileImg-label">
             <label>프로필 사진</label>

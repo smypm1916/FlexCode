@@ -90,6 +90,8 @@ const CmMain = () => {
     console.log(posts);
   }, [posts, pageNum]);
 
+  const Navigate = useNavigate();
+
   return (
     <Wrapper className="cm" id="community">
       <Container_Style>
@@ -120,17 +122,23 @@ const CmMain = () => {
           </Searchbox>
         </Input_Wrapper>
 
+        {paginatedPosts.map((post) => {
+          return <CmPost post={post} />;
+        })}
+
         <ul>
           {paginatedPosts.map((post) => {
             return <CmPost post={post} />;
           })}
         </ul>
         <Input_Wrapper>
-          <Button btnTxt={"글쓰기"}>글쓰기</Button>
+          <Button btnTxt={"글쓰기"} onClick={() => Navigate("/CmAdd")}>
+            글쓰기
+          </Button>
         </Input_Wrapper>
         {/* ✅ 페이징 컴포넌트 추가 */}
         <PaginationComponent
-          totalItems={setAllPosts.length}
+          totalItems={posts.length}
           itemsPerPage={cnt}
           onPageChange={setPageNum}
         />

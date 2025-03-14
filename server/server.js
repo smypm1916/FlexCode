@@ -14,7 +14,7 @@ const cmRouter = require("./routes/community");
 const optionRouter = require("./routes/options");
 const orderRouter = require("./routes/order");
 
-const redis = require('redis');
+const redis = require("redis");
 const session = require("express-session");
 const { createClient } = require("redis");
 const { RedisStore } = require("connect-redis");
@@ -66,7 +66,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("forceLogout", () => {
-    console.log("🚨 강제 로그아웃 이벤트 발생");
+    console.log("강제 로그아웃 이벤트 발생");
     io.emit("forceLogout");
   });
 });
@@ -74,11 +74,14 @@ io.on("connection", (socket) => {
 // redis세션
 const redisClient = createClient({
   url: "redis://127.0.0.1",
-});// 기본 Redis 포트로 변경
+}); // 기본 Redis 포트로 변경
 
-redisClient.connect().then(() => {
-  console.log('Redis Connected');
-}).catch(console.error);
+redisClient
+  .connect()
+  .then(() => {
+    console.log("Redis Connected");
+  })
+  .catch(console.error);
 
 // middleware
 app.use(
@@ -96,11 +99,11 @@ app.use(
     secret: "cart-key",
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 30 * 60 * 1000 } // 30분 유지
-  }));
+    cookie: { maxAge: 30 * 60 * 1000 }, // 30분 유지
+  })
+);
 
-
-// ✅ 라우터 등록
+// 라우터 등록
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/post", cmRouter);
@@ -108,16 +111,15 @@ app.use("/api/options", optionRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
 
-
-// ✅ 서버 실행 함수
+// 서버 실행 함수
 const startServer = async () => {
   try {
     server.listen(PORT, () => {
-      console.log(`🚀 서버가 포트 ${PORT}에서 실행 중...`);
-      console.log("✅ WebSocket 서버 실행 완료!");
+      console.log(`서버가 포트 ${PORT}에서 실행 중...`);
+      console.log("WebSocket 서버 실행 완료!");
     });
   } catch (error) {
-    console.error("❌ 서버 시작 중 오류 발생:", error);
+    console.error("서버 시작 중 오류 발생:", error);
   }
 };
 
