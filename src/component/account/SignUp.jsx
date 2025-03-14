@@ -528,9 +528,19 @@ const SignUp = () => {
           </div>
           <Nickname_Box>
             <Input_Box>
-              <TextInput type="text" placeholder="닉네임을 입력하세요" />
+              <TextInput
+                type={"text"}
+                name={"user_nickname"}
+                placeholder={"닉네임을 입력하세요"}
+                value={user_nickname}
+                onChange={handleChange}
+              />
             </Input_Box>
-            <Button className={"checkNickname"} btnTxt={"중복확인"} />
+            <Button
+              className={"checkNickname"}
+              btnTxt={"중복확인"}
+              onClick={checkNicknameDuplicate}
+            />
             {nicknameCheckResult && <p>{nicknameCheckResult}</p>}
           </Nickname_Box>
         </Input_Wrapper>
