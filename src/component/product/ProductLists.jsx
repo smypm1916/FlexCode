@@ -36,14 +36,15 @@ const ProductLists = () => {
       if (res.data && res.data.success) {
         const newProducts = res.data.data || [];
         setProducts((prev) => [...prev, ...newProducts]);
-        setHasMore(newProducts.length === 9);
-        setPage((prev) => prev + 1); // 현재 페이지 업데이트
+        // setHasMore(newProducts.length === 9);
+        setHasMore(newProducts.length > 0);
       }
     } catch (error) {
       console.log("fetchProductError", error);
       setError(error);
     } finally {
       setLoading(false);
+      setPage((prev) => prev + 1); // 현재 페이지 업데이트
     }
   };
 
@@ -66,8 +67,7 @@ const ProductLists = () => {
     if (loader.current) observer.observe(loader.current);
 
     return () => observer.disconnect();
-  }, [hasMore, loading, page]); // page 추가하여 최신 상태 유지
-
+  }, [hasMore, loading]);
   return (
     <Container_Style>
       <Title>SHOPPING</Title>

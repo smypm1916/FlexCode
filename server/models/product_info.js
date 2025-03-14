@@ -1,6 +1,5 @@
-const dbConfig = require("../config/oracledb");
 const oracledb = require("oracledb");
-const { executeQuery } = require('../config/oracledb');
+const { executeQuery, dbConfig } = require('../config/oracledb');
 
 
 /**
@@ -47,31 +46,57 @@ async function getProductDetail(product_no) {
 }
 
 // 상품 등록
-async function regProduct(product) {
-  // destructuring
-  const { product_type, product_name, product_price, product_img } = product;
-  const query = `INSERT INTO PRODUCT_INFO(PRODUCT_NO,PRODUCT_TYPE,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_DATE,PRODUCT_IMG) VALUES(product_no_seq.nextVal,:product_type,:product_name,:product_price,SYSDATE,:product_img)`;
-  const binds = {
-    product_type,
-    product_name,
-    product_price,
-    product_img,
-    // PRODUCT_TYPE: product_type,
-    // PRODUCT_NAME: product_name,
-    // PRODUCT_PRICE: product_price,
-    // PRODUCT_IMG: product_img,
-  };
+// async function regProduct(product) {
+//   // destructuring
+//   const { product_type, product_name, product_price, product_img } = product;
+//   const query = `INSERT INTO PRODUCT_INFO(PRODUCT_NO,PRODUCT_TYPE,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_DATE,PRODUCT_IMG) VALUES(product_no_seq.nextVal,:product_type,:product_name,:product_price,SYSDATE,:product_img)`;
+//   const binds = {
+//     product_type: product.product_type || "",
+//     product_name: product.product_name || "",
+//     product_price: Number.product.product_price || 0,
+//     product_img: product.product_img || "",
+//     // PRODUCT_TYPE: product_type,
+//     // PRODUCT_NAME: product_name,
+//     // PRODUCT_PRICE: product_price,
+//     // PRODUCT_IMG: product_img,
+//   };
+
+//   try {
+//     const result = await executeQuery(query, binds);
+//     console.log('product insert success');
+//   }
+//   catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+//   return;
+// }
+
+async function regProduct(products) {
+  if (!Array.isArray(products) || products.length === 0) {
+    throw new Error("Invalid product data");
+  }
+
+  const query = `INSERT INTO PRODUCT_INFO(PRODUCT_NO, PRODUCT_TYPE, PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_DATE, PRODUCT_IMG) 
+                 VALUES (product_no_seq.nextVal, :product_type, :product_name, :product_price, SYSDATE, :product_img)`;
 
   try {
-    const result = await executeQuery(query, binds);
-    console.log('product insert success');
-  }
-  catch (error) {
-    console.error(error);
+    for (const product of products) {
+      const binds = {
+        product_type: product.product_type || "",
+        product_name: product.product_name || "",
+        product_price: Number(product.product_price) || 0,
+        product_img: product.product_img || ""
+      };
+      await executeQuery(query, binds); // 개별 실행
+    }
+    console.log("✅ All products inserted successfully");
+  } catch (error) {
+    console.error("❌ product insert failed", error);
     throw error;
   }
-  return;
 }
+
 
 // 상품 삭제
 async function deleteProductByPk(product_no) {
