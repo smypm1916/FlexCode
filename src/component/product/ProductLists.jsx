@@ -23,7 +23,6 @@ const ProductLists = () => {
   const fetchProducts = async (pageToFetch) => {
     // 중복 요청 방지
     if (pageToFetch <= page) return;
-
     try {
       setLoading(true);
       const res = await axios.get(

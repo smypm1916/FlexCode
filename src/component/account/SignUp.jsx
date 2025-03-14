@@ -1,31 +1,31 @@
+import axios from "axios";
 import { useState } from "react";
 import Modal from "react-modal";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import {
+  BaseAddress,
+  Container_Style,
+  Input_Box,
+  Input_Wrapper,
+  Wrapper,
+} from "../../style/Common_Style";
 import Button from "../common/Button";
 import FileUpload from "../common/FileUpload";
 import Select from "../common/Select";
 import TextInput from "../common/TextInput";
 import PostCodeModal from "./PostCodeModal";
-import {
-  Input_Box,
-  Container_Style,
-  Input_Wrapper,
-  Wrapper,
-  BaseAddress,
-} from "../../style/Common_Style";
 
-import {
-  Email_Input,
-  Phone_Input,
-  Nickname_Box,
-  Email_Box,
-  Post_Wrapper,
-  Phone_Box,
-} from "../../style/SignUp_Style";
-import { Button_Wrapper } from "../../style/Product_detail_style";
 import { Navigate } from "react-router-dom";
+import { Button_Wrapper } from "../../style/Product_detail_style";
+import {
+  Email_Box,
+  Email_Input,
+  Nickname_Box,
+  Phone_Box,
+  Phone_Input,
+  Post_Wrapper,
+} from "../../style/SignUp_Style";
 
 const SignUp = () => {
   const navigate = useNavigate();

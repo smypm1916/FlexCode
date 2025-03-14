@@ -44,7 +44,8 @@ async function deleteProductByPk(product_no) {
 // 카테고리 조회
 async function getCategories() {
    try {
-      return await productModel.getCategories;
+      console.log('Fetching products categories');
+      return await productModel.getCategories();
    } catch (error) {
       console.error('category load error', error);
       throw error;

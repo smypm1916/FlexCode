@@ -1,18 +1,18 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Select from "../common/Select";
 import {
-  Wrapper,
   Button_Wrapper_100,
   Container_Style,
+  Wrapper,
 } from "../../style/Common_Style";
+import Select from "../common/Select";
 
 import {
   Container01,
   Container02,
-  Divide_Box,
   Container03,
+  Divide_Box,
   Image_Wrapper,
   Info_Text,
   Info_Text_Box,
@@ -52,9 +52,9 @@ const ProductDetail = () => {
   };
 
   // 상품 정보 조회
-  const fetchProductDetail = async () => {
+  const fetchProductDetail = async (PRODUCT_NO) => {
     try {
-      const res = await axios.get(`/api/products/${PRODUCT_NO}`, {
+      const res = await axios.get(`http://localhost:8080/api/products/${PRODUCT_NO}`, {
         headers: { Accept: "application/json" },
       });
       setProduct(res.data.data);
@@ -136,9 +136,9 @@ const ProductDetail = () => {
                     { value: "", label: "---" },
                     Array.isArray(options)
                       ? options.map((option) => ({
-                          value: option.option_no,
-                          label: `${option.option_title}(+${option.option_price} 원)`,
-                        }))
+                        value: option.option_no,
+                        label: `${option.option_title}(+${option.option_price} 원)`,
+                      }))
                       : [],
                   ]}
                   onChange={onChangeHandler}
