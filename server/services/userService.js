@@ -111,7 +111,7 @@ const findId = async (name, tel) => {
 
     // 이메일 존재 여부 확인
     if (result.length === 0) {
-      console.log("로그인 실패: 등록되지 않은 이메일");
+      console.log("조회 실패: 등록되지 않은 이메일");
       return { success: false, message: "등록되지 않은 이메일입니다." };
     }
 
@@ -123,4 +123,55 @@ const findId = async (name, tel) => {
   }
 };
 
-module.exports = { checkEmail, checkNickname, registerUser, loginUser, findId };
+const findPw = async (name, email) => {
+  try {
+    console.log("비밀번호(유저) 찾기 조건 이름, 이메일:", name, email);
+    const query = `select * from user_account where user_name = :name and user_email = :email`;
+    const result = await executeQuery(query, { name, email });
+
+    console.log("비밀번호찾기 DB 조회 결과:", result);
+
+    // 유저 존재 여부 확인
+    if (result.length === 0) {
+      console.log("조회 실패 : 등록되지 않은 이메일");
+      return { success: false, message: "등록되지 않은 이메일입니다." };
+    }
+
+    return { success: true, result };
+  } catch (error) {
+    console.error("비밀번호 찾기 서비스 오류:", error);
+    throw new Error("비밀번호(유저) 찾기 처리 중 오류가 발생했습니다.");
+  }
+};
+
+const modifyPw = async (password, email) => {
+  try {
+    console.log("재설정 비밀번호:", password);
+    console.log("재설정 대상 이메일:", email);
+
+    // 비밀번호를 해싱(bcrypt 사용)
+    const saltRounds = 10; // 솔트 값(보안 강화)
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const query = `update user_account set user_password = :password where user_email = :email`;
+    const result = await executeQuery(query, {
+      password: hashedPassword,
+      email,
+    });
+
+    return { success: true, message: "비밀번호 재설정에 성공하였습니다." };
+  } catch (error) {
+    console.error("비밀번호 재설정 서비스 오류:", error);
+    throw new Error("비밀번호 재설정 처리 중 오류가 발생했습니다.");
+  }
+};
+
+module.exports = {
+  checkEmail,
+  checkNickname,
+  registerUser,
+  loginUser,
+  findId,
+  findPw,
+  modifyPw,
+};

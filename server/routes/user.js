@@ -22,4 +22,10 @@ router.post("/login", userController.loginUser);
 // 이메일찾기
 router.post("/findId", userController.findId);
 
+// 비밀번호찾기(유저검색)
+router.post("/findPw", userController.findPw);
+
+// 비밀번호재설정
+router.post("/modifyPw", userController.modifyPw);
+
 module.exports = router;

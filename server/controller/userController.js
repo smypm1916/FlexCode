@@ -127,4 +127,67 @@ const findId = async (req, res) => {
   }
 };
 
-module.exports = { checkEmail, checkNickname, registerUser, loginUser, findId };
+// 비밀번호 찾기(유저검색)
+const findPw = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    console.log("비밀번호 찾기 요청:", { name, email });
+
+    if (!name || !email) {
+      return res
+        .status(400)
+        .json({ success: false, message: "이름과 이메일을 입력하세요" });
+    }
+
+    const result = await userService.findPw(name, email);
+
+    if (result.success) {
+      console.log("비밀번호 찾기 성공:", result);
+      return res.status(200).json(result);
+    } else {
+      console.log("비밀번호 찾기 실패:", result);
+      return res.status(200).json(result);
+    }
+  } catch (error) {
+    console.error("비밀번호 찾기 컨트롤러 오류:", error);
+    res.status(500).json({ success: false, message: "서버 오류 발생" });
+  }
+};
+
+const modifyPw = async (req, res) => {
+  try {
+    const { password, email } = req.body;
+
+    console.log("비밀번호 재설정 요청:", { password, email });
+
+    if (!password) {
+      return res
+        .status(400)
+        .json({ success: false, message: "비밀번호를 입력하세요." });
+    }
+
+    const result = await userService.modifyPw(password, email);
+
+    if (result.success) {
+      console.log("비밀번호 재설정 성공:", result);
+      return res.status(200).json(result);
+    } else {
+      console.log("비밀번호 재설정 실패:", result);
+      return res.status(200).json(result);
+    }
+  } catch (error) {
+    console.error("비밀번호 재설정 컨트롤러 오류:", error);
+    res.status(500).json({ success: false, message: "서버 오류 발생" });
+  }
+};
+
+module.exports = {
+  checkEmail,
+  checkNickname,
+  registerUser,
+  loginUser,
+  findId,
+  findPw,
+  modifyPw,
+};
