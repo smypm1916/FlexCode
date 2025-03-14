@@ -45,6 +45,7 @@ async function getCategories(req, res) {
 async function regProduct(req, res) {
    try {
       const productRegister = await productService.regProduct(req.body);
+      console.log(req.body);
       res.status(201).json({ success: true, message: 'product insert success!!!' });
       return;
    }
