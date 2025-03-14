@@ -54,4 +54,9 @@ const regPost = async ({
   await executeQuery(query, values);
 };
 
-module.exports = { getPosts, regPost };
+const showPost = async () => {
+  const query = `SELECT * FROM COMMUNITY_INFO WHERE COMMUNITY_NO = `;
+  return await executeQuery(query);
+};
+
+module.exports = { getPosts, regPost, showPost };

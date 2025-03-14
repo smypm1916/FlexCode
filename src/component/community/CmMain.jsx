@@ -23,7 +23,7 @@ import {
 } from "../../style/Common_Style";
 import TextInput from "../common/TextInput";
 import CmAdd from "./CmAdd";
-
+import Searchbox from "../common/Searchbox";
 const CmMain = () => {
   const navigate = useNavigate();
   const cnt = 6; // 한 페이지당 개수
@@ -103,37 +103,27 @@ const CmMain = () => {
               defaultValue=""
             />
           </div>
-          <Search_Box>
-            <Input_Box>
-              <TextInput
-                type="text"
-                placeholder="search"
-                value={searchKeyword}
-                onChange={(e) => setSearchKeyword(e.target.value)}
-              />
-            </Input_Box>
-            <Button onClick={searchHandler} btnTxt={"SEARCH"}>
-              SEARCH
-            </Button>
-          </Search_Box>
+          <Searchbox>
+            <Search_Box>
+              <Input_Box>
+                <TextInput
+                  type="text"
+                  placeholder="search"
+                  value={searchKeyword}
+                  onChange={(e) => setSearchKeyword(e.target.value)}
+                />
+              </Input_Box>
+              <Button onClick={searchHandler} btnTxt={"SEARCH"}>
+                SEARCH
+              </Button>
+            </Search_Box>
+          </Searchbox>
         </Input_Wrapper>
 
         <ul>
-          {paginatedPosts.map((post) => (
-            <Pagination_List key={post.id} className="border p-2 mb-2">
-              <List_Column>
-                <List_Profile>
-                  <Profile_Img>{post.profile}</Profile_Img>
-                  <p>{post.user}</p>
-                  <p>{post.title}</p>
-                </List_Profile>
-                <p>{post.date}</p>
-              </List_Column>
-              <List_Content>
-                <p>{post.img}</p>{" "}
-              </List_Content>
-            </Pagination_List>
-          ))}
+          {paginatedPosts.map((post) => {
+            return <CmPost post={post} />;
+          })}
         </ul>
         <Input_Wrapper>
           <Button btnTxt={"글쓰기"}>글쓰기</Button>
