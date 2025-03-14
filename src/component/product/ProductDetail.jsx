@@ -6,6 +6,7 @@ import {
   Container_Style,
   Wrapper,
 } from "../../style/Common_Style";
+import CheckedProduct from "../common/CheckedProduct";
 import Select from "../common/Select";
 
 import {
@@ -20,44 +21,63 @@ import {
   Info_Wrapper,
   Product_Title,
   Product_Wrapper,
+  Text,
+  Text_box,
   Text_wrapper,
+  Title,
 } from "../../style/Product_detail_style";
 import Button from "../common/Button";
-import CheckedProduct from "../common/CheckedProduct";
 
 const ProductDetail = () => {
-  const { PRODUCT_NO } = useParams(); // URL에서 `id` 값을 가져옴
+  const { product_no } = useParams();
   console.log("====================================");
-  console.log(PRODUCT_NO);
+  console.log(product_no);
   console.log("====================================");
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState([]);
   const [selectedOption, setSelectedOption] = useState([]);
   const [options, setOptions] = useState([]);
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const imgPath = import.meta.env.VITE_IMG_PATH;
 
+  // 옵션 삭제
   const onRemove = (option_no) => {
     setSelectedOption((prev) => {
       prev.filter((option) => option.option_no !== option_no);
     });
   };
 
+  // 옵션 선택 핸들러 (옵션 + 수량)
   const onChangeHandler = (e) => {
-    const optionSelected = options.find(
-      (option) => option.option_no === parseInt(e.target.value)
-    );
-    setSelectedOption(selected);
+    const optionSelected = options.find((option) => option.option_no === parseInt(e.target.value));
+    if (optionSelected) {
+      // 중복 선택 방지
+      if (!selectedOption.some((option) => option.option_no === optionSelected.option_no)) {
+        setSelectedOption((prev) => [...prev, { ...optionSelected, quantity: 1 }]);
+      }
+    }
   };
 
   // 상품 정보 조회
-  const fetchProductDetail = async (PRODUCT_NO) => {
+  const fetchProductDetail = async (product_no) => {
+    if (!product_no || isNaN(product_no)) {
+      console.error("잘못된 product_no:", product_no);
+      setError("잘못된 상품 번호입니다.");
+      setLoading(false);
+      return;
+    }
     try {
-      const res = await axios.get(`http://localhost:8080/api/products/${PRODUCT_NO}`, {
+      // setLoading(true);
+      const res = await axios.get(`http://localhost:8080/api/products/detail/${product_no}`, {
         headers: { Accept: "application/json" },
       });
-      setProduct(res.data.data);
+      if (res.data && res.data.success) {
+        // const newProduct = res.data.data || [];;
+        // setProduct((prev) => [...prev, ...newProduct]);
+        setProduct(res.data.data || []);
+
+      }
       console.log("API 응답:", res.data);
     } catch (error) {
       console.error("detail load error", error);
@@ -66,27 +86,56 @@ const ProductDetail = () => {
 
   // 최초 상품 로드 시 같이 실행 -> 셀렉터 선택 시에 장바구니에 옵션 추가
   // 상품 옵션 취득
-  const fetchOptions = async () => {
+  const fetchOptions = async (product_no) => {
+    if (!product_no || isNaN(product_no)) {
+      console.error("잘못된 product_no:", product_no);
+      setLoading(false);
+      setError("잘못된 상품 번호입니다.");
+      return;
+    }
     try {
-      const resOptions = await axios.get(`/api/options/${PRODUCT_NO}`, {
+      const resOptions = await axios.get(`http://localhost:8080/api/options/detail/${product_no}`, {
         headers: { Accept: "application/json" },
       });
       console.log("OPTION API 응답:", resOptions.data);
       if (resOptions.data && resOptions.data.success) {
-        const newOptions = resOptions.data.data || [];
-        setOptions((prev) => [...prev, ...newOptions]);
+        // const newOptions = resOptions.data.data || [];
+        // setOptions((prev) => [...prev, ...newOptions]);
+        setOptions(resOptions.data.data || []);
       }
     } catch (error) {
       console.error("detail option load error", error);
       setError(error);
     }
+    // finally {
+    //   setLoading(false);
+    // }
   };
 
   useEffect(() => {
-    if (PRODUCT_NO) {
-      fetchOptions();
+    if (!product_no) {
+      console.error("product_no 필요");
+      return;
     }
-  }, [PRODUCT_NO]);
+    const loadProductData = async () => {
+      try {
+        setLoading(true);
+        await Promise.all([
+          fetchProductDetail(product_no),
+          fetchOptions(product_no),
+        ]);
+      } catch (error) {
+        console.error("데이터 로드 중 오류 발생:", error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProductData();
+  }, [product_no]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error...</p>;
 
   return (
     <Wrapper>
@@ -95,26 +144,19 @@ const ProductDetail = () => {
         <Container01>
           {/* 이미지 */}
           <Image_Wrapper>
-            {/* <img src="REACT_APP_IMAGE_PATH/{path}" alt="" /> */}
-            <img src="src\style\img\shirts.png" alt="" />
+            <img src={`${imgPath}/${product?.PRODUCT_IMG}`} alt={product?.PRODUCT_NAME} />
           </Image_Wrapper>
 
           {/* 상품정보 */}
           <Product_Wrapper>
             {/* 카테고리 */}
-            {/* <h3>{상품타입}</h3> */}
             <Text_wrapper>
-              <Text>카테고리</Text>
-              <Title>상품타입</Title>
-              {/* <h2>{상품명}</h2> */}
-              <Product_Title>상품명</Product_Title>
-              {/* <div>판매가 {판매가} 원</div>
-            <div>배송비 {배송비} 원</div>
-            <div>배송 지역 {배송지역}</div>
-            <div>배송 기간 {배송기간}</div> */}
+              <Text>카 테 고 리</Text>
+              <Title>상품 타입</Title>
+              <Product_Title>{product.PRODUCT_NAME}</Product_Title>
               <Text_box>
-                <Title>판매가</Title>
-                <Text>판매가 원</Text>
+                <Title>판매 가격</Title>
+                <Text>{product.PRODUCT_PRICE} 원</Text>
               </Text_box>
               <Text_box>
                 <Title>배송비</Title>
@@ -129,17 +171,20 @@ const ProductDetail = () => {
                 <Text>배송기간</Text>
               </Text_box>
               <div>
-                {/* 옵션 */}
+                {/* 옵션 선택*/}
                 <Select
                   className={"optionName"}
                   options={[
                     { value: "", label: "---" },
-                    Array.isArray(options)
-                      ? options.map((option) => ({
-                        value: option.option_no,
-                        label: `${option.option_title}(+${option.option_price} 원)`,
-                      }))
-                      : [],
+                    // Array.isArray(options) ? options.map((option) => ({
+                    //     value: option.option_no,
+                    //     label: `${option.option_title}(+${option.option_price} 원)`,
+                    //   }))
+                    //   : [],
+                    ...options.map((option) => ({
+                      value: option.option_no,
+                      label: `${option.option_title} (+${option.option_price} 원)`,
+                    })),
                   ]}
                   onChange={onChangeHandler}
                 />
@@ -155,7 +200,7 @@ const ProductDetail = () => {
 
             {/* 상품 선택 정보 */}
             <div>
-              <CheckedProduct />
+              <CheckedProduct product={product} options={selectedOption} setSelectedOption={setSelectedOption} onRemove={onRemove} />
             </div>
 
             {/* 버튼 */}
