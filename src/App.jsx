@@ -4,13 +4,7 @@ import SignUp from "./component/account/SignUp";
 import SignUpSuccess from "./component/account/SignUpSuccess";
 import Footer from "./component/common/Footer";
 import Header from "./component/common/Header";
-import CmAdd from "./component/community/CmAdd";
-import CmDetail from "./component/community/CmDetail";
-import CmMain from "./component/community/CmMain";
-import Order from "./component/order/Order";
-import OrderComplete from "./component/order/OrderComplete";
-import Index from "./component/product/index";
-import ProductDetail from "./component/product/ProductDetail";
+import Footer from "./component/common/Footer";
 
 function App() {
   return (

@@ -26,11 +26,10 @@ const Button_Modal_Login = styled.button`
   padding: 10px 15px;
   border: none;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12pt;
   transition: all 0.5s;
   border: 1px solid black;
   border-radius: 0;
-  letter-spacing: 1px;
   background-color: none;
 
   &:hover {
