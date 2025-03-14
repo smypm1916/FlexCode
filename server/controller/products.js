@@ -33,7 +33,7 @@ async function getProductDetail(req, res) {
 // 카테고리별 상품 조회 
 async function getCategories(req, res) {
    try {
-      const productCategories = await productService.getCategories;
+      const productCategories = await productService.getCategories();
       res.status(200).json({ success: true, data: productCategories });
    }
    catch (error) {
