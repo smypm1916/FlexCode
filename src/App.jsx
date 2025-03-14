@@ -1,15 +1,8 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
-import Index from "./component/product/index";
-import ProductDetail from "./component/product/ProductDetail";
-import OrderComplete from "./component/order/OrderComplete";
-import Order from "./component/order/Order";
-import CmMain from "./component/community/CmMain";
-import CmAdd from "./component/community/CmAdd";
-import CmDetail from "./component/community/CmDetail";
 import SignUp from "./component/account/SignUp";
 import SignUpSuccess from "./component/account/SignUpSuccess";
-// ---------------Hearder, Footer----------------
+import Footer from "./component/common/Footer";
 import Header from "./component/common/Header";
 import Footer from "./component/common/Footer";
 
@@ -20,7 +13,7 @@ function App() {
       {/* 루팅 */}
       <Routes>
         <Route path="/" element={<Index />} />
-        <Route path="/detail/:PRODUCT_NO" element={<ProductDetail />} />
+        <Route path="/detail/:product_no" element={<ProductDetail />} />
         <Route path="/order" element={<Order />} />
         <Route path="/order-complete" element={<OrderComplete />} />
         <Route path="/community" element={<CmMain />} />

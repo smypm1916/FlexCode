@@ -3,6 +3,7 @@ const productModel = require('../models/product_info');
 // 상품 리스트 조회
 async function getAllProducts(page, limit) {
    try {
+      console.log(`Fetching products for page(S): ${page}, limit: ${limit}`);
       return await productModel.getAllProducts(page, limit);
    } catch (error) {
       console.error('service error', error);
@@ -40,10 +41,11 @@ async function deleteProductByPk(product_no) {
    }
 };
 
-
+// 카테고리 조회
 async function getCategories() {
    try {
-      return await productModel.getCategories;
+      console.log('Fetching products categories');
+      return await productModel.getCategories();
    } catch (error) {
       console.error('category load error', error);
       throw error;

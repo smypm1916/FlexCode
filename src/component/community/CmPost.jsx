@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
   List_Content,
@@ -8,6 +9,7 @@ import {
 import { Pagination_List } from "../../style/Community_Style";
 
 const CmPost = ({ post }) => {
+  const navigate = useNavigate();
   const imgPath = import.meta.env.VITE_IMG_PATH;
 
   return (

@@ -12,21 +12,26 @@ import {
 } from "../../style/List_Style";
 
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const CmDetail = () => {
-  const [posts, setPosts] = useState([]);
+  const { COMMUNITY_NO } = useParams();
+  const [posts, setPosts] = useState();
+
+  const fetchPosts = async () => {
+    try {
+      const response = await axios.get(`/DetailPage/${COMMUNITY_NO}`, {
+        params: { postNum: COMMUNITY_NO },
+      });
+      setPosts(response.data);
+    } catch (error) {
+      console.err("게시글 불러오기 실패:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/posts");
-        setPosts(response.data);
-      } catch (error) {
-        console.log("게시글 불러오기 실패:", error);
-      }
-    };
     fetchPosts();
-  }, []);
+  }, [COMMUNITY_NO]);
 
   return (
     <Wrapper className="cm" id="post">

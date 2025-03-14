@@ -23,16 +23,11 @@ import {
 } from "../../style/Common_Style";
 import TextInput from "../common/TextInput";
 import CmAdd from "./CmAdd";
-import CmPost from "./CmPost";
-
-const CmMain = ({ post }) => {
-  const imgPath = import.meta.env.VITE_IMG_PATH;
-  const imgStyle = {
-    width: "100px",
-  };
+import Searchbox from "../common/Searchbox";
+const CmMain = () => {
   const navigate = useNavigate();
   const cnt = 6; // 한 페이지당 개수
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState("opTitle");
   const [pageNum, setPageNum] = useState(1);
   const [allPosts, setAllPosts] = useState([]); // 원본 데이터 저장
   const [posts, setPosts] = useState([]);
@@ -65,11 +60,15 @@ const CmMain = ({ post }) => {
       setPosts(allPosts);
       return;
     }
-
-    const filtered = allPosts.filter((post) =>
-      post.COMMUNITY_TITLE.includes(searchKeyword)
-    );
-
+    setPosts([]);
+    const filtered = allPosts.filter((post) => {
+      console.log(searchKeyword);
+      console.log(selected);
+      if (selected === "opTitle")
+        return post.COMMUNITY_TITLE.includes(searchKeyword);
+      else return post.USER_NICKNAME.includes(searchKeyword);
+    });
+    console.log(filtered);
     setPosts(filtered);
   };
 
@@ -77,6 +76,11 @@ const CmMain = ({ post }) => {
     getPosts();
   }, []);
 
+  useEffect(() => {
+    setSearchKeyword(""); // 검색어 초기화
+    setPosts(allPosts); // 상태 초기화
+    console.log(selected);
+  }, [selected]);
   useEffect(() => {
     // posts 상태가 바뀌면 필터링 실행
     setPaginatedPosts(filterPosts());
@@ -101,25 +105,32 @@ const CmMain = ({ post }) => {
               defaultValue=""
             />
           </div>
-          <Search_Box>
-            <Input_Box>
-              <TextInput
-                type="text"
-                placeholder="search"
-                value={searchKeyword}
-                onChange={(e) => setSearchKeyword(e.target.value)}
-              />
-            </Input_Box>
-            <Button onClick={searchHandler} btnTxt={"SEARCH"}>
-              SEARCH
-            </Button>
-          </Search_Box>
+          <Searchbox>
+            <Search_Box>
+              <Input_Box>
+                <TextInput
+                  type="text"
+                  placeholder="search"
+                  value={searchKeyword}
+                  onChange={(e) => setSearchKeyword(e.target.value)}
+                />
+              </Input_Box>
+              <Button onClick={searchHandler} btnTxt={"SEARCH"}>
+                SEARCH
+              </Button>
+            </Search_Box>
+          </Searchbox>
         </Input_Wrapper>
 
         {paginatedPosts.map((post) => {
           return <CmPost post={post} />;
         })}
 
+        <ul>
+          {paginatedPosts.map((post) => {
+            return <CmPost post={post} />;
+          })}
+        </ul>
         <Input_Wrapper>
           <Button btnTxt={"글쓰기"} onClick={() => Navigate("/CmAdd")}>
             글쓰기

@@ -6,8 +6,8 @@ import {
   ProductList_ItemBox,
   ProductList_Wrapper,
   System_message,
+  Text_wrapper,
 } from "../../style/ProductLists_Style";
-import { Text_wrapper } from "../../style/ProductLists_Style";
 
 const ProductLists = () => {
   const [page, setPage] = useState(1); // 현재 페이지
@@ -21,6 +21,10 @@ const ProductLists = () => {
 
   // 페이지 번호를 받아 해당 페이지의 상품들을 불러오는 함수
   const fetchProducts = async (pageToFetch) => {
+    console.log(`${pageToFetch} 페이지 로드 중...`);
+    // 중복 요청 방지
+    if (loading || !hasMore) return;
+
     try {
       setLoading(true);
       const res = await axios.get(
@@ -28,11 +32,12 @@ const ProductLists = () => {
         { headers: { Accept: "application/json" } }
       );
       console.log("API 응답:", res.data);
+
       if (res.data && res.data.success) {
         const newProducts = res.data.data || [];
         setProducts((prev) => [...prev, ...newProducts]);
         setHasMore(newProducts.length === 9);
-        setPage(pageToFetch); // 현재 페이지 업데이트
+        setPage((prev) => prev + 1); // 현재 페이지 업데이트
       }
     } catch (error) {
       console.log("fetchProductError", error);
@@ -42,35 +47,26 @@ const ProductLists = () => {
     }
   };
 
-  // 초기 로드시 1페이지 데이터만 불러옴 (마운트 시 한 번 실행)
+  // 초기 로드시 1페이지 데이터만 불러옴 
   useEffect(() => {
     fetchProducts(1);
   }, []);
 
   // 스크롤이 마지막 요소에 도달하면 다음 페이지 데이터를 불러옴
   useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: "20px",
-      threshold: 1.0,
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !loading) {
+          fetchProducts(page);
+        }
+      },
+      { root: null, rootMargin: "20px", threshold: 1.0 }
+    );
 
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && hasMore && !loading) {
-        fetchProducts(page + 1);
-      }
-    }, options);
+    if (loader.current) observer.observe(loader.current);
 
-    const currentLoader = loader.current;
-    if (currentLoader) {
-      observer.observe(currentLoader);
-    }
-    return () => {
-      if (currentLoader) {
-        observer.unobserve(currentLoader);
-      }
-    };
-  }, [page, hasMore, loading]);
+    return () => observer.disconnect();
+  }, [hasMore, loading, page]); // page 추가하여 최신 상태 유지
 
   return (
     <Container_Style>

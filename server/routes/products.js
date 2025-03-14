@@ -6,7 +6,7 @@ const productController = require('../controller/products');
 router.get("/lists", productController.getAllProducts);
 
 // 특정 상품 조회
-router.get("/:product_no", productController.getProductDetail);
+router.get("/detail/:product_no", productController.getProductDetail);
 
 // 상품 등록
 router.post("/reg", productController.regProduct);
