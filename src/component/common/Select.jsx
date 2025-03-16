@@ -21,7 +21,7 @@ const Select = ({ className, options = [], onChange, defaultValue }) => {
     <Select_Style
       className={`custom-select-${className}`}
       onChange={onChange}
-      defaultValue={defaultValue}
+      defaultValue={defaultValue || ""}
     >
       {Array.isArray(options) ? (
         options.map((option, index) => (

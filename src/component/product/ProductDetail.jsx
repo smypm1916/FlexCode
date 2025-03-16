@@ -43,21 +43,43 @@ const ProductDetail = () => {
 
   // 옵션 삭제
   const onRemove = (option_no) => {
-    setSelectedOption((prev) => {
-      prev.filter((option) => option.option_no !== option_no);
-    });
+    setSelectedOption((prev) => prev.filter((option) => option.option_no !== option_no));
   };
 
+
+
   // 옵션 선택 핸들러 (옵션 + 수량)
-  const onChangeHandler = (e) => {
-    const optionSelected = options.find((option) => option.option_no === parseInt(e.target.value));
-    if (optionSelected) {
-      // 중복 선택 방지
-      if (!selectedOption.some((option) => option.option_no === optionSelected.option_no)) {
-        setSelectedOption((prev) => [...prev, { ...optionSelected, quantity: 1 }]);
-      }
+  const onChangeHandler = (e, optionNo) => {
+    const selectedOption = options.find((opt) => opt.OPTION_NO === optionNo);
+    if (selectedOption) {
+      setSelectedOption((prev) => [...prev, { ...selectedOption, quantity: 1 }]);
     }
   };
+
+  const onQuantityChangeHandler = (e, optionNo) => {
+    const quantity = parseInt(e.target.value, 10);
+    setSelectedOption((prev) =>
+      prev.map((opt) =>
+        opt.OPTION_NO === optionNo ? { ...opt, quantity } : opt
+      )
+    );
+  };
+
+
+
+  // const onChangeHandler = (e) => {
+  //   const selectedValue = parseInt(e.target.value, 1);
+  //   if (!selectedValue) return; // 잘못된 값 방지
+
+  //   setSelectedOption((prev) => {
+  //     if (prev.some((option) => option.option_no === selectedValue)) {
+  //       return prev; // 중복 방지
+  //     }
+  //     const optionSelected = options.find((option) => option.option_no === selectedValue);
+  //     return optionSelected ? [...prev, { ...optionSelected, quantity: 1 }] : prev;
+  //   });
+  // };
+
 
   // 상품 정보 조회
   const fetchProductDetail = async (product_no) => {
@@ -170,27 +192,29 @@ const ProductDetail = () => {
                 <Title>배송 기간</Title>
                 <Text>배송기간</Text>
               </Text_box>
-              <div>
-                {/* 옵션 선택*/}
-                <Select
-                  className={"optionName"}
-                  options={[
-                    { value: "", label: "---" },
-                    // Array.isArray(options) ? options.map((option) => ({
-                    //     value: option.option_no,
-                    //     label: `${option.option_title}(+${option.option_price} 원)`,
-                    //   }))
-                    //   : [],
-                    ...options.map((option) => ({
-                      value: option.option_no,
-                      label: `${option.option_title} (+${option.option_price} 원)`,
-                    })),
-                  ]}
-                  onChange={onChangeHandler}
-                />
-                {/* 수량 */}
-                <Select className={"optionState"} options={1} />
-              </div>
+
+              {options.map((option, index) => (
+                <div key={index}>
+                  {/* 옵션 종류 및 가격 선택 */}
+                  <Select
+                    className={"optionName"}
+                    options={[
+                      { value: option.OPTION_NO, label: `${option.OPTION_TITLE} (+${option.OPTION_PRICE} 원)` }
+                    ]}
+                    onChange={(e) => onChangeHandler(e, option.OPTION_NO)}
+                  />
+
+                  {/* 수량 선택 (option_state 값 기반) */}
+                  <Select
+                    className={"optionState"}
+                    options={[...Array(option.OPTION_STATE).keys()].map((num) => ({
+                      value: num + 1, // 1부터 시작하도록 설정
+                      label: `${num + 1}개`,
+                    }))}
+                    onChange={(e) => onQuantityChangeHandler(e, option.OPTION_NO)}
+                  />
+                </div>
+              ))}
             </Text_wrapper>
 
             {/* 선택 정보 */}
@@ -343,7 +367,7 @@ const ProductDetail = () => {
         {/* 컨테이너 4 */}
         <div>{/* 리뷰??? */}</div>
       </Container_Style>
-    </Wrapper>
+    </Wrapper >
   );
 };
 
