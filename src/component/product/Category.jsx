@@ -49,7 +49,7 @@ const Category = () => {
             /> */}
               {category.PRODUCT_TYPE}
             </Category_Box>
-          ))) : (<p>카테고리 없음</p>)
+          ))) : (<p></p>)
         }
       </Category_Wrapper>
     </Container_Style>

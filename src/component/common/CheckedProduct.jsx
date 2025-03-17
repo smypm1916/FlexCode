@@ -2,54 +2,47 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 
-const CheckedProduct = ({ product, options, setSelectedOption, onRemove }) => {
+const CheckedProduct = ({ product, quantityHandler, options, onRemove }) => {
    const navigate = useNavigate();
 
-   // 수량 증가 (최대 재고 수량까지만 가능)
-   const countUp = (option_no) => {
-      setSelectedOption((prev) =>
-         prev.map((option) =>
-            option.option_no === option_no
-               ? { ...option, quantity: Math.min(option.option_state, option.quantity + 1) } //  재고 초과 방지
-               : option
-         )
-      );
+   const countUp = (OPTION_NO, currentQuantity, maxQuantity) => {
+      quantityHandler(OPTION_NO, Math.min(maxQuantity, currentQuantity + 1));
    };
 
-   // 수량 감소 
-   const countDown = (option_no) => {
-      setSelectedOption((prev) =>
-         prev.map((option) =>
-            option.option_no === option_no
-               ? { ...option, quantity: Math.max(1, option.quantity - 1) } // 최소 1개 제한
-               : option
-         )
-      );
+   const countDown = (OPTION_NO, currentQuantity) => {
+      quantityHandler(OPTION_NO, Math.max(1, currentQuantity - 1));
    };
 
    return (
       <div>
          <div>
             <h4 onClick={() => navigate(`/detail/${product.PRODUCT_NO}`)}>
-               {product.product_name}
+               {product.PRODUCT_NAME}
             </h4>
          </div>
          <div>
-            {options && options.length > 0 ? (
+            {options.length > 0 ? (
                options.map((option) => (
-                  <div key={option.option_no}>
+                  <div key={option.OPTION_NO}>
                      <div>
-                        <div>{option.option_title}</div>
-                        <div>{option.option_price}원</div>
-                        <div>재고: {option.option_state}개</div> {/* 재고 표시 */}
+                        <div>{option.OPTION_TITLE}</div>
+                        <div>{option.OPTION_PRICE}원</div>
+                        <div>재고: {option.OPTION_STATE} 개</div>
                         <div>
-                           <button onClick={() => countDown(option.option_no)}>-</button>
-                           <span style={{ margin: "0 10px" }}>{option.quantity}</span>
-                           <button onClick={() => countUp(option.option_no)}>+</button>
+                           <button onClick={() => countDown(option.OPTION_NO, option.quantity)}>-</button>
+                           <input
+                              type="number"
+                              min="1"
+                              max={option.OPTION_STATE}
+                              value={option.quantity}
+                              onChange={(e) => quantityHandler(option.OPTION_NO, parseInt(e.target.value, 10))}
+                              style={{ width: "50px", textAlign: "center", margin: "0 10px" }}
+                           />
+                           <button onClick={() => countUp(option.OPTION_NO, option.quantity, option.OPTION_STATE)}>+</button>
                         </div>
                      </div>
                      <div>
-                        <Button btnTxt="X" onClick={() => onRemove(option.option_no)} />
+                        <Button btnTxt="X" onClick={onRemove(option.OPTION_NO)} />
                      </div>
                   </div>
                ))
