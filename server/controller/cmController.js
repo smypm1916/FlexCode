@@ -23,13 +23,10 @@ const cmAdd = async (req, res) => {
   }
 };
 
-// const searchPosts = async (req, res) = >{
-//   try {
-
-//   } catch (error) {
-
-//   }
-
-// };
+const showPost = async (req, res) => {
+  const { postNum } = req.query;
+  const viewPost = await cmService.showPost();
+  return res.json(viewPost);
+};
 
 module.exports = { getPosts, cmAdd };

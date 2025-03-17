@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import LoginModal from "../account/LoginModal";
 import {
-  Wrapper_Header,
+  Button_Login,
+  Button_Register,
   Logo,
   Menu,
   Menu_Wrapper,
-  Button_Register,
-  Button_Login,
+  Wrapper_Header,
 } from "../../style/Header_Style";
 // import Cart from "./Cart";
 
@@ -17,6 +17,7 @@ const App = () => {
   const [showModal, setShowModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileImg, setProfileImg] = useState(null);
+  // const [isLoading, setIsLoading] = useState(true); // 로딩상태
   const navigate = useNavigate();
   // 로그인 상태 확인
   useEffect(() => {
@@ -87,12 +88,12 @@ const App = () => {
 
   return (
     <Wrapper_Header>
-      <Logo onClick={() => navigate("/")}>
+      <Logo onClick={() => Navigate("/")}>
         <img src="src\style\img\logo.png"></img>
       </Logo>
       <Menu_Wrapper>
-        <Menu onClick={() => navigate("/")}>HOME</Menu>
-        <Menu onClick={() => navigate("/community")}>COMMUNITY</Menu>
+        <Menu onClick={() => Navigate("/")}>HOME</Menu>
+        <Menu onClick={() => Navigate("/community")}>COMMUNITY</Menu>
       </Menu_Wrapper>
       {/* <Menu_Wrapper>
         <Button_Login onClick={() => setShowModal(true)}>LOGIN</Button_Login>

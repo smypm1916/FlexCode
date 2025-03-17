@@ -1,9 +1,10 @@
 const productService = require('../services/products');
 
+// 전체 상품 조회
 async function getAllProducts(req, res) {
+   const page = Math.max(Number(req.query.page) || 1, 1);
+   const limit = Math.max(Number(req.query.limit) || 9, 1);
    try {
-      const page = Number(req.query.page) || 1;
-      const limit = Number(req.query.limit) || 9;
       const productsLists = await productService.getAllProducts(page, limit);
       res.status(200).json({ success: true, data: productsLists });
    } catch (error) {
@@ -32,7 +33,7 @@ async function getProductDetail(req, res) {
 // 카테고리별 상품 조회 
 async function getCategories(req, res) {
    try {
-      const productCategories = await productService.getCategories;
+      const productCategories = await productService.getCategories();
       res.status(200).json({ success: true, data: productCategories });
    }
    catch (error) {
@@ -44,6 +45,7 @@ async function getCategories(req, res) {
 async function regProduct(req, res) {
    try {
       const productRegister = await productService.regProduct(req.body);
+      console.log(req.body);
       res.status(201).json({ success: true, message: 'product insert success!!!' });
       return;
    }
