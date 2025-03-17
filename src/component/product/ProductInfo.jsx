@@ -151,6 +151,67 @@ const ProductInfo = () => {
       }
    };
 
+   // 장바구니 조회
+   const fetchCart = async () => {
+      try {
+         setCartLoading(true);
+         const res = await axios.get("http://localhost:8080/api/cart", {
+            withCredentials: true, // for cookie
+         });
+         if (res.data?.success) {
+            setCarItems(res.data.data.items || []);
+         }
+         setCartLoading(false);
+      } catch (error) {
+         console.error('cart load error', error);
+         setError(error);
+         setCartLoading(false);
+      }
+   };
+
+   //장바구니 상품 추가
+   const addCart = async () => {
+      if (checkedProducts.length === 0) {
+         alert('상품을 선택해주세요.');
+         return;
+      }
+      try {
+         setCartLoading(true);
+         const cartRes = await axios.post('http://localhost:8080/api/cart/add', {
+            product_no: product_no,
+            option_no: currentOption.OPTION_NO,
+            option_price: currentOption.OPTION_PRICE,
+            product_quantity: currentQuantity
+         }, {
+            withCredentials: true
+         })
+         if (res.data?.success) {
+            // 장바구니 모달 열기
+            setCartItems(res.data.data.items || []);
+            setIsCartModalOpen(true);
+            // 선택된 옵션 초기화
+            setCheckedProducts([]);
+         } else {
+            alert("장바구니 추가에 실패했습니다.");
+         }
+         setCartLoading(false);
+      } catch (error) {
+         console.error('cart add error', error);
+         setError(error);
+         setCartLoading(false);
+      }
+   };
+
+   // 장바구니 모달 닫기
+   const closeCartModal = () => {
+      setIsCartModalOpen(false);
+   };
+
+   // 주문 페이지로 이동
+   const goToOrder = () => {
+      navigate("/order");
+   };
+
    // product_no 변경 시 상품 정보 로드
    useEffect(() => {
       if (!product_no) {
@@ -165,6 +226,10 @@ const ProductInfo = () => {
       };
       loadProductData();
    }, [product_no]);
+
+   useEffect(() => {
+      fetchCart();
+   }, []);
 
    if (loading) return <p>Loading...</p>;
    if (error) return <p>Error...</p>;
@@ -243,8 +308,10 @@ const ProductInfo = () => {
 
                   {/* 버튼 */}
                   <Button_Wrapper_100>
-                     <Button btnTxt="바로구매" />
-                     <Button btnTxt="장바구니" />
+                     <Button onClick={goToOrder} btnTxt="바로구매" />
+                     <Button onClick={addCart} disabled={cartLoading || checkedProducts.length === 0}
+                        btnTxt="장바구니" />
+                     {/* 장바구니 모달 출현 */}
                   </Button_Wrapper_100>
                </Product_Wrapper>
             </Container01>
@@ -283,6 +350,14 @@ const ProductInfo = () => {
                </Info_Wrapper>
             </Container03>
          </Container_Style>
+
+         {/* 장바구니 모달 */}
+         <CartModal
+            isOpen={isCartModalOpen}
+            onClose={closeCartModal}
+            cartItems={cartItems}
+            onConfirm={goToCheckout}
+         />
       </Wrapper>
    );
 };
