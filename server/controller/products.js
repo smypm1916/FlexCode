@@ -18,7 +18,6 @@ async function getProductDetail(req, res) {
    try {
       const productDetail = await productService.getProductDetail(req.params.product_no);
       if (!req.params.product_no) {
-         // res.data object
          return res.status(400).json({ success: false, message: "product_no 필요" });
       }
       if (!productDetail) {
