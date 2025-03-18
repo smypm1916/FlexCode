@@ -28,7 +28,7 @@ import {
 } from "../../style/SignUp_Style";
 
 const SignUp = () => {
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
 
   const style = {
     display: "flex",

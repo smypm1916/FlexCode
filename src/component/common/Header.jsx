@@ -6,10 +6,13 @@ import LoginModal from "../account/LoginModal";
 import {
   Button_Login,
   Button_Register,
+  LogoutButton,
   Logo,
   Menu,
   Menu_Wrapper,
   Wrapper_Header,
+  ProfileWrapper,
+  ProfileImg,
 } from "../../style/Header_Style";
 // import Cart from "./Cart";
 
@@ -22,13 +25,20 @@ const App = () => {
   // 로그인 상태 확인
   useEffect(() => {
     const token = sessionStorage.getItem("token");
-    const profile = sessionStorage.getItem("profile") || "default-profile.png";
     console.log(token);
     if (token) {
       const decoded = jwtDecode(token);
       console.log("디코딩된 토큰 정보:", decoded);
+
       setIsLoggedIn(true);
-      setProfileImg(`http://localhost:8080/uploads/${profile}`);
+
+      const profilePath = decoded.profile
+        ? `http://localhost:8080/uploads/${decoded.profile}`
+        : "http://localhost:8080/uploads/default-profile.png";
+
+      console.log("프로필 이미지 경로:", profilePath);
+
+      setProfileImg(profilePath);
     } else {
       setIsLoggedIn(false);
       setProfileImg(null);
@@ -70,10 +80,13 @@ const App = () => {
     sessionStorage.setItem("token", token);
     sessionStorage.setItem("profile", profile || "default-profile.png");
     console.log("로그인성공 ui 전환들어옴");
+
+    const profilePath = profile
+      ? `http://localhost:8080/uploads/${profile}`
+      : "http://localhost:8080/uploads/default-profile.png";
+
     setIsLoggedIn(true);
-    setProfileImg(
-      `http://localhost:8080/uploads/${profile || "default-profile.png"}`
-    );
+    setProfileImg(profilePath);
   };
 
   // 로그아웃 기능
@@ -112,10 +125,10 @@ const App = () => {
         </Menu_Wrapper>
       ) : (
         <Menu_Wrapper>
-          <LoginButton onClick={() => setShowModal(true)}>LOGIN</LoginButton>
-          <RegisterButton onClick={() => navigate("/signup")}>
+          <Button_Login onClick={() => setShowModal(true)}>LOGIN</Button_Login>
+          <Button_Register onClick={() => navigate("/signup")}>
             REGISTER
-          </RegisterButton>
+          </Button_Register>
         </Menu_Wrapper>
       )}
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}
