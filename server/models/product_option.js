@@ -15,21 +15,20 @@ const oracledb = require('oracledb');
 // 옵션 등록
 async function regOption(optProduct) {
   const { product_no, option_title, option_price, option_state } = optProduct;
-  const query = `INSERT INTO PRODUCT_OPTION(OPTION_NO,PRODUCT_NO,OPTION_TITLE,OPTION_PRICE,OPTION_STATE) VALUES(option_no_seq.nextVal,:product)no,:option_title,:option_price,:option_state)`;
+  const query = `INSERT INTO PRODUCT_OPTION(OPTION_NO,PRODUCT_NO,OPTION_TITLE,OPTION_PRICE,OPTION_STATE) VALUES(option_no_seq.nextVal,:product_no,:option_title,:option_price,:option_state)`;
   const binds = {
-    "PRODUCT_NO": product_no,
-    "OPTION_TITLE": option_title,
-    "OPTION_PRICE": option_price,
-    "OPTION_STATE": option_state,
+    product_no,
+    option_title,
+    option_price,
+    option_state,
   };
   try {
-    const result = await executeQuery(query, binds);
+    await executeQuery(query, binds);
     console.log('option insert success!!!');
   } catch (error) {
     console.error('option register failed', error);
     throw error;
   }
-  return;
 }
 
 // 옵션 삭제
@@ -48,17 +47,17 @@ async function deleteOption(option_no) {
 
 // 옵션 조회
 async function getOptionProduct(product_no) {
-  const query = 'SELECT * FROM PRODUCT_OPTION WHERE PRODUCT_NO= :product_no';
-  const binds = { product_no };
+  const query = `SELECT * FROM PRODUCT_OPTION WHERE PRODUCT_NO= :product_no`;
+  const binds = { product_no: Number(product_no) };
   try {
-    const result = await executeQuery(query, binds);
+    const rows = await executeQuery(query, binds);
     console.log('getOptionProduct success!!!');
-    return result;
+    return rows;
   } catch (error) {
     console.error('getOptionProduct failed', error);
     throw error;
   }
-}
+};
 
 
 const product_option = {

@@ -10,7 +10,7 @@ import CmMain from "./component/community/CmMain";
 import Order from "./component/order/Order";
 import OrderComplete from "./component/order/OrderComplete";
 import Index from "./component/product";
-import ProductDetail from "./component/product/ProductDetail";
+import ProductInfo from "./component/product/ProductInfo";
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
       {/* 루팅 */}
       <Routes>
         <Route path="/" element={<Index />} />
-        <Route path="/detail/:product_no" element={<ProductDetail />} />
+        <Route path="/detail/:product_no" element={<ProductInfo />} />
         <Route path="/order" element={<Order />} />
         <Route path="/order-complete" element={<OrderComplete />} />
         <Route path="/community" element={<CmMain />} />

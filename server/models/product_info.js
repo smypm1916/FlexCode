@@ -35,9 +35,11 @@ async function getProductDetail(product_no) {
   const query = `SELECT * FROM PRODUCT_INFO where PRODUCT_NO= :product_no`;
   const binds = { product_no };
   try {
-    const result = await executeQuery(query, binds);
-    console.log('detail read success!!!');
-    return result.rows;
+    const result = await executeQuery(query, binds, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
+    });
+    console.log('detail read success!!!', result);
+    return result;
   }
   catch (error) {
     console.error(error);
@@ -72,6 +74,7 @@ async function getProductDetail(product_no) {
 //   return;
 // }
 
+// 상품 등록
 async function regProduct(products) {
   if (!Array.isArray(products) || products.length === 0) {
     throw new Error("Invalid product data");

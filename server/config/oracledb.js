@@ -27,6 +27,9 @@ async function executeQuery(query, params = {}, options = { autoCommit: true, ou
   let connection;
   try {
     connection = await getConnection();
+    console.log("query:", query);
+    console.log("params:", params);
+
     const result = await connection.execute(query, params, options);
     return result.rows;
   } catch (error) {

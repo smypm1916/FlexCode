@@ -33,6 +33,7 @@ const ProductLists = () => {
       );
       console.log("API 응답:", res.data);
 
+      
       if (res.data && res.data.success) {
         const newProducts = res.data.data || [];
         setProducts((prev) => [...prev, ...newProducts]);
@@ -76,7 +77,7 @@ const ProductLists = () => {
           // 제품의 가격, 이미지, 정보를 표시하는 box
           <ProductList_ItemBox
             key={product.PRODUCT_NO}
-            onClick={() => navigate(`/product/${product.PRODUCT_NO}`)}
+            onClick={() => navigate(`/detail/${product.PRODUCT_NO}`)}
           >
             <img
               src={`${imgPath}/${product.PRODUCT_IMG}`}
