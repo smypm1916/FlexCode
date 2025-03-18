@@ -4,7 +4,7 @@ import { Title } from '../../style/Modal_Style'
 import LoginModal from '../account/LoginModal'
 import Button from './Button'
 
-const Cart = ({ isOpen, onClose, CheckedProduct, onConfirm, user }) => {
+const Cart = ({ isOpen, onClose, CheckedProduct, goToOrder, user, cartItems }) => {
    // const user = JSON.parse(localStorage.getItem('user'));
    const [cartedProduct, setCartedProduct] = useState([]);
    const [totalPrice, setTotalPrice] = useState(0);
@@ -31,7 +31,7 @@ const Cart = ({ isOpen, onClose, CheckedProduct, onConfirm, user }) => {
                {/* 가격 계산 */}
             </div>
             <div>
-               <Button btnTxt="주문하기" onClick={toOrder} />
+               <Button btnTxt="주문하기" onClick={goToOrder} />
             </div>
          </div>
       </Modal>

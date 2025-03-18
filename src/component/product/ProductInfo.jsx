@@ -32,10 +32,13 @@ const ProductInfo = () => {
    const { product_no } = useParams();
    const [product, setProduct] = useState({});
    const [options, setOptions] = useState([]);
+   const [cartItems, setCarItems] = useState([]);
+   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
    const [checkedProducts, setCheckedProducts] = useState([]); // 최종 선택된 옵션들
    const [currentOption, setCurrentOption] = useState(null); // 현재 선택된 옵션
    const [currentQuantity, setCurrentQuantity] = useState(1); // 현재 선택된 수량
    const [loading, setLoading] = useState(true);
+   const [cartLoading, setCartLoading] = useState(false);
    const [error, setError] = useState(null);
    const navigate = useNavigate();
    const imgPath = import.meta.env.VITE_IMG_PATH;
@@ -155,7 +158,7 @@ const ProductInfo = () => {
    const fetchCart = async () => {
       try {
          setCartLoading(true);
-         const res = await axios.get(`${API_BASE_URL}/cart`, {
+         const res = await axios.get(`${API_BASE_URL}/cart/`, {
             withCredentials: true, // for cookie
          });
          if (res.data?.success) {
@@ -356,7 +359,7 @@ const ProductInfo = () => {
             isOpen={isCartModalOpen}
             onClose={closeCartModal}
             cartItems={cartItems}
-            onConfirm={goToCheckout}
+            goToOrder={goToOrder}
          />
       </Wrapper>
    );
