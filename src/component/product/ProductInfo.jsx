@@ -7,6 +7,7 @@ import {
    Wrapper,
 } from "../../style/Common_Style";
 import Button from "../common/Button";
+import CartModal from "../common/CartModal";
 import CheckedProduct from "../common/CheckedProduct";
 import Select from "../common/Select";
 
@@ -158,16 +159,19 @@ const ProductInfo = () => {
    const fetchCart = async () => {
       try {
          setCartLoading(true);
-         const res = await axios.get(`${API_BASE_URL}/cart/`, {
+         const res = await axios.get(`${API_BASE_URL}/cart/read`, {
             withCredentials: true, // for cookie
          });
          if (res.data?.success) {
-            setCarItems(res.data.data.items || []);
+            setCarItems(res.data.cart || []);
+         } else {
+            console.error("fetchCart API failed", res.data);
+            setError(res.data?.message || '장바구니 조회 실패');
          }
          setCartLoading(false);
       } catch (error) {
          console.error('cart load error', error);
-         setError(error);
+         setError(error.response?.data?.message || error.message || "서버 오류가 발생했습니다");
          setCartLoading(false);
       }
    };

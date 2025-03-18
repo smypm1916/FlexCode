@@ -9,7 +9,7 @@ const Cart = ({ isOpen, onClose, CheckedProduct, goToOrder, user, cartItems }) =
    const [cartedProduct, setCartedProduct] = useState([]);
    const [totalPrice, setTotalPrice] = useState(0);
    const [error, setError] = useState(null);
-   const imgPath = process.env.REACT_APP_IMAGE_PATH;
+   const imgPath = import.meta.env.VITE_IMG_PATH;
    const navigate = useNavigate();
    const toOrder = () => {
       // 가져갈 데이터 추가필요
