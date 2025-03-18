@@ -15,4 +15,8 @@ router.post("/write", upload.single("community_img"), cmController.cmAdd);
 // 글 상세페이지
 router.get(`/DetailPage/:id`, cmController.detailPost);
 
+// 글 삭제
+router.delete(`/delete/:id`, cmController.deletePost);
+router.put(`/update`, upload.single("community_img"), cmController.updatePost);
+
 module.exports = router;

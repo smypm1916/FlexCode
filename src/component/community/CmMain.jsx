@@ -25,6 +25,7 @@ import TextInput from "../common/TextInput";
 import CmAdd from "./CmAdd";
 import Searchbox from "../common/Searchbox";
 import CmPost from "./CmPost";
+
 const CmMain = () => {
   const navigate = useNavigate();
   const cnt = 6; // 한 페이지당 개수
@@ -34,6 +35,7 @@ const CmMain = () => {
   const [posts, setPosts] = useState([]);
   const [paginatedPosts, setPaginatedPosts] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
+
   const filterPosts = () => {
     if (posts.length === 0) return [];
     // 12 - 3 * (1-1)    start = 12
@@ -56,7 +58,6 @@ const CmMain = () => {
     { value: "opTitle", label: "제목" },
     { value: "opUser", label: "작성자" },
   ];
-
   const searchHandler = () => {
     if (!searchKeyword) {
       setPosts(allPosts);
@@ -77,7 +78,6 @@ const CmMain = () => {
   useEffect(() => {
     getPosts();
   }, []);
-
   useEffect(() => {
     setSearchKeyword(""); // 검색어 초기화
     setPosts(allPosts); // 상태 초기화
@@ -92,8 +92,6 @@ const CmMain = () => {
     console.log(posts);
   }, [posts, pageNum]);
 
-  const Navigate = useNavigate();
-
   return (
     <Wrapper className="cm" id="community">
       <Container_Style>
@@ -107,21 +105,19 @@ const CmMain = () => {
               defaultValue=""
             />
           </div>
-          <Searchbox>
-            <Search_Box>
-              <Input_Box>
-                <TextInput
-                  type="text"
-                  placeholder="search"
-                  value={searchKeyword}
-                  onChange={(e) => setSearchKeyword(e.target.value)}
-                />
-              </Input_Box>
-              <Button onClick={searchHandler} btnTxt={"SEARCH"}>
-                SEARCH
-              </Button>
-            </Search_Box>
-          </Searchbox>
+          <Search_Box>
+            <Input_Box>
+              <TextInput
+                type="text"
+                placeholder="search"
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
+              />
+            </Input_Box>
+            <Button onClick={searchHandler} btnTxt={"SEARCH"}>
+              SEARCH
+            </Button>
+          </Search_Box>
         </Input_Wrapper>
 
         {paginatedPosts.map((post) => {
@@ -129,7 +125,7 @@ const CmMain = () => {
         })}
 
         <Input_Wrapper>
-          <Button btnTxt={"글쓰기"} onClick={() => Navigate("/CmAdd")}>
+          <Button btnTxt={"글쓰기"} onClick={() => navigate("/CmAdd")}>
             글쓰기
           </Button>
         </Input_Wrapper>

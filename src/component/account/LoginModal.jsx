@@ -13,6 +13,7 @@ import {
 } from "../../style/Common_Style";
 
 import { Link_box } from "../../style/Modal_Style";
+import TextInput from "../common/TextInput";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -165,7 +166,7 @@ const LoginModal = ({ onClose }) => {
         </ButtonContainer>
         <Title>LOGIN</Title>
         <Conwrapper>
-          <InputField>
+          <Input_Box>
             <TextInput
               type={"text"}
               name={"login_email"}
@@ -173,8 +174,8 @@ const LoginModal = ({ onClose }) => {
               value={login_email}
               onChange={handleChange}
             />
-          </InputField>
-          <InputField>
+          </Input_Box>
+          <Input_Box>
             <TextInput
               type={"password"}
               name={"login_password"}
@@ -182,8 +183,8 @@ const LoginModal = ({ onClose }) => {
               value={login_password}
               onChange={handleChange}
             />
-          </InputField>
-          <LinksContainer>
+          </Input_Box>
+          <Link_box>
             <div>
               {/* ✅ 회원가입 클릭 시 signup 페이지로 이동 */}
               <a onClick={() => navigate("/signup")}>회원가입</a>
@@ -194,7 +195,7 @@ const LoginModal = ({ onClose }) => {
             <div>
               <a onClick={handleFindPw}>비밀번호 찾기</a>
             </div>
-          </LinksContainer>
+          </Link_box>
           <Input_Box>
             <Input_Style type="text" placeholder="ID" />
           </Input_Box>
