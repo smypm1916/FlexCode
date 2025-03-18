@@ -6,6 +6,7 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 
 const productRouter = require("./routes/products");
 const userRouter = require("./routes/user");
@@ -73,7 +74,7 @@ io.on("connection", (socket) => {
 
 // redis세션
 const redisClient = createClient({
-  url: "redis://127.0.0.1",
+  url: "redis://127.0.0.1:6379",
 }); // 기본 Redis 포트로 변경
 
 redisClient

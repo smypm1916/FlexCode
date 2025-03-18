@@ -2,6 +2,8 @@ const optionModel = require('../models/product_option');
 
 // 옵션 리스트 조회
 async function getOptionProduct(product_no) {
+   console.log('product_no from service', product_no);
+
    try {
       return await optionModel.getOptionProduct(product_no);
    } catch (error) {
@@ -25,7 +27,7 @@ async function deleteOption(option_no) {
    try {
       return await optionModel.deleteOption(option_no);
    } catch (error) {
-      console.error('option reg service error', error);
+      console.error('option delete service error', error);
       throw error;
    }
 };

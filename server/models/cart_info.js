@@ -15,7 +15,7 @@ const cart_info = {
   tableName: "CART_INFO",
   columns: {
     user_email: "USER_EMAIL",
-    product_no: "PRODUCT_NO",
+uct_no: "PRODUCT_NO",
     product_price: "PRODUCT_PRICE",
     option_no: "OPTION_NO",
     option_price: "OPTION_PRICE",
