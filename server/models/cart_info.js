@@ -2,6 +2,7 @@ const oracledb = require("../config/oracledb");
 
 /**
  * cart_info 테이블
+ * 
  * user_email(fk)
  * product_no(fk)
  * product_price

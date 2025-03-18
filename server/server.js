@@ -77,12 +77,23 @@ const redisClient = createClient({
   url: "redis://127.0.0.1:6379",
 }); // 기본 Redis 포트로 변경
 
-redisClient
-  .connect()
-  .then(() => {
-    console.log("Redis Connected");
-  })
-  .catch(console.error);
+const initRedisClient = async () => {
+  try {
+    await redisClient.connect();
+    console.log('Redis Connected');
+
+    const cartKeys = await redisClient.keys('cart:*');
+    if (cartKeys.length > 0) {
+      await redisClient.del(cartKeys);
+      console.log('기존 장바구니 데이터 삭제 완료');
+    } else {
+      console.log('기존 장바구니 데이터 없음');
+    }
+  } catch (error) {
+    console.error('Redis Connect Error:', error);
+  }
+};
+
 
 // redis토큰 검증
 const authenticateToken = async (req, res, next) => {
@@ -139,6 +150,7 @@ const startServer = async () => {
       console.log(`서버가 포트 ${PORT}에서 실행 중...`);
       console.log("WebSocket 서버 실행 완료!");
     });
+    initRedisClient();
   } catch (error) {
     console.error("서버 시작 중 오류 발생:", error);
   }

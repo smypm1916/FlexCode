@@ -2,12 +2,40 @@ const express = require("express");
 const router = express.Router();
 const CART_TTL = 2592000; // 30일 (초 단위)
 
+//Redis는 테이블 생성없이 메모리에 데이터를 k-v{hash(map)}형태로 저장
+
+
 //  장바구니 키 가져오는 함수 (user_email 또는 session 기반)
 const getCartKey = (req) => {
    const user_email = req.session?.user?.email;
    const sessionId = req.sessionID;
    return user_email ? `cart:${user_email}` : `cart:session_${sessionId}`;
 };
+
+// 장바구니 조회
+router.get("/", async (req, res) => {
+   try {
+      const key = getCartKey(req);
+      const cartItems = await redisClient.hGetAll(key);
+
+      // 빈 바구니 조회
+      if (!cartItems || Object.keys(cartItems).length === 0) {
+         return res.status(200).json({ success: true, cart: [], isEmpty: true });
+      }
+
+      const parsedCart = Object.entries(cartItems).map(([productKey, value]) => {
+         try {
+            return JSON.parse(value);
+         } catch (err) {
+            return null;
+         }
+      }).filter(Boolean);
+
+      res.status(200).json({ success: true, cart: parsedCart });
+   } catch (error) {
+      res.status(500).json({ success: false, message: "장바구니 조회 중 오류 발생.", error: error.message });
+   }
+});
 
 // 장바구니에 상품 추가
 router.post("/add", async (req, res) => {
@@ -27,26 +55,6 @@ router.post("/add", async (req, res) => {
       res.status(200).json({ success: true, message: "장바구니에 추가되었습니다." });
    } catch (error) {
       res.status(500).json({ success: false, message: "장바구니 추가 중 오류 발생.", error: error.message });
-   }
-});
-
-// 장바구니 조회
-router.get("/", async (req, res) => {
-   try {
-      const key = getCartKey(req);
-      const cartItems = await redisClient.hGetAll(key);
-
-      const parsedCart = Object.entries(cartItems).map(([_, value]) => {
-         try {
-            return JSON.parse(value);
-         } catch (err) {
-            return null;
-         }
-      }).filter(Boolean);
-
-      res.status(200).json({ success: true, cart: parsedCart });
-   } catch (error) {
-      res.status(500).json({ success: false, message: "장바구니 조회 중 오류 발생.", error: error.message });
    }
 });
 
