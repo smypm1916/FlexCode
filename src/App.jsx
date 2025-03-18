@@ -10,6 +10,9 @@ import CmMain from "./component/community/CmMain";
 import Order from "./component/order/Order";
 import OrderComplete from "./component/order/OrderComplete";
 import Index from "./component/product";
+import ProductDetail from "./component/product/ProductDetail";
+import MyPageMain from "./component/myPage/myPageMain";
+import ModifyUserProfile from "./component/myPage/ModifyUserProfile";
 import ProductInfo from "./component/product/ProductInfo";
 
 function App() {
@@ -27,6 +30,8 @@ function App() {
         <Route path="/CmDetail/:id" element={<CmDetail />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signup-success" element={<SignUpSuccess />} />
+        <Route path="/mypage" element={<MyPageMain />} />
+        <Route path="/modifyUser" element={<ModifyUserProfile />} />
       </Routes>
       {/* 루팅 */}
 

@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import FindId from "./FindId";
 import FindPw from "./FindPw";
+import TextInput from "../common/TextInput";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -57,9 +59,7 @@ const Conwrapper = styled.div`
 `;
 
 const LoginModal = ({ onClose }) => {
-  const style = {
-    display: "flex",
-  };
+  console.log("onClose 확인:", onClose);
 
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
 
@@ -84,6 +84,14 @@ const LoginModal = ({ onClose }) => {
   const handleSignUp = () => {
     navigate("/signup");
     onClose();
+  };
+
+  const handleClose = () => {
+    try {
+      onClose();
+    } catch (error) {
+      console.error("onClose 실행 중 오류 발생:", error);
+    }
   };
 
   const [loginForm, setLoginForm] = useState({
@@ -161,14 +169,39 @@ const LoginModal = ({ onClose }) => {
     <Container_Modal>
       <Modal_Wrapper>
         <ButtonContainer>
-          <ButtonClose onClick={onClose}>
+          <ButtonClose onClick={handleClose}>
             <img src="src/style/img/closebutton.png" alt="닫기 버튼" />
           </ButtonClose>
         </ButtonContainer>
         <Title>LOGIN</Title>
         <Conwrapper>
+          {/* <TextInput
+            type={"text"}
+            name={"login_email"}
+            placeholder={"EMAIL"}
+            value={login_email}
+            onChange={handleChange}
+          />
+          <TextInput
+            type={"password"}
+            name={"login_password"}
+            placeholder={"PW"}
+            value={login_password}
+            onChange={handleChange}
+          /> */}
+          {/* <LinksContainer>
+            <div>
+              <a onClick={handleSignUp}>회원가입</a>
+            </div>
+            <div>
+              <a onClick={handleFindId}>이메일 찾기</a>
+            </div>
+            <div>
+              <a onClick={handleFindPw}>비밀번호 찾기</a>
+            </div>
+          </LinksContainer> */}
           <Input_Box>
-            <TextInput
+            <Input_Style
               type={"text"}
               name={"login_email"}
               placeholder={"EMAIL"}
@@ -177,7 +210,7 @@ const LoginModal = ({ onClose }) => {
             />
           </Input_Box>
           <Input_Box>
-            <TextInput
+            <Input_Style
               type={"password"}
               name={"login_password"}
               placeholder={"PW"}
@@ -185,26 +218,7 @@ const LoginModal = ({ onClose }) => {
               onChange={handleChange}
             />
           </Input_Box>
-          {/* <Link_box>
-            <div>
-              ✅ 회원가입 클릭 시 signup 페이지로 이동
-              <a onClick={() => navigate("/signup")}>회원가입</a>
-            </div>
-            <div>
-              <a onClick={handleFindId}>이메일 찾기</a>
-            </div>
-            <div>
-              <a onClick={handleFindPw}>비밀번호 찾기</a>
-            </div>
-          </Link_box> */}
-          {/* <Input_Box>
-            <Input_Style type="text" placeholder="ID" />
-          </Input_Box>
-          <Input_Box>
-            <Input_Style type="password" placeholder="PW" />
-          </Input_Box> */}
           <Link_box>
-            {/* ✅ 회원가입 클릭 시 signup 페이지로 이동 */}
             <a onClick={() => navigate("/signup")}>회원가입</a>
             <a onClick={handleFindId}>ID 찾기</a>
             <a onClick={handleFindPw}>비밀번호 찾기</a>
