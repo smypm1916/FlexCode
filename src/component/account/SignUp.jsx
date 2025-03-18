@@ -541,7 +541,6 @@ const SignUp = () => {
               btnTxt={"중복확인"}
               onClick={checkNicknameDuplicate}
             />
-            {nicknameCheckResult && <p>{nicknameCheckResult}</p>}
           </Nickname_Box>
         </Input_Wrapper>
         {nicknameCheckResult && <p>{nicknameCheckResult}</p>}

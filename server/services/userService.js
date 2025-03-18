@@ -166,6 +166,122 @@ const modifyPw = async (password, email) => {
   }
 };
 
+const getUser = async (email) => {
+  try {
+    console.log("조회대상 이메일:", email);
+
+    const query = `select * from user_account where user_email = :email`;
+    const result = await executeQuery(query, { email });
+
+    if (result.length === 0) {
+      console.log("조회 실패");
+      return { success: false, message: "회원정보 조회에 실패했습니다." };
+    }
+
+    return { success: true, result };
+  } catch (error) {
+    console.error("회원정보 조회 서비스 오류:", error);
+    throw new Error("회원정보 조회 처리 중 오류가 발생했습니다.");
+  }
+};
+
+// 회원정보 수정(이미지o)
+const updateProfileWithImage = async (userData) => {
+  const {
+    user_email,
+    user_name,
+    user_nickname,
+    user_tel,
+    user_addr,
+    user_profile,
+  } = userData;
+
+  const profileImg = user_profile.filename;
+
+  const query = `update user_account set user_name = :user_name, user_nickname = :user_nickname, user_tel = :user_tel, user_addr = :user_addr, user_profile = :user_profile where user_email = :user_email`;
+
+  await executeQuery(query, {
+    user_email,
+    user_name,
+    user_nickname,
+    user_tel,
+    user_addr,
+    user_profile: profileImg,
+  });
+
+  const updatedUserQuery = `select * from user_account where user_email = :email`;
+  const updatedUser = await executeQuery(updatedUserQuery, {
+    email: userData.user_email,
+  });
+
+  if (!updatedUser || updatedUser.length === 0) {
+    throw new Error("회원정보 조회 실패");
+  }
+
+  const user = updatedUser[0]; // 최신 회원정보
+
+  // JWT 토큰 발급
+  const newToken = jwt.sign(
+    {
+      email: user.USER_EMAIL,
+      profile: user.USER_PROFILE,
+      nickname: user.USER_NICKNAME,
+    },
+    process.env.JWT_SECRET || "your_secret_key", // 환경변수(env)에서 JWT_SECRET 가져옴
+    { expiresIn: "1h" } // 토큰 유효시간 => 1시간
+  );
+
+  return {
+    success: true,
+    message: "회원정보 수정이 완료되었습니다.",
+    token: newToken,
+  };
+};
+
+// 회원정보 수정(이미지x)
+const updateProfile = async (userData) => {
+  const { user_email, user_name, user_nickname, user_tel, user_addr } =
+    userData;
+
+  const query = `update user_account set user_name = :user_name, user_nickname = :user_nickname, user_tel = :user_tel, user_addr = :user_addr where user_email = :user_email`;
+
+  await executeQuery(query, {
+    user_email,
+    user_name,
+    user_nickname,
+    user_tel,
+    user_addr,
+  });
+
+  const updatedUserQuery = `select * from user_account where user_email = :email`;
+  const updatedUser = await executeQuery(updatedUserQuery, {
+    email: userData.user_email,
+  });
+
+  if (!updatedUser || updatedUser.length === 0) {
+    throw new Error("회원정보 조회 실패");
+  }
+
+  const user = updatedUser[0]; // 최신 회원정보
+
+  // JWT 토큰 발급
+  const newToken = jwt.sign(
+    {
+      email: user.USER_EMAIL,
+      profile: user.USER_PROFILE,
+      nickname: user.USER_NICKNAME,
+    },
+    process.env.JWT_SECRET || "your_secret_key", // 환경변수(env)에서 JWT_SECRET 가져옴
+    { expiresIn: "1h" } // 토큰 유효시간 => 1시간
+  );
+
+  return {
+    success: true,
+    message: "회원정보 수정이 완료되었습니다.",
+    token: newToken,
+  };
+};
+
 module.exports = {
   checkEmail,
   checkNickname,
@@ -174,4 +290,7 @@ module.exports = {
   findId,
   findPw,
   modifyPw,
+  getUser,
+  updateProfileWithImage,
+  updateProfile,
 };
