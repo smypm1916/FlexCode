@@ -40,6 +40,8 @@ const ProductInfo = () => {
    const navigate = useNavigate();
    const imgPath = import.meta.env.VITE_IMG_PATH;
 
+   const API_BASE_URL = "http://localhost:8080/api";
+
    // 옵션 삭제
    const onRemove = (OPTION_NO) => {
       return () => {
@@ -66,7 +68,7 @@ const ProductInfo = () => {
       // 이미 선택된 옵션인지 확인
       const exist = checkedProducts.find((opt) => opt.OPTION_NO === OPTION_NO);
       if (exist) {
-         // 이미 선택된 옵션이면 현재 선택만 초기화
+         // 이미 선택된 옵션이면 현재 선택 초기화
          setCurrentOption(null);
          setCurrentQuantity(1);
          return;
@@ -77,7 +79,7 @@ const ProductInfo = () => {
       setCurrentQuantity(1);
    };
 
-   // 수량 변경 핸들러 (옵션 선택 중)
+   // 수량 변경 핸들러 
    const handleQuantityChange = (e) => {
       const quantity = parseInt(e.target.value);
       if (isNaN(quantity) || quantity < 1) return;
@@ -87,18 +89,16 @@ const ProductInfo = () => {
    // 옵션 추가 핸들러
    const addOptionHandler = () => {
       if (!currentOption) return;
-
       setCheckedProducts((prev) => [
          ...prev,
          { ...currentOption, quantity: currentQuantity }
       ]);
-
       // 옵션 추가 후 현재 선택 초기화
       setCurrentOption(null);
       setCurrentQuantity(1);
    };
 
-   // 최종 선택된 옵션의 수량 변경 핸들러
+   // 최종 선택된 옵션 수량 변경 핸들러
    const quantityHandler = (OPTION_NO, quantity) => {
       setCheckedProducts((prev) =>
          prev.map((opt) =>
@@ -117,7 +117,7 @@ const ProductInfo = () => {
       }
       try {
          const res = await axios.get(
-            `http://localhost:8080/api/products/detail/${product_no}`,
+            `${API_BASE_URL}/products/detail/${product_no}`,
             { headers: { Accept: "application/json" } }
          );
          if (res.data?.success) {
@@ -139,7 +139,7 @@ const ProductInfo = () => {
       }
       try {
          const resOptions = await axios.get(
-            `http://localhost:8080/api/options/detail/${product_no}`,
+            `${API_BASE_URL}/options/detail/${product_no}`,
             { headers: { Accept: "application/json" } }
          );
          if (resOptions.data?.success) {
@@ -155,7 +155,7 @@ const ProductInfo = () => {
    const fetchCart = async () => {
       try {
          setCartLoading(true);
-         const res = await axios.get("http://localhost:8080/api/cart", {
+         const res = await axios.get(`${API_BASE_URL}/cart`, {
             withCredentials: true, // for cookie
          });
          if (res.data?.success) {
@@ -177,14 +177,14 @@ const ProductInfo = () => {
       }
       try {
          setCartLoading(true);
-         const cartRes = await axios.post('http://localhost:8080/api/cart/add', {
+         const cartRes = await axios.post(`${API_BASE_URL}/cart/add`, {
             product_no: product_no,
             option_no: currentOption.OPTION_NO,
             option_price: currentOption.OPTION_PRICE,
             product_quantity: currentQuantity
          }, {
             withCredentials: true
-         })
+         });
          if (res.data?.success) {
             // 장바구니 모달 열기
             setCartItems(res.data.data.items || []);

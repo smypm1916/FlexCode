@@ -84,6 +84,26 @@ redisClient
   })
   .catch(console.error);
 
+// redis토큰 검증
+const authenticateToken = async (req, res, next) => {
+  const token = req.headers['authoriztion']?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'no token' });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const storedToken = await redisClient.get(`token:${decoded.email}`);
+    if (!storedToken || storedToken !== token) {
+      return res.status(403).json({ message: '토큰 불일치' });
+    }
+    req.user = decoded;
+    next();
+  } catch (error) {
+    console.error('토큰 검증 중 오류 발생:', error);
+    return res.status(403).json({ message: '토큰 검증 오류' });
+  }
+};
+
+
 // middleware
 app.use(
   cors({
