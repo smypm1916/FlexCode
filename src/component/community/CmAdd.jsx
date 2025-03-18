@@ -11,7 +11,7 @@ import {
 import { List_Profile, Profile_Img } from "../../style/List_Style";
 import Button from "../common/Button";
 import FileUpload from "../common/FileUpload";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -20,13 +20,24 @@ const CmAdd = () => {
   const [community_title, setTitle] = useState("");
   const [community_content, setContent] = useState("");
   const [community_img, setImg] = useState(null);
+  const [nickname, setNickname] = useState("");
   const navigate = useNavigate();
-  const decoded = jwtDecode(token);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      navigate("/signup");
+    } else {
+      const decoded = jwtDecode(token);
+      setNickname(decoded.nickname);
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("user_nickname", "hamu");
+    formData.append("user_nickname", nickname);
     formData.append("community_title", community_title);
     formData.append("community_content", community_content);
     if (community_img) {

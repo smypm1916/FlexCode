@@ -6,7 +6,7 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
+// const cookieParser = require("cookie-parser");
 
 const productRouter = require("./routes/products");
 const userRouter = require("./routes/user");

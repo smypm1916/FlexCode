@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import FindId from "./FindId";
 import FindPw from "./FindPw";
 import styled from "styled-components";
+import axios from "axios";
 
 import {
   Container_Modal,
@@ -184,9 +185,9 @@ const LoginModal = ({ onClose }) => {
               onChange={handleChange}
             />
           </Input_Box>
-          <Link_box>
+          {/* <Link_box>
             <div>
-              {/* ✅ 회원가입 클릭 시 signup 페이지로 이동 */}
+              ✅ 회원가입 클릭 시 signup 페이지로 이동
               <a onClick={() => navigate("/signup")}>회원가입</a>
             </div>
             <div>
@@ -195,13 +196,13 @@ const LoginModal = ({ onClose }) => {
             <div>
               <a onClick={handleFindPw}>비밀번호 찾기</a>
             </div>
-          </Link_box>
-          <Input_Box>
+          </Link_box> */}
+          {/* <Input_Box>
             <Input_Style type="text" placeholder="ID" />
           </Input_Box>
           <Input_Box>
             <Input_Style type="password" placeholder="PW" />
-          </Input_Box>
+          </Input_Box> */}
           <Link_box>
             {/* ✅ 회원가입 클릭 시 signup 페이지로 이동 */}
             <a onClick={() => navigate("/signup")}>회원가입</a>
@@ -210,7 +211,9 @@ const LoginModal = ({ onClose }) => {
           </Link_box>
         </Conwrapper>
         <ButtonContainer>
-          <Button_Modal_Login primary>LOGIN</Button_Modal_Login>
+          <Button_Modal_Login primary onClick={handleLogin}>
+            LOGIN
+          </Button_Modal_Login>
         </ButtonContainer>
       </Modal_Wrapper>
     </Container_Modal>
