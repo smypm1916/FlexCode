@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Button from "../common/Button";
 
 const UserProfile = () => {
   const [profileImg, setProfileImg] = useState(null);
@@ -86,7 +87,11 @@ const UserProfile = () => {
         <div>{nickname}님</div>
         <div>{email}</div>
         <div>
-          <button onClick={handleGetUser}>회원정보수정</button>
+          <Button
+            className={"updateUser"}
+            btnTxt={"회원정보 수정"}
+            onClick={handleGetUser}
+          />
         </div>
       </div>
     </div>

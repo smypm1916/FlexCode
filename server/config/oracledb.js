@@ -23,7 +23,11 @@ async function getConnection() {
   }
 }
 
-async function executeQuery(query, params = {}, options = { autoCommit: true, outFormat: oracledb.OUT_FORMAT_OBJECT }) {
+async function executeQuery(
+  query,
+  params = {},
+  options = { autoCommit: true, outFormat: oracledb.OUT_FORMAT_OBJECT }
+) {
   let connection;
   try {
     connection = await getConnection();
@@ -31,7 +35,7 @@ async function executeQuery(query, params = {}, options = { autoCommit: true, ou
     console.log("params:", params);
 
     const result = await connection.execute(query, params, options);
-    return result.rows;
+    return result.rows || result.rowsAffected;
   } catch (error) {
     console.error("❌ 쿼리 실행 실패:", error);
     throw error;
