@@ -256,6 +256,56 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const deleteUserAccount = async (req, res) => {
+  try {
+    const email = req.body;
+
+    console.log("회원정보 삭제 데이터:", email);
+
+    const result = await userService.deleteUserAccount(email);
+
+    if (!result) {
+      throw new Error("회원정보 삭제 실패 - DB 오류");
+    }
+    if (result.success) {
+      return res.status(201).json(result);
+    } else {
+      return res.status(200).json(result);
+    }
+  } catch (error) {
+    console.error("회원정보 삭제 오류:", error);
+    return res.status(500).json({ success: false, message: "서버 오류 발생" });
+  }
+};
+
+// 회원 커뮤니티글 조회
+const getUserCommunitys = async (req, res) => {
+  try {
+    const { nickname } = req.body;
+
+    console.log("커뮤니티글 조회 요청:", nickname);
+
+    if (!nickname) {
+      return res
+        .status(400)
+        .json({ success: false, message: "닉네임 전달 실패" });
+    }
+
+    const result = await userService.getUserCommunitys(nickname);
+
+    if (result.success) {
+      console.log("커뮤니티글 조회 성공:", result);
+      return res.status(200).json(result);
+    } else {
+      console.log("커뮤니티글 조회 실패:", result);
+      return res.status(200).json(result);
+    }
+  } catch (error) {
+    console.error("커뮤니티글 조회 컨트롤러 오류:", error);
+    res.status(500).json({ success: false, message: "서버 오류 발생" });
+  }
+};
+
 module.exports = {
   checkEmail,
   checkNickname,
@@ -267,4 +317,6 @@ module.exports = {
   getUser,
   updateProfileWithImage,
   updateProfile,
+  deleteUserAccount,
+  getUserCommunitys,
 };

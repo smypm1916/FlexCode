@@ -1,6 +1,7 @@
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import styled from "styled-components";
 import FindId from "./FindId";
 import FindPw from "./FindPw";
 import styled from "styled-components";
@@ -14,7 +15,6 @@ import {
 } from "../../style/Common_Style";
 
 import { Link_box } from "../../style/Modal_Style";
-import TextInput from "../common/TextInput";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -143,7 +143,7 @@ const LoginModal = ({ onClose }) => {
         onClose();
       } else {
         console.log(response.data.message);
-        alert("로그인 실패");
+        alert("이메일 또는 패스워드를 확인해주세요.");
       }
     } catch (error) {
       console.error("로그인 요청 실패:", error);

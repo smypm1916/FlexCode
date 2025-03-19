@@ -13,7 +13,9 @@ import Index from "./component/product";
 // import ProductDetail from "./component/product/ProductDetail";
 import MyPageMain from "./component/myPage/myPageMain";
 import ModifyUserProfile from "./component/myPage/ModifyUserProfile";
+import DeleteUserCheck from "./component/myPage/DeleteUserCheck";
 import ProductInfo from "./component/product/ProductInfo";
+import UserCommunityList from "./component/myPage/UserCommunityList";
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
         <Route path="/signup-success" element={<SignUpSuccess />} />
         <Route path="/mypage" element={<MyPageMain />} />
         <Route path="/modifyUser" element={<ModifyUserProfile />} />
+        <Route path="/deleteAccount" element={<DeleteUserCheck />} />
+        <Route path="/userCommunity-list" element={<UserCommunityList />} />
       </Routes>
       {/* 루팅 */}
 

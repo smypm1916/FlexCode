@@ -9,6 +9,9 @@ const oracledb = require("../config/oracledb");
  * order_state : number(5)
  */
 
+
+
+
 const order_info = {
   tableName: "ORDER_INFO",
   columns: {

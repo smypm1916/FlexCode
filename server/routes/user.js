@@ -41,4 +41,10 @@ router.post(
 // 회원정보수정(이미지x)
 router.post("/updateProfile", userController.updateProfile);
 
+// 회원정보삭제
+router.post("/deleteUserAccount", userController.deleteUserAccount);
+
+// 회원 커뮤니티글 조회
+router.post("/getUserCommunitys", userController.getUserCommunitys);
+
 module.exports = router;

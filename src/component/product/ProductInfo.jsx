@@ -7,6 +7,7 @@ import {
    Wrapper,
 } from "../../style/Common_Style";
 import Button from "../common/Button";
+import CartModal from "../common/CartModal";
 import CheckedProduct from "../common/CheckedProduct";
 import Select from "../common/Select";
 
@@ -28,17 +29,37 @@ import {
    Title,
 } from "../../style/Product_detail_style";
 
+
 const ProductInfo = () => {
    const { product_no } = useParams();
    const [product, setProduct] = useState({});
    const [options, setOptions] = useState([]);
+   const [cartItems, setCarItems] = useState([]);
+   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
    const [checkedProducts, setCheckedProducts] = useState([]); // 최종 선택된 옵션들
    const [currentOption, setCurrentOption] = useState(null); // 현재 선택된 옵션
    const [currentQuantity, setCurrentQuantity] = useState(1); // 현재 선택된 수량
    const [loading, setLoading] = useState(true);
+   const [cartLoading, setCartLoading] = useState(false);
    const [error, setError] = useState(null);
+   const openModal = () => setIsCartModalOpen(true);
+   const closeModal = () => setIsCartModalOpen(false);
    const navigate = useNavigate();
    const imgPath = import.meta.env.VITE_IMG_PATH;
+
+   const API_BASE_URL = "http://localhost:8080/api";
+
+   //로그인 후 토큰 저장
+   const handleLogin = async (user_email, user_password) => {
+      const res = await axios.post(`${API_BASE_URL}/cart/auth/login`, {
+         user_email,
+         user_password
+      }, { withCredentials: true });
+      if (res.data.success) {
+         localStorage.setItem('token', res.data.token);
+         await fetchCart();
+      }
+   };
 
    // 옵션 삭제
    const onRemove = (OPTION_NO) => {
@@ -66,7 +87,7 @@ const ProductInfo = () => {
       // 이미 선택된 옵션인지 확인
       const exist = checkedProducts.find((opt) => opt.OPTION_NO === OPTION_NO);
       if (exist) {
-         // 이미 선택된 옵션이면 현재 선택만 초기화
+         // 이미 선택된 옵션이면 현재 선택 초기화
          setCurrentOption(null);
          setCurrentQuantity(1);
          return;
@@ -77,7 +98,7 @@ const ProductInfo = () => {
       setCurrentQuantity(1);
    };
 
-   // 수량 변경 핸들러 (옵션 선택 중)
+   // 수량 변경 핸들러 
    const handleQuantityChange = (e) => {
       const quantity = parseInt(e.target.value);
       if (isNaN(quantity) || quantity < 1) return;
@@ -87,18 +108,16 @@ const ProductInfo = () => {
    // 옵션 추가 핸들러
    const addOptionHandler = () => {
       if (!currentOption) return;
-
       setCheckedProducts((prev) => [
          ...prev,
          { ...currentOption, quantity: currentQuantity }
       ]);
-
       // 옵션 추가 후 현재 선택 초기화
       setCurrentOption(null);
       setCurrentQuantity(1);
    };
 
-   // 최종 선택된 옵션의 수량 변경 핸들러
+   // 최종 선택된 옵션 수량 변경 핸들러
    const quantityHandler = (OPTION_NO, quantity) => {
       setCheckedProducts((prev) =>
          prev.map((opt) =>
@@ -117,7 +136,7 @@ const ProductInfo = () => {
       }
       try {
          const res = await axios.get(
-            `http://localhost:8080/api/products/detail/${product_no}`,
+            `${API_BASE_URL}/products/detail/${product_no}`,
             { headers: { Accept: "application/json" } }
          );
          if (res.data?.success) {
@@ -139,7 +158,7 @@ const ProductInfo = () => {
       }
       try {
          const resOptions = await axios.get(
-            `http://localhost:8080/api/options/detail/${product_no}`,
+            `${API_BASE_URL}/options/detail/${product_no}`,
             { headers: { Accept: "application/json" } }
          );
          if (resOptions.data?.success) {
@@ -155,16 +174,18 @@ const ProductInfo = () => {
    const fetchCart = async () => {
       try {
          setCartLoading(true);
-         const res = await axios.get("http://localhost:8080/api/cart", {
+         const token = localStorage.getItem('token');
+         const res = await axios.get(`${API_BASE_URL}/cart/read`, {
             withCredentials: true, // for cookie
+            headers: {
+               Authorization: `Bearer ${token}`
+            }
          });
-         if (res.data?.success) {
-            setCarItems(res.data.data.items || []);
-         }
+         setCarItems(res.data.cart || []);
          setCartLoading(false);
       } catch (error) {
          console.error('cart load error', error);
-         setError(error);
+         setError(error.response?.data?.message || error.message || "서버 오류가 발생했습니다");
          setCartLoading(false);
       }
    };
@@ -177,18 +198,24 @@ const ProductInfo = () => {
       }
       try {
          setCartLoading(true);
-         const cartRes = await axios.post('http://localhost:8080/api/cart/add', {
+         const cartRes = await axios.post(`${API_BASE_URL}/cart/add`, {
             product_no: product_no,
-            option_no: currentOption.OPTION_NO,
-            option_price: currentOption.OPTION_PRICE,
-            product_quantity: currentQuantity
+            product_name: product.PRODUCT_NAME,
+            product_price: product.PRODUCT_PRICE,
+            options: checkedProducts.map(opt => ({
+               option_no: opt.OPTION_NO,
+               option_title: opt.OPTION_TITLE,
+               option_price: opt.OPTION_PRICE,
+               quantity: opt.quantity
+            }))
          }, {
             withCredentials: true
-         })
-         if (res.data?.success) {
+         });
+         if (cartRes.data?.success) {
             // 장바구니 모달 열기
-            setCartItems(res.data.data.items || []);
-            setIsCartModalOpen(true);
+            openModal();
+            // 장바구니 추가 성공 문구 표시
+
             // 선택된 옵션 초기화
             setCheckedProducts([]);
          } else {
@@ -351,12 +378,11 @@ const ProductInfo = () => {
             </Container03>
          </Container_Style>
 
-         {/* 장바구니 모달 */}
+         {/* 장바구니 추가 모달 */}
          <CartModal
             isOpen={isCartModalOpen}
-            onClose={closeCartModal}
-            cartItems={cartItems}
-            onConfirm={goToCheckout}
+            onClose={closeModal}
+            goToOrder={goToOrder}
          />
       </Wrapper>
    );

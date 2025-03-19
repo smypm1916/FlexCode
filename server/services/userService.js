@@ -91,7 +91,7 @@ const loginUser = async (email, password) => {
       process.env.JWT_SECRET || "your_secret_key", // 환경변수(env)에서 JWT_SECRET 가져옴
       { expiresIn: "1h" } // 토큰 유효시간 => 1시간
     );
-    
+
     //Redis 토큰 추가
 
     console.log("JWT 토큰 발급 성공:", token);
@@ -284,6 +284,47 @@ const updateProfile = async (userData) => {
   };
 };
 
+const deleteUserAccount = async (email) => {
+  try {
+    console.log("삭제대상 이메일:", email);
+
+    const query = `delete user_account where user_email = :email`;
+
+    const result = await executeQuery(query, email);
+
+    console.log("쿼리 실행 결과:", result);
+
+    if (result > 0) {
+      return { success: true, result };
+    } else {
+      console.log("삭제 실패");
+      return { success: false, message: "회원정보 삭제에 실패했습니다." };
+    }
+  } catch (error) {
+    console.error("회원정보 삭제 서비스 오류:", error);
+    throw new Error("회원정보 삭제 처리 중 오류가 발생했습니다.");
+  }
+};
+
+// 회원 커뮤니티글 조회
+const getUserCommunitys = async (nickname) => {
+  try {
+    console.log("조회대상 닉네임:", nickname);
+
+    const query = `select * from community_info where user_nickname = :nickname order by community_date desc`;
+    const result = await executeQuery(query, { nickname });
+
+    if (result.length === 0) {
+      console.log("조회 실패");
+      return { success: false, message: "커뮤니티글 조회에 실패했습니다." };
+    }
+    return { success: true, result };
+  } catch (error) {
+    console.error("커뮤니티글 조회 서비스 오류:", error);
+    throw new Error("커뮤니티글 조회 처리 중 오류가 발생했습니다.");
+  }
+};
+
 module.exports = {
   checkEmail,
   checkNickname,
@@ -295,4 +336,6 @@ module.exports = {
   getUser,
   updateProfileWithImage,
   updateProfile,
+  deleteUserAccount,
+  getUserCommunitys,
 };
