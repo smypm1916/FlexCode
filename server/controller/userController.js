@@ -278,6 +278,34 @@ const deleteUserAccount = async (req, res) => {
   }
 };
 
+// 회원 커뮤니티글 조회
+const getUserCommunitys = async (req, res) => {
+  try {
+    const { nickname } = req.body;
+
+    console.log("커뮤니티글 조회 요청:", nickname);
+
+    if (!nickname) {
+      return res
+        .status(400)
+        .json({ success: false, message: "닉네임 전달 실패" });
+    }
+
+    const result = await userService.getUserCommunitys(nickname);
+
+    if (result.success) {
+      console.log("커뮤니티글 조회 성공:", result);
+      return res.status(200).json(result);
+    } else {
+      console.log("커뮤니티글 조회 실패:", result);
+      return res.status(200).json(result);
+    }
+  } catch (error) {
+    console.error("커뮤니티글 조회 컨트롤러 오류:", error);
+    res.status(500).json({ success: false, message: "서버 오류 발생" });
+  }
+};
+
 module.exports = {
   checkEmail,
   checkNickname,
@@ -290,4 +318,5 @@ module.exports = {
   updateProfileWithImage,
   updateProfile,
   deleteUserAccount,
+  getUserCommunitys,
 };
