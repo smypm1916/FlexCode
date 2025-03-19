@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../common/Button";
+import CheckedProduct from "../common/CheckedProduct";
 import ShippingAddress from "./ShippingAddress";
 
 
@@ -39,9 +40,8 @@ const Order = () => {
   };
 
   const API_BASE_URL = "http://localhost:8080/api";
-  // const onRemove = () => {
 
-  // }
+
 
   const handleCheckboxChange = (e) => {
     setIsSame(e.target.checked);
@@ -79,9 +79,9 @@ const Order = () => {
 
   // 장바구니 비우기
 
-  // useEffect(() => {
-  //   fetchCart();
-  // }, []);
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
 
   return (
@@ -89,44 +89,46 @@ const Order = () => {
       <div>
         {/* 주문 상품 */}
         <div>주문상품</div>
-        <div>
-          {/* <CheckedProduct /> */}
+        {cartLoading && <p>...LOADING...</p>}
+        {error && <p>{error}</p>}
+        {!cartLoading && !error && cartItems.length > 0 && (<CheckedProduct cartItems={cartItems} />)}
+        {!cartLoading && cartItems.length === 0 && <p>장바구니가 비어있습니다</p>}
+      </div>
 
-        </div>
+      {/* 합계 금액 */}
+      <div>
+        <p>
+          합계 금액 : {cartItems.reduce((sum, item) => sum + (item.product_price + item.option_price) * item.quantity, 0)} 원
+        </p>
+      </div>
 
-        {/* 합계 금액 */}
-        <div>
-          합계
-        </div>
+      <div>
+        <ShippingAddress
+          title="주문자 정보"
+          data={orderInfo}
+          setData={setOrderInfo}
+        />
+        <label>
+          <input
+            type="checkbox"
+            checked={isSame}
+            onChange={handleCheckboxChange}
+          /> 주문자 정보와 동일
+        </label>
+        <ShippingAddress
+          title="받는 사람"
+          data={receiveInfo}
+          setData={setReceiveInfo}
+          isReadOnly={isSame}
+        />
+      </div>
 
-        <div>
-          <ShippingAddress
-            title="주문자 정보"
-            data={orderInfo}
-            setData={setOrderInfo}
-          />
-          <label>
-            <input
-              type="checkbox"
-              checked={isSame}
-              onChange={handleCheckboxChange}
-            /> 주문자 정보와 동일
-          </label>
-          <ShippingAddress
-            title="받는 사람"
-            data={receiveInfo}
-            setData={setReceiveInfo}
-            isReadOnly={isSame}
-          />
-        </div>
-
-        {/* 결제/취소*/}
-        < div >
-          {/* 결제하기(orderComplete로 이동) */}
-          <Button onClick={goToPayment} />
-          {/* 취소하기 */}
-          <Button onClick={goToHome} />
-        </div>
+      {/* 결제/취소*/}
+      < div >
+        {/* 결제하기(orderComplete로 이동) */}
+        <Button onClick={goToPayment} />
+        {/* 취소하기 */}
+        <Button onClick={goToHome} />
       </div>
     </div>
   );
