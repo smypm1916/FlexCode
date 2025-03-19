@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "../common/Button";
 import { useNavigate } from "react-router-dom";
+import Button from "../common/Button";
 
 const Order = () => {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const Order = () => {
         {/* 결제/취소*/}
         < div >
           {/* 결제하기(orderComplete로 이동) */}
-          < Button onClick={() => useNavigate("/order/:id")} />
+          < Button onClick={() => useNavigate("/order-complete")} />
           {/* 취소하기 */}
           <Button onClick={() => useNavigate("/")} />
         </div>
