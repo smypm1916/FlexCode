@@ -11,7 +11,6 @@ import { Pagination_List } from "../../style/Community_Style";
 const CmPost = ({ handleSubmit, post }) => {
   const navigate = useNavigate();
   const imgPath = import.meta.env.VITE_IMG_PATH;
-
   return (
     <ul>
       <Pagination_List

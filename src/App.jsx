@@ -10,7 +10,7 @@ import CmMain from "./component/community/CmMain";
 import Order from "./component/order/Order";
 import OrderComplete from "./component/order/OrderComplete";
 import Index from "./component/product";
-import ProductDetail from "./component/product/ProductDetail";
+// import ProductDetail from "./component/product/ProductDetail";
 import MyPageMain from "./component/myPage/myPageMain";
 import ModifyUserProfile from "./component/myPage/ModifyUserProfile";
 import ProductInfo from "./component/product/ProductInfo";

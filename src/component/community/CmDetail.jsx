@@ -17,8 +17,19 @@ import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import FileUpload from "../common/FileUpload";
+import { jwtDecode } from "jwt-decode";
 
 const CmDetail = () => {
+  const storedToken = sessionStorage.getItem("token");
+  const decoded = jwtDecode(storedToken);
+  const [nickname, setNickname] = useState("");
+
+  useEffect(() => {
+    if (decoded?.nickname) {
+      setNickname(decoded.nickname);
+    }
+  }, [decoded]);
+
   const { id } = useParams();
   const [post, setPost] = useState();
   const imgPath = import.meta.env.VITE_IMG_PATH;
@@ -32,7 +43,6 @@ const CmDetail = () => {
       const response = await axios.get(
         `http://localhost:8080/api/post/DetailPage/${id}`
       );
-      console.log(response.data[0]);
       setPost(response.data[0]);
       setTitle(response.data[0].COMMUNITY_TITLE);
       setContent(response.data[0].COMMUNITY_CONTENT);
@@ -56,7 +66,7 @@ const CmDetail = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("user_nickname", "hamu");
+    formData.append("user_nickname", nickname);
     formData.append("community_title", community_title);
     formData.append("community_content", community_content);
     formData.append("community_no", id);
@@ -68,19 +78,18 @@ const CmDetail = () => {
         "http://localhost:8080/api/post/update",
         formData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      // console.log(formData);
-      console.log("수정 성공:", response.data);
-      console.log(response);
       navigate("/community");
     } catch (error) {
       console.error("작성 실패:", error);
     }
   };
   useEffect(() => {
-    console.log(id);
     fetchPost(id);
   }, [id]);
   if (!post) {
@@ -148,31 +157,33 @@ const CmDetail = () => {
             </List_Content>
           </Input_Wrapper>
           <Button_Wrapper_100>
-            {editMode ? (
-              <>
-                <Button
-                  type="button"
-                  onClick={() => setEditMode(!editMode)}
-                  btnTxt={"취소"}
-                />
-                <Button type="submit" onClick={handleSubmit} btnTxt={"완료"} />
-              </>
-            ) : (
-              <>
-                <Button
-                  type="button"
-                  onClick={updateHandler}
-                  btnTxt={"수정하기"}
-                />
-                <Button
-                  type="button"
-                  onClick={deleteHandler}
-                  btnTxt={"삭제하기"}
-                >
-                  삭제하기
-                </Button>
-              </>
-            )}
+            {nickname === post.USER_NICKNAME ? (
+              editMode ? (
+                <>
+                  <Button
+                    type="button"
+                    onClick={() => setEditMode(!editMode)}
+                    btnTxt={"취소"}
+                  />
+                  <Button type="submit" btnTxt={"완료"} />
+                </>
+              ) : (
+                <>
+                  <Button
+                    type="button"
+                    onClick={updateHandler}
+                    btnTxt={"수정하기"}
+                  />
+                  <Button
+                    type="button"
+                    onClick={deleteHandler}
+                    btnTxt={"삭제하기"}
+                  >
+                    삭제하기
+                  </Button>
+                </>
+              )
+            ) : null}
           </Button_Wrapper_100>
         </Container_Style>
       </form>
