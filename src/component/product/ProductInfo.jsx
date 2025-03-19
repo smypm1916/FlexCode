@@ -34,7 +34,7 @@ const ProductInfo = () => {
    const { product_no } = useParams();
    const [product, setProduct] = useState({});
    const [options, setOptions] = useState([]);
-   const [cartItems, setCarItems] = useState([]);
+   const [cartItems, setCartItems] = useState([]);
    const [isCartModalOpen, setIsCartModalOpen] = useState(false);
    const [checkedProducts, setCheckedProducts] = useState([]); // 최종 선택된 옵션들
    const [currentOption, setCurrentOption] = useState(null); // 현재 선택된 옵션
@@ -186,7 +186,7 @@ const ProductInfo = () => {
                Authorization: `Bearer ${token}`
             }
          });
-         setCarItems(res.data.cart || []);
+         setCartItems(res.data.cart || []);
          setCartLoading(false);
       } catch (error) {
          console.error('cart load error', error);
