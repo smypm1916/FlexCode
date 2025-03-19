@@ -15,27 +15,39 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import LoginModal from "../account/LoginModal";
 
 const CmAdd = () => {
   const [community_title, setTitle] = useState("");
   const [community_content, setContent] = useState("");
   const [community_img, setImg] = useState(null);
   const [nickname, setNickname] = useState("");
+  const [token, setToken] = useState("");
+  const [profileImg, setProfileImg] = useState("");
   const navigate = useNavigate();
+  const imgPath = import.meta.env.VITE_IMG_PATH;
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("로그인이 필요합니다.");
-      navigate("/signup");
+    const storedToken = sessionStorage.getItem("token");
+    if (!storedToken) {
+      alert("로그인이 필요합니다");
+      setShowModal(true);
     } else {
-      const decoded = jwtDecode(token);
-      setNickname(decoded.nickname);
+      try {
+        const decoded = jwtDecode(storedToken);
+        setNickname(decoded.nickname);
+        setProfileImg(decoded.profile);
+        setToken(storedToken);
+      } catch (error) {
+        console.error("커뮤 작성 토큰 디코딩 실패 :", error);
+        localStorage.removeItem("token");
+      }
     }
-  }, [navigate]);
-
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const formData = new FormData();
     formData.append("user_nickname", nickname);
     formData.append("community_title", community_title);
@@ -48,7 +60,10 @@ const CmAdd = () => {
         "http://localhost:8080/api/post/write",
         formData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log("작성 성공:", response.data);
@@ -61,11 +76,14 @@ const CmAdd = () => {
 
   return (
     <Wrapper className="cm" id="add">
+      {showModal && <LoginModal onClose={() => setShowModal(false)} />}
       <form onSubmit={handleSubmit}>
         <Container_Style>
           <Title>WRITE</Title>
           <List_Profile>
-            <Profile_Img>프사</Profile_Img>
+            <Profile_Img>
+              <img src={`${imgPath}/${profileImg}`} />
+            </Profile_Img>
           </List_Profile>
           <Input_Wrapper>
             <div className="CmAddTitle">
@@ -108,7 +126,9 @@ const CmAdd = () => {
             <Button btnTxt={"뒤로가기"} onClick={() => navigate("/community")}>
               뒤로가기
             </Button>
-            <Button btnTxt={"글쓰기"}>글쓰기</Button>
+            <Button onClick={handleSubmit} btnTxt={"글쓰기"}>
+              글쓰기
+            </Button>
           </Button_Wrapper_100>
         </Container_Style>
       </form>
