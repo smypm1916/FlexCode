@@ -22,4 +22,23 @@ router.post("/login", userController.loginUser);
 // 이메일찾기
 router.post("/findId", userController.findId);
 
+// 비밀번호찾기(유저검색)
+router.post("/findPw", userController.findPw);
+
+// 비밀번호재설정
+router.post("/modifyPw", userController.modifyPw);
+
+// 회원정보조회
+router.post("/getUser", userController.getUser);
+
+// 회원정보수정(이미지o)
+router.post(
+  "/updateProfileWithImage",
+  upload.single("user_profile"),
+  userController.updateProfileWithImage
+);
+
+// 회원정보수정(이미지x)
+router.post("/updateProfile", userController.updateProfile);
+
 module.exports = router;

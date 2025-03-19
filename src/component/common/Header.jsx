@@ -6,10 +6,13 @@ import LoginModal from "../account/LoginModal";
 import {
   Button_Login,
   Button_Register,
+  LogoutButton,
   Logo,
   Menu,
   Menu_Wrapper,
   Wrapper_Header,
+  ProfileWrapper,
+  ProfileImg,
 } from "../../style/Header_Style";
 // import Cart from "./Cart";
 
@@ -22,13 +25,20 @@ const App = () => {
   // 로그인 상태 확인
   useEffect(() => {
     const token = sessionStorage.getItem("token");
-    const profile = sessionStorage.getItem("profile") || "default-profile.png";
     console.log(token);
     if (token) {
       const decoded = jwtDecode(token);
       console.log("디코딩된 토큰 정보:", decoded);
+
       setIsLoggedIn(true);
-      setProfileImg(`http://localhost:8080/uploads/${profile}`);
+
+      const profilePath = decoded.profile
+        ? `http://localhost:8080/uploads/${decoded.profile}`
+        : "http://localhost:8080/uploads/default-profile.png";
+
+      console.log("프로필 이미지 경로:", profilePath);
+
+      setProfileImg(profilePath);
     } else {
       setIsLoggedIn(false);
       setProfileImg(null);
@@ -70,10 +80,13 @@ const App = () => {
     sessionStorage.setItem("token", token);
     sessionStorage.setItem("profile", profile || "default-profile.png");
     console.log("로그인성공 ui 전환들어옴");
+
+    const profilePath = profile
+      ? `http://localhost:8080/uploads/${profile}`
+      : "http://localhost:8080/uploads/default-profile.png";
+
     setIsLoggedIn(true);
-    setProfileImg(
-      `http://localhost:8080/uploads/${profile || "default-profile.png"}`
-    );
+    setProfileImg(profilePath);
   };
 
   // 로그아웃 기능
@@ -88,20 +101,36 @@ const App = () => {
 
   return (
     <Wrapper_Header>
-      <Logo onClick={() => Navigate("/")}>
+      <Logo onClick={() => navigate("/")}>
         <img src="src\style\img\logo.png"></img>
       </Logo>
       <Menu_Wrapper>
-        <Menu onClick={() => Navigate("/")}>HOME</Menu>
-        <Menu onClick={() => Navigate("/community")}>COMMUNITY</Menu>
+        <Menu onClick={() => navigate("/")}>HOME</Menu>
+        <Menu onClick={() => navigate("/community")}>COMMUNITY</Menu>
       </Menu_Wrapper>
-      <Menu_Wrapper>
+      {/* <Menu_Wrapper>
         <Button_Login onClick={() => setShowModal(true)}>LOGIN</Button_Login>
-        <Button_Register onClick={() => navigate("/signup")}>
+        <Button_Register onClick={() => navigate("/signUp")}>
           REGISTER
         </Button_Register>
-      </Menu_Wrapper>
-
+      </Menu_Wrapper> */}
+      {/* 로그인 여부에 따라 UI 변경 */}
+      {isLoggedIn ? (
+        <Menu_Wrapper>
+          <Menu onClick={() => navigate("/cart")}>CART</Menu>
+          <ProfileWrapper onClick={() => navigate("/mypage")}>
+            <ProfileImg src={profileImg} alt="profile" />
+          </ProfileWrapper>
+          <LogoutButton onClick={handleLogout}>LOGOUT</LogoutButton>
+        </Menu_Wrapper>
+      ) : (
+        <Menu_Wrapper>
+          <Button_Login onClick={() => setShowModal(true)}>LOGIN</Button_Login>
+          <Button_Register onClick={() => navigate("/signup")}>
+            REGISTER
+          </Button_Register>
+        </Menu_Wrapper>
+      )}
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}
     </Wrapper_Header>
   );
