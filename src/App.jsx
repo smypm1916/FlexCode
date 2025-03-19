@@ -7,8 +7,6 @@ import Header from "./component/common/Header";
 import CmAdd from "./component/community/CmAdd";
 import CmDetail from "./component/community/CmDetail";
 import CmMain from "./component/community/CmMain";
-import ModifyUserProfile from "./component/myPage/ModifyUserProfile";
-import MyPageMain from "./component/myPage/MyPageMain";
 import Order from "./component/order/Order";
 import OrderComplete from "./component/order/OrderComplete";
 import Index from "./component/product";
