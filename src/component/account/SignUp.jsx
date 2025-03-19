@@ -538,6 +538,8 @@ const SignUp = () => {
             </Input_Box>
             <Button
               className={"checkNickname"}
+              name={"user_nickname"}
+              value={signUpForm.user_nickname}
               btnTxt={"중복확인"}
               onClick={checkNicknameDuplicate}
             />
