@@ -105,7 +105,6 @@ const Order = () => {
             data={orderInfo}
             setData={setOrderInfo}
           />
-
           <label>
             <input
               type="checkbox"
@@ -113,8 +112,6 @@ const Order = () => {
               onChange={handleCheckboxChange}
             /> 주문자 정보와 동일
           </label>
-
-          <div>받는 사람</div>
           <ShippingAddress
             title="받는 사람"
             data={receiveInfo}
