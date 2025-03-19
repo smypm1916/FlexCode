@@ -4,7 +4,7 @@ import Button from '../common/Button';
 import Select from '../common/Select';
 import TextInput from '../common/TextInput';
 
-const ShippingAddress = () => {
+const ShippingAddress = ({ }) => {
    return (
       <div>
          <div className="shipping-wrapper">

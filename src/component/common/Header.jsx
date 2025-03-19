@@ -2,18 +2,18 @@ import { jwtDecode } from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
-import LoginModal from "../account/LoginModal";
 import {
   Button_Login,
   Button_Register,
-  LogoutButton,
   Logo,
+  LogoutButton,
   Menu,
   Menu_Wrapper,
-  Wrapper_Header,
-  ProfileWrapper,
   ProfileImg,
+  ProfileWrapper,
+  Wrapper_Header,
 } from "../../style/Header_Style";
+import LoginModal from "../account/LoginModal";
 // import Cart from "./Cart";
 
 const App = () => {
@@ -117,7 +117,7 @@ const App = () => {
       {/* 로그인 여부에 따라 UI 변경 */}
       {isLoggedIn ? (
         <Menu_Wrapper>
-          <Menu onClick={() => navigate("/cart")}>CART</Menu>
+          <Menu onClick={() => navigate("/order")}>CART</Menu>
           <ProfileWrapper onClick={() => navigate("/mypage")}>
             <ProfileImg src={profileImg} alt="profile" />
           </ProfileWrapper>

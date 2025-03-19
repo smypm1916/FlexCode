@@ -24,10 +24,17 @@ const { log } = require("console");
 const app = express();
 const PORT = process.env.PORT || 8080;
 const server = http.createServer(app);
+const corsOptions = {
+  origin: "http://localhost:5173",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
@@ -76,6 +83,7 @@ io.on("connection", (socket) => {
 const redisClient = createClient({
   url: "redis://127.0.0.1:6379",
 }); // 기본 Redis 포트로 변경
+redisClient.on('error', (err) => console.error('Redis Client Error:', err));
 
 const initRedisClient = async () => {
   try {
@@ -98,12 +106,9 @@ const initRedisClient = async () => {
 
 
 // middleware
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
+
+
+app.use(cors(corsOptions));
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

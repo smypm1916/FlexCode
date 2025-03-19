@@ -121,12 +121,7 @@ module.exports = (redisClient) => {
 
          const parsedCart = Object.entries(cartItems).map(([productKey, value]) => {
             try {
-               const productData = JSON.parse(value);
-               const product_no = productKey.split(":")[1];
-               if (!productData.product_no) {
-                  productData.product_no = product_no;
-               }
-               return productData;
+               return JSON.parse(value);
             } catch (err) {
                console.error("장바구니 데이터 파싱 오류:", err);
                return null;
@@ -151,7 +146,7 @@ module.exports = (redisClient) => {
          for (const option of options) {
             const cartItemKey = `product:${product_no}:option:${option.option_no}`;
             const user_email = req.session?.user?.email || null;
-            await redisClient.hSet(key, `product:${product_no}`, JSON.stringify({
+            await redisClient.hSet(key, cartItemKey, JSON.stringify({
                user_email,
                product_no,
                product_name,

@@ -137,7 +137,10 @@ const ProductInfo = () => {
       try {
          const res = await axios.get(
             `${API_BASE_URL}/products/detail/${product_no}`,
-            { headers: { Accept: "application/json" } }
+            {
+               withCredentials: true,
+               headers: { Accept: "application/json" }
+            }
          );
          if (res.data?.success) {
             setProduct(res.data.data || {});
@@ -158,8 +161,10 @@ const ProductInfo = () => {
       }
       try {
          const resOptions = await axios.get(
-            `${API_BASE_URL}/options/detail/${product_no}`,
-            { headers: { Accept: "application/json" } }
+            `${API_BASE_URL}/options/detail/${product_no}`, {
+            withCredentials: true,
+            headers: { Accept: "application/json" }
+         },
          );
          if (resOptions.data?.success) {
             setOptions(resOptions.data.data || []);

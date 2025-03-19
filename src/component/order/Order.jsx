@@ -22,7 +22,7 @@ const Order = () => {
         </div>
 
         {/* 합계 금액 */}
-        <div>합계금액</div>
+        <div>합계</div>
 
         {/* 주문자 정보 */}
         {/* <ShippingAddress /> */}
