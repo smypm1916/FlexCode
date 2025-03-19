@@ -306,6 +306,25 @@ const deleteUserAccount = async (email) => {
   }
 };
 
+// 회원 커뮤니티글 조회
+const getUserCommunitys = async (nickname) => {
+  try {
+    console.log("조회대상 닉네임:", nickname);
+
+    const query = `select * from community_info where user_nickname = :nickname order by community_date desc`;
+    const result = await executeQuery(query, { nickname });
+
+    if (result.length === 0) {
+      console.log("조회 실패");
+      return { success: false, message: "커뮤니티글 조회에 실패했습니다." };
+    }
+    return { success: true, result };
+  } catch (error) {
+    console.error("커뮤니티글 조회 서비스 오류:", error);
+    throw new Error("커뮤니티글 조회 처리 중 오류가 발생했습니다.");
+  }
+};
+
 module.exports = {
   checkEmail,
   checkNickname,
@@ -318,4 +337,5 @@ module.exports = {
   updateProfileWithImage,
   updateProfile,
   deleteUserAccount,
+  getUserCommunitys,
 };
