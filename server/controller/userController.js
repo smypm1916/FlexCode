@@ -256,6 +256,28 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const deleteUserAccount = async (req, res) => {
+  try {
+    const email = req.body;
+
+    console.log("회원정보 삭제 데이터:", email);
+
+    const result = await userService.deleteUserAccount(email);
+
+    if (!result) {
+      throw new Error("회원정보 삭제 실패 - DB 오류");
+    }
+    if (result.success) {
+      return res.status(201).json(result);
+    } else {
+      return res.status(200).json(result);
+    }
+  } catch (error) {
+    console.error("회원정보 삭제 오류:", error);
+    return res.status(500).json({ success: false, message: "서버 오류 발생" });
+  }
+};
+
 module.exports = {
   checkEmail,
   checkNickname,
@@ -267,4 +289,5 @@ module.exports = {
   getUser,
   updateProfileWithImage,
   updateProfile,
+  deleteUserAccount,
 };

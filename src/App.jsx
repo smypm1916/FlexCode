@@ -12,6 +12,9 @@ import MyPageMain from "./component/myPage/myPageMain";
 import Order from "./component/order/Order";
 import OrderComplete from "./component/order/OrderComplete";
 import Index from "./component/product";
+import MyPageMain from "./component/myPage/myPageMain";
+import ModifyUserProfile from "./component/myPage/ModifyUserProfile";
+import DeleteUserCheck from "./component/myPage/DeleteUserCheck";
 import ProductInfo from "./component/product/ProductInfo";
 
 function App() {
@@ -31,6 +34,7 @@ function App() {
         <Route path="/signup-success" element={<SignUpSuccess />} />
         <Route path="/mypage" element={<MyPageMain />} />
         <Route path="/modifyUser" element={<ModifyUserProfile />} />
+        <Route path="/deleteAccount" element={<DeleteUserCheck />} />
       </Routes>
       {/* 루팅 */}
 

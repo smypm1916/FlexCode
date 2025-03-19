@@ -479,7 +479,7 @@ const ModifyUserProfile = () => {
               <Button
                 className={"cancel"}
                 btnTxt={"취소"}
-                onClick={() => Navigate("/myPage")}
+                onClick={() => navigate("/myPage")}
               />
             </Button_Wrapper>
           </Container_Style>
