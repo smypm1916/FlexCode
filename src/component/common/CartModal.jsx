@@ -1,41 +1,32 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React from 'react'
+import ReactModal from 'react-modal'
 import { Title } from '../../style/Modal_Style'
-import LoginModal from '../account/LoginModal'
 import Button from './Button'
+ReactModal.setAppElement('#root');
 
-const Cart = ({ isOpen, onClose, CheckedProduct, goToOrder, user, cartItems }) => {
-   // const user = JSON.parse(localStorage.getItem('user'));
-   const [cartedProduct, setCartedProduct] = useState([]);
-   const [totalPrice, setTotalPrice] = useState(0);
-   const [error, setError] = useState(null);
-   const imgPath = import.meta.env.VITE_IMG_PATH;
-   const navigate = useNavigate();
-   const toOrder = () => {
-      // 가져갈 데이터 추가필요
-      navigate('/order', {});
-   }
+const CartModal = ({ isOpen, onClose, goToOrder }) => {
 
    if (!isOpen) return null;
 
    return (
-      <Modal>
+      <ReactModal isOpen={isOpen} onRequestClose={onClose} shouldCloseOnOverlayClick={true}
+         shouldCloseOnEsc={true}>
          <div className='cart-wrapper'>
-            <Title><h1>장바구니</h1></Title>
-            {/* 로그인 상태 아닐 경우 회원가입 버튼 출현 로직 */}
-            if(!user) ? <LoginModal /> : <p>쿠폰 적용은 결제할 때 확인가능합니다</p>
+            <Title>장바구니에 추가 되었습니다</Title>
 
             {/* 장바구니 상품 리스트 */}
-            <div>
-               <CheckedProduct />
-               {/* 가격 계산 */}
-            </div>
+            {/* <div> */}
+            {/* <CheckedProduct cartItems={cartItems} /> */}
+            {/* </div> */}
             <div>
                <Button btnTxt="주문하기" onClick={goToOrder} />
             </div>
+            <div>
+               <Button onClick={onClose} btnTxt='닫기'></Button>
+            </div>
          </div>
-      </Modal>
-   )
-}
+      </ReactModal>
+   );
+};
 
-export default Cart;
+export default CartModal;

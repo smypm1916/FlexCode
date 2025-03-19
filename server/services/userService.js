@@ -88,14 +88,9 @@ const loginUser = async (email, password) => {
         profile: user.USER_PROFILE,
         nickname: user.USER_NICKNAME,
       },
-
+      process.env.JWT_SECRET || "your_secret_key", // 환경변수(env)에서 JWT_SECRET 가져옴
       { expiresIn: "1h" } // 토큰 유효시간 => 1시간
     );
-
-    //Redis 토큰 추가
-    await redisClient.setEx(`token:${user.USER_EMAIL}`, 3600, token)
-    console.log("JWT 토큰 발급 성공:", token);
-
     return { success: true, token, profile: user.USER_PROFILE };
   } catch (error) {
     console.error("로그인 서비스 오류:", error);

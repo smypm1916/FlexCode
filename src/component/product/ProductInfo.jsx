@@ -29,6 +29,7 @@ import {
    Title,
 } from "../../style/Product_detail_style";
 
+
 const ProductInfo = () => {
    const { product_no } = useParams();
    const [product, setProduct] = useState({});
@@ -41,10 +42,24 @@ const ProductInfo = () => {
    const [loading, setLoading] = useState(true);
    const [cartLoading, setCartLoading] = useState(false);
    const [error, setError] = useState(null);
+   const openModal = () => setIsCartModalOpen(true);
+   const closeModal = () => setIsCartModalOpen(false);
    const navigate = useNavigate();
    const imgPath = import.meta.env.VITE_IMG_PATH;
 
    const API_BASE_URL = "http://localhost:8080/api";
+
+   //로그인 후 토큰 저장
+   const handleLogin = async (user_email, user_password) => {
+      const res = await axios.post(`${API_BASE_URL}/cart/auth/login`, {
+         user_email,
+         user_password
+      }, { withCredentials: true });
+      if (res.data.success) {
+         localStorage.setItem('token', res.data.token);
+         await fetchCart();
+      }
+   };
 
    // 옵션 삭제
    const onRemove = (OPTION_NO) => {
@@ -159,15 +174,14 @@ const ProductInfo = () => {
    const fetchCart = async () => {
       try {
          setCartLoading(true);
+         const token = localStorage.getItem('token');
          const res = await axios.get(`${API_BASE_URL}/cart/read`, {
             withCredentials: true, // for cookie
+            headers: {
+               Authorization: `Bearer ${token}`
+            }
          });
-         if (res.data?.success) {
-            setCarItems(res.data.cart || []);
-         } else {
-            console.error("fetchCart API failed", res.data);
-            setError(res.data?.message || '장바구니 조회 실패');
-         }
+         setCarItems(res.data.cart || []);
          setCartLoading(false);
       } catch (error) {
          console.error('cart load error', error);
@@ -197,10 +211,9 @@ const ProductInfo = () => {
          }, {
             withCredentials: true
          });
-         if (res.data?.success) {
+         if (cartRes.data?.success) {
             // 장바구니 모달 열기
-            setIsCartModalOpen(true);
-
+            openModal();
             // 장바구니 추가 성공 문구 표시
 
             // 선택된 옵션 초기화
@@ -365,11 +378,10 @@ const ProductInfo = () => {
             </Container03>
          </Container_Style>
 
-         {/* 장바구니 모달 */}
+         {/* 장바구니 추가 모달 */}
          <CartModal
             isOpen={isCartModalOpen}
-            onClose={closeCartModal}
-            cartItems={cartItems}
+            onClose={closeModal}
             goToOrder={goToOrder}
          />
       </Wrapper>

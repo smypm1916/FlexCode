@@ -95,23 +95,6 @@ const initRedisClient = async () => {
 };
 
 
-// redis토큰 검증
-const authenticateToken = async (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1];
-  if (!token) return res.status(401).json({ message: 'no token' });
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const storedToken = await redisClient.get(`token:${decoded.email}`);
-    if (!storedToken || storedToken !== token) {
-      return res.status(403).json({ message: '토큰 불일치' });
-    }
-    req.user = decoded;
-    next();
-  } catch (error) {
-    console.error('토큰 검증 중 오류 발생:', error);
-    return res.status(403).json({ message: '토큰 검증 오류' });
-  }
-};
 
 
 // middleware
@@ -124,6 +107,23 @@ app.use(
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+io.use(async (socket, next) => {
+  const token = socket.handshake.auth?.token;
+  if (!token) {
+    return next(new Error("인증 토큰이 없습니다."));
+  }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const storedToken = await redisClient.get(`token:${decoded.email}`);
+    if (storedToken !== token) {
+      return next(new Error('JWT 토큰 불일치'));
+    }
+    socket.user = decoded;
+    next();
+  } catch (error) {
+    return next(new Error('JWT 인증 실패'));
+  }
+});
 
 // 정적 파일 제공(프로필 이미지 경로 설정)
 const imagePath = "C:/Users/codms/Documents/FlexCode/src/assets/imgs";
@@ -139,6 +139,7 @@ app.use(
     cookie: { maxAge: 30 * 60 * 1000 }, // 30분 유지
   })
 );
+
 
 // 라우터 등록
 app.use("/api/products", productRouter);
