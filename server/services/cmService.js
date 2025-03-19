@@ -5,14 +5,15 @@ const getPosts = async () => {
   const query = `
   SELECT 
     community_no,
-    user_nickname,
+   c.user_nickname,
     community_title,
     community_content,
     community_img,
+     u.user_profile,
     TO_CHAR(${community_info.columns.community_date}, 'YYYY/MM/DD') AS community_date,
     community_readcnt
   FROM 
-    ${community_info.tableName}
+    ${community_info.tableName} c, user_account u where c.user_nickname = u.user_nickname
   ORDER BY 
     ${community_info.columns.community_date}
 `;
@@ -54,9 +55,39 @@ const regPost = async ({
   await executeQuery(query, values);
 };
 
-const showPost = async () => {
-  const query = `SELECT * FROM COMMUNITY_INFO WHERE COMMUNITY_NO = `;
-  return await executeQuery(query);
+const detailPost = async (id) => {
+  const query = `SELECT 
+    community_no,
+    c. user_nickname,
+    community_title,
+    community_content,
+    community_img,
+    TO_CHAR(${community_info.columns.community_date}, 'YYYY/MM/DD') AS community_date,
+    community_readcnt,
+    u.user_profile
+  FROM 
+    ${community_info.tableName} c, user_account u WHERE c.user_nickname=u.user_nickname and ${community_info.columns.community_no} =:id`;
+  return await executeQuery(query, [id]);
 };
 
-module.exports = { getPosts, regPost, showPost };
+const deletePost = async (id) => {
+  const query = `delete ${community_info.tableName} where ${community_info.columns.community_no} =:id`;
+  return await executeQuery(query, [id]);
+};
+
+const updatePost = async ({
+  community_no,
+  community_title,
+  community_content,
+  community_img,
+}) => {
+  const query = `update ${community_info.tableName} set ${community_info.columns.community_title} = :community_title, ${community_info.columns.community_content} = :community_content, ${community_info.columns.community_img} = :community_img, ${community_info.columns.community_date} = CURRENT_TIMESTAMP where ${community_info.columns.community_no} =:community_no`;
+  const values = {
+    community_no,
+    community_title,
+    community_content,
+    community_img,
+  };
+  return await executeQuery(query, values);
+};
+module.exports = { getPosts, regPost, detailPost, deletePost, updatePost };

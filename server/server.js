@@ -6,7 +6,7 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
+// const cookieParser = require("cookie-parser");
 
 const productRouter = require("./routes/products");
 const userRouter = require("./routes/user");
@@ -77,12 +77,25 @@ const redisClient = createClient({
   url: "redis://127.0.0.1:6379",
 }); // 기본 Redis 포트로 변경
 
-redisClient
-  .connect()
-  .then(() => {
-    console.log("Redis Connected");
-  })
-  .catch(console.error);
+const initRedisClient = async () => {
+  try {
+    await redisClient.connect();
+    console.log('Redis Connected');
+
+    const cartKeys = await redisClient.keys('cart:*');
+    if (cartKeys.length > 0) {
+      await redisClient.del(cartKeys);
+      console.log('기존 장바구니 데이터 삭제 완료');
+    } else {
+      console.log('기존 장바구니 데이터 없음');
+    }
+  } catch (error) {
+    console.error('Redis Connect Error:', error);
+  }
+};
+
+
+
 
 // middleware
 app.use(
@@ -94,6 +107,23 @@ app.use(
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+io.use(async (socket, next) => {
+  const token = socket.handshake.auth?.token;
+  if (!token) {
+    return next(new Error("인증 토큰이 없습니다."));
+  }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const storedToken = await redisClient.get(`token:${decoded.email}`);
+    if (storedToken !== token) {
+      return next(new Error('JWT 토큰 불일치'));
+    }
+    socket.user = decoded;
+    next();
+  } catch (error) {
+    return next(new Error('JWT 인증 실패'));
+  }
+});
 
 // 정적 파일 제공(프로필 이미지 경로 설정)
 const imagePath = "C:/Users/codms/Documents/FlexCode/src/assets/imgs";
@@ -103,19 +133,20 @@ app.use("/uploads", express.static(imagePath));
 app.use(
   session({
     store: new RedisStore({ client: redisClient, disableTouch: true }),
-    secret: "cart-key",
+    secret: process.env.JWT_SECRET || 'your_secret_key',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: { maxAge: 30 * 60 * 1000 }, // 30분 유지
   })
 );
+
 
 // 라우터 등록
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/post", cmRouter);
 app.use("/api/options", optionRouter);
-app.use("/api/cart", cartRouter);
+app.use("/api/cart", cartRouter(redisClient));
 app.use("/api/order", orderRouter);
 
 // 서버 실행 함수
@@ -125,6 +156,7 @@ const startServer = async () => {
       console.log(`서버가 포트 ${PORT}에서 실행 중...`);
       console.log("WebSocket 서버 실행 완료!");
     });
+    initRedisClient();
   } catch (error) {
     console.error("서버 시작 중 오류 발생:", error);
   }

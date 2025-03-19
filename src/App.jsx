@@ -7,10 +7,11 @@ import Header from "./component/common/Header";
 import CmAdd from "./component/community/CmAdd";
 import CmDetail from "./component/community/CmDetail";
 import CmMain from "./component/community/CmMain";
+import ModifyUserProfile from "./component/myPage/ModifyUserProfile";
+import MyPageMain from "./component/myPage/myPageMain";
 import Order from "./component/order/Order";
 import OrderComplete from "./component/order/OrderComplete";
 import Index from "./component/product";
-// import ProductDetail from "./component/product/ProductDetail";
 import MyPageMain from "./component/myPage/myPageMain";
 import ModifyUserProfile from "./component/myPage/ModifyUserProfile";
 import DeleteUserCheck from "./component/myPage/DeleteUserCheck";
@@ -28,7 +29,7 @@ function App() {
         <Route path="/order-complete" element={<OrderComplete />} />
         <Route path="/community" element={<CmMain />} />
         <Route path="/CmAdd" element={<CmAdd />} />
-        <Route path="/CmDetail" element={<CmDetail />} />
+        <Route path="/CmDetail/:id" element={<CmDetail />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signup-success" element={<SignUpSuccess />} />
         <Route path="/mypage" element={<MyPageMain />} />
