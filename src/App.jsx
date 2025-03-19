@@ -7,14 +7,12 @@ import Header from "./component/common/Header";
 import CmAdd from "./component/community/CmAdd";
 import CmDetail from "./component/community/CmDetail";
 import CmMain from "./component/community/CmMain";
+import DeleteUserCheck from "./component/myPage/DeleteUserCheck";
 import ModifyUserProfile from "./component/myPage/ModifyUserProfile";
 import MyPageMain from "./component/myPage/myPageMain";
 import Order from "./component/order/Order";
 import OrderComplete from "./component/order/OrderComplete";
 import Index from "./component/product";
-import MyPageMain from "./component/myPage/myPageMain";
-import ModifyUserProfile from "./component/myPage/ModifyUserProfile";
-import DeleteUserCheck from "./component/myPage/DeleteUserCheck";
 import ProductInfo from "./component/product/ProductInfo";
 
 function App() {

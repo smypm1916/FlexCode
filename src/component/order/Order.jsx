@@ -1,6 +1,6 @@
 import React from "react";
+import Button from "../common/Button";
 import { useNavigate } from "react-router-dom";
-import ShippingAddress from "./ShippingAddress";
 
 const Order = () => {
   const navigate = useNavigate();
@@ -17,16 +17,19 @@ const Order = () => {
       <div>
         {/* 주문 상품 */}
         <div>주문상품</div>
+        <div>
+          {/* <CheckedProduct /> */}
+        </div>
 
         {/* 합계 금액 */}
         <div>합계금액</div>
 
         {/* 주문자 정보 */}
-        <ShippingAddress />
+        {/* <ShippingAddress /> */}
 
         {/* // 받는 사람 */}
         <div>받는 사람</div>
-        <ShippingAddress />
+        {/* <ShippingAddress /> */}
 
         {/* 결제/취소*/}
         < div >

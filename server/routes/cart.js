@@ -8,7 +8,7 @@ const CART_TTL = 2592000; // 30일 (초 단위)
 module.exports = (redisClient) => {
 
 
-   
+
    //  장바구니 키 가져오는 함수 (user_email 또는 session 기반)
    const getCartKey = (req) => {
       const userCartId = req.session?.user?.email; // 로그인
@@ -94,12 +94,12 @@ module.exports = (redisClient) => {
          // jwt 토큰
          const token = jwt.sign({ email: user_email }, process.env.JWT_SECRET, { expiresIn: '1h' });
          await redisClient.set(`token:${user_email}`, token);
-         res.status(200).json({ success: true, token, message:'로그인/장바구니 병합 성공', cart: mergedCart });
+         res.status(200).json({ success: true, token, message: '로그인/장바구니 병합 성공', cart: mergedCart });
       }
-         catch (error) {
-            console.error('로그인 오류:', error);
-            res.status(500).json({ success: false, message: '로그인 중 오류 발생' });
-         }
+      catch (error) {
+         console.error('로그인 오류:', error);
+         res.status(500).json({ success: false, message: '로그인 중 오류 발생' });
+      }
    });
 
 
@@ -150,7 +150,7 @@ module.exports = (redisClient) => {
          }
          for (const option of options) {
             const cartItemKey = `product:${product_no}:option:${option.option_no}`;
-            const user_email = req.session?.user?.email || null; 
+            const user_email = req.session?.user?.email || null;
             await redisClient.hSet(key, `product:${product_no}`, JSON.stringify({
                user_email,
                product_no,
