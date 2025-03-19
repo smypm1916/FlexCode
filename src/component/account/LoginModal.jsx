@@ -143,7 +143,7 @@ const LoginModal = ({ onClose }) => {
         onClose();
       } else {
         console.log(response.data.message);
-        alert("로그인 실패");
+        alert("이메일 또는 패스워드를 확인해주세요.");
       }
     } catch (error) {
       console.error("로그인 요청 실패:", error);
