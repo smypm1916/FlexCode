@@ -1,11 +1,10 @@
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import styled from "styled-components";
 import FindId from "./FindId";
 import FindPw from "./FindPw";
-import TextInput from "../common/TextInput";
-import styled from "styled-components";
-import axios from "axios";
+
 
 import {
   Container_Modal,
@@ -16,7 +15,6 @@ import {
 } from "../../style/Common_Style";
 
 import { Link_box } from "../../style/Modal_Style";
-import TextInput from "../common/TextInput";
 
 const ButtonContainer = styled.div`
   display: flex;

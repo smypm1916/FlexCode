@@ -185,8 +185,13 @@ const ProductInfo = () => {
       try {
          setCartLoading(true);
          const cartRes = await axios.post(`${API_BASE_URL}/cart/add`, {
+            // 반복문으로 추가해야하나?
             product_no: product_no,
+            product_name: product.PRODUCT_NAME,
+            product_price: product.PRODUCT_PRICE,
+            // 옵션 초기화 되어서 추가되지 않는 중
             option_no: currentOption.OPTION_NO,
+            option_title: currentOption.OPTION_TITLE,
             option_price: currentOption.OPTION_PRICE,
             product_quantity: currentQuantity
          }, {
@@ -194,8 +199,10 @@ const ProductInfo = () => {
          });
          if (res.data?.success) {
             // 장바구니 모달 열기
-            setCartItems(res.data.data.items || []);
             setIsCartModalOpen(true);
+
+            // 장바구니 추가 성공 문구 표시
+
             // 선택된 옵션 초기화
             setCheckedProducts([]);
          } else {
