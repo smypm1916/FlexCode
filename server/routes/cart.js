@@ -1,4 +1,5 @@
 const express = require("express");
+const { merge } = require("./products");
 const router = express.Router();
 const CART_TTL = 2592000; // 30일 (초 단위)
 
@@ -6,13 +7,53 @@ const CART_TTL = 2592000; // 30일 (초 단위)
 
 module.exports = (redisClient) => {
 
-
    //  장바구니 키 가져오는 함수 (user_email 또는 session 기반)
    const getCartKey = (req) => {
-      const user_email = req.session?.user?.email;
-      const sessionId = req.sessionID;
-      return user_email ? `cart:${user_email}` : `cart:session_${sessionId}`;
+      const userCartId = req.session?.user?.email; // 로그인
+      const guestCartId = req.sessionID; // 비로그인
+      return user_email ? `cart:${userCartId}` : `cart:session_${guestCartId}`;
    };
+
+   async function mergeCart(guestCartId, userCartId) {
+      try {
+         // 비로그인 장바구니 조회
+         const guestCartData = await getAsync(guestCartId);
+         const guestCart = guestCartData ? JSON.parse(guestCartData) : { items: [] };
+         // 로그인 장바구니 조회
+         const userCartData = await getAsync(userCartId);
+         const userCart = userCartData ? JSON.parse(userCartData) : { items: [] };
+         const mergedCart = [...guestCart.items];
+         const mergedCartId = new Set(mergedCart.map(item => item.product_no));
+         guestCart.items.forEach(guestCart => {
+            if (mergedCartId.has(guestCart.product_no)) {
+               const existingItemCount = mergedCart.findIndex(item => item.product_no === guestCart.product_no);
+            }
+            if (existingItemCount !== -1) {
+               {
+                  mergedCart[existingItemCount].quantity += guestCart.quantity;
+                  mergedCart[existingItemCount].updatedAt = new Date().toISOString();
+               }
+            }
+            else {
+               mergedCart.push(guestCart);
+            }
+         });
+
+         const mergedCartSave = {
+            userCartId,
+            items: mergeCart,
+            updatedAt: new Date().toISOString()
+         };
+
+         await setAsync(userCartId, JSON.stringify(mergedCartSave));
+         // 비로그인 장바구니 삭제
+         // await delAsync(guestCartId);
+         return mergedCartSave;
+      } catch (error) {
+         console.error('장바구니 병합 오류', error);
+         throw new Error('장바구니 병합 실패');;
+      }
+   }
 
    // 장바구니 조회
    router.get("/read", async (req, res) => {
@@ -53,24 +94,30 @@ module.exports = (redisClient) => {
    // 장바구니에 상품 추가
    router.post("/add", async (req, res) => {
       try {
-         const { user_email, product_no, product_name, product_price, option_no, option_title, option_price, product_quantity, cart_date } = req.body;
+         const { product_no, product_name, product_price, options } = req.body;
          const key = getCartKey(req);
-
-         await redisClient.hSet(key, `product:${product_no}`, JSON.stringify({
-            user_email,
-            product_no,
-            product_name,
-            product_price,
-            option_no,
-            option_title,
-            option_price,
-            quantity: product_quantity,
-            cart_date: new Date().toISOString(),
-         }));
-
+         // const { user_email, product_no, product_name, product_price, option_no, option_title, option_price, product_quantity, cart_date } = req.body;
+         if (!options || !Array.isArray(options) || options.length === 0) {
+            return res.status(400).json({ success: false, message: "옵션 정보가 필요합니다." });
+         }
+         for (const option of options) {
+            const cartItemKey = `product:${product_no}:option:${option.option_no}`;
+            await redisClient.hSet(key, `product:${product_no}`, JSON.stringify({
+               user_email,
+               product_no,
+               product_name,
+               product_price,
+               option_no: option.option_no,
+               option_title: option.option_title,
+               option_price: option.option_price,
+               quantity: option.quantity,
+               cart_date: new Date().toISOString(),
+            }));
+         }
          await redisClient.expire(key, CART_TTL);
          res.status(200).json({ success: true, message: "장바구니에 추가되었습니다." });
       } catch (error) {
+         console.error('server error:', error);
          res.status(500).json({ success: false, message: "장바구니 추가 중 오류 발생.", error: error.message });
       }
    });
@@ -78,28 +125,17 @@ module.exports = (redisClient) => {
    //  비로그인 상태에서 로그인 시, 장바구니 세션 통합
    router.post("/merge", async (req, res) => {
       try {
-         const user_email = req.session?.user?.email;
-         const sessionId = req.sessionID;
-
-         if (!user_email) {
-            return res.status(400).json({ success: false, message: "로그인 후 시도하세요." });
+         if (!userCartId) {
+            return res.status(401).json({ error: '인증 필요' });
          }
-
-         const guestKey = `cart:session_${sessionId}`;
-         const userKey = `cart:${user_email}`;
-
-         const guestCart = await redisClient.hGetAll(guestKey);
-         if (guestCart && Object.keys(guestCart).length > 0) {
-            for (const [key, value] of Object.entries(guestCart)) {
-               await redisClient.hSet(userKey, key, value);
-            }
-            await redisClient.del(guestKey);
+         const { guestCartId } = req.body;
+         if (!guestCartId) {
+            return res.status(400).json({ success: false, message: '비로그인 장바구니 ID가 필요합니다.' });
          }
-
-         await redisClient.expire(userKey, CART_TTL);
-         res.status(200).json({ success: true, message: "장바구니가 통합되었습니다." });
+         const mergedCart = await mergeCart(guestCartId, userCartId);
+         res.status(200).json({ success: true, message: '장바구니가 병합되었습니다.', cart: mergedCart });
       } catch (error) {
-         res.status(500).json({ success: false, message: "장바구니 통합 중 오류 발생.", error: error.message });
+         res.status(500).json({ success: false, message: '장바구니 병합 api 오류', error: error.message });
       }
    });
 

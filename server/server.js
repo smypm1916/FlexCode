@@ -99,7 +99,6 @@ const initRedisClient = async () => {
 const authenticateToken = async (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1];
   if (!token) return res.status(401).json({ message: 'no token' });
-
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const storedToken = await redisClient.get(`token:${decoded.email}`);
@@ -134,9 +133,9 @@ app.use("/uploads", express.static(imagePath));
 app.use(
   session({
     store: new RedisStore({ client: redisClient, disableTouch: true }),
-    secret: "cart-key",
+    secret: process.env.JWT_SECRET || 'your_secret_key',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: { maxAge: 30 * 60 * 1000 }, // 30분 유지
   })
 );
