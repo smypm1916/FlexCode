@@ -22,8 +22,6 @@ import {
   Input_Box,
 } from "../../style/Common_Style";
 import TextInput from "../common/TextInput";
-import CmAdd from "./CmAdd";
-import Searchbox from "../common/Searchbox";
 import CmPost from "./CmPost";
 
 const CmMain = () => {
@@ -119,17 +117,18 @@ const CmMain = () => {
             </Button>
           </Search_Box>
         </Input_Wrapper>
-
-        {paginatedPosts.map((post) => {
-          return <CmPost post={post} />;
-        })}
-
+        {posts.length > 0 ? (
+          paginatedPosts.map((post) => (
+            <CmPost key={post.COMMUNITY_NO} post={post} />
+          ))
+        ) : (
+          <h2>投稿が見つかりません</h2>
+        )}
         <Input_Wrapper>
           <Button btnTxt={"글쓰기"} onClick={() => navigate("/CmAdd")}>
             글쓰기
           </Button>
         </Input_Wrapper>
-        {/* ✅ 페이징 컴포넌트 추가 */}
         <PaginationComponent
           totalItems={posts.length}
           itemsPerPage={cnt}
