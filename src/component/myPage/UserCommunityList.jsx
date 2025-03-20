@@ -10,26 +10,25 @@ import {
   Profile_Img,
 } from "../../style/List_Style";
 import { Pagination_List } from "../../style/Community_Style";
+import fetchGetCommunity from "../myPage/MyPageAPI";
 
 const UserCommunityList = () => {
+  const [communitys, setCommunitys] = useState([]);
   const location = useLocation();
-  const [communitys, setCommunitys] = useState(
-    location.state?.communitys || []
-  );
+  const { nickname } = location.state || {}; // state에서 nickname 가져오기
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // 한 페이지당 5개씩 표시
 
-  // useEffect(() => {
-  //   if (location.state?.communitys) {
-  //     console.log("state에서 데이터 설정 완료");
-  //     setCommunitys(location.state.communitys);
-  //   } else {
-  //     console.log("location.state가 없음 → 기본 데이터 사용");
-  //     setCommunitys([]); // 기본값을 빈 배열로 설정
-  //   }
-  // }, [location.state]);
-  // console.log("communitys 데이터:", communitys);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchGetCommunity(nickname); // 데이터 가져오기
+      console.log("요청 닉네임:", nickname);
+      console.log("받아온 데이터:", data);
+      setCommunitys(data); // 상태 업데이트
+    };
+    fetchData();
+  }, [nickname]);
 
   console.log("communitys 데이터:", communitys);
 
@@ -54,6 +53,13 @@ const UserCommunityList = () => {
       {communitys.length > 0 ? (
         <div>
           <h2>작성한 커뮤니티글</h2>
+          <Button
+            type="button"
+            onClick={() => {
+              navigate("/userCommunity_add", { state: { communitys } });
+            }}
+            btnTxt={"글쓰기"}
+          />
           {currentPosts.length > 0}
           <ul>
             {currentPosts.map((post) => {

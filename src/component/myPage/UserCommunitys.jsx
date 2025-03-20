@@ -1,29 +1,41 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   List_Content,
   List_Column,
   List_Profile,
   Profile_Img,
 } from "../../style/List_Style";
+import fetchGetCommunity from "../myPage/MyPageAPI";
 
-const UserCommunitys = ({ communitys }) => {
+const UserCommunitys = ({ nickname }) => {
+  console.log("넘겨받은 닉네임:", nickname);
+
+  const [communitys, setCommunitys] = useState([]);
   const navigate = useNavigate();
 
-  if (!communitys) {
-    return <h2>로딩 중...</h2>; // 데이터가 로드되기 전 상태
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchGetCommunity(nickname); // 데이터 가져오기
+      console.log("요청 닉네임:", nickname);
+      console.log("받아온 데이터:", data);
+      setCommunitys(data); // 상태 업데이트
+    };
+    fetchData();
+  }, [nickname]);
 
   if (Array.isArray(communitys) && communitys.length === 0) {
     return <h2>작성한 커뮤니티 글이 없습니다.</h2>;
   }
-
   return communitys.length > 0 ? (
     <div>
       <h2>작성한 커뮤니티글</h2>
       <h3
         onClick={() => {
-          navigate("/userCommunity-list", { state: { communitys } });
+          navigate("/userCommunity-list", {
+            state: { nickname },
+          });
         }}
       >
         더보기
