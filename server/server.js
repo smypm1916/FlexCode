@@ -106,8 +106,6 @@ const initRedisClient = async () => {
 
 
 // middleware
-
-
 app.use(cors(corsOptions));
 app.use(morgan("dev"));
 app.use(express.json());

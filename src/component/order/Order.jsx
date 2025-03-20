@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import ReactModal from "react-modal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../common/Button";
 import CheckedProduct from "../common/CheckedProduct";
 import ShippingAddress from "./ShippingAddress";
@@ -15,10 +15,11 @@ import ShippingAddress from "./ShippingAddress";
 
 
 const Order = () => {
+  const { tempOrderId } = useParams('tempOrderId');
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cartLoading, setCartLoading] = useState(false);
-  const [orderInfo, setOrderInfo] = useState({
+  const [deliveryInfo, setDeliveryInfo] = useState({
     name: '',
     base_address: '',
     detail_address: '',
@@ -28,7 +29,7 @@ const Order = () => {
     email_id: '',
     email_domain: 'gmail.com',
   })
-  const [receiveInfo, setReceiveInfo] = useState({ ...orderInfo });
+  const [receiveInfo, setReceiveInfo] = useState({ ...deliveryInfo });
   const [isSame, setIsSame] = useState(false);
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const openModal = () => setIsCartModalOpen(true);
@@ -53,7 +54,7 @@ const Order = () => {
   const handleCheckboxChange = (e) => {
     setIsSame(e.target.checked);
     if (e.target.checked) {
-      setReceiveInfo({ ...orderInfo });
+      setReceiveInfo({ ...deliveryInfo });
     }
   };
 
@@ -148,8 +149,8 @@ const Order = () => {
       <div>
         <ShippingAddress
           title="주문자 정보"
-          data={orderInfo}
-          setData={setOrderInfo}
+          data={deliveryInfo}
+          setData={setDeliveryInfo}
         />
         <label>
           <input

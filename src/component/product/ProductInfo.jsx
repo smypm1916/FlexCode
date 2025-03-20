@@ -175,64 +175,64 @@ const ProductInfo = () => {
       }
    };
 
-   // 장바구니 조회
-   const fetchCart = async () => {
-      try {
-         setCartLoading(true);
-         const token = localStorage.getItem('token');
-         const res = await axios.get(`${API_BASE_URL}/cart/read`, {
-            withCredentials: true, // for cookie
-            headers: {
-               Authorization: `Bearer ${token}`
-            }
-         });
-         setCartItems(res.data.cart || []);
-         setCartLoading(false);
-      } catch (error) {
-         console.error('cart load error', error);
-         setError(error.response?.data?.message || error.message || "서버 오류가 발생했습니다");
-         setCartLoading(false);
-      }
-   };
+   // // 장바구니 조회
+   // const fetchCart = async () => {
+   //    try {
+   //       setCartLoading(true);
+   //       const token = localStorage.getItem('token');
+   //       const res = await axios.get(`${API_BASE_URL}/cart/read`, {
+   //          withCredentials: true, // for cookie
+   //          headers: {
+   //             Authorization: `Bearer ${token}`
+   //          }
+   //       });
+   //       setCartItems(res.data.cart || []);
+   //       setCartLoading(false);
+   //    } catch (error) {
+   //       console.error('cart load error', error);
+   //       setError(error.response?.data?.message || error.message || "서버 오류가 발생했습니다");
+   //       setCartLoading(false);
+   //    }
+   // };
 
-   //장바구니 상품 추가
-   const addCart = async () => {
-      if (checkedProducts.length === 0) {
-         alert('상품을 선택해주세요.');
-         return;
-      }
-      try {
-         setCartLoading(true);
-         const cartRes = await axios.post(`${API_BASE_URL}/cart/add`, {
-            product_no: product_no,
-            product_name: product.PRODUCT_NAME,
-            product_price: product.PRODUCT_PRICE,
-            options: checkedProducts.map(opt => ({
-               option_no: opt.OPTION_NO,
-               option_title: opt.OPTION_TITLE,
-               option_price: opt.OPTION_PRICE,
-               quantity: opt.quantity
-            }))
-         }, {
-            withCredentials: true
-         });
-         if (cartRes.data?.success) {
-            // 장바구니 모달 열기
-            openModal();
-            // 장바구니 추가 성공 문구 표시
+   // //장바구니 상품 추가
+   // const addCart = async () => {
+   //    if (checkedProducts.length === 0) {
+   //       alert('상품을 선택해주세요.');
+   //       return;
+   //    }
+   //    try {
+   //       setCartLoading(true);
+   //       const cartRes = await axios.post(`${API_BASE_URL}/cart/add`, {
+   //          product_no: product_no,
+   //          product_name: product.PRODUCT_NAME,
+   //          product_price: product.PRODUCT_PRICE,
+   //          options: checkedProducts.map(opt => ({
+   //             option_no: opt.OPTION_NO,
+   //             option_title: opt.OPTION_TITLE,
+   //             option_price: opt.OPTION_PRICE,
+   //             quantity: opt.quantity
+   //          }))
+   //       }, {
+   //          withCredentials: true
+   //       });
+   //       if (cartRes.data?.success) {
+   //          // 장바구니 모달 열기
+   //          openModal();
+   //          // 장바구니 추가 성공 문구 표시
 
-            // 선택된 옵션 초기화
-            setCheckedProducts([]);
-         } else {
-            alert("장바구니 추가에 실패했습니다.");
-         }
-         setCartLoading(false);
-      } catch (error) {
-         console.error('cart add error', error);
-         setError(error);
-         setCartLoading(false);
-      }
-   };
+   //          // 선택된 옵션 초기화
+   //          setCheckedProducts([]);
+   //       } else {
+   //          alert("장바구니 추가에 실패했습니다.");
+   //       }
+   //       setCartLoading(false);
+   //    } catch (error) {
+   //       console.error('cart add error', error);
+   //       setError(error);
+   //       setCartLoading(false);
+   //    }
+   // };
 
    // 장바구니 모달 닫기
    const closeCartModal = () => {
@@ -241,7 +241,8 @@ const ProductInfo = () => {
 
    // 주문 페이지로 이동
    const goToOrder = () => {
-      navigate("/order");
+      const tempOrderId = axios.
+         navigate(`/order/${tempOrderId}`);
    };
 
    // product_no 변경 시 상품 정보 로드
