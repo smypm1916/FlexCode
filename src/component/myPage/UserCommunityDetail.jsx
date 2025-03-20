@@ -20,8 +20,8 @@ import FileUpload from "../common/FileUpload";
 import { jwtDecode } from "jwt-decode";
 
 const UserCommunityDetail = () => {
-  const storedToken = sessionStorage.getItem("token");
-  const decoded = jwtDecode(storedToken);
+  const token = sessionStorage.getItem("token");
+  const decoded = jwtDecode(token);
   const [nickname, setNickname] = useState("");
   const [communitys, setCommunitys] = useState([]);
   const location = useLocation();
@@ -70,7 +70,9 @@ const UserCommunityDetail = () => {
         `http://localhost:8080/api/post/delete/${id}`
       );
       console.log(response.data);
-      navigate("/community");
+      navigate("/userCommunity-list", {
+        state: { nickname },
+      });
     }
   };
   const updateHandler = async () => {
@@ -97,7 +99,12 @@ const UserCommunityDetail = () => {
           },
         }
       );
-      navigate("/community");
+      await fetchPost(id);
+
+      navigate(`/userCommunity_detail/${post.COMMUNITY_NO}`, {
+        state: { communitys },
+      });
+      setEditMode(false);
     } catch (error) {
       console.error("작성 실패:", error);
     }
@@ -198,7 +205,7 @@ const UserCommunityDetail = () => {
             <Button
               type="button"
               onClick={() => {
-                navigate("/userCommunity-list", { state: { communitys } });
+                navigate("/userCommunity-list", { state: { nickname } });
               }}
               btnTxt={"목록으로"}
             />

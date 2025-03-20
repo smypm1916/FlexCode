@@ -17,6 +17,7 @@ import ModifyUserProfile from "./component/myPage/ModifyUserProfile";
 import ProductInfo from "./component/product/ProductInfo";
 import UserCommunityList from "./component/myPage/UserCommunityList";
 import UserCommunityDetail from "./component/myPage/UserCommunityDetail";
+import UserCommunityAdd from "./component/myPage/UserCommunityAdd";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           path="/userCommunity_detail/:id"
           element={<UserCommunityDetail />}
         />
+        <Route path="/userCommunity_add" element={<UserCommunityAdd />} />
       </Routes>
       {/* 루팅 */}
 
