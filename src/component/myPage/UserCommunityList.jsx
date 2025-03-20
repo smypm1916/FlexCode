@@ -13,20 +13,24 @@ import { Pagination_List } from "../../style/Community_Style";
 
 const UserCommunityList = () => {
   const location = useLocation();
-  const [communitys, setCommunitys] = useState([]);
+  const [communitys, setCommunitys] = useState(
+    location.state?.communitys || []
+  );
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // 한 페이지당 5개씩 표시
 
-  useEffect(() => {
-    if (location.state?.communitys) {
-      console.log("state에서 데이터 설정 완료");
-      setCommunitys(location.state.communitys);
-    } else {
-      console.log("location.state가 없음 → 기본 데이터 사용");
-      setCommunitys([]); // 기본값을 빈 배열로 설정
-    }
-  }, [location.state]);
+  // useEffect(() => {
+  //   if (location.state?.communitys) {
+  //     console.log("state에서 데이터 설정 완료");
+  //     setCommunitys(location.state.communitys);
+  //   } else {
+  //     console.log("location.state가 없음 → 기본 데이터 사용");
+  //     setCommunitys([]); // 기본값을 빈 배열로 설정
+  //   }
+  // }, [location.state]);
+  // console.log("communitys 데이터:", communitys);
+
   console.log("communitys 데이터:", communitys);
 
   // 현재 페이지에서 보여줄 데이터 필터링
@@ -55,7 +59,11 @@ const UserCommunityList = () => {
             {currentPosts.map((post) => {
               return (
                 <Pagination_List
-                  onClick={() => navigate("/CmDetail/${post.COMMUNITY_NO}")}
+                  onClick={() =>
+                    navigate(`/userCommunity_detail/${post.COMMUNITY_NO}`, {
+                      state: { communitys },
+                    })
+                  }
                   key={post.COMMUNITY_NO}
                   className="border p-2 mb-2"
                 >

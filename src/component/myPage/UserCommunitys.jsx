@@ -1,6 +1,11 @@
 import React from "react";
-import defaultImg from "../../assets/imgs/default-profile.png";
 import { useNavigate } from "react-router-dom";
+import {
+  List_Content,
+  List_Column,
+  List_Profile,
+  Profile_Img,
+} from "../../style/List_Style";
 
 const UserCommunitys = ({ communitys }) => {
   const navigate = useNavigate();
@@ -25,32 +30,45 @@ const UserCommunitys = ({ communitys }) => {
       </h3>
       <ul>
         {communitys.slice(0, 3).map((post) => {
-          // 이미지 경로를 import해야 사용할 수 있음
-          let imagePath;
-          try {
-            imagePath = require(`../assets/imgs/${post.COMMUNITY_IMG}`); // 이미지 파일 동적 import
-          } catch (error) {
-            imagePath = defaultImg; // 이미지가 없으면 기본 이미지 사용
-          }
-
           return (
-            <li key={post.COMMUNITY_NO}>
-              <div>{post.COMMUNITY_TITLE}</div>
-              {/* 이미지 표시 */}
-              <img
-                src={imagePath}
-                alt="커뮤니티 이미지"
-                style={{ width: "30px", height: "30px" }}
-              />
-              <div>
-                {new Date(post.COMMUNITY_DATE).toLocaleString("ko-KR", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                })}
-              </div>
-              <div>{post.COMMUNITY_READCNT}</div>
-            </li>
+            <div>
+              <List_Column
+                onClick={() =>
+                  navigate(`/userCommunity_detail/${post.COMMUNITY_NO}`, {
+                    state: { communitys },
+                  })
+                }
+                key={post.COMMUNITY_NO}
+                className="border p-2 mb-2"
+              >
+                <List_Profile>
+                  <Profile_Img></Profile_Img>
+                </List_Profile>
+                <p>{post.COMMUNITY_TITLE}</p>
+                <List_Profile>
+                  <p>작성자</p>
+                  <p>{post.USER_NICKNAME}</p>
+                </List_Profile>
+                <List_Profile>
+                  <p>작성일자</p>
+                  <p>
+                    {" "}
+                    {new Date(post.COMMUNITY_DATE).toLocaleString("ko-KR", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    })}
+                  </p>
+                </List_Profile>
+              </List_Column>
+              <List_Content>
+                {post.COMMUNITY_IMG ? (
+                  <img src={`../assets/imgs//${post.COMMUNITY_IMG}`} />
+                ) : (
+                  <p>이미지 없음</p>
+                )}
+              </List_Content>
+            </div>
           );
         })}
       </ul>
