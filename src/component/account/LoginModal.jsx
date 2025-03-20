@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import FindId from "./FindId";
 import FindPw from "./FindPw";
 import styled from "styled-components";

@@ -16,6 +16,7 @@ import ModifyUserProfile from "./component/myPage/ModifyUserProfile";
 import DeleteUserCheck from "./component/myPage/DeleteUserCheck";
 import ProductInfo from "./component/product/ProductInfo";
 import UserCommunityList from "./component/myPage/UserCommunityList";
+import UserCommunityDetail from "./component/myPage/UserCommunityDetail";
 
 function App() {
   return (
@@ -36,6 +37,10 @@ function App() {
         <Route path="/modifyUser" element={<ModifyUserProfile />} />
         <Route path="/deleteAccount" element={<DeleteUserCheck />} />
         <Route path="/userCommunity-list" element={<UserCommunityList />} />
+        <Route
+          path="/userCommunity_detail/:id"
+          element={<UserCommunityDetail />}
+        />
       </Routes>
       {/* 루팅 */}
 
