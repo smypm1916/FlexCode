@@ -10,6 +10,7 @@ import Button from "../common/Button";
 import CartModal from "../common/CartModal";
 import CheckedProduct from "../common/CheckedProduct";
 import Select from "../common/Select";
+import { useCart } from './product/useCart';
 
 import {
    Container01,
@@ -34,18 +35,17 @@ const ProductInfo = () => {
    const { product_no } = useParams();
    const [product, setProduct] = useState({});
    const [options, setOptions] = useState([]);
-   const [cartItems, setCartItems] = useState([]);
    const [isCartModalOpen, setIsCartModalOpen] = useState(false);
    const [checkedProducts, setCheckedProducts] = useState([]); // 최종 선택된 옵션들
    const [currentOption, setCurrentOption] = useState(null); // 현재 선택된 옵션
    const [currentQuantity, setCurrentQuantity] = useState(1); // 현재 선택된 수량
    const [loading, setLoading] = useState(true);
-   const [cartLoading, setCartLoading] = useState(false);
    const [error, setError] = useState(null);
    const openModal = () => setIsCartModalOpen(true);
    const closeModal = () => setIsCartModalOpen(false);
    const navigate = useNavigate();
    const imgPath = import.meta.env.VITE_IMG_PATH;
+   const { addCart, cartItems, loading: cartLoading, tempOrderId } = useCart();
 
    const API_BASE_URL = "http://localhost:8080/api";
 
