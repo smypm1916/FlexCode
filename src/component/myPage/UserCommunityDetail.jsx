@@ -93,11 +93,14 @@ const UserCommunityDetail = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${storedToken}`,
           },
         }
       );
-      navigate("/community");
+      navigate(`/userCommunity_detail/${post.COMMUNITY_NO}`, {
+        state: { communitys },
+      });
+      setEditMode(false);
     } catch (error) {
       console.error("작성 실패:", error);
     }
