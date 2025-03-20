@@ -4,7 +4,6 @@ import Button from "./Button";
 
 const CheckedProduct = ({ product, quantityHandler, options, onRemove }) => {
    const navigate = useNavigate();
-
    const countUp = (OPTION_NO, currentQuantity, maxQuantity) => {
       quantityHandler(OPTION_NO, Math.min(maxQuantity, currentQuantity + 1));
    };

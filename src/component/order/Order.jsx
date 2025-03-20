@@ -1,4 +1,6 @@
+import axios from "axios";
 import React, { useState } from "react";
+import ReactModal from "react-modal";
 import { useNavigate } from "react-router-dom";
 import Button from "../common/Button";
 import CheckedProduct from "../common/CheckedProduct";
@@ -8,7 +10,7 @@ import ShippingAddress from "./ShippingAddress";
 /*  
     1. 모든/일부 상품 선택
     2. 상품 옵션/수량 수정
-    3. 구매버튼 ok
+    3. 구매버튼 클릭 시 장바구니 정보 db로 전송
 */
 
 
@@ -28,20 +30,25 @@ const Order = () => {
   })
   const [receiveInfo, setReceiveInfo] = useState({ ...orderInfo });
   const [isSame, setIsSame] = useState(false);
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const openModal = () => setIsCartModalOpen(true);
   const closeModal = () => setIsCartModalOpen(false);
   const imgPath = import.meta.env.VITE_IMG_PATH;
   const navigate = useNavigate();
-  const goToPayment = () => {
-    navigate('/order-complete');
-  };
-  const goToHome = () => {
-    navigate('/');
-  };
+  const goToPayment = () => navigate('/order-complete');
+  const goToHome = () => navigate('/');
 
   const API_BASE_URL = "http://localhost:8080/api";
 
 
+  const openEditModal = () => {
+    setSelectedProduct(product);
+    setIsCartModalOpen(true);
+  };
+  const closeEditModal = () => {
+    // setSelectedProduct(null);
+    setIsCartModalOpen(false);
+  };
 
   const handleCheckboxChange = (e) => {
     setIsSame(e.target.checked);
@@ -50,7 +57,14 @@ const Order = () => {
     }
   };
 
-  //  유저 데이터 받아오기
+  const quantityHandler = () => {
+    setCheckedProducts((prev) => {
+      prev.map((opt) => {
+        opt.OPTION_NO === OPTION_NO ? { ...opt, quantity } : opt
+      });
+    });
+  };
+
   // 장바구니 조회
   const fetchCart = async () => {
     try {
@@ -71,13 +85,35 @@ const Order = () => {
     }
   };
 
-  // 장바구니 수량 수정
-
-  // 장바구니 옵션 변경
-
-  // 장바구니 삭제
+  // 장바구니 일부 삭제
+  const onRemove = (product_no) => {
+    try {
+      const removeProduct = axios.delete(`${API_BASE_URL}/cart/remove`, {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` }
+      });
+    } catch (error) {
+      console.error('failed to remove products in cart', error);
+      setError(error);
+    }
+  };
 
   // 장바구니 비우기
+  const clearCart = () => {
+    const token = localStorage.getItem('token');
+    const clearAllCart = axios.delete(`${API_BASE_URL}/cart/clear`, {
+      withCredentials: true,
+      headers: {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    });
+  };
+
+  // 장바구니 수량 수정
+
+  // 장바구니 옵션 변경/삭제
+
+
 
   useEffect(() => {
     fetchCart();
@@ -91,9 +127,16 @@ const Order = () => {
         <div>주문상품</div>
         {cartLoading && <p>...LOADING...</p>}
         {error && <p>{error}</p>}
-        {!cartLoading && !error && cartItems.length > 0 && (<CheckedProduct cartItems={cartItems} />)}
+        {!cartLoading && !error && cartItems.length > 0 && (<CheckedProduct cartItems={cartItems} quantityHandler={quantityHandler} onRemove={onRemove} />)}
         {!cartLoading && cartItems.length === 0 && <p>장바구니가 비어있습니다</p>}
       </div>
+
+      {/* 옵션 변경 모달 */}
+      {isCartModalOpen && selectedProduct && (
+        <ReactModal product={selectedProduct} closeModal={clearCart} fetchCart={fetchCart}>
+          {/* 장바구니 수정 모달 */}
+        </ReactModal>)
+      }
 
       {/* 합계 금액 */}
       <div>
@@ -125,9 +168,7 @@ const Order = () => {
 
       {/* 결제/취소*/}
       < div >
-        {/* 결제하기(orderComplete로 이동) */}
         <Button onClick={goToPayment} />
-        {/* 취소하기 */}
         <Button onClick={goToHome} />
       </div>
     </div>
