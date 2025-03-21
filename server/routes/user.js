@@ -47,4 +47,7 @@ router.post("/deleteUserAccount", userController.deleteUserAccount);
 // 회원 커뮤니티글 조회
 router.post("/getUserCommunitys", userController.getUserCommunitys);
 
+// 회원 구매내역 조회
+router.post("/getUserOrders", userController.getUserOrders);
+
 module.exports = router;

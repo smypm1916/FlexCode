@@ -4,7 +4,8 @@ import DeleteUser from "./DeleteUser";
 import UserOrders from "./UserOrders";
 import UserCommunitys from "./UserCommunitys";
 import { jwtDecode } from "jwt-decode";
-import fetchGetCommunity from "../myPage/MyPageAPI";
+import { fetchGetCommunity } from "../myPage/MyPageAPI";
+import { fetchGetOrder } from "../myPage/MyPageAPI";
 
 const MyPageMain = () => {
   const [userEmail, setUserEmail] = useState("");
@@ -18,13 +19,14 @@ const MyPageMain = () => {
       setUserNickname(decoded.nickname);
 
       fetchGetCommunity(decoded.nickname);
+      fetchGetOrder(decoded.email);
     }
   }, []);
 
   return (
     <div>
       <UserProfile />
-      <UserOrders />
+      <UserOrders email={userEmail} />
       <UserCommunitys nickname={userNickname} />
       <DeleteUser />
     </div>
