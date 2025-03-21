@@ -80,22 +80,19 @@ const redisClient = createClient({
 const initRedisClient = async () => {
   try {
     await redisClient.connect();
-    console.log('Redis Connected');
+    console.log("Redis Connected");
 
-    const cartKeys = await redisClient.keys('cart:*');
+    const cartKeys = await redisClient.keys("cart:*");
     if (cartKeys.length > 0) {
       await redisClient.del(cartKeys);
-      console.log('기존 장바구니 데이터 삭제 완료');
+      console.log("기존 장바구니 데이터 삭제 완료");
     } else {
-      console.log('기존 장바구니 데이터 없음');
+      console.log("기존 장바구니 데이터 없음");
     }
   } catch (error) {
-    console.error('Redis Connect Error:', error);
+    console.error("Redis Connect Error:", error);
   }
 };
-
-
-
 
 // middleware
 app.use(
@@ -116,12 +113,12 @@ io.use(async (socket, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const storedToken = await redisClient.get(`token:${decoded.email}`);
     if (storedToken !== token) {
-      return next(new Error('JWT 토큰 불일치'));
+      return next(new Error("JWT 토큰 불일치"));
     }
     socket.user = decoded;
     next();
   } catch (error) {
-    return next(new Error('JWT 인증 실패'));
+    return next(new Error("JWT 인증 실패"));
   }
 });
 
@@ -133,13 +130,12 @@ app.use("/uploads", express.static(imagePath));
 app.use(
   session({
     store: new RedisStore({ client: redisClient, disableTouch: true }),
-    secret: process.env.JWT_SECRET || 'your_secret_key',
+    secret: process.env.JWT_SECRET || "your_secret_key",
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 30 * 60 * 1000 }, // 30분 유지
   })
 );
-
 
 // 라우터 등록
 app.use("/api/products", productRouter);
@@ -156,7 +152,7 @@ const startServer = async () => {
       console.log(`서버가 포트 ${PORT}에서 실행 중...`);
       console.log("WebSocket 서버 실행 완료!");
     });
-    initRedisClient();
+    // initRedisClient();
   } catch (error) {
     console.error("서버 시작 중 오류 발생:", error);
   }
