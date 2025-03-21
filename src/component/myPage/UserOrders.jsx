@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchGetOrder } from "./MyPageAPI";
 
 const UserOrders = ({ email }) => {
-  console.log("넘겨받은 닉네임:", email);
+  console.log("넘겨받은 이메일:", email);
 
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate();

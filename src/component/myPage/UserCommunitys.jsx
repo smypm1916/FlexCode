@@ -10,7 +10,7 @@ import {
 import { fetchGetCommunity } from "../myPage/MyPageAPI";
 
 const UserCommunitys = ({ nickname }) => {
-  console.log("넘겨받은 이메일:", nickname);
+  console.log("넘겨받은 닉네임:", nickname);
 
   const [communitys, setCommunitys] = useState([]);
   const navigate = useNavigate();
