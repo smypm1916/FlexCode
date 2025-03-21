@@ -10,7 +10,7 @@ import {
   Profile_Img,
 } from "../../style/List_Style";
 import { Pagination_List } from "../../style/Community_Style";
-import fetchGetCommunity from "../myPage/MyPageAPI";
+import { fetchGetCommunity } from "../myPage/MyPageAPI";
 
 const UserCommunityList = () => {
   const [communitys, setCommunitys] = useState([]);

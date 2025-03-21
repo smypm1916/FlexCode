@@ -21,7 +21,15 @@ import { jwtDecode } from "jwt-decode";
 
 const CmDetail = () => {
   const storedToken = sessionStorage.getItem("token");
-  const decoded = jwtDecode(storedToken);
+  let decoded = null;
+  if (storedToken) {
+    try {
+      decoded = jwtDecode(storedToken);
+    } catch (error) {
+      console.error("Invalid token:", error);
+    }
+  }
+
   const [nickname, setNickname] = useState("");
 
   useEffect(() => {
@@ -38,6 +46,7 @@ const CmDetail = () => {
   const [community_title, setTitle] = useState("");
   const [community_content, setContent] = useState("");
   const [community_img, setImg] = useState(null);
+  const [updateTrigger, setUpdateTrigger] = useState(false);
   const fetchPost = async (id) => {
     try {
       const response = await axios.get(
@@ -64,12 +73,15 @@ const CmDetail = () => {
     setEditMode((mode) => !mode);
   };
   const handleSubmit = async (e) => {
+    console.log("제출");
     e.preventDefault();
     const formData = new FormData();
     formData.append("user_nickname", nickname);
     formData.append("community_title", community_title);
     formData.append("community_content", community_content);
     formData.append("community_no", id);
+    console.log(community_title);
+    console.log(community_content);
     if (community_img) {
       formData.append("community_img", community_img);
     }
@@ -80,18 +92,27 @@ const CmDetail = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
           },
         }
       );
-      navigate("/community");
+      // 수정된 값 즉시 반영 → 딜레이 방지
+      setPost((prev) => ({
+        ...prev,
+        COMMUNITY_TITLE: community_title,
+        COMMUNITY_CONTENT: community_content,
+        COMMUNITY_IMG: community_img
+          ? URL.createObjectURL(community_img)
+          : prev.COMMUNITY_IMG,
+      }));
+      setUpdateTrigger((prev) => !prev);
+      setEditMode(false);
     } catch (error) {
       console.error("작성 실패:", error);
     }
   };
   useEffect(() => {
     fetchPost(id);
-  }, [id]);
+  }, [id, updateTrigger]);
   if (!post) {
     return <div>Loading...</div>;
   }
