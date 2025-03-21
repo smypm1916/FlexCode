@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const fetchGetCommunity = async (nickname) => {
+export const fetchGetCommunity = async (nickname) => {
   console.log("API 닉네임:", nickname);
   try {
     const response = await axios.post(
@@ -13,7 +13,7 @@ const fetchGetCommunity = async (nickname) => {
       }
     );
     if (response.data.success) {
-      console.log("보내준 데이터:", response.data.result);
+      console.log("보내준 데이터[커뮤니티]:", response.data.result);
       return response.data.result;
     } else {
       alert("조회된 글 없음.");
@@ -26,4 +26,25 @@ const fetchGetCommunity = async (nickname) => {
   }
 };
 
-export default fetchGetCommunity;
+export const fetchGetOrder = async (email) => {
+  console.log("API 이메일:", email);
+  try {
+    const response = await axios.post(
+      "http://localhost:8080/api/users/getUserOrders",
+      { email: email },
+      { headers: { "Content-Type": "application/json" } }
+    );
+    if (response.data.success) {
+      console.log("보내준 데이터[구매내역]:", response.data.result);
+      return response.data.result;
+    } else {
+      alert("조회된 구매내역 없음.");
+      return [];
+    }
+  } catch (error) {
+    console.error("회원 구매내역 조회 실패:", error);
+    return [];
+  }
+};
+
+export default { fetchGetCommunity, fetchGetOrder };
