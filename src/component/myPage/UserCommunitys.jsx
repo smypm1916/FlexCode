@@ -7,10 +7,10 @@ import {
   List_Profile,
   Profile_Img,
 } from "../../style/List_Style";
-import fetchGetCommunity from "../myPage/MyPageAPI";
+import { fetchGetCommunity } from "../myPage/MyPageAPI";
 
 const UserCommunitys = ({ nickname }) => {
-  console.log("넘겨받은 닉네임:", nickname);
+  console.log("넘겨받은 이메일:", nickname);
 
   const [communitys, setCommunitys] = useState([]);
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const UserCommunitys = ({ nickname }) => {
   }
   return communitys.length > 0 ? (
     <div>
-      <h2>작성한 커뮤니티글</h2>
+      <h2>나의 커뮤니티</h2>
       <h3
         onClick={() => {
           navigate("/userCommunity-list", {
