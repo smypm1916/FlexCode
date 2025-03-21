@@ -64,19 +64,20 @@ module.exports = (redisClient) => {
    // redis토큰 검증
    const authenticateToken = async (req, res, next) => {
       const token = req.headers['authorization']?.split(' ')[1];
-      if (!token) return res.status(401).json({ message: 'no token' });
-      try {
-         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-         const storedToken = await redisClient.get(`token:${decoded.email}`);
-         if (!storedToken || storedToken !== token) {
-            return res.status(403).json({ message: '토큰 불일치' });
+      if (token) {
+         try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            const storedToken = await redisClient.get(`token:${decoded.email}`);
+            if (!storedToken || storedToken !== token) {
+               return res.status(403).json({ message: '토큰 불일치' });
+            }
+            req.user = decoded;
+         } catch (error) {
+            console.error('토큰 검증 중 오류 발생:', error);
+            return res.status(403).json({ message: '토큰 검증 오류' });
          }
-         req.user = decoded;
-         next();
-      } catch (error) {
-         console.error('토큰 검증 중 오류 발생:', error);
-         return res.status(403).json({ message: '토큰 검증 오류' });
       }
+      next();
    };
 
 
@@ -109,19 +110,19 @@ module.exports = (redisClient) => {
       try {
          const cartKey = getCartKey(req);
          console.log('key:', cartKey);
-         if (!key) {
+         if (!cartKey) {
             return res.status(400).json({ success: false, message: '장바구니 키가 없습니다' });
          }
-         const cardData = await redisClient.hGetAll(cartKey);
-         const tempOrderId = cardData.tempOrderId;
+         const cartData = await redisClient.hGetAll(cartKey);
+         const tempOrderId = cartData.tempOrderId;
          delete cartData.tempOrderId;
 
          // 빈 바구니 조회
-         if (!cardData || Object.keys(cardData).length === 0) {
-            return res.status(200).json({ success: true, cart: [], isEmpty: true });
+         if (!cartData || Object.keys(cartData).length === 0) {
+            return res.status(200).json({ success: true, products: [], tempOrderId, isEmpty: true });
          }
 
-         const parsedCart = Object.entries(cardData).map(([productKey, value]) => {
+         const parsedCart = Object.entries(cartData).map(([productKey, value]) => {
             try {
                return JSON.parse(value);
             } catch (err) {
