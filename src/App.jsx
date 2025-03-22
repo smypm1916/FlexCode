@@ -12,13 +12,13 @@ import Order from "./component/order/Order";
 import OrderComplete from "./component/order/OrderComplete";
 import Index from "./component/product";
 // import ProductDetail from "./component/product/ProductDetail";
-import MyPageMain from "./component/myPage/MyPageMain";
 import ModifyUserProfile from "./component/myPage/ModifyUserProfile";
-import ProductInfo from "./component/product/ProductInfo";
-import UserCommunityList from "./component/myPage/UserCommunityList";
-import UserCommunityDetail from "./component/myPage/UserCommunityDetail";
+import MyPageMain from "./component/myPage/MyPageMain";
 import UserCommunityAdd from "./component/myPage/UserCommunityAdd";
+import UserCommunityDetail from "./component/myPage/UserCommunityDetail";
+import UserCommunityList from "./component/myPage/UserCommunityList";
 import UserOrderList from "./component/myPage/UserOrderList";
+import ProductInfo from "./component/product/ProductInfo";
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/detail/:product_no" element={<ProductInfo />} />
-        <Route path="/order" element={<Order />} />
+        <Route path="/order/:tempOrderId" element={<Order />} />
         <Route path="/order-complete" element={<OrderComplete />} />
         <Route path="/community" element={<CmMain />} />
         <Route path="/CmAdd" element={<CmAdd />} />

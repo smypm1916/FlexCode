@@ -1,7 +1,7 @@
-import React from 'react'
-import ReactModal from 'react-modal'
-import { Title } from '../../style/Modal_Style'
-import Button from './Button'
+import React from 'react';
+import ReactModal from 'react-modal';
+import { Title } from '../../style/Modal_Style';
+import Button from './Button';
 ReactModal.setAppElement('#root');
 
 const CartModal = ({ isOpen, onClose, goToOrder }) => {

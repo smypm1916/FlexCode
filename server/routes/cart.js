@@ -13,7 +13,8 @@ module.exports = (redisClient) => {
       return userCartId ? `cart:${userCartId}` : `cart:session_${guestCartId}`;
    };
 
-   const generateTempOrderId = () => `order:${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+   const generateTempOrderId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+   // const generateTempOrderId = () => `order:${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
    // 장바구니 병합 함수
    async function mergeCart(guestCartId, userCartId) {
@@ -114,7 +115,7 @@ module.exports = (redisClient) => {
             return res.status(400).json({ success: false, message: '장바구니 키가 없습니다' });
          }
          const cartData = await redisClient.hGetAll(cartKey);
-         const tempOrderId = cartData.tempOrderId;
+         const tempOrderId = cartData.tempOrderId || null;
          delete cartData.tempOrderId;
 
          // 빈 바구니 조회
@@ -131,7 +132,7 @@ module.exports = (redisClient) => {
             }
          }).filter(Boolean);
 
-         res.status(200).json({ success: true, cart: parsedCart, isEmpty: parsedCart.length === 0 });
+         res.status(200).json({ success: true, cart: parsedCart, tempOrderId, isEmpty: parsedCart.length === 0 });
       } catch (error) {
          res.status(500).json({ success: false, message: "장바구니 조회 중 오류 발생.", error: error.message });
       }
@@ -155,7 +156,7 @@ module.exports = (redisClient) => {
          for (const option of options) {
             const cartItemKey = `product:${product_no}:option:${option.option_no}`;
             const user_email = req.session?.user?.email || null;
-            await redisClient.hSet(key, cartItemKey, JSON.stringify({
+            await redisClient.hSet(cartKey, cartItemKey, JSON.stringify({
                product_no,
                product_name,
                product_price,
@@ -166,8 +167,8 @@ module.exports = (redisClient) => {
                cart_date: new Date().toISOString(),
             }));
          }
-         await redisClient.expire(key, CART_TTL);
-         res.status(200).json({ success: true, message: "장바구니에 추가되었습니다." });
+         await redisClient.expire(cartKey, CART_TTL);
+         res.status(200).json({ success: true, message: "장바구니에 추가되었습니다.", tempOrderId });
       } catch (error) {
          console.error('server error:', error);
          res.status(500).json({ success: false, message: "장바구니 추가 중 오류 발생.", error: error.message });

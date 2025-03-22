@@ -45,7 +45,7 @@ const ProductInfo = () => {
    const closeModal = () => setIsCartModalOpen(false);
    const navigate = useNavigate();
    const imgPath = import.meta.env.VITE_IMG_PATH;
-   const { addCart, cartItems, loading: cartLoading, tempOrderId } = useCart();
+   const { addToCart, cartItems, loading: cartLoading, tempOrderId } = useCart();
 
    const API_BASE_URL = "http://localhost:8080/api";
 
@@ -70,12 +70,13 @@ const ProductInfo = () => {
       };
    };
 
-   const addCartHandler = async () => {
+   const addToCartHandler = async () => {
       if (checkedProducts.length === 0) {
          alert('옵션을 선택하세요.');
+         setIsCartModalOpen(true);
          return;
       }
-      await addCart(product_no, product.PRODUCT_NAME, product.PRODUCT_PRICE, checkedProducts);
+      await addToCart(product_no, product.PRODUCT_NAME, product.PRODUCT_PRICE, checkedProducts);
       setIsCartModalOpen(true);
       setCheckedProducts([]);
    };
@@ -192,8 +193,11 @@ const ProductInfo = () => {
 
    // 주문 페이지로 이동
    const goToOrder = () => {
-      const tempOrderId = axios.
-         navigate(`/order/${tempOrderId}`);
+      if (!tempOrderId) {
+         alert("장바구니가 비어있거나 아직 주문정보가 준비되지 않았습니다.");
+         return;
+      }
+      navigate(`/order/${tempOrderId}`);
    };
 
    // product_no 변경 시 상품 정보 로드
@@ -289,7 +293,7 @@ const ProductInfo = () => {
                   {/* 버튼 */}
                   <Button_Wrapper_100>
                      <Button onClick={goToOrder} btnTxt="바로구매" />
-                     <Button onClick={addCart} disabled={cartLoading || checkedProducts.length === 0}
+                     <Button onClick={addToCartHandler} disabled={cartLoading || checkedProducts.length === 0}
                         btnTxt="장바구니" />
                      {/* 장바구니 모달 출현 */}
                   </Button_Wrapper_100>

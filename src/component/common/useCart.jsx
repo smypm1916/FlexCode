@@ -22,7 +22,7 @@ export const useCart = () => {
          });
 
          setCartItems(res.data.products || []);
-         setTempOrderId(res.data.tempOrderId);
+         setTempOrderId(res.data.tempOrderId || null);
       } catch (err) {
          setError(err.response?.data?.message || err.message);
       } finally {
@@ -76,6 +76,10 @@ export const useCart = () => {
    useEffect(() => {
       fetchCart();
    }, []);
+
+   useEffect(() => {
+      console.log("현재 tempOrderId 값:", tempOrderId);
+   }, [tempOrderId]);
 
    return { cartItems, tempOrderId, loading, error, addToCart, removeFromCart, fetchCart };
 };

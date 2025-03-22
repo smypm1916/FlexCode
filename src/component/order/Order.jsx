@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../common/Button";
 import CheckedProduct from "../common/CheckedProduct";
@@ -15,7 +15,7 @@ import ShippingAddress from "./ShippingAddress";
 
 
 const Order = () => {
-  const { tempOrderId } = useParams('tempOrderId');
+  const { tempOrderId } = useParams();
   const [cartLoading, setCartLoading] = useState(false);
   const [deliveryInfo, setDeliveryInfo] = useState({
     name: '',
@@ -33,6 +33,7 @@ const Order = () => {
   const openModal = () => setIsCartModalOpen(true);
   const closeModal = () => setIsCartModalOpen(false);
   const imgPath = import.meta.env.VITE_IMG_PATH;
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const goToPayment = () => navigate('/order-complete');
   const goToHome = () => navigate('/');
@@ -95,6 +96,7 @@ const Order = () => {
 
 
   useEffect(() => {
+    console.log(tempOrderId);
     fetchCart();
   }, [tempOrderId]);
 
@@ -102,6 +104,8 @@ const Order = () => {
   return (
     <div>
       <div>
+
+        <h1>주문 번호 : {tempOrderId}</h1>
         {/* 주문 상품 */}
         <div>주문상품</div>
         {cartLoading && <p>...LOADING...</p>}
