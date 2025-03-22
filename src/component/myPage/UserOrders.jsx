@@ -8,6 +8,7 @@ const UserOrders = ({ email }) => {
 
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
+  const imgPath = import.meta.env.VITE_IMG_PATH;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,10 +62,10 @@ const UserOrders = ({ email }) => {
                 }}
               >
                 <img
-                  src={`/img/${item.product_img}`}
+                  src={`${imgPath}/${item.product_img}`}
                   alt={item.product_name}
-                  width="50"
-                  height="50"
+                  width="150"
+                  height="150"
                 />
                 <div style={{ marginLeft: "10px" }}>
                   {order.ITEMS.length > 1 ? (

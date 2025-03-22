@@ -1,31 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "../common/Button";
 
-const UserProfile = () => {
-  const [profileImg, setProfileImg] = useState(null);
-  const [nickname, setNickname] = useState(null);
-  const [email, setEmail] = useState(null);
+const UserProfile = ({ email, nickname, profile }) => {
+  const [userProfileImg, setUserProfileImg] = useState(null);
+  const [userNickname, setUserNickname] = useState(null);
+  const [userEmail, setUserEmail] = useState(null);
   const [userData, setUserData] = useState(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    if (token) {
-      const decoded = jwtDecode(token);
+    setUserEmail(email);
+    setUserNickname(nickname);
 
-      const profilePath = decoded.profile
-        ? `http://localhost:8080/uploads/${decoded.profile}`
-        : "http://localhost:8080/uploads/default-profile.png";
+    const imgPath = import.meta.env.VITE_IMG_PATH;
 
-      setProfileImg(profilePath);
-      setNickname(decoded.nickname);
-      setEmail(decoded.email);
-    }
-  }, [sessionStorage.getItem("token")]);
+    const profilePath = profile
+      ? `${imgPath}/${profile}`
+      : `${imgPath}/default-profile.png`;
+
+    setUserProfileImg(profilePath);
+  });
 
   const handleGetUser = async (e) => {
     e.preventDefault();
@@ -81,11 +78,11 @@ const UserProfile = () => {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
       <div>
-        <img src={profileImg} alt="profile"></img>
+        <img src={userProfileImg} alt="profile"></img>
       </div>
       <div>
-        <div>{nickname}님</div>
-        <div>{email}</div>
+        <div>{userNickname}님</div>
+        <div>{userEmail}</div>
         <div>
           <Button
             className={"updateUser"}

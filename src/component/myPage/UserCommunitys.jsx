@@ -9,11 +9,14 @@ import {
 } from "../../style/List_Style";
 import { fetchGetCommunity } from "../myPage/MyPageAPI";
 
-const UserCommunitys = ({ nickname }) => {
+const UserCommunitys = ({ nickname, profile }) => {
   console.log("넘겨받은 닉네임:", nickname);
+  console.log("넘겨받은 프로필사진:", profile);
 
   const [communitys, setCommunitys] = useState([]);
+  const [userProfileImg, setUserProfileImg] = useState(null);
   const navigate = useNavigate();
+  const imgPath = import.meta.env.VITE_IMG_PATH;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,9 +24,13 @@ const UserCommunitys = ({ nickname }) => {
       console.log("요청 닉네임:", nickname);
       console.log("받아온 데이터:", data);
       setCommunitys(data); // 상태 업데이트
+
+      profile
+        ? setUserProfileImg(profile)
+        : setUserProfileImg("default-profile.png");
     };
     fetchData();
-  }, [nickname]);
+  }, [nickname, profile]);
 
   if (Array.isArray(communitys) && communitys.length === 0) {
     return <h2>작성한 커뮤니티 글이 없습니다.</h2>;
@@ -34,7 +41,7 @@ const UserCommunitys = ({ nickname }) => {
       <h3
         onClick={() => {
           navigate("/userCommunity-list", {
-            state: { nickname },
+            state: { nickname, profile },
           });
         }}
       >
@@ -46,19 +53,21 @@ const UserCommunitys = ({ nickname }) => {
             <div>
               <List_Column
                 onClick={() =>
-                  navigate(`/userCommunity_detail/${post.COMMUNITY_NO}`, {
+                  navigate(`${imgPath}/${post.COMMUNITY_NO}`, {
                     state: { communitys },
                   })
                 }
                 key={post.COMMUNITY_NO}
                 className="border p-2 mb-2"
               >
-                <List_Profile>
-                  <Profile_Img></Profile_Img>
-                </List_Profile>
                 <p>{post.COMMUNITY_TITLE}</p>
                 <List_Profile>
                   <p>작성자</p>
+                  <img
+                    src={`${imgPath}/${userProfileImg}`}
+                    width="100"
+                    height="100"
+                  />
                   <p>{post.USER_NICKNAME}</p>
                 </List_Profile>
                 <List_Profile>
@@ -75,9 +84,9 @@ const UserCommunitys = ({ nickname }) => {
               </List_Column>
               <List_Content>
                 {post.COMMUNITY_IMG ? (
-                  <img src={`../assets/imgs//${post.COMMUNITY_IMG}`} />
+                  <img src={`${imgPath}/${post.COMMUNITY_IMG}`} />
                 ) : (
-                  <p>이미지 없음</p>
+                  <p></p>
                 )}
               </List_Content>
             </div>
