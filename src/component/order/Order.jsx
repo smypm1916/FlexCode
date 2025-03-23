@@ -171,8 +171,27 @@ const Order = () => {
           <CheckedProduct
             mode='order'
             cartItems={[selectedProduct]}
-            updateCartQuantity={(product_no, quantity) => updateCartQuantity(selectedProduct.product_no, quantity)}
-            removeFromCart={(productKey) => removeFromCart(`product:${selectedProduct.product_no}:option:${selectedProduct.option_no}`)}
+            updateCartQuantity={(product_no, quantity) => {
+              if (from === 'direct') {
+                setCheckedProducts((prev) =>
+                  prev.map((opt) =>
+                    opt.OPTION_NO === selectedProduct.option_no ? { ...opt, quantity } : opt
+                  )
+                );
+              } else {
+                updateCartQuantity(product_no, quantity);
+              }
+            }}
+            removeFromCart={(productKey) => {
+              if (from === 'direct') {
+                setCheckedProducts((prev) =>
+                  prev.filter((opt) => `product:${product.PRODUCT_NO}:option:${opt.OPTION_NO}` !== productKey)
+                );
+                setIsCartModalOpen(false);
+              } else {
+                removeFromCart(productKey);
+              }
+            }}
           />
         )}
       </ReactModal>

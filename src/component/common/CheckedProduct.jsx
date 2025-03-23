@@ -86,7 +86,9 @@ const CheckedProduct = ({ mode = "detail", product, quantityHandler, options, on
                         />
                      </p>
 
-                     <p>합계 금액: {(item.PRODUCT_PRICE + item.OPTION_PRICE) * item.quantity}원</p>
+                     <p>합계 금액: {((item.product_price || 0) + (item.option_price || 0)) * item.quantity}원</p>
+
+                     {/* <p>합계 금액: {(item.PRODUCT_PRICE + item.OPTION_PRICE) * item.quantity}원</p> */}
 
                      {/* 삭제 */}
                      <Button btnTxt="삭제" onClick={() => removeFromCart(productKey)} />
