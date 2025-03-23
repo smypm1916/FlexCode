@@ -238,7 +238,10 @@ const ProductInfo = () => {
                         <Text>카 테 고 리</Text>
                         <Title>{product.PRODUCT_TYPE}</Title>
                      </Text_box>
-                     <Product_Title>{product.PRODUCT_NAME}</Product_Title>
+                     <Text_box>
+                        <Text>상 품 명</Text>
+                        <Product_Title>{product.PRODUCT_NAME}</Product_Title>
+                     </Text_box>
                      <Text_box>
                         <Title>판매 가격</Title>
                         <Text>{product.PRODUCT_PRICE} 원</Text>
