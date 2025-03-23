@@ -44,6 +44,7 @@ const ShippingAddress = ({ title, data, setData, isReadOnly }) => {
                name="base_address"
                placeholder="기본주소를 입력하세요"
                value={data.base_address}
+               onChange={handleChange}
                readOnly
             />
             <Button btnTxt="주소검색" onClick={() => setIsPostCodeOpen(true)} disabled={isReadOnly} />

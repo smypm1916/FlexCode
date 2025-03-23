@@ -282,6 +282,7 @@ const ProductInfo = () => {
                      {/* 선택된 옵션 표시 */}
                      {checkedProducts.length > 0 && (
                         <CheckedProduct
+                           mode='detail'
                            product={product}
                            options={checkedProducts}
                            quantityHandler={quantityHandler}

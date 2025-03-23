@@ -10,6 +10,7 @@ export const useCart = () => {
    const [loading, setLoading] = useState(false);
    const [error, setError] = useState(null);
 
+   // 장바구니 조회
    const fetchCart = async () => {
       setLoading(true);
       try {
@@ -30,6 +31,7 @@ export const useCart = () => {
       }
    };
 
+   // 장바구니 추가
    const addToCart = async (product_no, product_name, product_price, options) => {
       setLoading(true);
       try {
@@ -54,6 +56,32 @@ export const useCart = () => {
       }
    };
 
+   // 장바구니 상품 수량변경
+   const updateCartQuantity = async (product_no, new_quantity) => {
+      setLoading(true);
+      try {
+         const token = localStorage.getItem('token');
+         const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+         const res = await axios.put(`${API_BASE_URL}/cart/update`, {
+            product_no,
+            new_quantity
+         }, {
+            withCredentials: true,
+            ...config
+         });
+         if (res.data.success) {
+            // 성공 후 장바구니 재조회
+            await fetchCart();
+         }
+      }
+      catch (err) {
+         setError(err.response?.data?.message || err.message);
+      } finally {
+         setLoading(false);
+      }
+   };
+
+   // 장바구니에서 제거
    const removeFromCart = async (productKey) => {
       setLoading(true);
       try {
@@ -81,5 +109,5 @@ export const useCart = () => {
       console.log("현재 tempOrderId 값:", tempOrderId);
    }, [tempOrderId]);
 
-   return { cartItems, tempOrderId, loading, error, addToCart, removeFromCart, fetchCart };
+   return { cartItems, tempOrderId, loading, error, addToCart, removeFromCart, fetchCart, updateCartQuantity };
 };
