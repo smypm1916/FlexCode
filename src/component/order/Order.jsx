@@ -40,8 +40,21 @@ const Order = () => {
   const goToPayment = () => navigate(`/order-complete/${tempOrderId}`);
   const goToHome = () => navigate('/');
   const { cartItems, updateCartQuantity, loading, fetchCart, removeFromCart } = useCart();
+  const [checkedProducts, setCheckedProducts] = useState(directOptions || []);
+
 
   const API_BASE_URL = "http://localhost:8080/api";
+
+
+
+  // 옵션 삭제
+  const onRemove = (OPTION_NO) => {
+    return () => {
+      setCheckedProducts((prev) =>
+        prev.filter((opt) => opt.OPTION_NO !== OPTION_NO)
+      );
+    };
+  };
 
 
   const openEditModal = (item) => {
@@ -63,7 +76,7 @@ const Order = () => {
   // 장바구니 비우기
   const clearCart = async () => {
     const token = localStorage.getItem('token');
-    const clearAllCart = axios.delete(`${API_BASE_URL}/cart/clear`, {
+    await axios.delete(`${API_BASE_URL}/cart/clear`, {
       withCredentials: true,
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -71,7 +84,8 @@ const Order = () => {
   };
 
   useEffect(() => {
-    if (from === "direct") {
+    if (from === "direct" && Array.isArray(directOptions)) {
+      setCheckedProducts(directOptions);
       // 바로구매에서 온 경우: cartItems 대신 directOptions 사용
       console.log("바로구매로 전달된 상품:", product);
       console.log("선택된 옵션들:", directOptions);
@@ -91,7 +105,7 @@ const Order = () => {
   }, [cartItems]);
 
   const totalPrice = from === "direct"
-    ? directOptions?.reduce((sum, item) => {
+    ? checkedProducts?.reduce((sum, item) => {
       const productPrice = product?.PRODUCT_PRICE || 0;
       const optionPrice = item?.OPTION_PRICE || 0;
       return sum + (productPrice + optionPrice) * item.quantity;
@@ -109,17 +123,28 @@ const Order = () => {
       {error && <p>{error}</p>}
 
       {/* 장바구니 리스트 */}
-      {!loading && from === "direct" && directOptions && directOptions.length > 0 ? (
-        directOptions.map((item, idx) => (
-          <div key={`direct:${item.OPTION_NO}`}>
-            <p>상품명: {product.PRODUCT_NAME}</p>
-            <p>옵션명: {item.OPTION_TITLE}</p>
-            <p>수량: {item.quantity}</p>
-            <p>금액: {(product.PRODUCT_PRICE + item.OPTION_PRICE) * item.quantity}원</p>
-            <Button btnTxt="삭제" onClick={() => removeFromCart(productKey)} />
-            <Button btnTxt="옵션/수량 수정" onClick={() => openEditModal(item)} />
-          </div>
-        ))
+      {!loading && from === "direct" && Array.isArray(checkedProducts) && checkedProducts.length > 0 ? (
+        checkedProducts.map((item) => {
+          const productKey = `product:${product.PRODUCT_NO}:option:${item.OPTION_NO}`;
+          return (
+            <div key={`direct:${item.OPTION_NO}`}>
+              <p>상품명: {product.PRODUCT_NAME}</p>
+              <p>옵션명: {item.OPTION_TITLE}</p>
+              <p>수량: {item.quantity}</p>
+              <p>금액: {(product.PRODUCT_PRICE + item.OPTION_PRICE) * item.quantity}원</p>
+              <Button btnTxt="옵션/수량 수정" onClick={() => openEditModal({
+                ...item,
+                product_name: product.PRODUCT_NAME,
+                product_price: product.PRODUCT_PRICE,
+                product_no: product.PRODUCT_NO,
+                option_title: item.OPTION_TITLE,
+                option_price: item.OPTION_PRICE,
+                option_no: item.OPTION_NO,
+              })} />
+              <Button btnTxt="옵션 삭제" onClick={onRemove(item.OPTION_NO)} />
+            </div>
+          );
+        })
       ) : (!loading && cartItems.length > 0 ? (
         cartItems.map((item) => {
           const productKey = `product:${item.product_no}:option:${item.option_no}`;
@@ -129,8 +154,8 @@ const Order = () => {
               <p>옵션명: {item.option_title}</p>
               <p>수량: {item.quantity}</p>
               <p>금액: {(item.product_price + item.option_price) * item.quantity}원</p>
-              <Button btnTxt="삭제" onClick={() => removeFromCart(productKey)} />
-              <Button btnTxt="옵션/수량 수정" onClick={() => openEditModal(item)} />
+              <Button btnTxt="옵션 수정" onClick={() => openEditModal(item)} />
+              <Button btnTxt="옵션 삭제" onClick={() => removeFromCart(productKey)} />
             </div>
           );
         })
@@ -138,7 +163,7 @@ const Order = () => {
 
 
       {/* 합계 금액 */}
-      <p>합계 금액 : {totalPrice} 원</p>
+      <p>합계 금액 : {totalPrice.toLocaleString()} 원</p>
 
       {/* 옵션 변경 모달 */}
       <ReactModal isOpen={isCartModalOpen} onRequestClose={closeEditModal}>
@@ -146,8 +171,8 @@ const Order = () => {
           <CheckedProduct
             mode='order'
             cartItems={[selectedProduct]}
-            updateCartQuantity={updateCartQuantity}
-            removeFromCart={removeFromCart}
+            updateCartQuantity={(product_no, quantity) => updateCartQuantity(selectedProduct.product_no, quantity)}
+            removeFromCart={(productKey) => removeFromCart(`product:${selectedProduct.product_no}:option:${selectedProduct.option_no}`)}
           />
         )}
       </ReactModal>

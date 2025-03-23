@@ -197,7 +197,7 @@ const ProductInfo = () => {
 
    // 장바구니 모달 닫기
    const closeCartModal = () => {
-      setCheckedProducts([]);
+dProducts([]);
       setIsCartModalOpen(false);
    };
 
