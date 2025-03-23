@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactModal from "react-modal";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Button from "../common/Button";
 import CheckedProduct from "../common/CheckedProduct";
 import { useCart } from '../common/useCart';
@@ -33,6 +33,10 @@ const Order = () => {
   const imgPath = import.meta.env.VITE_IMG_PATH;
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from;
+  const product = location.state?.product;
+  const directOptions = location.state?.checkedProducts;
   const goToPayment = () => navigate(`/order-complete/${tempOrderId}`);
   const goToHome = () => navigate('/');
   const { cartItems, updateCartQuantity, loading, fetchCart, removeFromCart } = useCart();
@@ -66,6 +70,17 @@ const Order = () => {
     await fetchCart();
   };
 
+  useEffect(() => {
+    if (from === "direct") {
+      // 바로구매에서 온 경우: cartItems 대신 directOptions 사용
+      console.log("바로구매로 전달된 상품:", product);
+      console.log("선택된 옵션들:", directOptions);
+    } else {
+      // 일반 장바구니 주문
+      fetchCart();
+    }
+  }, []);
+
 
   useEffect(() => {
     fetchCart();
@@ -75,11 +90,18 @@ const Order = () => {
     console.log('cartItems changed', cartItems);
   }, [cartItems]);
 
-  const totalPrice = cartItems.reduce((sum, item) => {
-    const productPrice = item.product_price || 0;
-    const optionPrice = item.option_price || 0;
-    return sum + (productPrice + optionPrice) * item.quantity;
-  }, 0);
+  const totalPrice = from === "direct"
+    ? directOptions.reduce((sum, item) => {
+      const productPrice = product.PRODUCT_PRICE || 0;
+      const optionPrice = item.OPTION_PRICE || 0;
+      return sum + (productPrice + optionPrice) * item.quantity;
+    }, 0)
+    : cartItems.reduce((sum, item) => {
+      const productPrice = item.product_price || 0;
+      const optionPrice = item.option_price || 0;
+      return sum + (productPrice + optionPrice) * item.quantity;
+    }, 0);
+
 
   return (
     <div>
@@ -88,7 +110,16 @@ const Order = () => {
       {error && <p>{error}</p>}
 
       {/* 장바구니 리스트 */}
-      {!loading && cartItems.length > 0 ? (
+      {!loading && from === "direct" && directOptions && directOptions.length > 0 ? (
+        directOptions.map((item, idx) => (
+          <div key={`direct:${item.OPTION_NO}`}>
+            <p>상품명: {product.PRODUCT_NAME}</p>
+            <p>옵션명: {item.OPTION_TITLE}</p>
+            <p>수량: {item.quantity}</p>
+            <p>금액: {(product.PRODUCT_PRICE + item.OPTION_PRICE) * item.quantity}원</p>
+          </div>
+        ))
+      ) : (!loading && cartItems.length > 0 ? (
         cartItems.map((item) => {
           const productKey = `product:${item.product_no}:option:${item.option_no}`;
           return (
@@ -102,7 +133,8 @@ const Order = () => {
             </div>
           );
         })
-      ) : (!loading && <p>장바구니가 비어있습니다.</p>)}
+      ) : (!loading && <p>장바구니가 비어있습니다.</p>))}
+
 
       {/* 합계 금액 */}
       <p>합계 금액 : {totalPrice} 원</p>

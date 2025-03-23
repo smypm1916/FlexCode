@@ -21,9 +21,12 @@ export const useCart = () => {
             withCredentials: true,
             ...config
          });
-
-         setCartItems(res.data.products || []);
-         setTempOrderId(res.data.tempOrderId || null);
+         if (res.data.success) {
+            if (res.data.tempOrderId && res.data.tempOrderId !== tempOrderId) {
+               setTempOrderId(res.data.tempOrderId);
+            }
+            setCartItems(res.data.products || []);
+         }
       } catch (err) {
          setError(err.response?.data?.message || err.message);
       } finally {
@@ -33,6 +36,13 @@ export const useCart = () => {
 
    // 장바구니 추가
    const addToCart = async (product_no, product_name, product_price, options) => {
+      const normalized = options.map(opt => ({
+         option_no: opt.OPTION_NO,
+         option_title: opt.OPTION_TITLE,
+         option_price: opt.OPTION_PRICE,
+         quantity: opt.quantity
+      }));
+
       setLoading(true);
       try {
          const token = localStorage.getItem('token');
@@ -42,13 +52,15 @@ export const useCart = () => {
             product_no,
             product_name,
             product_price,
-            options,
+            options: normalized,
+            tempOrderId,
          }, { withCredentials: true, ...config });
 
-         if (res.data.success) {
+         if (res.data.success && res.data.tempOrderId) {
             setTempOrderId(res.data.tempOrderId);
-            await fetchCart();
          }
+         await fetchCart();
+         return res.data.tempOrderId;
       } catch (err) {
          setError(err.response?.data?.message || err.message);
       } finally {
@@ -108,8 +120,16 @@ export const useCart = () => {
    };
 
    useEffect(() => {
-      fetchCart();
+      const storedId = localStorage.getItem('tempOrderId');
+      if (storedId) setTempOrderId(storedId);
    }, []);
+
+   useEffect(() => {
+      if (tempOrderId) {
+         localStorage.setItem('tempOrderId', tempOrderId);
+         fetchCart(); // tempOrderId가 없으면 불필요
+      }
+   }, [tempOrderId]);
 
    useEffect(() => {
       console.log("현재 tempOrderId 값:", tempOrderId);

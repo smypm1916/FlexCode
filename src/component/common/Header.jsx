@@ -14,12 +14,14 @@ import {
   Wrapper_Header,
 } from "../../style/Header_Style";
 import LoginModal from "../account/LoginModal";
+import { useCart } from "./useCart";
 // import Cart from "./Cart";
 
 const App = () => {
   const [showModal, setShowModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileImg, setProfileImg] = useState(null);
+  const { tempOrderId } = useCart();
   // const [isLoading, setIsLoading] = useState(true); // 로딩상태
   const navigate = useNavigate();
   // 로그인 상태 확인
@@ -119,7 +121,7 @@ const App = () => {
       {/* 로그인 여부에 따라 UI 변경 */}
       {isLoggedIn ? (
         <Menu_Wrapper>
-          <Menu onClick={() => navigate("/order")}>CART</Menu>
+          <Menu onClick={() => navigate(`/order/${tempOrderId}`)}>CART</Menu>
           <ProfileWrapper onClick={() => navigate("/mypage")}>
             <ProfileImg src={profileImg} alt="profile" />
           </ProfileWrapper>

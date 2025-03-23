@@ -39,13 +39,14 @@ const ProductInfo = () => {
    const [checkedProducts, setCheckedProducts] = useState([]); // 최종 선택된 옵션들
    const [currentOption, setCurrentOption] = useState(null); // 현재 선택된 옵션
    const [currentQuantity, setCurrentQuantity] = useState(1); // 현재 선택된 수량
+   const [localTempOrderId, setLocalTempOrderId] = useState(null);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState(null);
    // const openModal = () => setIsCartModalOpen(true);
    const closeModal = () => setIsCartModalOpen(false);
    const navigate = useNavigate();
    const imgPath = import.meta.env.VITE_IMG_PATH;
-   const { addToCart, cartItems, loading: cartLoading, tempOrderId } = useCart();
+   const { addToCart, fetchCart, cartItems, loading: cartLoading, tempOrderId } = useCart();
 
    const API_BASE_URL = "http://localhost:8080/api";
 
@@ -73,12 +74,16 @@ const ProductInfo = () => {
    const addToCartHandler = async () => {
       if (checkedProducts.length === 0) {
          alert('옵션을 선택하세요.');
-         setIsCartModalOpen(true);
          return;
       }
-      await addToCart(product_no, product.PRODUCT_NAME, product.PRODUCT_PRICE, checkedProducts);
+
+      const newTempOrderId = await addToCart(product_no, product.PRODUCT_NAME, product.PRODUCT_PRICE, checkedProducts);
+      if (newTempOrderId) {
+         setLocalTempOrderId(newTempOrderId);
+      }
+      await fetchCart();
       setIsCartModalOpen(true);
-      setCheckedProducts([]);
+      // setCheckedProducts([]);
    };
 
    // 옵션 선택 핸들러
@@ -192,16 +197,24 @@ const ProductInfo = () => {
 
    // 장바구니 모달 닫기
    const closeCartModal = () => {
+      setCheckedProducts([]);
       setIsCartModalOpen(false);
    };
 
    // 주문 페이지로 이동
    const goToOrder = () => {
-      if (!tempOrderId) {
+      const currentOrderId = localTempOrderId || tempOrderId;
+      if (!currentOrderId) {
          alert("장바구니가 비어있거나 아직 주문정보가 준비되지 않았습니다.");
          return;
       }
-      navigate(`/order/${tempOrderId}`);
+      navigate(`/order/${currentOrderId}`, {
+         state: {
+            from: "direct",
+            product,
+            checkedProducts,
+         },
+      });
    };
 
    // product_no 변경 시 상품 정보 로드

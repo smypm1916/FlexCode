@@ -6,7 +6,7 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const morgan = require("morgan");
-// const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 
 const productRouter = require("./routes/products");
 const userRouter = require("./routes/user");
@@ -136,6 +136,7 @@ app.use(
     secret: process.env.JWT_SECRET || "your_secret_key",
     resave: false,
     saveUninitialized: true,
+    rolling: true, // 로그인, 새로고침 시 세션유지
     cookie: { maxAge: 30 * 60 * 1000 }, // 30분 유지
   })
 );
