@@ -59,11 +59,11 @@ const CheckedProduct = ({ mode = "detail", product, quantityHandler, options, on
       if (!cartItems || cartItems.length === 0) {
          return <p>장바구니가 비어있습니다.</p>;
       }
-
+      const items = cartItems || [];
       return (
          <div>
             <h2>옵션/수량 수정</h2>
-            {cartItems.map((item) => {
+            {items.map((item) => {
                const productKey = `product:${item.product_no}:option:${item.option_no}`;
                return (
                   <div key={productKey} style={{ border: '1px solid #ccc', marginBottom: 8 }}>

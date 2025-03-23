@@ -91,9 +91,9 @@ const Order = () => {
   }, [cartItems]);
 
   const totalPrice = from === "direct"
-    ? directOptions.reduce((sum, item) => {
-      const productPrice = product.PRODUCT_PRICE || 0;
-      const optionPrice = item.OPTION_PRICE || 0;
+    ? directOptions?.reduce((sum, item) => {
+      const productPrice = product?.PRODUCT_PRICE || 0;
+      const optionPrice = item?.OPTION_PRICE || 0;
       return sum + (productPrice + optionPrice) * item.quantity;
     }, 0)
     : cartItems.reduce((sum, item) => {
@@ -101,7 +101,6 @@ const Order = () => {
       const optionPrice = item.option_price || 0;
       return sum + (productPrice + optionPrice) * item.quantity;
     }, 0);
-
 
   return (
     <div>
@@ -117,6 +116,8 @@ const Order = () => {
             <p>옵션명: {item.OPTION_TITLE}</p>
             <p>수량: {item.quantity}</p>
             <p>금액: {(product.PRODUCT_PRICE + item.OPTION_PRICE) * item.quantity}원</p>
+            <Button btnTxt="삭제" onClick={() => removeFromCart(productKey)} />
+            <Button btnTxt="옵션/수량 수정" onClick={() => openEditModal(item)} />
           </div>
         ))
       ) : (!loading && cartItems.length > 0 ? (
@@ -173,10 +174,10 @@ const Order = () => {
         />
       </div>
 
-      {/* 결제/취소*/}
-      < div >
-        <Button onClick={goToPayment} />
-        <Button onClick={goToHome} />
+      {/* 결제/취소 */}
+      <div>
+        <Button btnTxt='결제하기' onClick={goToPayment} />
+        <Button btnTxt='돌아가기' onClick={goToHome} />
       </div>
     </div>
   );
