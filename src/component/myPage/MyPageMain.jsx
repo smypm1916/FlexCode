@@ -10,6 +10,7 @@ import { fetchGetOrder } from "../myPage/MyPageAPI";
 const MyPageMain = () => {
   const [userEmail, setUserEmail] = useState("");
   const [userNickname, setUserNickname] = useState("");
+  const [userProfile, setUserProfile] = useState("");
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -17,6 +18,7 @@ const MyPageMain = () => {
       const decoded = jwtDecode(token);
       setUserEmail(decoded.email);
       setUserNickname(decoded.nickname);
+      setUserProfile(decoded.profile);
 
       fetchGetCommunity(decoded.nickname);
       fetchGetOrder(decoded.email);
@@ -25,9 +27,13 @@ const MyPageMain = () => {
 
   return (
     <div>
-      <UserProfile />
+      <UserProfile
+        email={userEmail}
+        nickname={userNickname}
+        profile={userProfile}
+      />
       <UserOrders email={userEmail} />
-      <UserCommunitys nickname={userNickname} />
+      <UserCommunitys nickname={userNickname} profile={userProfile} />
       <DeleteUser />
     </div>
   );

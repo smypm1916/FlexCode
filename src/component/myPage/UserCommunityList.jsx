@@ -14,11 +14,13 @@ import { fetchGetCommunity } from "../myPage/MyPageAPI";
 
 const UserCommunityList = () => {
   const [communitys, setCommunitys] = useState([]);
+  const [userProfileImg, setUserProfileImg] = useState(null);
   const location = useLocation();
-  const { nickname } = location.state || {}; // state에서 nickname 가져오기
+  const { nickname, profile } = location.state || {}; // state에서 nickname, profile 가져오기
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // 한 페이지당 5개씩 표시
+  const imgPath = import.meta.env.VITE_IMG_PATH;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,6 +28,12 @@ const UserCommunityList = () => {
       console.log("요청 닉네임:", nickname);
       console.log("받아온 데이터:", data);
       setCommunitys(data); // 상태 업데이트
+
+      console.log("프로필 사진 파일:", profile);
+
+      profile
+        ? setUserProfileImg(profile)
+        : setUserProfileImg("default-profile.png");
     };
     fetchData();
   }, [nickname]);
@@ -74,12 +82,14 @@ const UserCommunityList = () => {
                   className="border p-2 mb-2"
                 >
                   <List_Column key={post.COMMUNITY_NO}>
-                    <List_Profile>
-                      <Profile_Img></Profile_Img>
-                    </List_Profile>
                     <p>{post.COMMUNITY_TITLE}</p>
                     <List_Profile>
                       <p>작성자</p>
+                      <img
+                        src={`${imgPath}/${userProfileImg}`}
+                        width="100"
+                        height="100"
+                      />
                       <p>{post.USER_NICKNAME}</p>
                     </List_Profile>
                     <List_Profile>
@@ -96,9 +106,9 @@ const UserCommunityList = () => {
                   </List_Column>
                   <List_Content>
                     {post.COMMUNITY_IMG ? (
-                      <img src={`../assets/imgs//${post.COMMUNITY_IMG}`} />
+                      <img src={`${imgPath}/${post.COMMUNITY_IMG}`} />
                     ) : (
-                      <p>이미지 없음</p>
+                      <p></p>
                     )}
                   </List_Content>
                 </Pagination_List>

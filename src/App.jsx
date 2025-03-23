@@ -19,11 +19,13 @@ import UserCommunityDetail from "./component/myPage/UserCommunityDetail";
 import UserCommunityList from "./component/myPage/UserCommunityList";
 import UserOrderList from "./component/myPage/UserOrderList";
 import ProductInfo from "./component/product/ProductInfo";
+import ScrollToTop from "./component/common/ScrollToTop";
 
 function App() {
   return (
     <Router>
       <Header />
+      <ScrollToTop />
       {/* 루팅 */}
       <Routes>
         <Route path="/" element={<Index />} />

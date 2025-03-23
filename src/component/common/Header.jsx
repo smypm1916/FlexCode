@@ -32,9 +32,11 @@ const App = () => {
 
       setIsLoggedIn(true);
 
+      const imgPath = import.meta.env.VITE_IMG_PATH;
+
       const profilePath = decoded.profile
-        ? `http://localhost:8080/uploads/${decoded.profile}`
-        : "http://localhost:8080/uploads/default-profile.png";
+        ? `${imgPath}/${decoded.profile}`
+        : `${imgPath}/default-profile.png`;
 
       console.log("프로필 이미지 경로:", profilePath);
 
