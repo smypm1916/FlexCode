@@ -233,8 +233,9 @@ module.exports = (redisClient) => {
    //  장바구니 전체 삭제
    router.delete("/clear", async (req, res) => {
       try {
+         const { productKey } = req.body;
          const key = getCartKey(req);
-         await redisClient.del(key);
+         await redisClient.hDel(key, productKey);
          res.status(200).json({ success: true, message: "장바구니가 비워졌습니다." });
       } catch (error) {
          res.status(500).json({ success: false, message: "장바구니 삭제 중 오류 발생.", error: error.message });

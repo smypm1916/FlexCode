@@ -154,7 +154,11 @@ const ProductInfo = () => {
             }
          );
          if (res.data?.success) {
-            setProduct(res.data.data || {});
+            console.log('product :', res.data.data);
+            const tempDetail = res.data.data;
+            if (Array.isArray(tempDetail) && tempDetail.length > 0) {
+               setProduct(tempDetail[0]); // 객체 저장
+            } else { setProduct({}) };
          }
       } catch (error) {
          console.error("detail load error", error);
@@ -221,7 +225,6 @@ const ProductInfo = () => {
    return (
       <Wrapper>
          <Container_Style>
-            {/* 컨테이너 1 */}
             <Container01>
                {/* 이미지 */}
                <Image_Wrapper>
@@ -231,8 +234,10 @@ const ProductInfo = () => {
                {/* 상품정보 */}
                <Product_Wrapper>
                   <Text_wrapper>
-                     <Text>카 테 고 리</Text>
-                     <Title>상품 타입</Title>
+                     <Text_box>
+                        <Text>카 테 고 리</Text>
+                        <Title>{product.PRODUCT_TYPE}</Title>
+                     </Text_box>
                      <Product_Title>{product.PRODUCT_NAME}</Product_Title>
                      <Text_box>
                         <Title>판매 가격</Title>

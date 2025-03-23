@@ -17,7 +17,7 @@ export const useCart = () => {
          const token = localStorage.getItem('token');
          const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
-         const res = await axios.get(`${API_BASE_URL}/cart/read`, {
+         const res = await axios.get(`${API_BASE_URL}/cart/read/${tempOrderId}`, {
             withCredentials: true,
             ...config
          });
@@ -93,6 +93,12 @@ export const useCart = () => {
             ...config,
             data: { productKey },
          });
+
+         setCartItems(prev => prev.filter(products => {
+            const pk = `product:${products.PRODUCT_NO}:option:${products.OPTION_NO}`;
+            return pk !== productKey;
+         }));
+
          await fetchCart();
       } catch (err) {
          setError(err.response?.data?.message || err.message);

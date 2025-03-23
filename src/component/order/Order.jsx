@@ -17,7 +17,6 @@ import ShippingAddress from "./ShippingAddress";
 const Order = () => {
   const { tempOrderId } = useParams();
   const [selectedProduct, setSelectedProduct] = useState(null);
-  // const [checkedProducts, setCheckedProducts] = useState([]);
   const [deliveryInfo, setDeliveryInfo] = useState({
     name: '',
     base_address: '',
@@ -31,24 +30,22 @@ const Order = () => {
   const [receiveInfo, setReceiveInfo] = useState({ ...deliveryInfo });
   const [isSame, setIsSame] = useState(false);
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
-  const openModal = () => setIsCartModalOpen(true);
-  const closeModal = () => setIsCartModalOpen(false);
   const imgPath = import.meta.env.VITE_IMG_PATH;
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const goToPayment = () => navigate('/order-complete');
+  const goToPayment = () => navigate(`/order-complete/${tempOrderId}`);
   const goToHome = () => navigate('/');
-  const { cartItems, loading, fetchCart, updateCart, removeFromCart } = useCart();
+  const { cartItems, updateCartQuantity, loading, fetchCart, removeFromCart } = useCart();
 
   const API_BASE_URL = "http://localhost:8080/api";
 
 
-  const openEditModal = (product) => {
-    setSelectedProduct(product);
+  const openEditModal = (item) => {
+    setSelectedProduct(item);
     setIsCartModalOpen(true);
   };
   const closeEditModal = () => {
-    // setSelectedProduct(null);
+    setSelectedProduct(null);
     setIsCartModalOpen(false);
   };
 
@@ -59,39 +56,24 @@ const Order = () => {
     }
   };
 
-  const quantityHandler = () => {
-    setCartItems((prev) => {
-      prev.map((opt) => {
-        opt.OPTION_NO === OPTION_NO ? { ...opt, quantity } : opt
-      });
-    });
-  };
-
-  // const onRemove = (productKey) => {
-  //   removeFromCart(productKey);
-  // };
-
   // 장바구니 비우기
   const clearCart = async () => {
     const token = localStorage.getItem('token');
     const clearAllCart = axios.delete(`${API_BASE_URL}/cart/clear`, {
       withCredentials: true,
-      headers: {
-        headers: { Authorization: `Bearer ${token}` },
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
     await fetchCart();
   };
 
-  // 장바구니 수량 수정
-
-  // 장바구니 옵션 변경/삭제
-
 
   useEffect(() => {
-    console.log(tempOrderId);
     fetchCart();
   }, [tempOrderId]);
+
+  useEffect(() => {
+    console.log('cartItems changed', cartItems);
+  }, [cartItems]);
 
   const totalPrice = cartItems.reduce((sum, item) => {
     const productPrice = item.product_price || 0;
@@ -101,37 +83,43 @@ const Order = () => {
 
   return (
     <div>
-      <div>
+      <h1>주문 번호 : {tempOrderId}</h1>
+      {loading && <p>...LOADING...</p>}
+      {error && <p>{error}</p>}
 
-        <h1>주문 번호 : {tempOrderId}</h1>
-        {/* 주문 상품 */}
-        <div>주문상품</div>
-        {loading && <p>...LOADING...</p>}
-        {error && <p>{error}</p>}
-        {!loading && !error && cartItems.length > 0 && (<CheckedProduct mode='order' cartItems={cartItems} updateCart={updateCart} removeFromCart={removeFromCart} />)}
-        {!loading && cartItems.length === 0 && <p>장바구니가 비어있습니다</p>}
-      </div>
+      {/* 장바구니 리스트 */}
+      {!loading && cartItems.length > 0 ? (
+        cartItems.map((item) => {
+          const productKey = `product:${item.product_no}:option:${item.option_no}`;
+          return (
+            <div key={productKey}>
+              <p>상품명: {item.product_name}</p>
+              <p>옵션명: {item.option_title}</p>
+              <p>수량: {item.quantity}</p>
+              <p>금액: {(item.product_price + item.option_price) * item.quantity}원</p>
+              <Button btnTxt="삭제" onClick={() => removeFromCart(productKey)} />
+              <Button btnTxt="옵션/수량 수정" onClick={() => openEditModal(item)} />
+            </div>
+          );
+        })
+      ) : (!loading && <p>장바구니가 비어있습니다.</p>)}
+
+      {/* 합계 금액 */}
+      <p>합계 금액 : {totalPrice} 원</p>
 
       {/* 옵션 변경 모달 */}
-      {isCartModalOpen && (
-        <ReactModal isOpen={isCartModalOpen} onRequestClose={closeModal}>
-          {selectedProduct && (
-            <CheckedProduct
-              cartItems={cartItems}
-              removeFromCart={removeFromCart(productKey)}
-            />
-          )}
-        </ReactModal>)
-      }
-      {/* 합계 금액 */}
-      <div>
-        {/* <p> */}
-        {/* 합계 금액 : {cartItems.reduce((sum, item) => sum + (item.product_price + item.option_price) * item.quantity, 0)} 원 */}
-        <p>합계 금액 : {totalPrice} 원</p>
-        {/* </p> */}
-      </div>
-      {!loading && cartItems.length === 0 && <p>장바구니가 비어있습니다.</p>}
+      <ReactModal isOpen={isCartModalOpen} onRequestClose={closeEditModal}>
+        {selectedProduct && (
+          <CheckedProduct
+            mode='order'
+            cartItems={[selectedProduct]}
+            updateCartQuantity={updateCartQuantity}
+            removeFromCart={removeFromCart}
+          />
+        )}
+      </ReactModal>
 
+      {/* 배송&수령 정보 */}
       <div>
         <ShippingAddress
           title="주문자 정보"
