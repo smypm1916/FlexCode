@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "../common/Button";
 import { Wrapper } from "../../style/Common_Style";
-
+// mypage용 통합 스타일
+import {} from "../../style/Mypage_Style";
+import { User_Status_Column, User_Status_Row } from "../../style/Mypage_Style";
 const UserProfile = () => {
   const [profileImg, setProfileImg] = useState(null);
   const [nickname, setNickname] = useState(null);
@@ -80,21 +82,23 @@ const UserProfile = () => {
   };
 
   return (
-    <Wrapper className="mypage" id="account">
-      <div>
+    <Wrapper className="mypageCon">
+      <User_Status_Row>
         <img src={profileImg} alt="profile"></img>
-      </div>
-      <div>
-        <div>{nickname}님</div>
-        <div>{email}</div>
-        <div>
-          <Button
-            className={"updateUser"}
-            btnTxt={"회원정보 수정"}
-            onClick={handleGetUser}
-          />
-        </div>
-      </div>
+        <User_Status_Column>
+          <User_Status_Row className="grid2">
+            <p>{nickname}님</p>
+            <Button
+              className={"updateUser"}
+              btnTxt={"회원정보 수정"}
+              onClick={handleGetUser}
+            />
+          </User_Status_Row>
+          <User_Status_Row className="grid2">
+            <p>{email}</p>
+          </User_Status_Row>
+        </User_Status_Column>
+      </User_Status_Row>
     </Wrapper>
   );
 };

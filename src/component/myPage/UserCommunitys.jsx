@@ -8,6 +8,7 @@ import {
   Profile_Img,
 } from "../../style/List_Style";
 import { fetchGetCommunity } from "../myPage/MyPageAPI";
+import { Wrapper_Post } from "../../style/Mypage_Style";
 
 const UserCommunitys = ({ nickname }) => {
   console.log("넘겨받은 닉네임:", nickname);
@@ -29,9 +30,9 @@ const UserCommunitys = ({ nickname }) => {
     return <h2>작성한 커뮤니티 글이 없습니다.</h2>;
   }
   return communitys.length > 0 ? (
-    <div>
+    <Wrapper_Post>
       <h2>나의 커뮤니티</h2>
-      <h3
+      <p
         onClick={() => {
           navigate("/userCommunity-list", {
             state: { nickname },
@@ -39,54 +40,54 @@ const UserCommunitys = ({ nickname }) => {
         }}
       >
         더보기
-      </h3>
+      </p>
       <ul>
         {communitys.slice(0, 3).map((post) => {
           return (
-            <div>
-              <List_Column
-                onClick={() =>
-                  navigate(`/userCommunity_detail/${post.COMMUNITY_NO}`, {
-                    state: { communitys },
-                  })
-                }
-                key={post.COMMUNITY_NO}
-                className="border p-2 mb-2"
-              >
-                <List_Profile>
-                  <Profile_Img></Profile_Img>
-                </List_Profile>
-                <p>{post.COMMUNITY_TITLE}</p>
-                <List_Profile>
-                  <p>작성자</p>
-                  <p>{post.USER_NICKNAME}</p>
-                </List_Profile>
-                <List_Profile>
-                  <p>작성일자</p>
-                  <p>
-                    {" "}
-                    {new Date(post.COMMUNITY_DATE).toLocaleString("ko-KR", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
-                  </p>
-                </List_Profile>
-              </List_Column>
-              <List_Content>
-                {post.COMMUNITY_IMG ? (
-                  <img src={`../assets/imgs//${post.COMMUNITY_IMG}`} />
-                ) : (
-                  <p>이미지 없음</p>
-                )}
-              </List_Content>
-            </div>
+            <List_Column
+              onClick={() =>
+                navigate(`/userCommunity_detail/${post.COMMUNITY_NO}`, {
+                  state: { communitys },
+                })
+              }
+              key={post.COMMUNITY_NO}
+              className="border p-2 mb-2"
+            >
+              <List_Profile>
+                <Profile_Img>
+                  {post.COMMUNITY_IMG ? (
+                    <img src={`../assets/imgs//${post.COMMUNITY_IMG}`} />
+                  ) : (
+                    <p>이미지 없음</p>
+                  )}
+                </Profile_Img>
+              </List_Profile>
+              <p>{post.COMMUNITY_TITLE}</p>
+              <List_Profile>
+                <p>작성자</p>
+                <p>{post.USER_NICKNAME}</p>
+              </List_Profile>
+              <List_Profile>
+                <p>작성일자</p>
+                <p>
+                  {" "}
+                  {new Date(post.COMMUNITY_DATE).toLocaleString("ko-KR", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                  })}
+                </p>
+              </List_Profile>
+            </List_Column>
           );
         })}
       </ul>
-    </div>
+    </Wrapper_Post>
   ) : (
-    <h2>작성한 커뮤니티 글이 없습니다.</h2>
+    <Wrapper_Post>
+      <h2>나의 커뮤니티</h2>
+      <p>작성한 커뮤니티 글이 없습니다.</p>
+    </Wrapper_Post>
   );
 };
 

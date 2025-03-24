@@ -9,6 +9,11 @@ export const Profile_Img = styled.div`
   justify-content: center;
   border-radius: 100%;
   background-color: #d9d9d9;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+  }
 `;
 
 export const List_Column = styled.div`
@@ -27,7 +32,7 @@ export const List_Profile = styled.div`
 
 export const List_Content = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 20px;
   img {
     width: 100px;

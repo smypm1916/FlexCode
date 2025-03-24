@@ -10,7 +10,7 @@ import { Wrapper } from "../../style/Common_Style";
 
 const Index = () => {
   return (
-    <Wrapper className="cm" id="home">
+    <Wrapper className="wrap" id="home">
       <Header />
 
       <EventBanner />

@@ -7,6 +7,7 @@ import { jwtDecode } from "jwt-decode";
 import { fetchGetCommunity } from "../myPage/MyPageAPI";
 import { fetchGetOrder } from "../myPage/MyPageAPI";
 import { Container_Style, Wrapper } from "../../style/Common_Style";
+import { User_Status_Row, Order_Status } from "../../style/Mypage_Style";
 
 const MyPageMain = () => {
   const [userEmail, setUserEmail] = useState("");
@@ -27,8 +28,16 @@ const MyPageMain = () => {
   return (
     <Wrapper className="wrap" id="mypage">
       <Container_Style>
-        <UserProfile />
-        <UserOrders email={userEmail} />
+        <User_Status_Row className="grid2">
+          <UserProfile />
+        </User_Status_Row>
+      </Container_Style>
+      <Container_Style>
+        <Order_Status>
+          <UserOrders email={userEmail} />
+        </Order_Status>
+      </Container_Style>
+      <Container_Style>
         <UserCommunitys nickname={userNickname} />
         <DeleteUser />
       </Container_Style>

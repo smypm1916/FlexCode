@@ -46,8 +46,8 @@ export const Logo = styled.div`
   }
 `;
 
-// 로그인 모달열기 버튼
-export const Button_Login = styled.button`
+// 로그인 모달열기 버튼/로그아웃버튼
+export const Button_Log = styled.button`
   display: inline-block;
   color: black;
   cursor: pointer;
@@ -74,8 +74,8 @@ export const Button_Login = styled.button`
   }
 `;
 
-// 로그아웃 버튼 스타일
-export const Button_Logout = styled.button`
+// 장바구니 열기 버튼
+export const Button_Bucket = styled.button`
   display: inline-block;
   color: black;
   cursor: pointer;

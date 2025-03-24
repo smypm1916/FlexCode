@@ -24,8 +24,8 @@ const CmAdd = () => {
   const [nickname, setNickname] = useState("");
   const [token, setToken] = useState("");
   const [profileImg, setProfileImg] = useState("");
-  const navigate = useNavigate();
   const imgPath = import.meta.env.VITE_IMG_PATH;
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -75,7 +75,7 @@ const CmAdd = () => {
   };
 
   return (
-    <Wrapper className="cm" id="add">
+    <Wrapper className="wrap" id="add">
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}
       <form onSubmit={handleSubmit}>
         <Container_Style>

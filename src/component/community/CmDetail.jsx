@@ -118,7 +118,7 @@ const CmDetail = () => {
   }
 
   return (
-    <Wrapper className="cm" id="post">
+    <Wrapper className="wrap" id="post">
       <form onSubmit={handleSubmit}>
         <Container_Style>
           <List_Profile>
@@ -127,12 +127,7 @@ const CmDetail = () => {
             </Profile_Img>
             <label>{post.USER_NICKNAME}</label>
           </List_Profile>
-          <Input_Wrapper>
-            <div>
-              <label>작성일</label>
-            </div>
-            <div>{post.COMMUNITY_DATE}</div>
-          </Input_Wrapper>
+
           <Input_Wrapper>
             <label>제목</label>
             {editMode ? (
@@ -176,6 +171,12 @@ const CmDetail = () => {
                 <img src={`${imgPath}/${post.COMMUNITY_IMG}`} />
               ) : null}
             </List_Content>
+          </Input_Wrapper>
+          <Input_Wrapper>
+            <div>
+              <label>작성일</label>
+            </div>
+            <div>{post.COMMUNITY_DATE}</div>
           </Input_Wrapper>
           <Button_Wrapper_100>
             {nickname === post.USER_NICKNAME ? (

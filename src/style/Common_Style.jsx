@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
   margin-bottom: 80px;
 
   //각 page별 Wrapper의 공용 style
-  &.cm::after {
+  &.wrap::after {
     width: 100%;
     display: inline-block;
     color: rgba(187, 147, 147, 0.15);
@@ -57,7 +57,7 @@ export const Wrapper = styled.div`
   }
 
   &#mypage::after {
-    content: "";
+    content: "PROFILE";
   }
 
   &.mypage {
@@ -69,6 +69,14 @@ export const Wrapper = styled.div`
   &#account {
     margin: 0;
     padding: 0;
+  }
+
+  &.mypageCon {
+    width: fit-content;
+    min-width: 0;
+    height: fit-content;
+    min-height: fit-content;
+    margin: 0;
   }
 `;
 
@@ -86,6 +94,8 @@ export const Container_Style = styled.div`
   gap: 20px;
   align-itmes: center;
   margin: 0 auto;
+  flex-wrap: wrap;
+  overflow: hidden;
 `;
 
 // -------------------------button--------------------------------
@@ -112,7 +122,7 @@ export const Button_Style = styled.button`
 // 버튼을 묶는 div
 export const Button_Wrapper_100 = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
 `;
 

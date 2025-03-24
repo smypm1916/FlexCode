@@ -9,7 +9,7 @@ import CmDetail from "./component/community/CmDetail";
 import CmMain from "./component/community/CmMain";
 import Order from "./component/order/Order";
 import OrderComplete from "./component/order/OrderComplete";
-import Index from "./component/product";
+import Index from "./component/product/Index";
 // import ProductDetail from "./component/product/ProductDetail";
 import MyPageMain from "./component/myPage/MyPageMain";
 import ModifyUserProfile from "./component/myPage/ModifyUserProfile";

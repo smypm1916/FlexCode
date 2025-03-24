@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchGetOrder } from "./MyPageAPI";
+import { Order_Wrapper } from "../../style/Mypage_Style";
 
 const UserOrders = ({ email }) => {
   console.log("넘겨받은 이메일:", email);
@@ -25,7 +26,7 @@ const UserOrders = ({ email }) => {
   }, [email]);
 
   return orders.length > 0 ? (
-    <div>
+    <Order_wrapper>
       <h2>나의 구매내역</h2>
       <h3
         onClick={() => {
@@ -81,9 +82,12 @@ const UserOrders = ({ email }) => {
           </ul>
         </div>
       ))}
-    </div>
+    </Order_wrapper>
   ) : (
-    <h2>구매내역이 없습니다.</h2>
+    <Order_Wrapper>
+      <h2>나의 구매내역</h2>
+      <p>구매내역이 없습니다.</p>
+    </Order_Wrapper>
   );
 };
 
