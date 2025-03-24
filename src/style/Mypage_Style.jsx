@@ -54,5 +54,6 @@ export const Wrapper_Post = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
+  gap: 20px;
   border: 1px solid black;
 `;

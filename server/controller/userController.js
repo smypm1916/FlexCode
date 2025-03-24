@@ -140,14 +140,12 @@ const findPw = async (req, res) => {
         .json({ success: false, message: "이름과 이메일을 입력하세요" });
     }
 
-    const result = await userService.findPw(name, email);
+    const exists = await userService.findPw(name, email);
 
-    if (result.success) {
-      console.log("비밀번호 찾기 성공:", result);
-      return res.status(200).json(result);
+    if (exists) {
+      return res.json({ exists: true, message: "회원정보 조회 성공" });
     } else {
-      console.log("비밀번호 찾기 실패:", result);
-      return res.status(200).json(result);
+      return res.json({ exists: false, message: "회원정보 조회 실패" });
     }
   } catch (error) {
     console.error("비밀번호 찾기 컨트롤러 오류:", error);

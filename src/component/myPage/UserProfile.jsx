@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "../common/Button";
 import { Wrapper } from "../../style/Common_Style";
-// mypage용 통합 스타일
-import {} from "../../style/Mypage_Style";
+import { Profile_Img } from "../../style/List_Style";
 import { User_Status_Column, User_Status_Row } from "../../style/Mypage_Style";
-const UserProfile = () => {
-  const [profileImg, setProfileImg] = useState(null);
-  const [nickname, setNickname] = useState(null);
-  const [email, setEmail] = useState(null);
+
+const UserProfile = ({ email, nickname, profile }) => {
+  const [userProfileImg, setUserProfileImg] = useState(null);
+  const [userNickname, setUserNickname] = useState(null);
+  const [userEmail, setUserEmail] = useState(null);
   const [userData, setUserData] = useState(null);
 
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const UserProfile = () => {
 
   const handleGetUser = async (e) => {
     e.preventDefault();
-    const user_email = email;
+    const user_email = userEmail;
 
     try {
       // 회원 정보 조회 API 요청
@@ -44,7 +45,7 @@ const UserProfile = () => {
       if (response.data.success) {
         alert("회원정보 조회 성공!");
 
-        const userInfo = response.data.result[0];
+        const userInfo = response.data.result.rows[0];
 
         // 이메일 분리
         const [email_id, email_address] = userInfo.USER_EMAIL.split("@");
@@ -79,20 +80,22 @@ const UserProfile = () => {
   };
 
   return (
-    <Wrapper className="mypageCon">
-      <User_Status_Row>
-        <img src={profileImg} alt="profile"></img>
+    <Wrapper className="mypageCon" id="account">
+      <User_Status_Row className="grid2">
+        <Profile_Img>
+          <img src={userProfileImg} alt="profile"></img>
+        </Profile_Img>
         <User_Status_Column>
-          <User_Status_Row className="grid2">
-            <p>{nickname}님</p>
+          <User_Status_Row>
+            {userNickname}님
             <Button
               className={"updateUser"}
               btnTxt={"회원정보 수정"}
               onClick={handleGetUser}
             />
           </User_Status_Row>
-          <User_Status_Row className="grid2">
-            <p>{email}</p>
+          <User_Status_Row>
+            <div>{userEmail}</div>
           </User_Status_Row>
         </User_Status_Column>
       </User_Status_Row>

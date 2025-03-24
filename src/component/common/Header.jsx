@@ -121,7 +121,6 @@ const App = () => {
       {/* 로그인 여부에 따라 UI 변경 */}
       {isLoggedIn ? (
         <Menu_Wrapper>
-          <Menu onClick={() => navigate(`/order/${tempOrderId}`)}>CART</Menu>
           <ProfileWrapper onClick={() => navigate("/mypage")}>
             {/* Profile_Img로/profile 이미지 표시요청 */}
             <Profile_Img>

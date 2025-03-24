@@ -8,7 +8,7 @@ import {
   Profile_Img,
 } from "../../style/List_Style";
 import { fetchGetCommunity } from "../myPage/MyPageAPI";
-import { Wrapper_Post } from "../../style/Mypage_Style";
+import { User_Status_Row, Wrapper_Post } from "../../style/Mypage_Style";
 
 const UserCommunitys = ({ nickname, profile }) => {
   console.log("넘겨받은 닉네임:", nickname);
@@ -38,37 +38,34 @@ const UserCommunitys = ({ nickname, profile }) => {
   }
   return communitys.length > 0 ? (
     <Wrapper_Post>
-      <h2>나의 커뮤니티</h2>
-      <p
-        onClick={() => {
-          navigate("/userCommunity-list", {
-            state: { nickname, profile },
-          });
-        }}
-      >
-        더보기
-      </p>
-      <ul>
-        {communitys.slice(0, 3).map((post) => {
-          return (
+      <User_Status_Row>
+        <h2>나의 커뮤니티</h2>
+
+        <p
+          onClick={() => {
+            navigate("/userCommunity-list", {
+              state: { nickname, profile },
+            });
+          }}
+        >
+          더보기
+        </p>
+      </User_Status_Row>
+      {communitys.slice(0, 3).map((post) => {
+        return (
+          <div>
             <List_Column
               onClick={() =>
-                navigate(`/userCommunity_detail/${post.COMMUNITY_NO}`, {
+                navigate(`${imgPath}/${post.COMMUNITY_NO}`, {
                   state: { communitys },
                 })
               }
               key={post.COMMUNITY_NO}
               className="border p-2 mb-2"
             >
-              <List_Profile>
-                <Profile_Img>
-                  {post.COMMUNITY_IMG ? (
-                    <img src={`../assets/imgs//${post.COMMUNITY_IMG}`} />
-                  ) : (
-                    <p>이미지 없음</p>
-                  )}
-                </Profile_Img>
-              </List_Profile>
+              <Profile_Img>
+                <img src={`${imgPath}/${userProfileImg}`} />
+              </Profile_Img>
               <p>{post.COMMUNITY_TITLE}</p>
               <List_Profile>
                 <p>작성자</p>
@@ -86,15 +83,19 @@ const UserCommunitys = ({ nickname, profile }) => {
                 </p>
               </List_Profile>
             </List_Column>
-          );
-        })}
-      </ul>
+            <List_Content>
+              {post.COMMUNITY_IMG ? (
+                <img src={`${imgPath}/${post.COMMUNITY_IMG}`} />
+              ) : (
+                <p></p>
+              )}
+            </List_Content>
+          </div>
+        );
+      })}
     </Wrapper_Post>
   ) : (
-    <Wrapper_Post>
-      <h2>나의 커뮤니티</h2>
-      <p>작성한 커뮤니티 글이 없습니다.</p>
-    </Wrapper_Post>
+    <h2>작성한 커뮤니티 글이 없습니다.</h2>
   );
 };
 
