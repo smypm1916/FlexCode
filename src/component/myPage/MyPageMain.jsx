@@ -30,17 +30,25 @@ const MyPageMain = () => {
   return (
     <Wrapper className="wrap" id="mypage">
       <Container_Style>
-        <User_Status_Row className="grid2">
-          <UserProfile />
+        <User_Status_Row>
+          <UserProfile
+            email={userEmail}
+            nickname={userNickname}
+            profile={userProfile}
+          />
         </User_Status_Row>
       </Container_Style>
       <Container_Style>
         <Order_Status>
-          <UserOrders email={userEmail} />
+          <UserOrders
+            email={userEmail}
+            nickname={userNickname}
+            profile={userProfile}
+          />
         </Order_Status>
       </Container_Style>
       <Container_Style>
-        <UserCommunitys nickname={userNickname} />
+        <UserCommunitys nickname={userNickname} profile={userProfile} />
         <DeleteUser />
       </Container_Style>
     </Wrapper>

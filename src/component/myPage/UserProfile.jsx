@@ -16,9 +16,12 @@ const UserProfile = ({ email, nickname, profile }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("userProfile useEffect!!");
     setUserEmail(email);
     setUserNickname(nickname);
-
+    console.log(email);
+    console.log(nickname);
+    console.log(profile);
     const imgPath = import.meta.env.VITE_IMG_PATH;
 
     const profilePath = profile
@@ -81,12 +84,12 @@ const UserProfile = ({ email, nickname, profile }) => {
 
   return (
     <Wrapper className="mypageCon" id="account">
-      <User_Status_Row className="grid2">
+      <User_Status_Row>
         <Profile_Img>
           <img src={userProfileImg} alt="profile"></img>
         </Profile_Img>
         <User_Status_Column>
-          <User_Status_Row>
+          <User_Status_Row className="grid2">
             {userNickname}님
             <Button
               className={"updateUser"}
@@ -94,7 +97,7 @@ const UserProfile = ({ email, nickname, profile }) => {
               onClick={handleGetUser}
             />
           </User_Status_Row>
-          <User_Status_Row>
+          <User_Status_Row className="grid2">
             <div>{userEmail}</div>
           </User_Status_Row>
         </User_Status_Column>

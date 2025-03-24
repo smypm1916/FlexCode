@@ -95,7 +95,10 @@ const UserCommunitys = ({ nickname, profile }) => {
       })}
     </Wrapper_Post>
   ) : (
-    <h2>작성한 커뮤니티 글이 없습니다.</h2>
+    <Wrapper_Post>
+      <h2>나의 커뮤니티</h2>
+      <p>작성한 커뮤니티 글이 없습니다.</p>
+    </Wrapper_Post>
   );
 };
 

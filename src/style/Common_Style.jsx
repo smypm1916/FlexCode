@@ -71,6 +71,10 @@ export const Wrapper = styled.div`
     padding: 0;
   }
 
+  &#success::after {
+    content: "WELCOME!";
+  }
+
   &.mypageCon {
     width: fit-content;
     min-width: 0;
@@ -96,6 +100,15 @@ export const Container_Style = styled.div`
   margin: 0 auto;
   flex-wrap: wrap;
   overflow: hidden;
+
+  &.RegComplete {
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 // -------------------------button--------------------------------
@@ -121,9 +134,14 @@ export const Button_Style = styled.button`
 
 // 버튼을 묶는 div
 export const Button_Wrapper_100 = styled.div`
+  width: -webkit-fill-available;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
+
+  &.grid2 {
+    grid-template-columns: 1fr 1fr;
+  }
 `;
 
 // -------------------------select--------------------------------
@@ -281,4 +299,11 @@ export const Textarea_Style = styled.textarea`
 export const BaseAddress = styled.div`
   display: flex;
   align-items: center;
+`;
+
+// -------------------- 상품 추가 버튼 및 수량조정버튼 --------------
+export const Wrapper_BucketInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
