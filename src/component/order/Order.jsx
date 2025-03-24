@@ -30,39 +30,46 @@ const Order = () => {
     tel_mid: '',
     tel_last: '',
     email_id: '',
-    email_domain: 'gmail.com',
+    email_domain: 'naver.com',
   })
   const [receiveInfo, setReceiveInfo] = useState({ ...deliveryInfo });
   const [isSame, setIsSame] = useState(false);
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const imgPath = import.meta.env.VITE_IMG_PATH;
   const [error, setError] = useState(null);
-
-
   const goToHome = () => navigate('/');
   const { cartItems, updateCartQuantity, loading, fetchCart, removeFromCart } = useCart();
-  const [checkedProducts, setCheckedProducts] = useState(directOptions || []);
+  const [checkedProducts, setCheckedProducts] = useState([]);
 
 
   const API_BASE_URL = "http://localhost:8080/api";
 
   // 결제 기능
   const goToPayment = async () => {
+    if (!deliveryInfo.email_id || !deliveryInfo.email_domain) {
+      alert("이메일 정보를 정확히 입력해주세요.");
+      return;
+    }
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post(`${API_BASE_URL}/order/complete`, {
+      const email = `${deliveryInfo.email_id}@${deliveryInfo.email_domain}`;
+      const response = await axios.post(`${API_BASE_URL}/order/complete/${tempOrderId}`, {
         tempOrderId,
         from,
         checkedProducts,
         product,
         totalPrice,
+        email,
+        deliveryInfo, // 추가
+        receiveInfo,
       }, {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true
       });
 
       if (response.data.success) {
-        navigate(`/order-complete/${tempOrderId}`);
+        const orderNo = response.data.orderNo;
+        navigate(`/order-complete/${orderNo}`);
       } else {
         alert("결제 처리 실패: " + response.data.message);
       }
@@ -118,7 +125,7 @@ const Order = () => {
       // 일반 장바구니 주문
       fetchCart();
     }
-  }, []);
+  }, [directOptions]);
 
 
   useEffect(() => {
@@ -143,7 +150,7 @@ const Order = () => {
 
   return (
     <div>
-      <h1>주문 번호 : {tempOrderId}</h1>
+      {/* <h1>주문 번호 : {tempOrderId}</h1> */}
       {loading && <p>...LOADING...</p>}
       {error && <p>{error}</p>}
 
@@ -184,7 +191,7 @@ const Order = () => {
             </div>
           );
         })
-      ) : (!loading && <p>장바구니가 비어있습니다.</p>))}
+      ) : (!loading && <h2>장바구니가 비어있습니다.</h2>))}
 
 
       {/* 합계 금액 */}

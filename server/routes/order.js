@@ -1,11 +1,34 @@
 const express = require("express");
 const router = express.Router();
-// const orderController = require("../controller/order");
+const oracledb = require("oracledb");
+const { executeQuery, dbConfig } = require('../config/oracledb');
 
+
+// 주문 취소
+router.put('/cancel/:tempOrderId', async (req, res) => {
+   try {
+      const orderCancelSql = `
+      UPDATE ORDER_INFO SET ORDER_STATE=:order_state WHERE ORDER_NO=:order_no
+      `;
+      const cancelResult = await connection.executeQuery(orderCancelSql, {
+         order_state: 0,
+         order_no: req.params.order_no,
+      });
+      await connection.close();
+      res.json({ success: true, message: "주문이 취소되었습니다." });
+
+   } catch (error) {
+      console.error("주문 취소 오류:", error);
+      res.status(500).json({ success: false, message: "주문 취소 처리 중 오류 발생" });
+   }
+});
+
+// 주문 정보 등록(결제)
 router.post('/complete/:tempOrderId', async (req, res) => {
    try {
       const { tempOrderId, from, checkedProducts, product, totalPrice } = req.body;
-      const userEmail = req.session?.user?.email || "guest@example.com";
+      console.log('userEmail : ', req.session?.user?.email);
+      let userEmail = req.body.email || req.session?.user?.email;
       const now = new Date();
 
       // 주문번호 시퀀스 사용 (예: ORDER_NO_SEQ.nextval)
@@ -15,7 +38,7 @@ router.post('/complete/:tempOrderId', async (req, res) => {
       RETURNING ORDER_NO INTO :orderNo
     `;
 
-      const orderResult = await connection.execute(orderInsertSql, {
+      const orderResult = await executeQuery(orderInsertSql, {
          email: userEmail,
          totalPrice,
          orderDate: now,
@@ -31,52 +54,44 @@ router.post('/complete/:tempOrderId', async (req, res) => {
 
       const items = (from === 'direct' ? checkedProducts : await getCartItems(tempOrderId));
       for (const item of items) {
-         await connection.execute(itemInsertSql, {
+         await executeQuery(itemInsertSql, {
             orderNo,
-            productNo: item.product_no || product.PRODUCT_NO,
-            productPrice: item.product_price || product.PRODUCT_PRICE,
+            productNo: from === 'direct' ? product.PRODUCT_NO : item.product_no,
+            productPrice: from === 'direct' ? product.PRODUCT_PRICE : item.product_price,
             optionNo: item.option_no || item.OPTION_NO,
             optionPrice: item.option_price || item.OPTION_PRICE,
             quantity: item.quantity
          });
       }
-
-      await connection.commit();
       res.json({ success: true, message: "결제 및 주문 저장 완료", orderNo });
 
    } catch (err) {
       console.error("결제 처리 오류:", err);
-      await connection.rollback();
       res.status(500).json({ success: false, message: "결제 처리 중 오류 발생" });
-   } finally {
-      await connection.close();
    }
 });
 
-router.get('/order/detail/:tempOrderId', async (req, res) => {
-   const { tempOrderId } = req.params;
+// 주문정보 조회
+router.get('/receipt/:orderNo', async (req, res) => {
+   const orderNo = req.params.orderNo;
    try {
-      const connection = await oracledb.getConnection();
-
-      const [infoResult] = await connection.execute(
+      const infoResult = await executeQuery(
          `SELECT * FROM ORDER_INFO WHERE ORDER_NO = :orderNo`,
-         [tempOrderId],
-         { outFormat: oracledb.OUT_FORMAT_OBJECT }
+         [orderNo],
+         // { outFormat: oracledb.OUT_FORMAT_OBJECT }
       );
 
-      const itemsResult = await connection.execute(
+      const itemsResult = await executeQuery(
          `SELECT * FROM ORDER_ITEMS WHERE ORDER_NO = :orderNo`,
-         [tempOrderId],
-         { outFormat: oracledb.OUT_FORMAT_OBJECT }
+         [orderNo],
+         // { outFormat: oracledb.OUT_FORMAT_OBJECT }
       );
 
       res.json({
          success: true,
-         orderInfo: infoResult.rows[0],
-         orderItems: itemsResult.rows,
+         orderInfo: infoResult.length > 0 ? infoResult[0] : null,
+         orderItems: itemsResult || [],
       });
-
-      await connection.close();
    } catch (err) {
       console.error(err);
       res.status(500).json({ success: false, message: '주문 상세 조회 실패', error: err.message });

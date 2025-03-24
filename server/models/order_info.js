@@ -6,7 +6,7 @@ const oracledb = require("../config/oracledb");
  * user_email(fk) : varchar2(100) / user_account
  * total_price : number(10)
  * order_date : timestamp
- * order_state : number(5)
+ * order_state : number(5) 1=주문완료,0=주문취소
  */
 
 
