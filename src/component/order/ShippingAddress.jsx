@@ -119,7 +119,7 @@ const ShippingAddress = ({ title, data, setData, isReadOnly }) => {
                   { value: "outlook.com", label: "outlook.com" },
                   { value: "icloud.com", label: "icloud.com" },
                ]}
-               value={data.email_domain}
+               value={data.email_domain || "naver.com"}
                onChange={handleSelectEmailChange}
                disabled={isReadOnly}
             />

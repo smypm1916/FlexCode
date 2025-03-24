@@ -35,6 +35,10 @@ async function executeQuery(
     console.log("params:", params);
 
     const result = await connection.execute(query, params, options);
+
+    if (result.outBinds) {
+      return { outBinds: result.outBinds, rows: result.rows || [], rowsAffected: result.rowsAffected };
+    }
     return result.rows || result.rowsAffected;
   } catch (error) {
     console.error("❌ 쿼리 실행 실패:", error);
