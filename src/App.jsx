@@ -7,29 +7,31 @@ import Header from "./component/common/Header";
 import CmAdd from "./component/community/CmAdd";
 import CmDetail from "./component/community/CmDetail";
 import CmMain from "./component/community/CmMain";
+import DeleteUserCheck from "./component/myPage/DeleteUserCheck";
 import Order from "./component/order/Order";
 import OrderComplete from "./component/order/OrderComplete";
 import Index from "./component/product/Index";
 // import ProductDetail from "./component/product/ProductDetail";
-import MyPageMain from "./component/myPage/MyPageMain";
+import ScrollToTop from "./component/common/ScrollToTop";
 import ModifyUserProfile from "./component/myPage/ModifyUserProfile";
-import DeleteUserCheck from "./component/myPage/DeleteUserCheck";
-import ProductInfo from "./component/product/ProductInfo";
-import UserCommunityList from "./component/myPage/UserCommunityList";
-import UserCommunityDetail from "./component/myPage/UserCommunityDetail";
+import MyPageMain from "./component/myPage/MyPageMain";
 import UserCommunityAdd from "./component/myPage/UserCommunityAdd";
+import UserCommunityDetail from "./component/myPage/UserCommunityDetail";
+import UserCommunityList from "./component/myPage/UserCommunityList";
 import UserOrderList from "./component/myPage/UserOrderList";
+import ProductInfo from "./component/product/ProductInfo";
 
 function App() {
   return (
     <Router>
       <Header />
+      <ScrollToTop />
       {/* 루팅 */}
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/detail/:product_no" element={<ProductInfo />} />
-        <Route path="/order" element={<Order />} />
-        <Route path="/order-complete" element={<OrderComplete />} />
+        <Route path="/order/:tempOrderId" element={<Order />} />
+        <Route path="/order-complete/:tempOrderId" element={<OrderComplete />} />
         <Route path="/community" element={<CmMain />} />
         <Route path="/CmAdd" element={<CmAdd />} />
         <Route path="/CmDetail/:id" element={<CmDetail />} />

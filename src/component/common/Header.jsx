@@ -2,25 +2,26 @@ import { jwtDecode } from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
-import LoginModal from "../account/LoginModal";
 import {
   Button_Register,
   Logo,
   Menu,
   Menu_Wrapper,
-  Wrapper_Header,
-  ProfileWrapper,
-  ProfileImg,
   Button_Log,
   Button_Bucket,
+  ProfileWrapper,
+  Wrapper_Header,
 } from "../../style/Header_Style";
 import { Profile_Img } from "../../style/List_Style";
+import LoginModal from "../account/LoginModal";
+import { useCart } from "./useCart";
 // import Cart from "./Cart";
 
 const App = () => {
   const [showModal, setShowModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileImg, setProfileImg] = useState(null);
+  const { tempOrderId } = useCart();
   // const [isLoading, setIsLoading] = useState(true); // 로딩상태
   const navigate = useNavigate();
   // 로그인 상태 확인
@@ -33,9 +34,11 @@ const App = () => {
 
       setIsLoggedIn(true);
 
+      const imgPath = import.meta.env.VITE_IMG_PATH;
+
       const profilePath = decoded.profile
-        ? `http://localhost:8080/uploads/${decoded.profile}`
-        : "http://localhost:8080/uploads/default-profile.png";
+        ? `${imgPath}/${decoded.profile}`
+        : `${imgPath}/default-profile.png`;
 
       console.log("프로필 이미지 경로:", profilePath);
 
@@ -118,6 +121,7 @@ const App = () => {
       {/* 로그인 여부에 따라 UI 변경 */}
       {isLoggedIn ? (
         <Menu_Wrapper>
+          <Menu onClick={() => navigate(`/order/${tempOrderId}`)}>CART</Menu>
           <ProfileWrapper onClick={() => navigate("/mypage")}>
             {/* Profile_Img로/profile 이미지 표시요청 */}
             <Profile_Img>

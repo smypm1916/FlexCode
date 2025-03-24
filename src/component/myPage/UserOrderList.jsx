@@ -12,6 +12,7 @@ const UserOrderList = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 1; // 한 페이지당 5개씩 표시
+  const imgPath = import.meta.env.VITE_IMG_PATH;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,10 +83,10 @@ const UserOrderList = () => {
                         }}
                       >
                         <img
-                          src={`/img/${item.product_img}`}
+                          src={`${imgPath}/${item.product_img}`}
                           alt={item.product_name}
-                          width="50"
-                          height="50"
+                          width="150"
+                          height="150"
                         />
                         <div style={{ marginLeft: "10px" }}>
                           {order.ITEMS.length > 1 ? (

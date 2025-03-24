@@ -6,7 +6,7 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const morgan = require("morgan");
-// const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 
 const productRouter = require("./routes/products");
 const userRouter = require("./routes/user");
@@ -24,10 +24,17 @@ const { log } = require("console");
 const app = express();
 const PORT = process.env.PORT || 8080;
 const server = http.createServer(app);
+const corsOptions = {
+  origin: "http://localhost:5173",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
@@ -76,6 +83,7 @@ io.on("connection", (socket) => {
 const redisClient = createClient({
   url: "redis://127.0.0.1:6379",
 }); // 기본 Redis 포트로 변경
+redisClient.on('error', (err) => console.error('Redis Client Error:', err));
 
 const initRedisClient = async () => {
   try {
@@ -95,12 +103,7 @@ const initRedisClient = async () => {
 };
 
 // middleware
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
+app.use(cors(corsOptions));
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -123,9 +126,9 @@ io.use(async (socket, next) => {
 });
 
 // 정적 파일 제공(프로필 이미지 경로 설정)
-const imagePath = "C:/Users/codms/Documents/FlexCode/src/assets/imgs";
-console.log("프로필 이미지 절대경로:", imagePath);
-app.use("/uploads", express.static(imagePath));
+// const imagePath = "C:/Users/codms/Documents/FlexCode/src/assets/imgs";
+// console.log("프로필 이미지 절대경로:", imagePath);
+// app.use("/uploads", express.static(imagePath));
 
 app.use(
   session({
@@ -133,17 +136,18 @@ app.use(
     secret: process.env.JWT_SECRET || "your_secret_key",
     resave: false,
     saveUninitialized: true,
+    rolling: true, // 로그인, 새로고침 시 세션유지
     cookie: { maxAge: 30 * 60 * 1000 }, // 30분 유지
   })
 );
 
 // 라우터 등록
+app.use("/api/orders", orderRouter);
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/post", cmRouter);
 app.use("/api/options", optionRouter);
 app.use("/api/cart", cartRouter(redisClient));
-app.use("/api/order", orderRouter);
 
 // 서버 실행 함수
 const startServer = async () => {

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "../common/Button";
@@ -16,19 +15,17 @@ const UserProfile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    if (token) {
-      const decoded = jwtDecode(token);
+    setUserEmail(email);
+    setUserNickname(nickname);
 
-      const profilePath = decoded.profile
-        ? `http://localhost:8080/uploads/${decoded.profile}`
-        : "http://localhost:8080/uploads/default-profile.png";
+    const imgPath = import.meta.env.VITE_IMG_PATH;
 
-      setProfileImg(profilePath);
-      setNickname(decoded.nickname);
-      setEmail(decoded.email);
-    }
-  }, [sessionStorage.getItem("token")]);
+    const profilePath = profile
+      ? `${imgPath}/${profile}`
+      : `${imgPath}/default-profile.png`;
+
+    setUserProfileImg(profilePath);
+  });
 
   const handleGetUser = async (e) => {
     e.preventDefault();
