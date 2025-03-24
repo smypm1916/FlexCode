@@ -68,7 +68,7 @@ const FindId = ({ onBack, onClose }) => {
       console.log("이메일 찾기 응답:", response.data);
       setFindEmail(
         response.data.success
-          ? response.data.user_email[0].USER_EMAIL
+          ? response.data.user_email
           : "이메일을 찾을 수 없습니다."
       );
     } catch (error) {
