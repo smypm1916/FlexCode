@@ -193,7 +193,7 @@ const Order = () => {
       {/* 옵션 변경 모달 */}
       <ReactModal isOpen={isCartModalOpen} onRequestClose={closeEditModal}>
         {selectedProduct && (
-          <CheckedProduct
+          <CheckedProduct style={{ flexDirection: 'row-reverse' }}
             mode='order'
             cartItems={[selectedProduct]}
             updateCartQuantity={(product_no, quantity) => {
