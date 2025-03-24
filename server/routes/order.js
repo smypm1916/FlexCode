@@ -55,7 +55,7 @@ router.post('/complete/:tempOrderId', async (req, res) => {
 });
 
 // 주문정보 조회
-router.get('/order/detail/:tempOrderId', async (req, res) => {
+router.get('/detail/:tempOrderId', async (req, res) => {
    const { tempOrderId } = req.params;
    try {
       const connection = await oracledb.getConnection();
