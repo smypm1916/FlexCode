@@ -83,7 +83,7 @@ io.on("connection", (socket) => {
 const redisClient = createClient({
   url: "redis://127.0.0.1:6379",
 }); // 기본 Redis 포트로 변경
-redisClient.on('error', (err) => console.error('Redis Client Error:', err));
+redisClient.on("error", (err) => console.error("Redis Client Error:", err));
 
 const initRedisClient = async () => {
   try {
@@ -156,7 +156,7 @@ const startServer = async () => {
       console.log(`서버가 포트 ${PORT}에서 실행 중...`);
       console.log("WebSocket 서버 실행 완료!");
     });
-    // initRedisClient();
+    initRedisClient();
   } catch (error) {
     console.error("서버 시작 중 오류 발생:", error);
   }
