@@ -9,13 +9,18 @@ import ShippingAddress from "./ShippingAddress";
 
 /*  
     1. 모든/일부 상품 선택
-    2. 상품 옵션/수량 수정
-    3. 구매버튼 클릭 시 장바구니 정보 db로 전송
+    2. 상품 옵션/수량 수정 ok
+    3. 구매버튼 클릭 시 장바구니 정보 db로 전송 ok
 */
 
 
 const Order = () => {
   const { tempOrderId } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from;
+  const product = location.state?.product;
+  const directOptions = location.state?.checkedProducts;
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [deliveryInfo, setDeliveryInfo] = useState({
     name: '',
@@ -32,12 +37,8 @@ const Order = () => {
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const imgPath = import.meta.env.VITE_IMG_PATH;
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from;
-  const product = location.state?.product;
-  const directOptions = location.state?.checkedProducts;
-  const goToPayment = () => navigate(`/order-complete/${tempOrderId}`);
+
+
   const goToHome = () => navigate('/');
   const { cartItems, updateCartQuantity, loading, fetchCart, removeFromCart } = useCart();
   const [checkedProducts, setCheckedProducts] = useState(directOptions || []);
@@ -45,7 +46,31 @@ const Order = () => {
 
   const API_BASE_URL = "http://localhost:8080/api";
 
+  // 결제 기능
+  const goToPayment = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(`${API_BASE_URL}/order/complete`, {
+        tempOrderId,
+        from,
+        checkedProducts,
+        product,
+        totalPrice,
+      }, {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true
+      });
 
+      if (response.data.success) {
+        navigate(`/order-complete/${tempOrderId}`);
+      } else {
+        alert("결제 처리 실패: " + response.data.message);
+      }
+    } catch (error) {
+      console.error("결제 오류:", error);
+      alert("결제 중 오류가 발생했습니다.");
+    }
+  };
 
   // 옵션 삭제
   const onRemove = (OPTION_NO) => {

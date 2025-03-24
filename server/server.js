@@ -142,12 +142,12 @@ app.use(
 );
 
 // 라우터 등록
+app.use("/api/orders", orderRouter);
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/post", cmRouter);
 app.use("/api/options", optionRouter);
 app.use("/api/cart", cartRouter(redisClient));
-app.use("/api/order", orderRouter);
 
 // 서버 실행 함수
 const startServer = async () => {
