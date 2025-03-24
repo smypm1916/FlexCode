@@ -2,9 +2,33 @@ const express = require("express");
 const router = express.Router();
 // const orderController = require("../controller/order");
 
+
+// 주문 취소
+router.put('/cancel/:tempOrderId', async (req, res) => {
+   try {
+      const connection = await oracledb.getConnection();
+      const orderCancelSql = `
+      UPDATE ORDER_INFO SET ORDER_STATE=:order_state WHERE ORDER_NO=:order_no
+      `;
+      const cancelResult = await connection.execute(orderCancelSql, {
+         order_state: 0,
+         orde_no: req.params.order_no,
+      });
+      await connection.close();
+      res.json({ success: true, message: "주문이 취소되었습니다." });
+
+   } catch (error) {
+      console.error("주문 취소 오류:", error);
+      if (connection) await connection.rollback();
+      res.status(500).json({ success: false, message: "주문 취소 처리 중 오류 발생" });
+   }
+});
+
 // 주문 정보 등록(결제)
 router.post('/complete/:tempOrderId', async (req, res) => {
    try {
+      const connection = await oracledb.getConnection();
+
       const { tempOrderId, from, checkedProducts, product, totalPrice } = req.body;
       const userEmail = req.session?.user?.email || "guest@example.com";
       const now = new Date();
@@ -55,7 +79,7 @@ router.post('/complete/:tempOrderId', async (req, res) => {
 });
 
 // 주문정보 조회
-router.get('/detail/:tempOrderId', async (req, res) => {
+router.get('/receipt/:tempOrderId', async (req, res) => {
    const { tempOrderId } = req.params;
    try {
       const connection = await oracledb.getConnection();

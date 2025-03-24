@@ -41,7 +41,7 @@ const Order = () => {
 
   const goToHome = () => navigate('/');
   const { cartItems, updateCartQuantity, loading, fetchCart, removeFromCart } = useCart();
-  const [checkedProducts, setCheckedProducts] = useState(directOptions || []);
+  const [checkedProducts, setCheckedProducts] = useState([]);
 
 
   const API_BASE_URL = "http://localhost:8080/api";
@@ -118,7 +118,7 @@ const Order = () => {
       // 일반 장바구니 주문
       fetchCart();
     }
-  }, []);
+  }, [directOptions]);
 
 
   useEffect(() => {
@@ -143,11 +143,7 @@ const Order = () => {
 
   return (
     <div>
-      {checkedProducts.length > 0 || cartItems.length > 0 ? (
-        <h1>주문 번호 : {tempOrderId}</h1>
-      ) : (
-        <h1></h1>
-      )}
+      {/* <h1>주문 번호 : {tempOrderId}</h1> */}
       {loading && <p>...LOADING...</p>}
       {error && <p>{error}</p>}
 

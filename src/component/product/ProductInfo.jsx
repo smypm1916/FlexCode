@@ -197,7 +197,7 @@ const ProductInfo = () => {
 
    // 장바구니 모달 닫기
    const closeCartModal = () => {
-dProducts([]);
+      dProducts([]);
       setIsCartModalOpen(false);
    };
 
@@ -292,7 +292,7 @@ dProducts([]);
                                     defaultValue={1}
                                  />
                                  <Button
-                                    btnTxt="추가"
+                                    btnTxt="장바구니 추가"
                                     onClick={addOptionHandler}
                                  />
                               </div>
