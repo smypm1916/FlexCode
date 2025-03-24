@@ -98,8 +98,8 @@ const CmDetail = () => {
       // 수정된 값 즉시 반영 → 딜레이 방지
       setPost((prev) => ({
         ...prev,
-        COMMUNITY_TITLE: community_title,
-        COMMUNITY_CONTENT: community_content,
+        COMMUNITY_TITLE: community_title ?? prev.COMMUNITY_TITLE,
+        COMMUNITY_CONTENT: community_content ?? prev.COMMUNITY_CONTENT,
         COMMUNITY_IMG: community_img
           ? URL.createObjectURL(community_img)
           : prev.COMMUNITY_IMG,

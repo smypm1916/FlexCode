@@ -6,13 +6,13 @@ import LoginModal from "../account/LoginModal";
 import {
   Button_Login,
   Button_Register,
-  LogoutButton,
   Logo,
   Menu,
   Menu_Wrapper,
   Wrapper_Header,
   ProfileWrapper,
   ProfileImg,
+  Button_Logout,
 } from "../../style/Header_Style";
 // import Cart from "./Cart";
 
@@ -117,11 +117,12 @@ const App = () => {
       {/* 로그인 여부에 따라 UI 변경 */}
       {isLoggedIn ? (
         <Menu_Wrapper>
-          <Menu onClick={() => navigate("/cart")}>CART</Menu>
           <ProfileWrapper onClick={() => navigate("/mypage")}>
             <ProfileImg src={profileImg} alt="profile" />
           </ProfileWrapper>
-          <LogoutButton onClick={handleLogout}>LOGOUT</LogoutButton>
+          <Menu onClick={() => navigate("/cart")}>CART</Menu>
+          {/* Button_Logout으로 수정 */}
+          <Button_Logout onClick={handleLogout}>LOGOUT</Button_Logout>
         </Menu_Wrapper>
       ) : (
         <Menu_Wrapper>

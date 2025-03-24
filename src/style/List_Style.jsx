@@ -23,7 +23,6 @@ export const List_Profile = styled.div`
   flex-direction: row;
   gap: 20px;
   align-items: center;
-  justify-content: space-around;
 `;
 
 export const List_Content = styled.div`

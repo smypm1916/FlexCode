@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "../common/Button";
+import { Wrapper } from "../../style/Common_Style";
 
 const UserProfile = () => {
   const [profileImg, setProfileImg] = useState(null);
@@ -79,7 +80,7 @@ const UserProfile = () => {
   };
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+    <Wrapper className="mypage" id="account">
       <div>
         <img src={profileImg} alt="profile"></img>
       </div>
@@ -94,7 +95,7 @@ const UserProfile = () => {
           />
         </div>
       </div>
-    </div>
+    </Wrapper>
   );
 };
 

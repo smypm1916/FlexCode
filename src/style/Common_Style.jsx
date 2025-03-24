@@ -55,6 +55,21 @@ export const Wrapper = styled.div`
   &#post::after {
     content: "POST";
   }
+
+  &#mypage::after {
+    content: "";
+  }
+
+  &.mypage {
+    margin: 0;
+    padding: 0;
+    min-height: fit-content;
+  }
+
+  &#account {
+    margin: 0;
+    padding: 0;
+  }
 `;
 
 // 각 Container 별 용도의 Title
