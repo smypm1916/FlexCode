@@ -33,7 +33,6 @@ const ProductLists = () => {
       );
       console.log("API 응답:", res.data);
 
-      
       if (res.data && res.data.success) {
         const newProducts = res.data.data || [];
         setProducts((prev) => [...prev, ...newProducts]);
@@ -49,7 +48,7 @@ const ProductLists = () => {
     }
   };
 
-  // 초기 로드시 1페이지 데이터만 불러옴 
+  // 초기 로드시 1페이지 데이터만 불러옴
   useEffect(() => {
     fetchProducts(1);
   }, []);
@@ -91,8 +90,16 @@ const ProductLists = () => {
             </Text_wrapper>
           </ProductList_ItemBox>
         ))}
-        {loading && <System_message>Loading...</System_message>}
-        {error && <System_message>Error: {error.message}</System_message>}
+        {loading && (
+          <System_message>
+            <p>Loading...</p>
+          </System_message>
+        )}
+        {error && (
+          <System_message>
+            <p>Error: {error.message}</p>
+          </System_message>
+        )}
         <div ref={loader} />
       </ProductList_Wrapper>
     </Container_Style>

@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
   margin-bottom: 80px;
 
   //각 page별 Wrapper의 공용 style
-  &.cm::after {
+  &.wrap::after {
     width: 100%;
     display: inline-block;
     color: rgba(187, 147, 147, 0.15);
@@ -55,6 +55,33 @@ export const Wrapper = styled.div`
   &#post::after {
     content: "POST";
   }
+
+  &#mypage::after {
+    content: "PROFILE";
+  }
+
+  &.mypage {
+    margin: 0;
+    padding: 0;
+    min-height: fit-content;
+  }
+
+  &#account {
+    margin: 0;
+    padding: 0;
+  }
+
+  &#success::after {
+    content: "WELCOME!";
+  }
+
+  &.mypageCon {
+    width: fit-content;
+    min-width: 0;
+    height: fit-content;
+    min-height: fit-content;
+    margin: 0;
+  }
 `;
 
 // 각 Container 별 용도의 Title
@@ -71,6 +98,17 @@ export const Container_Style = styled.div`
   gap: 20px;
   align-itmes: center;
   margin: 0 auto;
+  flex-wrap: wrap;
+  overflow: hidden;
+
+  &.RegComplete {
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 // -------------------------button--------------------------------
@@ -96,9 +134,14 @@ export const Button_Style = styled.button`
 
 // 버튼을 묶는 div
 export const Button_Wrapper_100 = styled.div`
+  width: -webkit-fill-available;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
+
+  &.grid2 {
+    grid-template-columns: 1fr 1fr;
+  }
 `;
 
 // -------------------------select--------------------------------
@@ -256,4 +299,11 @@ export const Textarea_Style = styled.textarea`
 export const BaseAddress = styled.div`
   display: flex;
   align-items: center;
+`;
+
+// -------------------- 상품 추가 버튼 및 수량조정버튼 --------------
+export const Wrapper_BucketInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
