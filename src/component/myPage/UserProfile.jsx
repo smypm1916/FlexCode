@@ -41,7 +41,7 @@ const UserProfile = ({ email, nickname, profile }) => {
       if (response.data.success) {
         alert("회원정보 조회 성공!");
 
-        const userInfo = response.data.result[0];
+        const userInfo = response.data.result.rows[0];
 
         // 이메일 분리
         const [email_id, email_address] = userInfo.USER_EMAIL.split("@");

@@ -78,11 +78,6 @@ const LoginModal = ({ onClose }) => {
     setIsFindPw(false);
   };
 
-  const handleSignUp = () => {
-    navigate("/signup");
-    onClose();
-  };
-
   const handleClose = () => {
     try {
       onClose();
@@ -133,16 +128,20 @@ const LoginModal = ({ onClose }) => {
       // 로그인 성공 시 토큰 저장 & 메인 페이지 이동
       if (response.data.success) {
         sessionStorage.setItem("token", response.data.token); // JWT 토큰 저장
-        sessionStorage.setItem(
-          "profile",
-          response.data.profile || "default-profile.png"
-        );
+        // sessionStorage.setItem(
+        //   "profile",
+        //   response.data.profile || "default-profile.png"
+        // );
         alert("로그인 성공");
         navigate("/"); // 메인 페이지로 이동
         onClose();
       } else {
-        console.log(response.data.message);
+        console.log(response.data.exists);
         alert("이메일 또는 패스워드를 확인해주세요.");
+        setLoginForm({
+          login_email: "",
+          login_password: "",
+        });
       }
     } catch (error) {
       console.error("로그인 요청 실패:", error);

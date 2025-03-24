@@ -13,8 +13,8 @@ export const fetchGetCommunity = async (nickname) => {
       }
     );
     if (response.data.success) {
-      console.log("보내준 데이터[커뮤니티]:", response.data.result);
-      return response.data.result;
+      console.log("보내준 데이터[커뮤니티]:", response.data.result.rows);
+      return response.data.result.rows;
     } else {
       alert("조회된 글 없음.");
       return [];
@@ -35,7 +35,7 @@ export const fetchGetOrder = async (email) => {
       { headers: { "Content-Type": "application/json" } }
     );
     if (response.data.success) {
-      console.log("보내준 데이터[구매내역]:", response.data.result);
+      console.log("보내준 데이터[구매내역]:", response.data.result.rows);
       return response.data.result;
     } else {
       alert("조회된 구매내역 없음.");

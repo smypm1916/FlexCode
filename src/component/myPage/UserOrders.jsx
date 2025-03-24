@@ -16,7 +16,7 @@ const UserOrders = ({ email }) => {
       console.log("요청 이메일:", email);
       console.log("받아온 데이터:", data);
       // JSON 문자열을 파싱해서 배열로 바꿔줌
-      const parsed = data.map((order) => ({
+      const parsed = data.rows.map((order) => ({
         ...order,
         ITEMS: JSON.parse(order.ITEMS),
       }));

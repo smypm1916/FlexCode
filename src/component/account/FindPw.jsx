@@ -63,7 +63,7 @@ const FindPw = ({ onBack }) => {
           email: full_email,
         }
       );
-      if (response.data.success) {
+      if (response.data.exists) {
         setFindPwView("reset"); // 등록된 유저일 경우 비밀번호 재설정 화면으로 전환
         setErrorMessage(""); // 에러 메시지 초기화
       } else {
@@ -103,6 +103,7 @@ const FindPw = ({ onBack }) => {
     // 비밀번호 유효성 검사
     if (name == "userPassword") {
       setPasswordValid(validatePassword(value)); // 유효하면 true, 아님 false
+      setPasswordMatch(password.userPasswordCheck === value);
     }
     // 비밀번호 일치 여부 검사
     if (name == "userPasswordCheck") {
