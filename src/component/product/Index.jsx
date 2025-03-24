@@ -10,7 +10,7 @@ import Searchbox from "../common/Searchbox";
 
 const Index = () => {
   return (
-    <Wrapper className="cm" id="home">
+    <Wrapper className="wrap" id="home">
       <Header />
       <EventBanner />
       <Pick />

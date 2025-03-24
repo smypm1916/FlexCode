@@ -83,7 +83,7 @@ io.on("connection", (socket) => {
 const redisClient = createClient({
   url: "redis://127.0.0.1:6379",
 }); // 기본 Redis 포트로 변경
-redisClient.on('error', (err) => console.error('Redis Client Error:', err));
+redisClient.on("error", (err) => console.error("Redis Client Error:", err));
 
 const initRedisClient = async () => {
   try {

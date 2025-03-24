@@ -46,8 +46,36 @@ export const Logo = styled.div`
   }
 `;
 
-// 로그인 모달열기 버튼
-export const Button_Login = styled.button`
+// 로그인 모달열기 버튼/로그아웃버튼
+export const Button_Log = styled.button`
+  display: inline-block;
+  color: black;
+  cursor: pointer;
+  font-size: 12pt;
+  transition: all 0.5s;
+  background: none;
+  border: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &::after {
+    transition: 300ms;
+    content: "";
+    width: 0;
+    height: 1px;
+    display: block;
+    background: black;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+`;
+
+// 장바구니 열기 버튼
+export const Button_Bucket = styled.button`
   display: inline-block;
   color: black;
   cursor: pointer;
@@ -147,18 +175,4 @@ export const ProfileImg = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`;
-
-// 로그아웃 버튼 스타일
-export const LogoutButton = styled.button`
-  background-color: transparent;
-  border: none;
-  color: black;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.3s;
-
-  &:hover {
-    color: red;
-  }
 `;

@@ -117,7 +117,7 @@ const UserCommunityDetail = () => {
   }
 
   return (
-    <Wrapper className="cm" id="post">
+    <Wrapper className="wrap" id="post">
       <form onSubmit={handleSubmit}>
         <Container_Style>
           <List_Profile>

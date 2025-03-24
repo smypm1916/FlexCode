@@ -12,15 +12,17 @@ const Category = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/products/cat`, { headers: { Accept: "application/json" } });
-      console.log(res.data);
+      const res = await axios.get(`http://localhost:8080/api/products/cat`, {
+        headers: { Accept: "application/json" },
+      });
+      console.log(res);
       if (res.data && res.data.success) {
         const newCategories = res.data.data || [];
         // setCategories((prev) => [...prev, ...newCategories]);
         setCategories(res.data.data || []);
       }
     } catch (error) {
-      console.error('fetch category error', error);
+      console.error("fetch category error", error);
       setError(error);
     }
   };
@@ -35,7 +37,6 @@ const Category = () => {
     console.log("Updated Categories:", categories);
   }, [categories]);
 
-
   // 상단 이미지, 하단 카테고리명 2단구성
   return (
     <Container_Style>
@@ -49,8 +50,10 @@ const Category = () => {
             /> */}
               {category.PRODUCT_TYPE}
             </Category_Box>
-          ))) : (<p></p>)
-        }
+          ))
+        ) : (
+          <p></p>
+        )}
       </Category_Wrapper>
     </Container_Style>
   );

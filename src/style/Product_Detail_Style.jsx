@@ -29,7 +29,8 @@ export const Container03 = styled.div`
 
 //container01 상품 설명정보 div
 export const Product_Wrapper = styled.div`
-  width: 100%;
+  width: -webkit-fill-available;
+  width: -moz-available;
   display: flex;
   flex-direction: column;
   gap: 20px;

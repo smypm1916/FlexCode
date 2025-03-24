@@ -2,174 +2,191 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-   Button_Wrapper_100,
-   Container_Style,
-   Wrapper,
+  Button_Wrapper_100,
+  Container_Style,
+  Wrapper,
+  Wrapper_BucketInfo,
 } from "../../style/Common_Style";
 import Button from "../common/Button";
 import CartModal from "../common/CartModal";
 import CheckedProduct from "../common/CheckedProduct";
 import Select from "../common/Select";
-import { useCart } from '../common/useCart';
+import { useCart } from "../common/useCart";
 
 import {
-   Container01,
-   Container02,
-   Container03,
-   Divide_Box,
-   Image_Wrapper,
-   Info_Text,
-   Info_Text_Box,
-   Info_Title,
-   Info_Wrapper,
-   Product_Title,
-   Product_Wrapper,
-   Text,
-   Text_box,
-   Text_wrapper,
-   Title,
+  Container01,
+  Container02,
+  Container03,
+  Divide_Box,
+  Image_Wrapper,
+  Info_Text,
+  Info_Text_Box,
+  Info_Title,
+  Info_Wrapper,
+  Product_Title,
+  Product_Wrapper,
+  Text,
+  Text_box,
+  Text_wrapper,
+  Title,
 } from "../../style/Product_detail_style";
 
-
 const ProductInfo = () => {
-   const { product_no } = useParams();
-   const [product, setProduct] = useState({});
-   const [options, setOptions] = useState([]);
-   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
-   const [checkedProducts, setCheckedProducts] = useState([]); // 최종 선택된 옵션들
-   const [currentOption, setCurrentOption] = useState(null); // 현재 선택된 옵션
-   const [currentQuantity, setCurrentQuantity] = useState(1); // 현재 선택된 수량
-   const [localTempOrderId, setLocalTempOrderId] = useState(null);
-   const [loading, setLoading] = useState(true);
-   const [error, setError] = useState(null);
-   // const openModal = () => setIsCartModalOpen(true);
-   const closeModal = () => setIsCartModalOpen(false);
-   const navigate = useNavigate();
-   const imgPath = import.meta.env.VITE_IMG_PATH;
-   const { addToCart, fetchCart, cartItems, loading: cartLoading, tempOrderId } = useCart();
+  const { product_no } = useParams();
+  const [product, setProduct] = useState({});
+  const [options, setOptions] = useState([]);
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
+  const [checkedProducts, setCheckedProducts] = useState([]); // 최종 선택된 옵션들
+  const [currentOption, setCurrentOption] = useState(null); // 현재 선택된 옵션
+  const [currentQuantity, setCurrentQuantity] = useState(1); // 현재 선택된 수량
+  const [localTempOrderId, setLocalTempOrderId] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  // const openModal = () => setIsCartModalOpen(true);
+  const closeModal = () => setIsCartModalOpen(false);
+  const navigate = useNavigate();
+  const imgPath = import.meta.env.VITE_IMG_PATH;
+  const {
+    addToCart,
+    fetchCart,
+    cartItems,
+    loading: cartLoading,
+    tempOrderId,
+  } = useCart();
 
-   const API_BASE_URL = "http://localhost:8080/api";
+  const API_BASE_URL = "http://localhost:8080/api";
 
-   //로그인 후 토큰 저장
-   const handleLogin = async (user_email, user_password) => {
-      const res = await axios.post(`${API_BASE_URL}/cart/auth/login`, {
-         user_email,
-         user_password
-      }, { withCredentials: true });
-      if (res.data.success) {
-         localStorage.setItem('token', res.data.token);
-         await fetchCart();
-      }
-   };
-
-   // 옵션 삭제
-   const onRemove = (OPTION_NO) => {
-      return () => {
-         setCheckedProducts((prev) =>
-            prev.filter((opt) => opt.OPTION_NO !== OPTION_NO)
-         );
-      };
-   };
-
-   const addToCartHandler = async () => {
-      if (checkedProducts.length === 0) {
-         alert('옵션을 선택하세요.');
-         return;
-      }
-
-      const newTempOrderId = await addToCart(product_no, product.PRODUCT_NAME, product.PRODUCT_PRICE, checkedProducts);
-      if (newTempOrderId) {
-         setLocalTempOrderId(newTempOrderId);
-      }
+  //로그인 후 토큰 저장
+  const handleLogin = async (user_email, user_password) => {
+    const res = await axios.post(
+      `${API_BASE_URL}/cart/auth/login`,
+      {
+        user_email,
+        user_password,
+      },
+      { withCredentials: true }
+    );
+    if (res.data.success) {
+      localStorage.setItem("token", res.data.token);
       await fetchCart();
-      setIsCartModalOpen(true);
-      // setCheckedProducts([]);
-   };
+    }
+  };
 
-   // 옵션 선택 핸들러
-   const optionHandler = (e) => {
-      // 선택된 값이 없으면 리턴
-      const OPTION_NO = parseInt(e.target.value);
-      if (!OPTION_NO) {
-         setCurrentOption(null);
-         setCurrentQuantity(1);
-         return;
-      }
+  // 옵션 삭제
+  const onRemove = (OPTION_NO) => {
+    return () => {
+      setCheckedProducts((prev) =>
+        prev.filter((opt) => opt.OPTION_NO !== OPTION_NO)
+      );
+    };
+  };
 
-      const selected = options.find((opt) => opt.OPTION_NO === OPTION_NO);
+  const addToCartHandler = async () => {
+    if (checkedProducts.length === 0) {
+      alert("옵션을 선택하세요.");
+      return;
+    }
 
-      if (!selected) return;
+    const newTempOrderId = await addToCart(
+      product_no,
+      product.PRODUCT_NAME,
+      product.PRODUCT_PRICE,
+      checkedProducts
+    );
+    if (newTempOrderId) {
+      setLocalTempOrderId(newTempOrderId);
+    }
+    await fetchCart();
+    setIsCartModalOpen(true);
+    // setCheckedProducts([]);
+  };
 
-      // 이미 선택된 옵션인지 확인
-      const exist = checkedProducts.find((opt) => opt.OPTION_NO === OPTION_NO);
-      if (exist) {
-         // 이미 선택된 옵션이면 현재 선택 초기화
-         setCurrentOption(null);
-         setCurrentQuantity(1);
-         return;
-      }
-
-      // 현재 선택된 옵션 설정
-      setCurrentOption(selected);
-      setCurrentQuantity(1);
-   };
-
-   // 수량 변경 핸들러 
-   const handleQuantityChange = (e) => {
-      const quantity = parseInt(e.target.value);
-      if (isNaN(quantity) || quantity < 1) return;
-      setCurrentQuantity(quantity);
-   };
-
-   // 옵션 추가 핸들러
-   const addOptionHandler = () => {
-      if (!currentOption) return;
-      setCheckedProducts((prev) => [
-         ...prev,
-         { ...currentOption, quantity: currentQuantity }
-      ]);
-      // 옵션 추가 후 현재 선택 초기화
+  // 옵션 선택 핸들러
+  const optionHandler = (e) => {
+    // 선택된 값이 없으면 리턴
+    const OPTION_NO = parseInt(e.target.value);
+    if (!OPTION_NO) {
       setCurrentOption(null);
       setCurrentQuantity(1);
-   };
+      return;
+    }
 
-   // 최종 선택된 옵션 수량 변경 핸들러
-   const quantityHandler = (OPTION_NO, quantity) => {
-      setCheckedProducts((prev) =>
-         prev.map((opt) =>
-            opt.OPTION_NO === OPTION_NO ? { ...opt, quantity } : opt
-         )
+    const selected = options.find((opt) => opt.OPTION_NO === OPTION_NO);
+
+    if (!selected) return;
+
+    // 이미 선택된 옵션인지 확인
+    const exist = checkedProducts.find((opt) => opt.OPTION_NO === OPTION_NO);
+    if (exist) {
+      // 이미 선택된 옵션이면 현재 선택 초기화
+      setCurrentOption(null);
+      setCurrentQuantity(1);
+      return;
+    }
+
+    // 현재 선택된 옵션 설정
+    setCurrentOption(selected);
+    setCurrentQuantity(1);
+  };
+
+  // 수량 변경 핸들러
+  const handleQuantityChange = (e) => {
+    const quantity = parseInt(e.target.value);
+    if (isNaN(quantity) || quantity < 1) return;
+    setCurrentQuantity(quantity);
+  };
+
+  // 옵션 추가 핸들러
+  const addOptionHandler = () => {
+    if (!currentOption) return;
+    setCheckedProducts((prev) => [
+      ...prev,
+      { ...currentOption, quantity: currentQuantity },
+    ]);
+    // 옵션 추가 후 현재 선택 초기화
+    setCurrentOption(null);
+    setCurrentQuantity(1);
+  };
+
+  // 최종 선택된 옵션 수량 변경 핸들러
+  const quantityHandler = (OPTION_NO, quantity) => {
+    setCheckedProducts((prev) =>
+      prev.map((opt) =>
+        opt.OPTION_NO === OPTION_NO ? { ...opt, quantity } : opt
+      )
+    );
+  };
+
+  // 상품 정보 조회
+  const fetchProductDetail = async (product_no) => {
+    if (!product_no || isNaN(product_no)) {
+      console.error("잘못된 product_no:", product_no);
+      setError("잘못된 상품 번호입니다.");
+      setLoading(false);
+      return;
+    }
+    try {
+      const res = await axios.get(
+        `${API_BASE_URL}/products/detail/${product_no}`,
+        {
+          withCredentials: true,
+          headers: { Accept: "application/json" },
+        }
       );
-   };
-
-   // 상품 정보 조회
-   const fetchProductDetail = async (product_no) => {
-      if (!product_no || isNaN(product_no)) {
-         console.error("잘못된 product_no:", product_no);
-         setError("잘못된 상품 번호입니다.");
-         setLoading(false);
-         return;
+      if (res.data?.success) {
+        console.log("product :", res.data.data);
+        const tempDetail = res.data.data;
+        if (Array.isArray(tempDetail) && tempDetail.length > 0) {
+          setProduct(tempDetail[0]); // 객체 저장
+        } else {
+          setProduct({});
+        }
       }
-      try {
-         const res = await axios.get(
-            `${API_BASE_URL}/products/detail/${product_no}`,
-            {
-               withCredentials: true,
-               headers: { Accept: "application/json" }
-            }
-         );
-         if (res.data?.success) {
-            console.log('product :', res.data.data);
-            const tempDetail = res.data.data;
-            if (Array.isArray(tempDetail) && tempDetail.length > 0) {
-               setProduct(tempDetail[0]); // 객체 저장
-            } else { setProduct({}) };
-         }
-      } catch (error) {
-         console.error("detail load error", error);
-         setError(error.message);
-      }
-   };
+    } catch (error) {
+      console.error("detail load error", error);
+      setError(error.message);
+    }
+  };
 
    // 상품 옵션 취득
    const fetchOptions = async (product_no) => {

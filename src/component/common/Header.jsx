@@ -3,16 +3,16 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import {
-  Button_Login,
   Button_Register,
   Logo,
-  LogoutButton,
   Menu,
   Menu_Wrapper,
-  ProfileImg,
+  Button_Log,
+  Button_Bucket,
   ProfileWrapper,
   Wrapper_Header,
 } from "../../style/Header_Style";
+import { Profile_Img } from "../../style/List_Style";
 import LoginModal from "../account/LoginModal";
 import { useCart } from "./useCart";
 // import Cart from "./Cart";
@@ -121,15 +121,20 @@ const App = () => {
       {/* 로그인 여부에 따라 UI 변경 */}
       {isLoggedIn ? (
         <Menu_Wrapper>
-          <Menu onClick={() => navigate(`/order/${tempOrderId}`)}>CART</Menu>
           <ProfileWrapper onClick={() => navigate("/mypage")}>
-            <ProfileImg src={profileImg} alt="profile" />
+            {/* Profile_Img로/profile 이미지 표시요청 */}
+            <Profile_Img>
+              <img src={`${profileImg}`} alt="profile" />
+            </Profile_Img>
           </ProfileWrapper>
-          <LogoutButton onClick={handleLogout}>LOGOUT</LogoutButton>
+          {/* Button_Bucket으로 변경 */}
+          <Button_Bucket onClick={() => navigate("/cart")}>CART</Button_Bucket>
+          {/* Button_Logout으로 수정, Button_Login/Logout = Button_Log로 통합 */}
+          <Button_Log onClick={handleLogout}>LOGOUT</Button_Log>
         </Menu_Wrapper>
       ) : (
         <Menu_Wrapper>
-          <Button_Login onClick={() => setShowModal(true)}>LOGIN</Button_Login>
+          <Button_Log onClick={() => setShowModal(true)}>LOGIN</Button_Log>
           <Button_Register onClick={() => navigate("/signup")}>
             REGISTER
           </Button_Register>

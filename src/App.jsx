@@ -9,6 +9,8 @@ import CmAdd from "./component/community/CmAdd";
 import CmDetail from "./component/community/CmDetail";
 import CmMain from "./component/community/CmMain";
 import DeleteUserCheck from "./component/myPage/DeleteUserCheck";
+import Index from "./component/product/Index";
+import ScrollToTop from "./component/common/ScrollToTop";
 import ModifyUserProfile from "./component/myPage/ModifyUserProfile";
 import MyPageMain from "./component/myPage/MyPageMain";
 import UserCommunityAdd from "./component/myPage/UserCommunityAdd";
