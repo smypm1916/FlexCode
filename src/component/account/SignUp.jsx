@@ -138,6 +138,7 @@ const SignUp = () => {
     // 비밀번호 유효성 검사
     if (name == "user_password") {
       setPasswordValid(validatePassword(value)); // 유효하면 true, 아님 false
+      setPasswordMatch(signUpForm.user_password_check === value);
     }
     // 비밀번호 일치 여부 검사
     if (name == "user_password_check") {
@@ -199,6 +200,9 @@ const SignUp = () => {
         }
       );
 
+      console.log("전체 응답:", response.data);
+      console.log("exists 타입:", typeof response.data.exists);
+
       if (response.data.exists) {
         // 받아온 데이터가 true일 경우
         console.log("response 데이터 : " + response.data.exists);
@@ -226,6 +230,10 @@ const SignUp = () => {
           params: { nickname: user_nickname },
         }
       );
+
+      console.log("전체 응답:", response.data);
+      console.log("exists 타입:", typeof response.data.exists);
+
       if (response.data.exists) {
         // 받아온 데이터가 true일 경우
         console.log("response 데이터 : " + response.data.exists);
@@ -304,7 +312,7 @@ const SignUp = () => {
         "http://localhost:8080/api/users/register",
         userFormData,
         {
-          headers: { "Content-Type": "multiparg/form-data" },
+          headers: { "Content-Type": "multipart/form-data" },
         }
       );
       if (response.data.success) {
@@ -385,6 +393,7 @@ const SignUp = () => {
                   type={"text"}
                   name={"mid_tel"}
                   placeholder={"1234"}
+                  maxLength={4}
                   value={userTel.mid_tel}
                   onChange={handleInputTelChange}
                 />
@@ -395,6 +404,7 @@ const SignUp = () => {
                   type={"text"}
                   name={"last_tel"}
                   placeholder={"5678"}
+                  maxLength={4}
                   value={userTel.last_tel}
                   onChange={handleInputTelChange}
                 />
@@ -404,7 +414,6 @@ const SignUp = () => {
         </Input_Wrapper>
         <Input_Wrapper>
           <label>EMAIL</label>
-
           <Email_Input>
             <Email_Box>
               <Input_Box>
@@ -440,7 +449,7 @@ const SignUp = () => {
             />
           </Email_Input>
           {/*이메일 중복 확인 결과 출력 */}
-          {emailCheckResult && <p>{emailCheckResult}</p>}
+          {emailCheckResult !== null && <p>{emailCheckResult}</p>}
         </Input_Wrapper>
         <Input_Wrapper>
           <div className="signUp-pw-label">

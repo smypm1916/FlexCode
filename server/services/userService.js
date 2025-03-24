@@ -1,57 +1,93 @@
-const { executeQuery } = require("../config/oracledb");
+const { userExecuteQuery } = require("../config/oracledb");
 const user_account = require("../models/user_account");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 // 이메일 중복 체크 서비스
 const checkEmail = async (email) => {
-  const query = `select ${user_account.columns.user_email} from ${user_account.tableName} where ${user_account.columns.user_email} =:email`;
-  const result = await executeQuery(query, [email]);
-  return result.length > 0; // true: 1, false: 0
+  try {
+    const query = `select ${user_account.columns.user_email} from ${user_account.tableName} where ${user_account.columns.user_email} =:email`;
+    const result = await userExecuteQuery(query, { email });
+
+    const rows = result.rows;
+    console.log("이메일 중복체크 rows:", rows);
+    if (!Array.isArray(rows) || rows.length === 0) {
+      // result의 반환값이 배열이 아니거나 길이가 0일경우 (조회된 데이터 없음)
+      console.log("중복되는 이메일 없음");
+      return false;
+    }
+    return true; // true: 중복되는 이메일 있음
+  } catch (error) {
+    console.error("이메일 중복체크 서비스 오류:", error);
+    throw new Error("이메일 중복체크 처리 중 오류가 발생했습니다.");
+  }
 };
 
 // 닉네임 중복 체크 서비스
 const checkNickname = async (nickname) => {
-  const query = `select ${user_account.columns.user_nickname} from ${user_account.tableName} where ${user_account.columns.user_nickname} =:nickname`;
-  const result = await executeQuery(query, [nickname]);
-  return result.length > 0;
+  try {
+    const query = `select ${user_account.columns.user_nickname} from ${user_account.tableName} where ${user_account.columns.user_nickname} =:nickname`;
+    const result = await userExecuteQuery(query, { nickname });
+
+    const rows = result.rows;
+    console.log("닉네임 중복체크 rows:", rows);
+
+    if (!Array.isArray(rows) || rows.length === 0) {
+      // result의 반환값이 배열이 아니거나 길이가 0일경우 (조회된 데이터 없음)
+      console.log("중복되는 닉네임 없음");
+      return false;
+    }
+    return true; // true: 중복되는 닉네임 있음
+  } catch (error) {
+    console.error("닉네임 중복체크 서비스 오류:", error);
+    throw new Error("닉네임 중복체크 처리 중 오류가 발생했습니다.");
+  }
 };
 
 // 회원가입
 const registerUser = async (userData) => {
-  const {
-    user_email,
-    user_nickname,
-    user_password,
-    user_name,
-    user_addr,
-    user_tel,
-    user_profile,
-  } = userData;
+  try {
+    const {
+      user_email,
+      user_nickname,
+      user_password,
+      user_name,
+      user_addr,
+      user_tel,
+      user_profile,
+    } = userData;
 
-  // 비밀번호를 해싱(bcrypt 사용)
-  const saltRounds = 10; // 솔트 값(보안 강화)
-  const hashedPassword = await bcrypt.hash(user_password, saltRounds);
+    // 비밀번호를 해싱(bcrypt 사용)
+    const saltRounds = 10; // 솔트 값(보안 강화)
+    const hashedPassword = await bcrypt.hash(user_password, saltRounds);
 
-  console.log("해싱된 비밀번호:", hashedPassword);
+    console.log("해싱된 비밀번호:", hashedPassword);
 
-  const query = `insert into ${user_account.tableName} (${Object.values(
-    user_account.columns
-  ).join(
-    ","
-  )}) values (:user_email, :user_nickname, :user_password, :user_name, :user_addr, :user_tel, :user_profile)`;
+    const query = `insert into ${user_account.tableName} (${Object.values(
+      user_account.columns
+    ).join(
+      ","
+    )}) values (:user_email, :user_nickname, :user_password, :user_name, :user_addr, :user_tel, :user_profile)`;
 
-  await executeQuery(query, {
-    user_email,
-    user_nickname,
-    user_password: hashedPassword,
-    user_name,
-    user_addr,
-    user_tel,
-    user_profile,
-  });
+    const result = await userExecuteQuery(query, {
+      user_email,
+      user_nickname,
+      user_password: hashedPassword,
+      user_name,
+      user_addr,
+      user_tel,
+      user_profile,
+    });
 
-  return { success: true, message: "회원가입이 완료되었습니다." };
+    const rowsAffected = result.rowsAffected;
+    if (rowsAffected && rowsAffected > 0) {
+      return { success: true, message: "회원가입 성공" };
+    }
+    return { success: false, message: "회원가입 실패" };
+  } catch (error) {
+    console.error("회원가입 서비스 오류:", error);
+    throw new Error("회원가입 처리 중 오류가 발생했습니다.");
+  }
 };
 
 // 로그인
@@ -60,17 +96,19 @@ const loginUser = async (email, password) => {
     console.log("로그인 시도-이메일:", email);
     // 유저 이메일로 DB 조회
     const query = `select ${user_account.columns.user_email}, ${user_account.columns.user_password}, ${user_account.columns.user_profile}, ${user_account.columns.user_nickname} from ${user_account.tableName} where ${user_account.columns.user_email} = :email`;
-    const result = await executeQuery(query, [email]);
+    const result = await userExecuteQuery(query, { email });
 
-    console.log("로그인 DB 조회 결과:", result);
+    const rows = result.rows;
+
+    console.log("로그인체크 rows:", rows);
 
     // 이메일 존재 여부 확인
-    if (result.length === 0) {
+    if (!Array.isArray(rows) || rows.length === 0) {
       console.log("로그인 실패: 등록되지 않은 이메일");
       return { success: false, message: "등록되지 않은 이메일입니다." };
     }
 
-    const user = result[0];
+    const user = rows[0];
     const getPassword = user.USER_PASSWORD;
 
     // 비밀번호 비교
@@ -81,7 +119,7 @@ const loginUser = async (email, password) => {
       return { success: false, message: "비밀번호가 일치하지 않습니다." };
     }
 
-    // JWT 토큰 발급
+    // JWT 토큰 발급(이메일 조회 성공 & 비밀번호 일치여부 확인)
     const token = jwt.sign(
       {
         email: user.USER_EMAIL,
@@ -92,11 +130,9 @@ const loginUser = async (email, password) => {
       { expiresIn: "1h" } // 토큰 유효시간 => 1시간
     );
 
-    //Redis 토큰 추가
-
     console.log("JWT 토큰 발급 성공:", token);
 
-    return { success: true, token, profile: user.USER_PROFILE };
+    return { success: true, token };
   } catch (error) {
     console.error("로그인 서비스 오류:", error);
     throw new Error("로그인 처리 중 오류가 발생했습니다.");
@@ -108,17 +144,19 @@ const findId = async (name, tel) => {
   try {
     console.log("이메일 찾기 조건 이름, 전화번호:", name, tel);
     const query = `select user_email from user_account where user_name = :name and user_tel = :tel`;
-    const result = await executeQuery(query, { name, tel });
+    const result = await userExecuteQuery(query, { name, tel });
 
-    console.log("이메일찾기 DB 조회 결과:", result);
+    const rows = result.rows;
+    console.log("회원 이메일 조회 rows : ", rows);
 
     // 이메일 존재 여부 확인
-    if (result.length === 0) {
+    if (!Array.isArray(rows) || rows.length === 0) {
       console.log("조회 실패: 등록되지 않은 이메일");
       return { success: false, message: "등록되지 않은 이메일입니다." };
     }
 
-    const user_email = result;
+    // 조회 성공 시 유저에게 보여줄 이메일 변수에 저장
+    const user_email = rows[0].USER_EMAIL;
     return { success: true, user_email };
   } catch (error) {
     console.error("이메일 찾기 서비스 오류:", error);
@@ -131,17 +169,16 @@ const findPw = async (name, email) => {
   try {
     console.log("비밀번호(유저) 찾기 조건 이름, 이메일:", name, email);
     const query = `select * from user_account where user_name = :name and user_email = :email`;
-    const result = await executeQuery(query, { name, email });
+    const result = await userExecuteQuery(query, { name, email });
 
-    console.log("비밀번호찾기 DB 조회 결과:", result);
+    const rows = result.rows;
+    console.log("회원정보 조회 rows :", rows);
 
     // 유저 존재 여부 확인
-    if (result.length === 0) {
-      console.log("조회 실패 : 등록되지 않은 이메일");
-      return { success: false, message: "등록되지 않은 이메일입니다." };
+    if (!Array.isArray(rows) || rows.length === 0) {
+      return false;
     }
-
-    return { success: true, result };
+    return true;
   } catch (error) {
     console.error("비밀번호 찾기 서비스 오류:", error);
     throw new Error("비밀번호(유저) 찾기 처리 중 오류가 발생했습니다.");
@@ -159,12 +196,17 @@ const modifyPw = async (password, email) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const query = `update user_account set user_password = :password where user_email = :email`;
-    const result = await executeQuery(query, {
+    const result = await userExecuteQuery(query, {
       password: hashedPassword,
       email,
     });
 
-    return { success: true, message: "비밀번호 재설정에 성공하였습니다." };
+    const rowsAffected = result.rowsAffected;
+
+    if (rowsAffected && rowsAffected > 0) {
+      return { success: true, message: "비밀번호 재설정 성공" };
+    }
+    return { success: false, message: "비밀번호 재설정 실패" };
   } catch (error) {
     console.error("비밀번호 재설정 서비스 오류:", error);
     throw new Error("비밀번호 재설정 처리 중 오류가 발생했습니다.");
@@ -177,9 +219,12 @@ const getUser = async (email) => {
     console.log("조회대상 이메일:", email);
 
     const query = `select * from user_account where user_email = :email`;
-    const result = await executeQuery(query, { email });
+    const result = await userExecuteQuery(query, { email });
 
-    if (result.length === 0) {
+    const rows = result.rows;
+    console.log("회원정보 조회 rows:", rows);
+
+    if (!Array.isArray(rows) || rows.length === 0) {
       console.log("조회 실패");
       return { success: false, message: "회원정보 조회에 실패했습니다." };
     }
@@ -200,13 +245,18 @@ const updateProfileWithImage = async (userData) => {
     user_tel,
     user_addr,
     user_profile,
+    oldNickname, // 이전 닉네임 (커뮤니티 테이블 업데이트용)
   } = userData;
 
+  // 업로드된 프로필 이미지 파일 이름만 추출
   const profileImg = user_profile.filename;
 
-  const query = `update user_account set user_name = :user_name, user_nickname = :user_nickname, user_tel = :user_tel, user_addr = :user_addr, user_profile = :user_profile where user_email = :user_email`;
+  // 커뮤니티 테이블 닉네임 수정 쿼리
+  const communityTBQuery = `update community_info set user_nickname = :user_nickname where user_nickname = :oldNickname`;
+  // 사용자 계정 테이블 수정 쿼리
+  const userTBQuery = `update user_account set user_name = :user_name, user_nickname = :user_nickname, user_tel = :user_tel, user_addr = :user_addr, user_profile = :user_profile where user_email = :user_email`;
 
-  await executeQuery(query, {
+  const updateUserResult = await userExecuteQuery(userTBQuery, {
     user_email,
     user_name,
     user_nickname,
@@ -215,18 +265,39 @@ const updateProfileWithImage = async (userData) => {
     user_profile: profileImg,
   });
 
-  const updatedUserQuery = `select * from user_account where user_email = :email`;
-  const updatedUser = await executeQuery(updatedUserQuery, {
+  const updateCommunityResult = await userExecuteQuery(communityTBQuery, {
+    user_nickname,
+    oldNickname,
+  });
+
+  const userRowsAffected = updateUserResult.rowsAffected;
+  const communityRowsAffected = updateCommunityResult.rowsAffected;
+
+  if (!userRowsAffected && userRowsAffected === 0) {
+    console.log("회원정보 수정 실패 - 회원 테이블");
+    return { success: false, message: "회원정보 수정 실패 - 회원 테이블" };
+  }
+
+  if (!communityRowsAffected && communityRowsAffected === 0) {
+    console.log("회원정보 수정 실패 - 커뮤니티 테이블");
+    return { success: false, message: "회원정보 수정 실패 - 커뮤니티 테이블" };
+  }
+
+  // 회원정보 재조회 (최신 정보 가져오기)
+  const selectdUserQuery = `select * from user_account where user_email = :email`;
+  const selectUserResult = await userExecuteQuery(selectdUserQuery, {
     email: userData.user_email,
   });
 
-  if (!updatedUser || updatedUser.length === 0) {
+  const rows = selectUserResult.rows;
+
+  if (!Array.isArray(rows) || rows.length === 0) {
     throw new Error("회원정보 조회 실패");
   }
 
-  const user = updatedUser[0]; // 최신 회원정보
+  const user = rows[0]; // 최신 회원정보
 
-  // JWT 토큰 발급
+  // JWT 토큰 발급 (수정된 정보 반영)
   const newToken = jwt.sign(
     {
       email: user.USER_EMAIL,
@@ -239,19 +310,26 @@ const updateProfileWithImage = async (userData) => {
 
   return {
     success: true,
-    message: "회원정보 수정이 완료되었습니다.",
+    message: "회원정보 수정 성공",
     token: newToken,
   };
 };
 
 // 회원정보 수정(이미지x)
 const updateProfile = async (userData) => {
-  const { user_email, user_name, user_nickname, user_tel, user_addr } =
-    userData;
+  const {
+    user_email,
+    user_name,
+    user_nickname,
+    user_tel,
+    user_addr,
+    oldNickname,
+  } = userData;
 
-  const query = `update user_account set user_name = :user_name, user_nickname = :user_nickname, user_tel = :user_tel, user_addr = :user_addr where user_email = :user_email`;
+  const communityTBQuery = `update community_info set user_nickname = :user_nickname where user_nickname = :oldNickname`;
+  const userTBQuery = `update user_account set user_name = :user_name, user_nickname = :user_nickname, user_tel = :user_tel, user_addr = :user_addr where user_email = :user_email`;
 
-  await executeQuery(query, {
+  const updateUserResult = await userExecuteQuery(userTBQuery, {
     user_email,
     user_name,
     user_nickname,
@@ -259,16 +337,36 @@ const updateProfile = async (userData) => {
     user_addr,
   });
 
-  const updatedUserQuery = `select * from user_account where user_email = :email`;
-  const updatedUser = await executeQuery(updatedUserQuery, {
+  const updateCommunityResult = await userExecuteQuery(communityTBQuery, {
+    user_nickname,
+    oldNickname,
+  });
+
+  const userRowsAffected = updateUserResult.rowsAffected;
+  const communityRowsAffected = updateCommunityResult.rowsAffected;
+
+  if (!userRowsAffected && userRowsAffected === 0) {
+    console.log("회원정보 수정 실패 - 회원 테이블");
+    return { success: false, message: "회원정보 수정 실패 - 회원 테이블" };
+  }
+
+  if (!communityRowsAffected && communityRowsAffected === 0) {
+    console.log("회원정보 수정 실패 - 커뮤니티 테이블");
+    return { success: false, message: "회원정보 수정 실패 - 커뮤니티 테이블" };
+  }
+
+  const selectUserQuery = `select * from user_account where user_email = :email`;
+  const selectUserResult = await userExecuteQuery(selectUserQuery, {
     email: userData.user_email,
   });
 
-  if (!updatedUser || updatedUser.length === 0) {
+  const rows = selectUserResult.rows;
+
+  if (!Array.isArray(rows) || rows.length === 0) {
     throw new Error("회원정보 조회 실패");
   }
 
-  const user = updatedUser[0]; // 최신 회원정보
+  const user = rows[0]; // 최신 회원정보
 
   // JWT 토큰 발급
   const newToken = jwt.sign(
@@ -283,7 +381,7 @@ const updateProfile = async (userData) => {
 
   return {
     success: true,
-    message: "회원정보 수정이 완료되었습니다.",
+    message: "회원정보 수정 성공",
     token: newToken,
   };
 };
@@ -294,16 +392,15 @@ const deleteUserAccount = async (email) => {
 
     const query = `delete user_account where user_email = :email`;
 
-    const result = await executeQuery(query, email);
+    const result = await userExecuteQuery(query, email);
 
-    console.log("쿼리 실행 결과:", result);
+    const rowsAffected = result.rowsAffected;
 
-    if (result > 0) {
-      return { success: true, result };
-    } else {
+    if (!rowsAffected || rowsAffected === 0) {
       console.log("삭제 실패");
-      return { success: false, message: "회원정보 삭제에 실패했습니다." };
+      return { success: false, message: "회원정보 삭제 실패" };
     }
+    return { success: true, message: "회원정보 삭제 성공" };
   } catch (error) {
     console.error("회원정보 삭제 서비스 오류:", error);
     throw new Error("회원정보 삭제 처리 중 오류가 발생했습니다.");
@@ -316,11 +413,13 @@ const getUserCommunitys = async (nickname) => {
     console.log("조회대상 닉네임:", nickname);
 
     const query = `select * from community_info where user_nickname = :nickname order by community_date desc`;
-    const result = await executeQuery(query, { nickname });
+    const result = await userExecuteQuery(query, { nickname });
 
-    if (result.length === 0) {
+    const rows = result.rows;
+
+    if (!Array.isArray(rows) || rows.length === 0) {
       console.log("조회 실패");
-      return { success: false, message: "커뮤니티글 조회에 실패했습니다." };
+      return { success: false, message: "커뮤니티글 조회 실패" };
     }
     return { success: true, result };
   } catch (error) {
@@ -346,18 +445,20 @@ const getUserOrders = async (email) => {
                                   'product_name' VALUE pi.product_name,
                                   'product_img' VALUE pi.product_img
                                   )
-                                ) AS items
+                                ) AS items -- 주문 항목들을 하나의 JSON 배열로 묶어 'items'라는 별칭 부여
                   FROM order_info oi
                   JOIN order_items oi2 ON oi.order_no = oi2.order_no
                   JOIN product_info pi ON oi2.product_no = pi.product_no
                   WHERE oi.user_email = :email
                   GROUP BY oi.order_no, oi.total_price, oi.order_date, oi.order_state
                   ORDER BY oi.order_date DESC `;
-    const result = await executeQuery(query, { email });
+    const result = await userExecuteQuery(query, { email });
 
-    if (result.length === 0) {
+    const rows = result.rows;
+
+    if (!Array.isArray(rows) || rows.length === 0) {
       console.log("조회 실패");
-      return { success: false, message: "구매내역 조회에 실패했습니다." };
+      return { success: false, message: "구매내역 조회 실패" };
     }
     return { success: true, result };
   } catch (error) {
