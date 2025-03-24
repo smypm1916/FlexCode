@@ -11,13 +11,14 @@ import Order from "./component/order/Order";
 import OrderComplete from "./component/order/OrderComplete";
 import Index from "./component/product";
 // import ProductDetail from "./component/product/ProductDetail";
-import MyPageMain from "./component/myPage/myPageMain";
+import MyPageMain from "./component/myPage/MyPageMain";
 import ModifyUserProfile from "./component/myPage/ModifyUserProfile";
 import DeleteUserCheck from "./component/myPage/DeleteUserCheck";
 import ProductInfo from "./component/product/ProductInfo";
 import UserCommunityList from "./component/myPage/UserCommunityList";
 import UserCommunityDetail from "./component/myPage/UserCommunityDetail";
 import UserCommunityAdd from "./component/myPage/UserCommunityAdd";
+import UserOrderList from "./component/myPage/UserOrderList";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           element={<UserCommunityDetail />}
         />
         <Route path="/userCommunity_add" element={<UserCommunityAdd />} />
+        <Route path="/userOrder-list" element={<UserOrderList />} />
       </Routes>
       {/* 루팅 */}
 

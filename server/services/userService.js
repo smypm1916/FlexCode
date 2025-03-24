@@ -103,6 +103,7 @@ const loginUser = async (email, password) => {
   }
 };
 
+// 회원 이메일 조회
 const findId = async (name, tel) => {
   try {
     console.log("이메일 찾기 조건 이름, 전화번호:", name, tel);
@@ -125,6 +126,7 @@ const findId = async (name, tel) => {
   }
 };
 
+// 회원정보 조회(비밀번호 재설정용)
 const findPw = async (name, email) => {
   try {
     console.log("비밀번호(유저) 찾기 조건 이름, 이메일:", name, email);
@@ -146,6 +148,7 @@ const findPw = async (name, email) => {
   }
 };
 
+// 회원 비밀번호 수정
 const modifyPw = async (password, email) => {
   try {
     console.log("재설정 비밀번호:", password);
@@ -168,6 +171,7 @@ const modifyPw = async (password, email) => {
   }
 };
 
+// 회원정보 조회 (마이페이지->회원정보 수정용)
 const getUser = async (email) => {
   try {
     console.log("조회대상 이메일:", email);
@@ -325,6 +329,43 @@ const getUserCommunitys = async (nickname) => {
   }
 };
 
+// 회원 구매내역 조회
+const getUserOrders = async (email) => {
+  try {
+    console.log("조회대상 이메일:", email);
+
+    const query = `SELECT 
+                          oi.order_no,
+                          oi.total_price,
+                          oi.order_date,
+                          oi.order_state,
+                  JSON_ARRAYAGG(
+                      JSON_OBJECT(
+                                  'product_no' VALUE oi2.product_no,
+                                  'product_quantity' VALUE oi2.product_quantity,
+                                  'product_name' VALUE pi.product_name,
+                                  'product_img' VALUE pi.product_img
+                                  )
+                                ) AS items
+                  FROM order_info oi
+                  JOIN order_items oi2 ON oi.order_no = oi2.order_no
+                  JOIN product_info pi ON oi2.product_no = pi.product_no
+                  WHERE oi.user_email = :email
+                  GROUP BY oi.order_no, oi.total_price, oi.order_date, oi.order_state
+                  ORDER BY oi.order_date DESC `;
+    const result = await executeQuery(query, { email });
+
+    if (result.length === 0) {
+      console.log("조회 실패");
+      return { success: false, message: "구매내역 조회에 실패했습니다." };
+    }
+    return { success: true, result };
+  } catch (error) {
+    console.error("구매내역 조회 서비스 오류:", error);
+    throw new Error("구매내역 조회 처리 중 오류가 발생했습니다.");
+  }
+};
+
 module.exports = {
   checkEmail,
   checkNickname,
@@ -338,4 +379,5 @@ module.exports = {
   updateProfile,
   deleteUserAccount,
   getUserCommunitys,
+  getUserOrders,
 };
