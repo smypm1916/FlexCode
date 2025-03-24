@@ -14,6 +14,7 @@ const cartRouter = require("./routes/cart");
 const cmRouter = require("./routes/community");
 const optionRouter = require("./routes/options");
 const orderRouter = require("./routes/order");
+const searchRouter = require('./routes/search');
 
 const redis = require("redis");
 const session = require("express-session");
@@ -148,21 +149,8 @@ app.use("/api/users", userRouter);
 app.use("/api/post", cmRouter);
 app.use("/api/options", optionRouter);
 app.use("/api/cart", cartRouter(redisClient));
+app.use('api/search', searchRouter);
 
-// 검색 기능
-router.get('/search', async (req, res) => {
-  const keyword = req.query.keyword || '';
-  try {
-    const result = await executeQuery(
-      `SELECT * FROM PRODUCTS WHERE PRODUCT_NAME LIKE '%' || :keyword || '%'`,
-      [keyword]
-    );
-    res.json(result);
-  } catch (err) {
-    console.error("검색 오류:", err);
-    res.status(500).json({ message: "검색 실패" });
-  }
-});
 
 
 // 서버 실행 함수
