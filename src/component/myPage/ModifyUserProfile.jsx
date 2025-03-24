@@ -46,6 +46,8 @@ const ModifyUserProfile = () => {
 
   console.log("메인에서 넘어온 회원정보:", userData);
 
+  const oldNickname = userData.nickname;
+
   const navigate = useNavigate();
 
   const [modifyUserForm, setModifyUserForm] = useState({
@@ -243,6 +245,7 @@ const ModifyUserProfile = () => {
         formData.append("user_tel", full_tel);
         formData.append("user_addr", full_address);
         formData.append("user_profile", selectedFile);
+        formData.append("oldNickname", userData.USER_NICKNAME);
 
         console.log("회원정보 수정 데이터:", formData);
 
@@ -263,6 +266,7 @@ const ModifyUserProfile = () => {
             user_nickname: user_nickname,
             user_tel: full_tel,
             user_addr: full_address,
+            oldNickname: userData.USER_NICKNAME,
           }
         );
       }
