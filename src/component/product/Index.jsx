@@ -12,12 +12,10 @@ const Index = () => {
   return (
     <Wrapper className="wrap" id="home">
       <Header />
-
       <EventBanner />
-
-      <Searchbox />
-      <Category />
       <Pick />
+      <Category />
+      <Searchbox />
       <ProductLists />
     </Wrapper>
   );
