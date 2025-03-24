@@ -162,7 +162,8 @@ const LoginModal = ({ onClose }) => {
       <FindPw onBack={handleBackToLogin} />
     </Container_Modal>
   ) : (
-    <Container_Modal>
+    <Container_Modal onRequestClose={onClose} shouldCloseOnOverlayClick={true}
+      shouldCloseOnEsc={true}>
       <Modal_Wrapper>
         <ButtonContainer>
           <ButtonClose onClick={handleClose}>
