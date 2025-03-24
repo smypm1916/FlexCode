@@ -143,7 +143,11 @@ const Order = () => {
 
   return (
     <div>
-      <h1>주문 번호 : {tempOrderId}</h1>
+      {checkedProducts.length > 0 || cartItems.length > 0 ? (
+        <h1>주문 번호 : {tempOrderId}</h1>
+      ) : (
+        <h1></h1>
+      )}
       {loading && <p>...LOADING...</p>}
       {error && <p>{error}</p>}
 
@@ -184,7 +188,7 @@ const Order = () => {
             </div>
           );
         })
-      ) : (!loading && <p>장바구니가 비어있습니다.</p>))}
+      ) : (!loading && <h2>장바구니가 비어있습니다.</h2>))}
 
 
       {/* 합계 금액 */}

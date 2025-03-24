@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 // const orderController = require("../controller/order");
 
+// 주문 정보 등록(결제)
 router.post('/complete/:tempOrderId', async (req, res) => {
    try {
       const { tempOrderId, from, checkedProducts, product, totalPrice } = req.body;
@@ -53,6 +54,7 @@ router.post('/complete/:tempOrderId', async (req, res) => {
    }
 });
 
+// 주문정보 조회
 router.get('/order/detail/:tempOrderId', async (req, res) => {
    const { tempOrderId } = req.params;
    try {
