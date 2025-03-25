@@ -4,14 +4,37 @@ const productService = require('../services/products');
 async function getAllProducts(req, res) {
    const page = Math.max(Number(req.query.page) || 1, 1);
    const limit = Math.max(Number(req.query.limit) || 9, 1);
+   const keyword = req.query.keyword || "";
+   const category = req.query.category || "";
+
    try {
-      const productsLists = await productService.getAllProducts(page, limit);
-      res.status(200).json({ success: true, data: productsLists });
+      const productsLists = await productService.getAllProducts(page, limit, keyword, category);
+
+      const hasMore = productsLists.length === limit;
+
+      res.status(200).json({
+         success: true,
+         data: productsLists,
+         hasMore,
+      });
    } catch (error) {
       console.error('controller error', error);
       res.status(500).json({ success: false, message: error.message });
    }
 }
+
+// async function getAllProducts(req, res) {
+
+//    const page = Math.max(Number(req.query.page) || 1, 1);
+//    const limit = Math.max(Number(req.query.limit) || 9, 1);
+//    try {
+//       const productsLists = await productService.getAllProducts(page, limit);
+//       res.status(200).json({ success: true, data: productsLists });
+//    } catch (error) {
+//       console.error('controller error', error);
+//       res.status(500).json({ success: false, message: error.message });
+//    }
+// }
 
 // 단일 상품 조회
 async function getProductDetail(req, res) {

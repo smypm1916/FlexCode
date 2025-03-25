@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "../common/Button";
+import { Wrapper } from "../../style/Common_Style";
+import { Profile_Img } from "../../style/List_Style";
+import { User_Status_Column, User_Status_Row } from "../../style/Mypage_Style";
 
 const UserProfile = ({ email, nickname, profile }) => {
   const [userProfileImg, setUserProfileImg] = useState(null);
@@ -12,9 +16,12 @@ const UserProfile = ({ email, nickname, profile }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("userProfile useEffect!!");
     setUserEmail(email);
     setUserNickname(nickname);
-
+    console.log(email);
+    console.log(nickname);
+    console.log(profile);
     const imgPath = import.meta.env.VITE_IMG_PATH;
 
     const profilePath = profile
@@ -26,7 +33,7 @@ const UserProfile = ({ email, nickname, profile }) => {
 
   const handleGetUser = async (e) => {
     e.preventDefault();
-    const user_email = email;
+    const user_email = userEmail;
 
     try {
       // 회원 정보 조회 API 요청
@@ -76,22 +83,26 @@ const UserProfile = ({ email, nickname, profile }) => {
   };
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-      <div>
-        <img src={userProfileImg} alt="profile"></img>
-      </div>
-      <div>
-        <div>{userNickname}님</div>
-        <div>{userEmail}</div>
-        <div>
-          <Button
-            className={"updateUser"}
-            btnTxt={"회원정보 수정"}
-            onClick={handleGetUser}
-          />
-        </div>
-      </div>
-    </div>
+    <Wrapper className="mypageCon" id="account">
+      <User_Status_Row>
+        <Profile_Img>
+          <img src={userProfileImg} alt="profile"></img>
+        </Profile_Img>
+        <User_Status_Column>
+          <User_Status_Row className="grid2">
+            {userNickname}님
+            <Button
+              className={"updateUser"}
+              btnTxt={"회원정보 수정"}
+              onClick={handleGetUser}
+            />
+          </User_Status_Row>
+          <User_Status_Row className="grid2">
+            <div>{userEmail}</div>
+          </User_Status_Row>
+        </User_Status_Column>
+      </User_Status_Row>
+    </Wrapper>
   );
 };
 

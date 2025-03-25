@@ -16,7 +16,7 @@ const EventBanner = () => {
           <img src="src\style\img\logo.png"></img>
         </Logo>
         <Title>Brand New Launch</Title>
-        <Text>We wish GENDERLESS</Text>
+        <Text>We got a GENDERLESS</Text>
       </Event_Wrapper>
     </Container_Banner>
   );

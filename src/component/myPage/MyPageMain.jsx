@@ -6,6 +6,8 @@ import UserCommunitys from "./UserCommunitys";
 import { jwtDecode } from "jwt-decode";
 import { fetchGetCommunity } from "../myPage/MyPageAPI";
 import { fetchGetOrder } from "../myPage/MyPageAPI";
+import { Container_Style, Wrapper } from "../../style/Common_Style";
+import { User_Status_Row, Order_Status } from "../../style/Mypage_Style";
 
 const MyPageMain = () => {
   const [userEmail, setUserEmail] = useState("");
@@ -26,16 +28,30 @@ const MyPageMain = () => {
   }, []);
 
   return (
-    <div>
-      <UserProfile
-        email={userEmail}
-        nickname={userNickname}
-        profile={userProfile}
-      />
-      <UserOrders email={userEmail} />
-      <UserCommunitys nickname={userNickname} profile={userProfile} />
-      <DeleteUser />
-    </div>
+    <Wrapper className="wrap" id="mypage">
+      <Container_Style>
+        <User_Status_Row>
+          <UserProfile
+            email={userEmail}
+            nickname={userNickname}
+            profile={userProfile}
+          />
+        </User_Status_Row>
+      </Container_Style>
+      <Container_Style>
+        <Order_Status>
+          <UserOrders
+            email={userEmail}
+            nickname={userNickname}
+            profile={userProfile}
+          />
+        </Order_Status>
+      </Container_Style>
+      <Container_Style>
+        <UserCommunitys nickname={userNickname} profile={userProfile} />
+        <DeleteUser />
+      </Container_Style>
+    </Wrapper>
   );
 };
 

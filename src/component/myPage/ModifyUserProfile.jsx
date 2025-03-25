@@ -289,7 +289,7 @@ const ModifyUserProfile = () => {
   return (
     <div>
       {userData && userData.USER_EMAIL ? (
-        <Wrapper className="cm" id="register">
+        <Wrapper className="wrap" id="register">
           <Container_Style>
             <div className="signUp-title">
               <h2>회원정보 수정</h2>

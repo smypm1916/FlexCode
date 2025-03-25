@@ -119,7 +119,7 @@ const CmMain = () => {
   };
 
   return (
-    <Wrapper className="cm" id="community">
+    <Wrapper className="wrap" id="community">
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}
       <Container_Style>
         <Container01>상단 광고</Container01>

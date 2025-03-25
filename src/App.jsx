@@ -17,7 +17,7 @@ import UserCommunityList from "./component/myPage/UserCommunityList";
 import UserOrderList from "./component/myPage/UserOrderList";
 import Order from "./component/order/Order";
 import OrderComplete from "./component/order/OrderComplete";
-import Index from "./component/product";
+import Index from "./component/product/Index";
 import ProductInfo from "./component/product/ProductInfo";
 
 function App() {
