@@ -158,146 +158,149 @@ const Order = () => {
 
   return (
     <Wrapper>
-      {/* <h1>주문 번호 : {tempOrderId}</h1> */}
-      {loading && <p>...LOADING...</p>}
-      {error && <p>{error}</p>}
+      <Container_Style>
+        {/* <h1>주문 번호 : {tempOrderId}</h1> */}
+        {loading && <p>...LOADING...</p>}
+        {error && <p>{error}</p>}
 
-      {/* 장바구니 리스트 */}
-      {!loading &&
-      from === "direct" &&
-      Array.isArray(checkedProducts) &&
-      checkedProducts.length > 0
-        ? checkedProducts.map((item) => {
-            const productKey = `product:${product.PRODUCT_NO}:option:${item.OPTION_NO}`;
-            return (
-              <Order_Wrapper key={`direct:${item.OPTION_NO}`}>
-                <p>상품명: {product.PRODUCT_NAME}</p>
-                <p>옵션명: {item.OPTION_TITLE}</p>
-                <p>수량: {item.quantity}</p>
-                <p>
-                  금액:{" "}
-                  {(product.PRODUCT_PRICE + item.OPTION_PRICE) * item.quantity}
-                  원
-                </p>
-                <Button_Wrapper_100>
-                  <Button
-                    btnTxt="옵션/수량 수정"
-                    onClick={() =>
-                      openEditModal({
-                        ...item,
-                        product_name: product.PRODUCT_NAME,
-                        product_price: product.PRODUCT_PRICE,
-                        product_no: product.PRODUCT_NO,
-                        option_title: item.OPTION_TITLE,
-                        option_price: item.OPTION_PRICE,
-                        option_no: item.OPTION_NO,
-                      })
-                    }
-                  />
-                  <Button
-                    btnTxt="옵션 삭제"
-                    onClick={onRemove(item.OPTION_NO)}
-                  />
-                </Button_Wrapper_100>
-              </Order_Wrapper>
-            );
-          })
-        : !loading && cartItems.length > 0
-        ? cartItems.map((item) => {
-            const productKey = `product:${item.product_no}:option:${item.option_no}`;
-            return (
-              <div key={productKey}>
-                <p>상품명: {item.product_name}</p>
-                <p>옵션명: {item.option_title}</p>
-                <p>수량: {item.quantity}</p>
-                <p>
-                  금액:{" "}
-                  {(item.product_price + item.option_price) * item.quantity}원
-                </p>
-                <Button_Wrapper_100>
-                  <Button
-                    btnTxt="옵션 수정"
-                    onClick={() => openEditModal(item)}
-                  />
-                  <Button
-                    btnTxt="옵션 삭제"
-                    onClick={() => removeFromCart(productKey)}
-                  />
-                </Button_Wrapper_100>
-              </div>
-            );
-          })
-        : !loading && <h2>장바구니가 비어있습니다.</h2>}
+        {/* 장바구니 리스트 */}
+        {!loading &&
+        from === "direct" &&
+        Array.isArray(checkedProducts) &&
+        checkedProducts.length > 0
+          ? checkedProducts.map((item) => {
+              const productKey = `product:${product.PRODUCT_NO}:option:${item.OPTION_NO}`;
+              return (
+                <Order_Wrapper key={`direct:${item.OPTION_NO}`}>
+                  <p>상품명: {product.PRODUCT_NAME}</p>
+                  <p>옵션명: {item.OPTION_TITLE}</p>
+                  <p>수량: {item.quantity}</p>
+                  <p>
+                    금액:{" "}
+                    {(product.PRODUCT_PRICE + item.OPTION_PRICE) *
+                      item.quantity}
+                    원
+                  </p>
+                  <Button_Wrapper_100 className="grid2">
+                    <Button
+                      btnTxt="옵션/수량 수정"
+                      onClick={() =>
+                        openEditModal({
+                          ...item,
+                          product_name: product.PRODUCT_NAME,
+                          product_price: product.PRODUCT_PRICE,
+                          product_no: product.PRODUCT_NO,
+                          option_title: item.OPTION_TITLE,
+                          option_price: item.OPTION_PRICE,
+                          option_no: item.OPTION_NO,
+                        })
+                      }
+                    />
+                    <Button
+                      btnTxt="옵션 삭제"
+                      onClick={onRemove(item.OPTION_NO)}
+                    />
+                  </Button_Wrapper_100>
+                </Order_Wrapper>
+              );
+            })
+          : !loading && cartItems.length > 0
+          ? cartItems.map((item) => {
+              const productKey = `product:${item.product_no}:option:${item.option_no}`;
+              return (
+                <div key={productKey}>
+                  <p>상품명: {item.product_name}</p>
+                  <p>옵션명: {item.option_title}</p>
+                  <p>수량: {item.quantity}</p>
+                  <p>
+                    금액:{" "}
+                    {(item.product_price + item.option_price) * item.quantity}원
+                  </p>
+                  <Button_Wrapper_100>
+                    <Button
+                      btnTxt="옵션 수정"
+                      onClick={() => openEditModal(item)}
+                    />
+                    <Button
+                      btnTxt="옵션 삭제"
+                      onClick={() => removeFromCart(productKey)}
+                    />
+                  </Button_Wrapper_100>
+                </div>
+              );
+            })
+          : !loading && <h2>장바구니가 비어있습니다.</h2>}
 
-      {/* 합계 금액 */}
-      <p>합계 금액 : {totalPrice.toLocaleString()} 원</p>
+        {/* 합계 금액 */}
+        <p>합계 금액 : {totalPrice.toLocaleString()} 원</p>
 
-      {/* 옵션 변경 모달 */}
-      <ReactModal isOpen={isCartModalOpen} onRequestClose={closeEditModal}>
-        {selectedProduct && (
-          <CheckedProduct
-            style={{ flexDirection: "row-reverse" }}
-            mode="order"
-            cartItems={[selectedProduct]}
-            updateCartQuantity={(product_no, quantity) => {
-              if (from === "direct") {
-                setCheckedProducts((prev) =>
-                  prev.map((opt) =>
-                    opt.OPTION_NO === selectedProduct.option_no
-                      ? { ...opt, quantity }
-                      : opt
-                  )
-                );
-              } else {
-                updateCartQuantity(product_no, quantity);
-              }
-            }}
-            removeFromCart={(productKey) => {
-              if (from === "direct") {
-                setCheckedProducts((prev) =>
-                  prev.filter(
-                    (opt) =>
-                      `product:${product.PRODUCT_NO}:option:${opt.OPTION_NO}` !==
-                      productKey
-                  )
-                );
-                setIsCartModalOpen(false);
-              } else {
-                removeFromCart(productKey);
-              }
-            }}
+        {/* 옵션 변경 모달 */}
+        <ReactModal isOpen={isCartModalOpen} onRequestClose={closeEditModal}>
+          {selectedProduct && (
+            <CheckedProduct
+              style={{ flexDirection: "row-reverse" }}
+              mode="order"
+              cartItems={[selectedProduct]}
+              updateCartQuantity={(product_no, quantity) => {
+                if (from === "direct") {
+                  setCheckedProducts((prev) =>
+                    prev.map((opt) =>
+                      opt.OPTION_NO === selectedProduct.option_no
+                        ? { ...opt, quantity }
+                        : opt
+                    )
+                  );
+                } else {
+                  updateCartQuantity(product_no, quantity);
+                }
+              }}
+              removeFromCart={(productKey) => {
+                if (from === "direct") {
+                  setCheckedProducts((prev) =>
+                    prev.filter(
+                      (opt) =>
+                        `product:${product.PRODUCT_NO}:option:${opt.OPTION_NO}` !==
+                        productKey
+                    )
+                  );
+                  setIsCartModalOpen(false);
+                } else {
+                  removeFromCart(productKey);
+                }
+              }}
+            />
+          )}
+        </ReactModal>
+
+        {/* 배송&수령 정보 */}
+        <div>
+          <ShippingAddress
+            title="주문자 정보"
+            data={deliveryInfo}
+            setData={setDeliveryInfo}
           />
-        )}
-      </ReactModal>
+          <label>
+            <input
+              type="checkbox"
+              checked={isSame}
+              onChange={handleCheckboxChange}
+            />{" "}
+            주문자 정보와 동일
+          </label>
+          <ShippingAddress
+            title="받는 사람"
+            data={receiveInfo}
+            setData={setReceiveInfo}
+            isReadOnly={isSame}
+          />
+        </div>
 
-      {/* 배송&수령 정보 */}
-      <div>
-        <ShippingAddress
-          title="주문자 정보"
-          data={deliveryInfo}
-          setData={setDeliveryInfo}
-        />
-        <label>
-          <input
-            type="checkbox"
-            checked={isSame}
-            onChange={handleCheckboxChange}
-          />{" "}
-          주문자 정보와 동일
-        </label>
-        <ShippingAddress
-          title="받는 사람"
-          data={receiveInfo}
-          setData={setReceiveInfo}
-          isReadOnly={isSame}
-        />
-      </div>
-
-      {/* 결제/취소 */}
-      <Button_Wrapper_100 className="grid2">
-        <Button btnTxt="결제하기" onClick={goToPayment} />
-        <Button btnTxt="돌아가기" onClick={goToHome} />
-      </Button_Wrapper_100>
+        {/* 결제/취소 */}
+        <Button_Wrapper_100 className="grid2">
+          <Button btnTxt="결제하기" onClick={goToPayment} />
+          <Button btnTxt="돌아가기" onClick={goToHome} />
+        </Button_Wrapper_100>
+      </Container_Style>
     </Wrapper>
   );
 };
