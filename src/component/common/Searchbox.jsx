@@ -1,15 +1,34 @@
-import React from "react";
-import { Container_Style, Title, Input_Box } from "../../style/Common_Style";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Container_Style, Input_Box, Title } from "../../style/Common_Style";
 import { Search_Box } from "../../style/SearchBox_Style";
-import TextInput from "./TextInput";
 import Button from "./Button";
+import TextInput from "./TextInput";
 
-// 메인페이지, 커뮤니티 사용예정
-const onSearch = (value) => {
-  console.log(value);
-};
+const Searchbox = () => {
+  const [keyword, setKeyword] = useState("");
+  const [results, setResults] = useState([]);
+  const [error, setError] = useState(null);
 
-const Searchbox = ({ onSearch }) => {
+  const searchHandleChange = (e) => {
+    setKeyword(e.target.value);
+  }
+
+  const searchProduct = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8080/api/search`, {
+        params: { keyword }
+      });
+      console.log("검색결과:", res.data);
+    } catch (err) {
+      setError("검색 중 오류 발생");
+    }
+  };
+
+  useEffect(() => {
+    searchProduct();
+  }, []);
+
   return (
     <Container_Style>
       <Title>SEARCH</Title>
@@ -17,11 +36,13 @@ const Searchbox = ({ onSearch }) => {
         <Input_Box>
           <TextInput
             type="search"
+            name="keyword"
             placeholder="검색어 입력"
-            onChange={(e) => onSearch(e.target.value)}
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
           />
         </Input_Box>
-        <Button btnTxt={"검색"}>검색</Button>
+        <Button onClick={searchProduct} btnTxt="검색" />
       </Search_Box>
     </Container_Style>
   );

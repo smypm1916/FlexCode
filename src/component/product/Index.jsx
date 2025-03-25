@@ -1,12 +1,12 @@
 import React from "react";
 import Header from "../common/Header";
-import Searchbox from "../common/Searchbox";
 import Category from "./Category";
 import EventBanner from "./EventBanner";
 import Pick from "./Pick";
 import ProductLists from "./ProductLists";
 
 import { Wrapper } from "../../style/Common_Style";
+import Searchbox from "../common/Searchbox";
 
 const Index = () => {
   return (
@@ -14,8 +14,8 @@ const Index = () => {
       <Header />
       <EventBanner />
       <Pick />
-      <Category />
       <Searchbox />
+      <Category />
       <ProductLists />
     </Wrapper>
   );

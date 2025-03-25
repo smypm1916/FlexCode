@@ -189,206 +189,204 @@ const ProductInfo = () => {
     }
   };
 
-  // 상품 옵션 취득
-  const fetchOptions = async (product_no) => {
-    if (!product_no || isNaN(product_no)) {
-      console.error("잘못된 product_no:", product_no);
-      setLoading(false);
-      setError("잘못된 상품 번호입니다.");
-      return;
-    }
-    try {
-      const resOptions = await axios.get(
-        `${API_BASE_URL}/options/detail/${product_no}`,
-        {
-          withCredentials: true,
-          headers: { Accept: "application/json" },
-        }
-      );
-      if (resOptions.data?.success) {
-        setOptions(resOptions.data.data || []);
+   // 상품 옵션 취득
+   const fetchOptions = async (product_no) => {
+      if (!product_no || isNaN(product_no)) {
+         console.error("잘못된 product_no:", product_no);
+         setLoading(false);
+         setError("잘못된 상품 번호입니다.");
+         return;
       }
-    } catch (error) {
-      console.error("detail option load error", error);
-      setError(error.message);
-    }
-  };
+      try {
+         const resOptions = await axios.get(
+            `${API_BASE_URL}/options/detail/${product_no}`, {
+            withCredentials: true,
+            headers: { Accept: "application/json" }
+         },
+         );
+         if (resOptions.data?.success) {
+            setOptions(resOptions.data.data || []);
+         }
+      } catch (error) {
+         console.error("detail option load error", error);
+         setError(error.message);
+      }
+   };
 
-  // 장바구니 모달 닫기
-  const closeCartModal = () => {
-    dProducts([]);
-    setIsCartModalOpen(false);
-  };
+   // 장바구니 모달 닫기
+   const closeCartModal = () => {
+      dProducts([]);
+      setIsCartModalOpen(false);
+   };
 
-  // 주문 페이지로 이동
-  const goToOrder = () => {
-    const currentOrderId = localTempOrderId || tempOrderId;
-    if (!currentOrderId) {
-      alert("장바구니가 비어있거나 아직 주문정보가 준비되지 않았습니다.");
-      return;
-    }
-    navigate(`/order/${currentOrderId}`, {
-      state: {
-        from: "direct",
-        product,
-        checkedProducts,
-      },
-    });
-  };
+   // 주문 페이지로 이동
+   const goToOrder = () => {
+      const currentOrderId = localTempOrderId || tempOrderId;
+      if (!currentOrderId) {
+         alert("장바구니가 비어있거나 아직 주문정보가 준비되지 않았습니다.");
+         return;
+      }
+      navigate(`/order/${currentOrderId}`, {
+         state: {
+            from: "direct",
+            product,
+            checkedProducts,
+         },
+      });
+   };
 
-  // product_no 변경 시 상품 정보 로드
-  useEffect(() => {
-    if (!product_no) {
-      console.error("product_no 필요");
-      return;
-    }
-    const loadProductData = async () => {
-      console.log("제품 코드:", product_no);
-      setLoading(true);
-      await Promise.all([
-        fetchProductDetail(product_no),
-        fetchOptions(product_no),
-      ]);
-      setLoading(false);
-    };
-    loadProductData();
-  }, [product_no]);
+   // product_no 변경 시 상품 정보 로드
+   useEffect(() => {
+      if (!product_no) {
+         console.error("product_no 필요");
+         return;
+      }
+      const loadProductData = async () => {
+         console.log("제품 코드:", product_no);
+         setLoading(true);
+         await Promise.all([fetchProductDetail(product_no), fetchOptions(product_no)]);
+         setLoading(false);
+      };
+      loadProductData();
+   }, [product_no]);
 
+<<<<<<< HEAD
   if (loading) return <System_message>Loading...</System_message>;
   if (error) return <System_message>Error...</System_message>;
+=======
+   if (loading) return <p>Loading...</p>;
+   if (error) return <p>Error...</p>;
+>>>>>>> 64c587fe394caa1f7a079ce05050f0887b0f0bc4
 
-  return (
-    <Wrapper>
-      <Container_Style>
-        <Container01>
-          {/* 이미지 */}
-          <Image_Wrapper>
-            <img
-              src={`${imgPath}/${product?.PRODUCT_IMG}`}
-              alt={product?.PRODUCT_NAME}
-            />
-          </Image_Wrapper>
+   return (
+      <Wrapper>
+         <Container_Style>
+            <Container01>
+               {/* 이미지 */}
+               <Image_Wrapper>
+                  <img src={`${imgPath}/${product?.PRODUCT_IMG}`} alt={product?.PRODUCT_NAME} />
+               </Image_Wrapper>
 
-          {/* 상품정보 */}
-          <Product_Wrapper>
-            <Text_wrapper>
-              <Text_box>
-                <Title>카 테 고 리</Title>
-                <Text>{product.PRODUCT_TYPE}</Text>
-              </Text_box>
-              <Text_box>
-                <Title>상 품 명</Title>
-                <Text>{product.PRODUCT_NAME}</Text>
-              </Text_box>
-              <Text_box>
-                <Title>판매 가격</Title>
-                <Text>{product.PRODUCT_PRICE} 원</Text>
-              </Text_box>
+               {/* 상품정보 */}
+               <Product_Wrapper>
+                  <Text_wrapper>
+                     <Text_box>
+                        <Text>카 테 고 리</Text>
+                        <Title>{product.PRODUCT_TYPE}</Title>
+                     </Text_box>
+                     <Text_box>
+                        <Text>상 품 명</Text>
+                        <Product_Title>{product.PRODUCT_NAME}</Product_Title>
+                     </Text_box>
+                     <Text_box>
+                        <Title>판매 가격</Title>
+                        <Text>{product.PRODUCT_PRICE} 원</Text>
+                     </Text_box>
 
-              {/* 옵션 선택 */}
-              <Select
-                className={"optionName"}
-                options={[
-                  { value: "", label: "옵션 선택" },
-                  ...options.map((opt) => ({
-                    value: opt.OPTION_NO,
-                    label: `${opt.OPTION_TITLE} (+${opt.OPTION_PRICE} 원)`,
-                  })),
-                ]}
-                onChange={optionHandler}
-                defaultValue=""
-              />
+                     {/* 옵션 선택 */}
+                     <Select
+                        className={"optionName"}
+                        options={[
+                           { value: "", label: "옵션 선택" },
+                           ...options.map((opt) => ({
+                              value: opt.OPTION_NO,
+                              label: `${opt.OPTION_TITLE} (+${opt.OPTION_PRICE} 원)`,
+                           }))
+                        ]}
+                        onChange={optionHandler}
+                        defaultValue=""
+                     />
 
-              {/* 수량 선택 (옵션 선택 시에만 표시) */}
-              {currentOption && (
-                <Product_Wrapper>
-                  <Wrapper_BucketInfo>
-                    <div>
-                      <Title>{currentOption.OPTION_TITLE}</Title>
-                      <Text>+{currentOption.OPTION_PRICE} 원</Text>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <Select
-                        options={Array.from({ length: 10 }, (_, i) => ({
-                          value: i + 1,
-                          label: `${i + 1}개`,
-                        }))}
-                        onChange={handleQuantityChange}
-                        defaultValue={1}
-                      />
-                      <Button btnTxt="추가" onClick={addOptionHandler} />
-                    </div>
-                  </Wrapper_BucketInfo>
-                </Product_Wrapper>
-              )}
+                     {/* 수량 선택 (옵션 선택 시에만 표시) */}
+                     {currentOption && (
+                        <div style={{ marginTop: '10px' }}>
+                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                              <div>
+                                 <Title>{currentOption.OPTION_TITLE}</Title>
+                                 <Text>+{currentOption.OPTION_PRICE} 원</Text>
+                              </div>
+                              <div style={{ display: 'flex', alignItems: 'center' }}>
+                                 <Select
+                                    options={Array.from({ length: 10 }, (_, i) => ({
+                                       value: i + 1,
+                                       label: `${i + 1}개`
+                                    }))}
+                                    onChange={handleQuantityChange}
+                                    defaultValue={1}
+                                 />
+                                 <Button
+                                    btnTxt="장바구니 추가"
+                                    onClick={addOptionHandler}
+                                 />
+                              </div>
+                           </div>
+                        </div>
+                     )}
 
-              {/* 선택된 옵션 표시 */}
-              {checkedProducts.length > 0 && (
-                <CheckedProduct
-                  mode="detail"
-                  product={product}
-                  options={checkedProducts}
-                  quantityHandler={quantityHandler}
-                  onRemove={onRemove}
-                />
-              )}
-            </Text_wrapper>
+                     {/* 선택된 옵션 표시 */}
+                     {checkedProducts.length > 0 && (
+                        <CheckedProduct
+                           mode='detail'
+                           product={product}
+                           options={checkedProducts}
+                           quantityHandler={quantityHandler}
+                           onRemove={onRemove}
+                        />
+                     )}
+                  </Text_wrapper>
 
-            {/* 버튼 */}
-            <Button_Wrapper_100 className="grid2">
-              <Button onClick={goToOrder} btnTxt="바로구매" />
-              <Button
-                onClick={addToCartHandler}
-                disabled={cartLoading || checkedProducts.length === 0}
-                btnTxt="장바구니"
-              />
-              {/* 장바구니 모달 출현 */}
-            </Button_Wrapper_100>
-          </Product_Wrapper>
-        </Container01>
+                  {/* 버튼 */}
+                  <Button_Wrapper_100>
+                     <Button onClick={goToOrder} btnTxt="바로구매" />
+                     <Button onClick={addToCartHandler} disabled={cartLoading || checkedProducts.length === 0}
+                        btnTxt="장바구니" />
+                     {/* 장바구니 모달 출현 */}
+                  </Button_Wrapper_100>
+               </Product_Wrapper>
+            </Container01>
 
-        <Divide_Box>
-          <Title>PRODUCT IMAGE</Title>
-        </Divide_Box>
+            <Divide_Box>
+               <Title>PRODUCT IMAGE</Title>
+            </Divide_Box>
 
-        {/* 컨테이너 2 */}
-        <Container02>
-          <Image_Wrapper>
-            <img src="src/style/img/shirts.png" alt="" />
-            <img src="src/style/img/shirts.png" alt="" />
-            <img src="src/style/img/shirts.png" alt="" />
-          </Image_Wrapper>
-        </Container02>
+            {/* 컨테이너 2 */}
+            <Container02>
+               <Image_Wrapper>
+                  <img src="src/style/img/shirts.png" alt="" />
+                  <img src="src/style/img/shirts.png" alt="" />
+                  <img src="src/style/img/shirts.png" alt="" />
+               </Image_Wrapper>
+            </Container02>
 
-        <Divide_Box>
-          <p>DETAIL INFO</p>
-        </Divide_Box>
+            <Divide_Box>
+               <p>DETAIL INFO</p>
+            </Divide_Box>
 
-        {/* 컨테이너 3 - 상세 정보 */}
-        <Container03>
-          <Info_Wrapper>
-            <Info_Title>
-              <p>상세 정보</p>
-            </Info_Title>
-            <Info_Text>
-              <Info_Text_Box>
-                <p>RCS 인증된 재활용 폴리에스터</p>
-                <Info_Wrapper>
-                  <p>RCS(Recycled Claim Standard) 인증 설명</p>
-                </Info_Wrapper>
-              </Info_Text_Box>
-            </Info_Text>
-          </Info_Wrapper>
-        </Container03>
-      </Container_Style>
+            {/* 컨테이너 3 - 상세 정보 */}
+            <Container03>
+               <Info_Wrapper>
+                  <Info_Title>
+                     <p>상세 정보</p>
+                  </Info_Title>
+                  <Info_Text>
+                     <Info_Text_Box>
+                        <p>RCS 인증된 재활용 폴리에스터</p>
+                        <Info_Wrapper>
+                           <p>RCS(Recycled Claim Standard) 인증 설명</p>
+                        </Info_Wrapper>
+                     </Info_Text_Box>
+                  </Info_Text>
+               </Info_Wrapper>
+            </Container03>
+         </Container_Style>
 
-      {/* 장바구니 추가 모달 */}
-      <CartModal
-        isOpen={isCartModalOpen}
-        onClose={closeModal}
-        goToOrder={goToOrder}
-      />
-    </Wrapper>
-  );
+         {/* 장바구니 추가 모달 */}
+         <CartModal
+            isOpen={isCartModalOpen}
+            onClose={closeModal}
+            goToOrder={goToOrder}
+         />
+      </Wrapper>
+   );
 };
 export default ProductInfo;
