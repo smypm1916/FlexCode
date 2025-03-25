@@ -11,7 +11,6 @@ import DeleteUserCheck from "./component/myPage/DeleteUserCheck";
 import Order from "./component/order/Order";
 import OrderComplete from "./component/order/OrderComplete";
 import Index from "./component/product/Index";
-// import ProductDetail from "./component/product/ProductDetail";
 import ScrollToTop from "./component/common/ScrollToTop";
 import ModifyUserProfile from "./component/myPage/ModifyUserProfile";
 import MyPageMain from "./component/myPage/MyPageMain";
@@ -31,7 +30,10 @@ function App() {
         <Route path="/" element={<Index />} />
         <Route path="/detail/:product_no" element={<ProductInfo />} />
         <Route path="/order/:tempOrderId" element={<Order />} />
-        <Route path="/order-complete/:tempOrderId" element={<OrderComplete />} />
+        <Route
+          path="/order-complete/:tempOrderId"
+          element={<OrderComplete />}
+        />
         <Route path="/community" element={<CmMain />} />
         <Route path="/CmAdd" element={<CmAdd />} />
         <Route path="/CmDetail/:id" element={<CmDetail />} />

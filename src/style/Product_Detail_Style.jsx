@@ -130,3 +130,26 @@ export const Info_Text_Box = styled.div`
   grid-template-columns: 1fr 5fr;
   padding: 10px 0;
 `;
+
+export const Container_Bucket = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid black;
+`;
+
+export const Bucket_option = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  input {
+    border: none;
+  }
+
+  input::focus {
+    outline: none;
+  }
+
+  Button {
+    border: none;
+  }
+`;

@@ -29,7 +29,8 @@ import {
   Text_box,
   Text_wrapper,
   Title,
-} from "../../style/Product_detail_style";
+} from "../../style/Product_Detail_Style";
+import { System_message } from "../../style/ProductLists_Style";
 
 const ProductInfo = () => {
   const { product_no } = useParams();
@@ -253,8 +254,8 @@ const ProductInfo = () => {
     loadProductData();
   }, [product_no]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error...</p>;
+  if (loading) return <System_message>Loading...</System_message>;
+  if (error) return <System_message>Error...</System_message>;
 
   return (
     <Wrapper>

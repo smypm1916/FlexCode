@@ -99,7 +99,6 @@ export const Container_Style = styled.div`
   align-itmes: center;
   margin: 0 auto;
   flex-wrap: wrap;
-  overflow: hidden;
 
   &.RegComplete {
     height: 300px;
@@ -211,15 +210,23 @@ export const Container_Modal = styled.div`
   top: 0;
   width: 100vw;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.25); /* 반투명 배경 */
   backdrop-filter: blur(5px); /* 배경 블러 효과 */
-  z-index: 1000; /* 다른 요소들 위에 배치 */
+  z-index: 500; /* 다른 요소들 위에 배치 */
   flex-wrap: wrap;
   transition: ;
+
+  ReactModal {
+    display: flex;
+    position: absolute;
+    z-index: 600;
+    width: fit-content;
+    height: fit-content;
+  }
 `;
 
 export const Input_Box = styled.div`
