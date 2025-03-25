@@ -7,6 +7,7 @@ import {
   Pagination_List,
   Search_Box,
   Container01,
+  Chat_icon,
 } from "../../style/Community_Style";
 import Button from "../common/Button";
 import {
@@ -23,6 +24,8 @@ import {
 } from "../../style/Common_Style";
 import TextInput from "../common/TextInput";
 import CmPost from "./CmPost";
+import { jwtDecode } from "jwt-decode";
+import LoginModal from "../account/LoginModal";
 
 const CmMain = () => {
   const navigate = useNavigate();
@@ -33,7 +36,9 @@ const CmMain = () => {
   const [posts, setPosts] = useState([]);
   const [paginatedPosts, setPaginatedPosts] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
-
+  const [nickname, setNickname] = useState("");
+  const imgPath = import.meta.env.VITE_IMG_PATH;
+  const [showModal, setShowModal] = useState(false);
   const filterPosts = () => {
     if (posts.length === 0) return [];
     // 12 - 3 * (1-1)    start = 12
@@ -90,8 +95,32 @@ const CmMain = () => {
     console.log(posts);
   }, [posts, pageNum]);
 
+  const openChat = () => {
+    const storedToken = sessionStorage.getItem("token");
+    if (!storedToken) {
+      alert("로그인이 필요합니다");
+      setShowModal(true);
+    } else {
+      try {
+        const decoded = jwtDecode(storedToken);
+        setNickname(decoded.nickname);
+        console.log("----=-=-=-=-=-=-=-=-=-=-=-=-=-");
+        console.log(nickname);
+        console.log("----=-=-=-=-=-=-=-=-=-=-=-=-=-");
+        if (nickname !== "") {
+          const url = `http://localhost:3000/chat?name=${nickname}&room=SelectNo`; // id를 포함한 URL 생성
+          window.open(url, "_blank"); // 새 탭에서 열기
+        }
+      } catch (error) {
+        console.error("커뮤 작성 토큰 디코딩 실패 :", error);
+        localStorage.removeItem("token");
+      }
+    }
+  };
+
   return (
     <Wrapper className="cm" id="community">
+      {showModal && <LoginModal onClose={() => setShowModal(false)} />}
       <Container_Style>
         <Container01>상단 광고</Container01>
         <Input_Wrapper>
@@ -117,6 +146,9 @@ const CmMain = () => {
             </Button>
           </Search_Box>
         </Input_Wrapper>
+        <Chat_icon>
+          <img onClick={openChat} src={`${imgPath}/Chat_icon.png`} />
+        </Chat_icon>
         {posts.length > 0 ? (
           paginatedPosts.map((post) => (
             <CmPost key={post.COMMUNITY_NO} post={post} />

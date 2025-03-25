@@ -9,11 +9,11 @@ router.get("/paging", cmController.getPosts);
 // 글 등록
 router.post("/write", upload.single("community_img"), cmController.cmAdd);
 
-// 글 서치
-// router.get("/search", cmController.searchPosts);
-
 // 글 상세페이지
 router.get(`/DetailPage/:id`, cmController.detailPost);
+
+//조회수 증가
+router.post("/increaseView/:id", cmController.increaseViewCount);
 
 // 글 삭제
 router.delete(`/delete/:id`, cmController.deletePost);
