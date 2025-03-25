@@ -149,7 +149,7 @@ app.use("/api/users", userRouter);
 app.use("/api/post", cmRouter);
 app.use("/api/options", optionRouter);
 app.use("/api/cart", cartRouter(redisClient));
-app.use('api/search', searchRouter);
+app.use('/api/search', searchRouter);
 
 
 
