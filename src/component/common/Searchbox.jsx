@@ -4,7 +4,7 @@ import { Search_Box } from "../../style/SearchBox_Style";
 import Button from "./Button";
 import TextInput from "./TextInput";
 
-const Searchbox = ({ onSearch }) => {
+const Searchbox = ({ onSearch, onReset }) => {
   const [keyword, setKeyword] = useState("");
 
   const handleSearch = () => {
@@ -25,6 +25,10 @@ const Searchbox = ({ onSearch }) => {
           />
         </Input_Box>
         <Button onClick={handleSearch} btnTxt="검색" />
+        <Button onClick={() => {
+          setKeyword("");
+          onReset();
+        }} btnTxt="초기화" />
       </Search_Box>
     </Container_Style>
   );

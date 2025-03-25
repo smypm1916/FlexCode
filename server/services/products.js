@@ -1,15 +1,25 @@
 const productModel = require('../models/product_info');
 
 // 상품 리스트 조회
-async function getAllProducts(page, limit) {
+async function getAllProducts(page, limit, keyword, category) {
    try {
-      console.log(`Fetching products for page(S): ${page}, limit: ${limit}`);
-      return await productModel.getAllProducts(page, limit);
+      return await productModel.getAllProducts(page, limit, keyword, category);
    } catch (error) {
       console.error('service error', error);
       throw error;
    }
 }
+
+
+// async function getAllProducts(page, limit) {
+//    try {
+//       console.log(`Fetching products for page(S): ${page}, limit: ${limit}`);
+//       return await productModel.getAllProducts(page, limit);
+//    } catch (error) {
+//       console.error('service error', error);
+//       throw error;
+//    }
+// }
 
 // 상품 상세
 async function getProductDetail(product_no) {

@@ -43,6 +43,17 @@ const Index = () => {
     }
   }, [page, loading, searchKeyword, selectedCategory, hasMore]);
 
+  // 검색 초기화
+  const handleResetSearch = () => {
+    setSearchKeyword("");        // 검색어 초기화
+    setSelectedCategory("");     // 카테고리도 초기화할지 선택
+    setPage(1);                  // 페이지 초기화
+    setHasMore(true);            // 다시 무한 스크롤 활성화
+    setProducts([]);             // 기존 리스트 제거
+
+    // 상태 변경 후 useEffect가 fetchProducts(true) 호출
+  };
+
   // 최초 로딩 시 상품 데이터 불러오기
   useEffect(() => {
     fetchProducts(true);
@@ -54,12 +65,13 @@ const Index = () => {
       <EventBanner />
       <Pick />
       <Searchbox onSearch={(keyword) => {
-        setSearchKeyword(keyword);
         setSelectedCategory(""); // 검색하면 카테고리 초기화
+        setSearchKeyword(keyword);
+        onReset = { handleResetSearch }
       }} />
       <Category onSelectCategory={(category) => {
-        setSelectedCategory(category);
         setSearchKeyword(""); // 카테고리 선택하면 검색 초기화
+        setSelectedCategory(category);
       }} />
       <ProductLists
         products={products}
