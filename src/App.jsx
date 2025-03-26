@@ -15,10 +15,12 @@ import UserCommunityAdd from "./component/myPage/UserCommunityAdd";
 import UserCommunityDetail from "./component/myPage/UserCommunityDetail";
 import UserCommunityList from "./component/myPage/UserCommunityList";
 import UserOrderList from "./component/myPage/UserOrderList";
+import UserOrderDetail from "./component/myPage/UserOrderDetail";
 import Order from "./component/order/Order";
 import OrderComplete from "./component/order/OrderComplete";
 import Index from "./component/product/Index";
 import ProductInfo from "./component/product/ProductInfo";
+import Team from "./component/common/Team";
 
 function App() {
   return (
@@ -28,6 +30,7 @@ function App() {
       {/* 루팅 */}
       <Routes>
         <Route path="/" element={<Index />} />
+        <Route path="/team" element={<Team />} />
         <Route path="/detail/:product_no" element={<ProductInfo />} />
         <Route path="/order/:tempOrderId" element={<Order />} />
         <Route path="/order-complete/:orderNo" element={<OrderComplete />} />
@@ -40,9 +43,13 @@ function App() {
         <Route path="/modifyUser" element={<ModifyUserProfile />} />
         <Route path="/deleteAccount" element={<DeleteUserCheck />} />
         <Route path="/userCommunity-list" element={<UserCommunityList />} />
-        <Route path="/userCommunity_detail/:id" element={<UserCommunityDetail />} />
+        <Route
+          path="/userCommunity_detail/:id"
+          element={<UserCommunityDetail />}
+        />
         <Route path="/userCommunity_add" element={<UserCommunityAdd />} />
         <Route path="/userOrder-list" element={<UserOrderList />} />
+        <Route path="userOrder_detail/:id" element={<UserOrderDetail />} />
       </Routes>
       {/* 루팅 */}
 

@@ -467,6 +467,71 @@ const getUserOrders = async (email) => {
   }
 };
 
+// 회원 구매내역 상세 조회
+const getUserOrderDetail = async (order_no) => {
+  try {
+    console.log("조회대상 구매내역:", order_no);
+
+    const query = `SELECT 
+    oi.order_no,
+    oi.total_price,
+    oi.order_date,
+    oi.order_state,
+    JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'product_no' : oi2.product_no,
+            'product_quantity' : oi2.product_quantity,
+            'product_name' : pi.product_name,
+            'product_img' : pi.product_img,
+            'product_price' : oi2.product_price,
+            'option_price' : oi2.option_price,
+            'option_name' : pi2.option_title
+        )
+    ) AS items
+FROM order_info oi
+JOIN order_items oi2 ON oi.order_no = oi2.order_no
+JOIN product_info pi ON oi2.product_no = pi.product_no
+JOIN product_option pi2 ON oi2.option_no = pi2.option_no
+WHERE oi.order_no = :order_no
+GROUP BY oi.order_no, oi.total_price, oi.order_date, oi.order_state
+ORDER BY oi.order_date DESC`;
+    const result = await userExecuteQuery(query, { order_no });
+
+    const rows = result.rows;
+
+    if (!Array.isArray(rows) || rows.length === 0) {
+      console.log("조회 실패");
+      return { success: false, message: "구매내역 상세 조회 실패" };
+    }
+    return { success: true, result };
+  } catch (error) {
+    console.error("구매내역 상세 조회 서비스 오류:", error);
+    throw new Error("구매내역 상세 조회 처리 중 오류가 발생했습니다.");
+  }
+};
+
+// 회원 구매내역 상태 변경
+const updateOrderState = async (order_no) => {
+  try {
+    console.log("변경대상 구매번호:", order_no);
+
+    const query = `update order_info set order_state = 1 where order_no =: order_no`;
+    const result = await userExecuteQuery(query, { order_no });
+
+    const rowsAffected = result.rowsAffected;
+
+    if (!rowsAffected || rowsAffected === 0) {
+      console.log("수정 실패");
+      return { success: false, message: "구매내역 상태 수정 실패" };
+    }
+
+    return { success: true, message: "구매내역 상태 수정 성공" };
+  } catch (error) {
+    console.error("구매내역 상태 변경 서비스 오류:", error);
+    throw new Error("구매내역 상태 변경 처리 중 오류가 발생했습니다.");
+  }
+};
+
 module.exports = {
   checkEmail,
   checkNickname,
@@ -481,4 +546,6 @@ module.exports = {
   deleteUserAccount,
   getUserCommunitys,
   getUserOrders,
+  getUserOrderDetail,
+  updateOrderState,
 };

@@ -75,7 +75,7 @@ const CmAdd = () => {
   };
 
   return (
-    <Wrapper className="wrap" id="add">
+    <Wrapper className="wrap nomargin" id="add">
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}
       <form onSubmit={handleSubmit}>
         <Container_Style>
@@ -122,12 +122,12 @@ const CmAdd = () => {
               />
             </Input_Box>
           </Input_Wrapper>
-          <Button_Wrapper_100>
-            <Button btnTxt={"뒤로가기"} onClick={() => navigate("/community")}>
-              뒤로가기
-            </Button>
+          <Button_Wrapper_100 className="grid2">
             <Button onClick={handleSubmit} btnTxt={"글쓰기"}>
               글쓰기
+            </Button>
+            <Button btnTxt={"뒤로가기"} onClick={() => navigate("/community")}>
+              뒤로가기
             </Button>
           </Button_Wrapper_100>
         </Container_Style>

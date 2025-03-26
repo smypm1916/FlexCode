@@ -332,6 +332,62 @@ const getUserOrders = async (req, res) => {
   }
 };
 
+// 회원 구매내역 상세조회
+const getUserOrderDetail = async (req, res) => {
+  try {
+    const { order_no } = req.query;
+
+    console.log("구매내역 상세 조회 요청:", order_no);
+
+    if (!order_no) {
+      return res
+        .status(400)
+        .json({ success: false, message: "구매번호 전달 실패" });
+    }
+
+    const result = await userService.getUserOrderDetail(order_no);
+
+    if (result.success) {
+      console.log("구매내역 상세 조회 성공:", result);
+      return res.status(200).json(result);
+    } else {
+      console.log("구매내역 상세 조회 실패:", result);
+      return res.status(200).json(result);
+    }
+  } catch (error) {
+    console.error("구매내역 상세 조회 컨트롤러 오류:", error);
+    res.status(500).json({ success: false, message: "서버 오류 발생" });
+  }
+};
+
+// 회원 구매내역 주문상태 변경
+const updateOrderState = async (req, res) => {
+  try {
+    const { order_no } = req.query;
+
+    console.log("구매내역 주문상태 변경 요청:", order_no);
+
+    if (!order_no) {
+      return res
+        .status(400)
+        .json({ success: false, message: "구매번호 전달 실패" });
+    }
+
+    const result = await userService.updateOrderState(order_no);
+
+    if (result.success) {
+      console.log("구매내역 상태 변경 성공:", result);
+      return res.status(200).json(result);
+    } else {
+      console.log("구매내역 상태 변경 실패:", result);
+      return res.status(200).json(result);
+    }
+  } catch (error) {
+    console.error("구매내역 상태 변경 컨트롤러 오류:", error);
+    res.status(500).json({ success: false, message: "서버 오류 발생" });
+  }
+};
+
 module.exports = {
   checkEmail,
   checkNickname,
@@ -346,4 +402,6 @@ module.exports = {
   deleteUserAccount,
   getUserCommunitys,
   getUserOrders,
+  getUserOrderDetail,
+  updateOrderState,
 };

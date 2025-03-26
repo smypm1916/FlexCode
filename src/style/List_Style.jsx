@@ -12,15 +12,27 @@ export const Profile_Img = styled.div`
   overflow: hidden;
 
   img {
-    width: 100%;
+    width: -webkit-fill-available;
+    width: -moz-available;
+  }
+
+  &.mypageProfile {
+    width: 100px;
+    height: 100px;
   }
 `;
 
 export const List_Column = styled.div`
-  width: 100%;
+  width: -webkit-fill-available;
+  width: -moz-available;
   display: grid;
   grid-template-columns: 1fr 3fr 2fr 2fr;
   align-items: center;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1);
+  &.statusBox {
+    padding: 10px;
+  }
 `;
 
 export const List_Profile = styled.div`

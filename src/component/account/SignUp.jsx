@@ -17,7 +17,7 @@ import TextInput from "../common/TextInput";
 import PostCodeModal from "./PostCodeModal";
 
 import { Navigate } from "react-router-dom";
-import { Button_Wrapper } from "../../style/Product_detail_style";
+import { Button_Wrapper } from "../../style/Product_Detail_Style";
 import {
   Email_Box,
   Email_Input,
@@ -351,8 +351,8 @@ const SignUp = () => {
   };
 
   return (
-    <Wrapper className="cm" id="register">
-      <Container_Style>
+    <Wrapper className="wrap marginTop" id="register">
+      <Container_Style className="wrap">
         <div className="signUp-title">
           <h2>회원가입</h2>
         </div>
@@ -449,8 +449,8 @@ const SignUp = () => {
             />
           </Email_Input>
           {/*이메일 중복 확인 결과 출력 */}
-          {emailCheckResult !== null && <p>{emailCheckResult}</p>}
         </Input_Wrapper>
+        {emailCheckResult !== null && <p>{emailCheckResult}</p>}
         <Input_Wrapper>
           <div className="signUp-pw-label">
             <label>비밀번호</label>
@@ -572,7 +572,7 @@ const SignUp = () => {
           <Button
             className={"cancel"}
             btnTxt={"취소"}
-            onClick={() => Navigate("/")}
+            onClick={() => navigate("/")}
           />
         </Button_Wrapper>
       </Container_Style>

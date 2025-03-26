@@ -119,10 +119,12 @@ const CmMain = () => {
   };
 
   return (
-    <Wrapper className="wrap" id="community">
+    <Wrapper className="wrap marginTop" id="community">
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}
       <Container_Style>
-        <Container01>상단 광고</Container01>
+        <Container01>Brand New Launch, We are GENDERLESS</Container01>
+      </Container_Style>
+      <Container_Style>
         <Input_Wrapper>
           <div className="search-select">
             <Select

@@ -18,6 +18,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import FileUpload from "../common/FileUpload";
 import { jwtDecode } from "jwt-decode";
+import { System_message } from "../../style/ProductLists_Style";
 
 const CmDetail = () => {
   const storedToken = sessionStorage.getItem("token");
@@ -115,13 +116,13 @@ const CmDetail = () => {
     fetchPost(id);
   }, [id, updateTrigger]);
   if (!post) {
-    return <div>Loading...</div>;
+    return <System_message className="Inner_con">Loading...</System_message>;
   }
 
   return (
-    <Wrapper className="wrap" id="post">
+    <Wrapper className="wrap nomargin" id="post">
       <form onSubmit={handleSubmit}>
-        <Container_Style>
+        <Container_Style className="wrap">
           <List_Profile>
             <Profile_Img>
               <img src={`${imgPath}/${post.USER_PROFILE}`} />

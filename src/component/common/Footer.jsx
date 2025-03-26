@@ -1,26 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 const FooterContainer = styled.div`
-  width: 100%;
-`;
-const Ffooter = styled.div`
-  width: 100%;
+  padding: 20px;
+  width: 100vw;
   height: 100px;
-  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   color: black;
-  transition: all 0.5s;
+  font-size: 10pt;
   border-top: 1px solid black;
-  font-size: 15pt;
-  font-weight: bold;
+  transition: all 0.5s;
   &:hover {
-    font-size: 20pt;
     background-color: #d9d9d9;
   }
 `;
 
 const Footer_Content = styled.div`
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,9 +27,10 @@ const Footer_Content = styled.div`
 const Footer = () => {
   return (
     <FooterContainer>
-      <Ffooter>
-        <Footer_Content>팀원 : 윤성민, 박채은, 함유진, 이민재</Footer_Content>
-      </Ffooter>
+      <Footer_Content>2025 Final Project</Footer_Content>
+      <Footer_Content>
+        © 2025 Your Company Name. All rights reserved.
+      </Footer_Content>
     </FooterContainer>
   );
 };
