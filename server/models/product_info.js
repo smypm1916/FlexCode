@@ -13,19 +13,33 @@ const { executeQuery, dbConfig } = require('../config/oracledb');
  */
 
 //  상품 전체 조회
-async function getAllProducts(page, limit) {
+async function getAllProducts(page, limit, keyword = "", category = "") {
   const offset = Math.max((Number(page) - 1) * Number(limit), 0);
-  const query = `SELECT * FROM PRODUCT_INFO OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY`;
-  const binds = { offset, limit };
+
+  let query = `SELECT * FROM PRODUCT_INFO WHERE 1=1`;
+  const binds = {};
+
+  if (keyword) {
+    query += ` AND UPPER(PRODUCT_NAME) LIKE UPPER(:keyword)`;
+    binds.keyword = `%${keyword}%`;
+  }
+
+  if (category) {
+    query += ` AND PRODUCT_TYPE = :category`;
+    binds.category = category;
+  }
+
+  query += ` ORDER BY PRODUCT_DATE DESC OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY`;
+  binds.offset = offset;
+  binds.limit = Number(limit);
+
   try {
     const rows = await executeQuery(query, binds, {
-      outFormat: oracledb.OUT_FORMAT_OBJECT
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
     });
-    console.log('get products list success!!!', rows);
     return rows;
-  }
-  catch (error) {
-    console.error(error);
+  } catch (error) {
+    console.error("getAllProducts failed", error);
     throw error;
   }
 }
