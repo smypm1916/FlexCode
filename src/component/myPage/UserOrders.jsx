@@ -27,7 +27,7 @@ const UserOrders = ({ email }) => {
   }, [email]);
 
   return orders.length > 0 ? (
-    <Order_wrapper>
+    <Order_Wrapper>
       <h2>나의 구매내역</h2>
       <h3
         onClick={() => {
@@ -83,7 +83,7 @@ const UserOrders = ({ email }) => {
           </ul>
         </div>
       ))}
-    </Order_wrapper>
+    </Order_Wrapper>
   ) : (
     <Order_Wrapper>
       <h2>나의 구매내역</h2>
