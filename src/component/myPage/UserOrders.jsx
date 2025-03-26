@@ -39,6 +39,11 @@ const UserOrders = ({ email }) => {
       {orders.slice(0, 3).map((order) => (
         <div
           key={order.ORDER_NO}
+          onClick={() =>
+            navigate(`/userOrder_detail/${order.ORDER_NO}`, {
+              state: { orders },
+            })
+          }
           style={{ border: "1px solid #ccc", margin: "20px", padding: "15px" }}
         >
           <p>
