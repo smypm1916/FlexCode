@@ -56,7 +56,7 @@ const ProductInfo = () => {
    const API_BASE_URL = "http://localhost:8080/api";
 
    //로그인 후 토큰 저장
-   // const handleLogin = async (user_email, user_password) => {
+
    //    const res = await axios.post(
    //       `${API_BASE_URL}/cart/auth/login`,
    //       {

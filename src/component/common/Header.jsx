@@ -130,7 +130,7 @@ const App = () => {
           {/* Button_Bucket으로 변경 */}
           <Button_Bucket onClick={async () => {
             await fetchCart(); // 장바구니 상태를 최신으로 업데이트
-            const latestTempOrderId = sessionStorage.getItem("tempOrderId");
+            const latestTempOrderId = localStorage.getItem("tempOrderId");
             navigate(`/order/${latestTempOrderId}`);
           }}>CART</Button_Bucket>
           {/* Button_Logout으로 수정, Button_Login/Logout = Button_Log로 통합 */}

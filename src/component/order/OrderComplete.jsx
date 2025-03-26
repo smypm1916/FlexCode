@@ -18,7 +18,7 @@ const OrderComplete = () => {
    const fetchOrderData = async () => {
       setLoading(true);
       try {
-         const token = localStorage.getItem('token');
+         const token = sessionStorage.getItem('token');
          const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
          const res = await axios.get(`${API_BASE_URL}/order/receipt/${orderNo}`, {
             headers: { Authorization: `Bearer ${token}` },
@@ -44,7 +44,7 @@ const OrderComplete = () => {
    }, [orderNo]);
 
    useEffect(() => {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       setIsLoggedIn(!!token);
    }, []);
 

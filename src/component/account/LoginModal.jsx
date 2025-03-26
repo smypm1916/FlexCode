@@ -136,10 +136,10 @@ const LoginModal = ({ onClose }) => {
 
         // 로컬 스토리지에 저장
         const token = response.data.token;
-        localStorage.setItem("token", token);
+        sessionStorage.setItem("token", token);
 
         // 게스트 세션 
-        const guestSessionId = sessionStorage.getItem("tempOrderId");
+        const guestSessionId = localStorage.getItem("tempOrderId");
 
         // 카트 병합
         const cartMergeResponse = await axios.post(

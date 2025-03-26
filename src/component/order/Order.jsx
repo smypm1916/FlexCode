@@ -10,7 +10,7 @@ import ShippingAddress from "./ShippingAddress";
 
 const Order = () => {
   const { tempOrderId } = useParams();
-  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [token, setToken] = useState(sessionStorage.getItem('token'));
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from;
@@ -47,7 +47,7 @@ const Order = () => {
 
   // 결제 기능
   const goToPayment = async () => {
-    // const token = localStorage.getItem("token");
+    sessionStorage.getItem("token");
     // if (!token) {
     //   alert("로그인이 필요합니다.");
     //   setIsLoginModalOpen(true); // 로그인 모달 열기
@@ -124,7 +124,7 @@ const Order = () => {
 
   useEffect(() => {
     console.log('order')
-    setToken(localStorage.getItem('token'));
+    setToken(sessionStorage.getItem('token'));
   }, [])
 
 
@@ -175,7 +175,7 @@ const Order = () => {
 
   // 로그인 상태 체크
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     console.log(token);
     if (token) {
       setIsLoggedIn(true);

@@ -37,7 +37,7 @@ module.exports = (redisClient) => {
             }
          });
 
-         await redisClient.del(userCartId);
+         await redisClient.del(guestCartId);
 
          const redisHSetArgs = [];
          Object.entries(mergedCart).forEach(([key, item]) => {
@@ -53,7 +53,7 @@ module.exports = (redisClient) => {
 
          await redisClient.del(guestCartId);
          await redisClient.expire(userCartId, CART_TTL);
-
+         console.log(mergedCart)
          return mergedCart;
 
       } catch (error) {
@@ -89,12 +89,12 @@ module.exports = (redisClient) => {
 
          const guestCartId = `cart:${guestSessionId}`;
          const userCartId = `cart:${user_email}`;
-
+         console.log(guestCartId)
          const mergedCart = await mergeCart(guestCartId, userCartId);
-
+         console.log(mergedCart)
          // Redis에서 새 tempOrderId 조회 (중요!)
          const newTempOrderId = await redisClient.hGet(userCartId, 'tempOrderId');
-         console.log(newTempOrderId);
+         console.log("newtemp : " + newTempOrderId);
 
 
          const token = jwt.sign({ email: user_email }, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -114,9 +114,10 @@ module.exports = (redisClient) => {
    });
 
    // 장바구니 조회
-   router.get("/read/:tempOrderId?", authenticateToken, async (req, res) => {
+   router.get("/read/", authenticateToken, async (req, res) => {
+      console.log("cart read >>>>>>>>>>>>>>")
       try {
-         const { tempOrderId: paramOrderId } = req.params;
+         // const { tempOrderId: paramOrderId } = req.params;
 
          let cartKey;
          if (paramOrderId) {
@@ -126,13 +127,11 @@ module.exports = (redisClient) => {
             // 파라미터가 없으면 세션/로그인 유저 기반으로 장바구니 식별
             cartKey = getCartKey(req);
          }
-
          if (!cartKey) {
             return res.status(400).json({ success: false, message: '장바구니 키가 없습니다' });
          }
 
          const cartData = await redisClient.hGetAll(cartKey);
-
          // 혹은 cartData가 비어있다면, 필요 시 tempOrderId 생성
          let tempOrderId = cartData.tempOrderId || null;
          delete cartData.tempOrderId;

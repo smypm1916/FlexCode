@@ -6,15 +6,16 @@ const API_BASE_URL = "http://localhost:8080/api";
 
 export const useCart = () => {
    const [cartItems, setCartItems] = useState([]);
-   const [tempOrderId, setTempOrderId] = useState(sessionStorage.getItem("tempOrderId"));
+   const [tempOrderId, setTempOrderId] = useState(localStorage.getItem("tempOrderId"));
    const [loading, setLoading] = useState(false);
    const [error, setError] = useState(null);
 
-   // 장바구니 조회
+   // 장바구니 조회 (무조건 이메일로 레디스 조회)
    const fetchCart = async () => {
+
       setLoading(true);
       try {
-         const token = localStorage.getItem('token');
+         const token = sessionStorage.getItem('token');
          const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
          const res = await axios.get(`${API_BASE_URL}/cart/read`, {
@@ -80,7 +81,7 @@ export const useCart = () => {
 
       setLoading(true);
       try {
-         const token = localStorage.getItem('token');
+         const token = sessionStorage.getItem('token');
          const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
          const res = await axios.post(`${API_BASE_URL}/cart/add`, {
@@ -93,7 +94,7 @@ export const useCart = () => {
 
          if (res.data.success && res.data.tempOrderId) {
             setTempOrderId(res.data.tempOrderId);
-            sessionStorage.setItem("tempOrderId", res.data.tempOrderId);
+            localStorage.setItem("tempOrderId", res.data.tempOrderId);
          }
 
          await fetchCart(res.data.tempOrderId);
@@ -109,7 +110,7 @@ export const useCart = () => {
    const updateCartQuantity = async (product_no, new_quantity) => {
       setLoading(true);
       try {
-         const token = localStorage.getItem('token');
+         const token = sessionStorage.getItem('token');
          const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
          await axios.put(`${API_BASE_URL}/cart/update`, {
@@ -130,7 +131,7 @@ export const useCart = () => {
    const removeFromCart = async (productKey) => {
       setLoading(true);
       try {
-         const token = localStorage.getItem('token');
+         const token = sessionStorage.getItem('token');
          const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
          await axios.delete(`${API_BASE_URL}/cart/remove`, {
@@ -150,7 +151,8 @@ export const useCart = () => {
 
    useEffect(() => {
       if (tempOrderId) {
-         sessionStorage.setItem('tempOrderId', tempOrderId);
+         // sessionStorage.setItem('tempOrderId', tempOrderId);
+         localStorage.setItem('tempOrderId', tempOrderId);
       }
    }, [tempOrderId]);
 
