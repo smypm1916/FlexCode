@@ -32,6 +32,7 @@ export const Category_Box = styled.div`
   height: 150px;
   transition: all 0.5s;
   background: rgba(255, 255, 255, 0.5);
+  border: 1px solid black;
   &:hover {
     border: 1px solid rgba(0, 0, 0, 0.1);
     background: rgb(255, 255, 255);

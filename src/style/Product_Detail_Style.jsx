@@ -55,10 +55,13 @@ export const Text_wrapper = styled.div`
 
 //container01 상품 정보 텍스트
 export const Text = styled.h2`
+  display: flex;
   width: fit-content;
   font-size: 15pt;
   color: black;
   font-weight: 300;
+  align-items: center;
+  gap: 20px;
 `;
 
 //container01 상품 정보 제목
@@ -85,6 +88,12 @@ export const Text_box = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
+
+  &.column {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
 `;
 
 //container01 상품 정보 텍스트 박스 제목
@@ -129,4 +138,34 @@ export const Info_Text_Box = styled.div`
   display: grid;
   grid-template-columns: 1fr 5fr;
   padding: 10px 0;
+`;
+
+export const Container_Bucket = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 10px 0;
+  border-bottom: 1px solid black;
+`;
+
+export const Bucket_option = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  input {
+    border: none;
+  }
+
+  input::focus {
+    outline: none;
+  }
+
+  Button {
+    border: none;
+  }
+`;
+
+export const Bucket_Text = styled.div`
+  Text {
+    font-size: 10pt;
+  }
 `;

@@ -20,6 +20,7 @@ import Order from "./component/order/Order";
 import OrderComplete from "./component/order/OrderComplete";
 import Index from "./component/product/Index";
 import ProductInfo from "./component/product/ProductInfo";
+import Team from "./component/common/Team";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
       {/* 루팅 */}
       <Routes>
         <Route path="/" element={<Index />} />
+        <Route path="/team" element={<Team />} />
         <Route path="/detail/:product_no" element={<ProductInfo />} />
         <Route path="/order/:tempOrderId" element={<Order />} />
         <Route path="/order-complete/:orderNo" element={<OrderComplete />} />

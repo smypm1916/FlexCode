@@ -29,6 +29,13 @@ export const Wrapper = styled.div`
     line-height: 100vh;
     z-index: -1;
   }
+  &.nomargin {
+    margin: 0;
+  }
+
+  &.marginTop {
+    margin-top: 50px;
+  }
 
   // index(메인페이지)의 Wrapper 전용 스타일
   &#home::after {
@@ -56,6 +63,10 @@ export const Wrapper = styled.div`
     content: "POST";
   }
 
+  &#mypage {
+    margin-top: 50px;
+  }
+
   &#mypage::after {
     content: "PROFILE";
   }
@@ -66,6 +77,9 @@ export const Wrapper = styled.div`
     min-height: fit-content;
   }
 
+  &#modiuser {
+    margin-top: 50px;
+  }
   &#account {
     margin: 0;
     padding: 0;
@@ -73,6 +87,24 @@ export const Wrapper = styled.div`
 
   &#success::after {
     content: "WELCOME!";
+  }
+
+  &#shipping::after {
+    content: "SHIPPING";
+  }
+
+  &#order::after {
+    content: "ORDER";
+  }
+  // -------------- team --------------
+  &#team::after {
+    content: "TEAM";
+  }
+  &#team {
+    width: -webkit-fill-available;
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    gap: 0;
   }
 
   &.mypageCon {
@@ -99,7 +131,6 @@ export const Container_Style = styled.div`
   align-itmes: center;
   margin: 0 auto;
   flex-wrap: wrap;
-  overflow: hidden;
 
   &.RegComplete {
     height: 300px;
@@ -108,6 +139,30 @@ export const Container_Style = styled.div`
     align-items: center;
     justify-content: center;
     box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  &.Shipping {
+    border: 1px solid black;
+    padding: 50px;
+    width: -webkit-fill-available;
+    width: -moz-available;
+  }
+
+  &.Bucket {
+    width: -webkit-fill-available;
+    width: -moz-available;
+    border-bottom: 1px solid black;
+    padding-bottom: 20px;
+  }
+
+  &#Bucket_Module {
+    border: none;
+  }
+
+  &.wrap {
+    box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.5);
+    padding: 50px;
   }
 `;
 
@@ -141,6 +196,9 @@ export const Button_Wrapper_100 = styled.div`
 
   &.grid2 {
     grid-template-columns: 1fr 1fr;
+  }
+  &.grid1 {
+    grid-template-columns: 1fr;
   }
 `;
 
@@ -211,15 +269,23 @@ export const Container_Modal = styled.div`
   top: 0;
   width: 100vw;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.25); /* 반투명 배경 */
   backdrop-filter: blur(5px); /* 배경 블러 효과 */
-  z-index: 1000; /* 다른 요소들 위에 배치 */
+  z-index: 500; /* 다른 요소들 위에 배치 */
   flex-wrap: wrap;
   transition: ;
+
+  ReactModal {
+    display: flex;
+    position: absolute;
+    z-index: 600;
+    width: fit-content;
+    height: fit-content;
+  }
 `;
 
 export const Input_Box = styled.div`

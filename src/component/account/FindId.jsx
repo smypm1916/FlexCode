@@ -12,9 +12,11 @@ import {
   Modal_Wrapper,
   Select_Style,
   Input_Wrapper,
+  Button_Wrapper_100,
+  Title,
 } from "../../style/Common_Style";
-import { Button_Wrapper } from "../../style/Product_detail_style";
-import { Phone_Box, Title } from "../../style/Modal_Style";
+import { Phone_Box } from "../../style/Modal_Style";
+import { Info_Title, Text } from "../../style/Product_Detail_Style";
 
 const FindId = ({ onBack, onClose }) => {
   // 상태 관리
@@ -130,20 +132,20 @@ const FindId = ({ onBack, onClose }) => {
 
         {/* 이메일 결과 출력 */}
         {findEmail && (
-          <div className="findId-result">
-            <h3>{findEmail}</h3>
-          </div>
+          <Text>
+            회원님의 아이디는 <h3>{findEmail}</h3>입니다.
+          </Text>
         )}
 
         {/* 버튼 */}
-        <Button_Wrapper>
+        <Button_Wrapper_100 className="grid2">
           <Button
             className="findId"
-            btnTxt="이메일 찾기"
+            btnTxt="아이디 찾기"
             onClick={handleFindId}
           />
           <Button className="cancel" btnTxt="취소" onClick={onBack} />
-        </Button_Wrapper>
+        </Button_Wrapper_100>
       </Modal_Wrapper>
     </Container_Modal>
   );
