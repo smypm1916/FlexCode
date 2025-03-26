@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const oracledb = require("oracledb");
+const { executeQuery, dbConfig } = require('../config/oracledb');
 
 
 // 검색 기능
-router.get('/search', async (req, res) => {
+router.get('/', async (req, res) => {
    const keyword = req.query.keyword || '';
    try {
       const result = await executeQuery(
-         `SELECT * FROM PRODUCTS WHERE PRODUCT_NAME LIKE '%' || :keyword || '%'`,
+         `SELECT * FROM PRODUCT_INFO WHERE PRODUCT_NAME LIKE '%' || :keyword || '%'`,
          [keyword]
       );
       res.json(result);
