@@ -2,7 +2,7 @@ const cmService = require("../services/cmService");
 
 const getPosts = async (req, res) => {
   const posts = await cmService.getPosts();
-  console.log(posts);
+  // console.log(posts);
   return res.json(posts);
 };
 
@@ -24,10 +24,22 @@ const cmAdd = async (req, res) => {
 };
 
 const detailPost = async (req, res) => {
-  console.log(req);
+  // console.log(req);
   const result = await cmService.detailPost(req.params.id);
-  console.log(result);
+  // console.log(result);
   return res.json(result);
+};
+
+const increaseViewCount = async (req, res) => {
+  try {
+    console.log("조회수 증가 요청 도착:", req.params.id);
+    const id = req.params.id;
+    await cmService.increaseViewCount(id);
+    res.json(1);
+  } catch (error) {
+    console.error("조회수 증가 실패:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
 const deletePost = async (req, res) => {
@@ -53,4 +65,11 @@ const updatePost = async (req, res) => {
   }
 };
 
-module.exports = { getPosts, cmAdd, detailPost, deletePost, updatePost };
+module.exports = {
+  getPosts,
+  cmAdd,
+  detailPost,
+  increaseViewCount,
+  deletePost,
+  updatePost,
+};
