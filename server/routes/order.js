@@ -5,16 +5,42 @@ const { executeQuery, dbConfig } = require('../config/oracledb');
 
 
 // 주문 취소
-router.put('/cancel/:tempOrderId', async (req, res) => {
+router.put('/cancel/:orderNo', async (req, res) => {
+   const orderNo = req.params.orderNo;
+
    try {
       const orderCancelSql = `
       UPDATE ORDER_INFO SET ORDER_STATE=:order_state WHERE ORDER_NO=:order_no
       `;
-      const cancelResult = await connection.executeQuery(orderCancelSql, {
+      const cancelResult = await executeQuery(orderCancelSql, {
          order_state: 0,
-         order_no: req.params.order_no,
+         order_no: orderNo,
       });
-      await connection.close();
+
+      // 주문 아이템 가져오기
+      const getOrderItemsSql = `
+  SELECT OPTION_NO, PRODUCT_QUANTITY
+  FROM ORDER_ITEMS
+  WHERE ORDER_NO = :order_no
+`;
+
+      const items = await executeQuery(getOrderItemsSql, {
+         order_no: req.params.tempOrderId,
+      });
+
+      // 수량 복구
+      const restoreStockSql = `
+  UPDATE PRODUCT_OPTION
+  SET OPTION_STATE = OPTION_STATE + :qty
+  WHERE OPTION_NO = :option_no
+`;
+
+      for (const item of items) {
+         await executeQuery(restoreStockSql, {
+            qty: item.PRODUCT_QUANTITY,
+            option_no: item.OPTION_NO,
+         });
+      }
       res.json({ success: true, message: "주문이 취소되었습니다." });
 
    } catch (error) {
@@ -24,12 +50,30 @@ router.put('/cancel/:tempOrderId', async (req, res) => {
 });
 
 // 주문 정보 등록(결제)
-router.post('/complete/:tempOrderId', async (req, res) => {
+router.post('/pay/:tempOrderId', async (req, res) => {
    try {
       const { tempOrderId, from, checkedProducts, product, totalPrice } = req.body;
       console.log('userEmail : ', req.session?.user?.email);
       let userEmail = req.body.email || req.session?.user?.email;
       const now = new Date();
+
+      // 주문 수량 검사 추가
+      const validateStockSql = `SELECT OPTION_STATE FROM PRODUCT_OPTION WHERE OPTION_NO = :option_no`;
+      for (const item of items) {
+         const optionNo = item.option_no || item.OPTION_NO;
+         const quantity = item.quantity;
+
+         const result = await executeQuery(validateStockSql, { option_no: optionNo });
+         const stock = result[0]?.OPTION_STATE ?? 0;
+
+         if (stock < quantity) {
+            return res.status(400).json({
+               success: false,
+               message: `옵션 ${optionNo}의 재고가 부족합니다. 현재 재고: ${stock}, 요청 수량: ${quantity}`
+            });
+         }
+      }
+
 
       // 주문번호 시퀀스 사용 (예: ORDER_NO_SEQ.nextval)
       const orderInsertSql = `
@@ -65,6 +109,20 @@ router.post('/complete/:tempOrderId', async (req, res) => {
       }
       res.json({ success: true, message: "결제 및 주문 저장 완료", orderNo });
 
+      // 주문 처리 후 옵션 재고 차감
+      const updateOptionStockSql = `
+  UPDATE PRODUCT_OPTION
+  SET OPTION_STATE = OPTION_STATE - :qty
+  WHERE OPTION_NO = :option_no
+`;
+
+      for (const item of items) {
+         await executeQuery(updateOptionStockSql, {
+            qty: item.product_quantity,
+            option_no: item.option_no,
+         });
+      }
+      res.json({ success: true, message: "상품 재고 감소 완료" });
    } catch (err) {
       console.error("결제 처리 오류:", err);
       res.status(500).json({ success: false, message: "결제 처리 중 오류 발생" });

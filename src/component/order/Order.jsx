@@ -1,26 +1,23 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ReactModal from "react-modal";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import LoginModal from "../account/LoginModal";
 import Button from "../common/Button";
-import CheckedProduct from "../common/CheckedProduct";
 import { useCart } from '../common/useCart';
 import ShippingAddress from "./ShippingAddress";
-
-/*  
-    1. 모든/일부 상품 선택
-    2. 상품 옵션/수량 수정 ok
-    3. 구매버튼 클릭 시 장바구니 정보 db로 전송 ok
-*/
 
 
 const Order = () => {
   const { tempOrderId } = useParams();
+  const [token, setToken] = useState(localStorage.getItem('token'));
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from;
   const product = location.state?.product;
   const directOptions = location.state?.checkedProducts;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [deliveryInfo, setDeliveryInfo] = useState({
     name: '',
@@ -40,27 +37,45 @@ const Order = () => {
   const goToHome = () => navigate('/');
   const { cartItems, updateCartQuantity, loading, fetchCart, removeFromCart } = useCart();
   const [checkedProducts, setCheckedProducts] = useState([]);
+  console.log(tempOrderId)
 
+
+
+  // console.log(localStorage.getItem('token'))
 
   const API_BASE_URL = "http://localhost:8080/api";
 
   // 결제 기능
   const goToPayment = async () => {
+    // const token = localStorage.getItem("token");
+    // if (!token) {
+    //   alert("로그인이 필요합니다.");
+    //   setIsLoginModalOpen(true); // 로그인 모달 열기
+    //   return;
+    // }
+    // if (!isLoggedIn) {
+    alert("로그인이 필요합니다.");
+    setIsLoginModalOpen(true); // 로그인 모달 열기
+    // return;
+    // }
+
     if (!deliveryInfo.email_id || !deliveryInfo.email_domain) {
       alert("이메일 정보를 정확히 입력해주세요.");
       return;
     }
+
+    const email = `${deliveryInfo.email_id}@${deliveryInfo.email_domain}`;
+
     try {
-      const token = localStorage.getItem("token");
-      const email = `${deliveryInfo.email_id}@${deliveryInfo.email_domain}`;
-      const response = await axios.post(`${API_BASE_URL}/order/complete/${tempOrderId}`, {
-        tempOrderId,
+      // const response = await axios.post(`${API_BASE_URL}/order/pay/${from === 'direct' ? 'direct' : tempOrderId}`, {
+      const response = await axios.post(`${API_BASE_URL}/order/pay/${tempOrderId}`, {
+        tempOrderId: from === 'direct' ? null : tempOrderId,
         from,
         checkedProducts,
         product,
         totalPrice,
         email,
-        deliveryInfo, // 추가
+        deliveryInfo,
         receiveInfo,
       }, {
         headers: { Authorization: `Bearer ${token}` },
@@ -96,6 +111,9 @@ const Order = () => {
     setSelectedProduct(null);
     setIsCartModalOpen(false);
   };
+  const closeLoginModal = () => {
+    setIsLoginModalOpen(false);
+  };
 
   const handleCheckboxChange = (e) => {
     setIsSame(e.target.checked);
@@ -104,9 +122,15 @@ const Order = () => {
     }
   };
 
+  useEffect(() => {
+    console.log('order')
+    setToken(localStorage.getItem('token'));
+  }, [])
+
+
   // 장바구니 비우기
   const clearCart = async () => {
-    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('token');
     await axios.delete(`${API_BASE_URL}/cart/clear`, {
       withCredentials: true,
       headers: { Authorization: `Bearer ${token}` },
@@ -132,8 +156,38 @@ const Order = () => {
   }, [tempOrderId]);
 
   useEffect(() => {
+    if (from === "direct" && Array.isArray(directOptions)) {
+      setCheckedProducts(directOptions);
+      // 바로구매일 때는 장바구니를 fetch하지 않음
+      console.log("바로구매 상품:", product, directOptions);
+    } else if (tempOrderId) {
+      // 장바구니 기반 구매일 때만 fetchCart 호출
+      fetchCart(tempOrderId);
+    } else {
+      setError("주문 정보가 올바르지 않습니다.");
+    }
+  }, [from, directOptions, tempOrderId]);
+
+
+  useEffect(() => {
     console.log('cartItems changed', cartItems);
   }, [cartItems]);
+
+  // 로그인 상태 체크
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    console.log(token);
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    setIsLoggedIn(!!token);
+  }, [token]);
+
 
   const totalPrice = from === "direct"
     ? checkedProducts?.reduce((sum, item) => {
@@ -146,10 +200,9 @@ const Order = () => {
       const optionPrice = item.option_price || 0;
       return sum + (productPrice + optionPrice) * item.quantity;
     }, 0);
-
   return (
     <div>
-      {/* <h1>주문 번호 : {tempOrderId}</h1> */}
+      <h1>주문 번호 : {tempOrderId}</h1>
       {loading && <p>...LOADING...</p>}
       {error && <p>{error}</p>}
 
@@ -254,6 +307,14 @@ const Order = () => {
         <Button btnTxt='결제하기' onClick={goToPayment} />
         <Button btnTxt='돌아가기' onClick={goToHome} />
       </div>
+      <ReactModal
+        isOpen={isLoginModalOpen}
+        onRequestClose={closeLoginModal}
+        shouldCloseOnOverlayClick={true}
+        shouldCloseOnEsc={true}
+      >
+        <LoginModal onClose={closeLoginModal} />
+      </ReactModal>
     </div>
   );
 };

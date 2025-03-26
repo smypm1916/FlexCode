@@ -3,25 +3,25 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import {
+  Button_Bucket,
+  Button_Log,
   Button_Register,
   Logo,
   Menu,
   Menu_Wrapper,
-  Button_Log,
-  Button_Bucket,
   ProfileWrapper,
   Wrapper_Header,
 } from "../../style/Header_Style";
 import { Profile_Img } from "../../style/List_Style";
 import LoginModal from "../account/LoginModal";
 import { useCart } from "./useCart";
-// import Cart from "./Cart";
+
 
 const App = () => {
   const [showModal, setShowModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileImg, setProfileImg] = useState(null);
-  const { tempOrderId } = useCart();
+  const { tempOrderId, fetchCart, refreshCart } = useCart();
   // const [isLoading, setIsLoading] = useState(true); // 로딩상태
   const navigate = useNavigate();
   // 로그인 상태 확인
@@ -49,7 +49,7 @@ const App = () => {
     }
   }, [sessionStorage.getItem("token"), sessionStorage.getItem("profile")]);
 
-  // WebSocket연결(한번만실행)
+  // WebSocket연결
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     if (!token) return;
@@ -128,7 +128,11 @@ const App = () => {
             </Profile_Img>
           </ProfileWrapper>
           {/* Button_Bucket으로 변경 */}
-          <Button_Bucket onClick={() => navigate("/cart")}>CART</Button_Bucket>
+          <Button_Bucket onClick={async () => {
+            await fetchCart(); // 장바구니 상태를 최신으로 업데이트
+            const latestTempOrderId = sessionStorage.getItem("tempOrderId");
+            navigate(`/order/${latestTempOrderId}`);
+          }}>CART</Button_Bucket>
           {/* Button_Logout으로 수정, Button_Login/Logout = Button_Log로 통합 */}
           <Button_Log onClick={handleLogout}>LOGOUT</Button_Log>
         </Menu_Wrapper>

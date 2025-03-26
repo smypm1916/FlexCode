@@ -1,109 +1,115 @@
 const express = require("express");
-const { use } = require("react");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 const CART_TTL = 2592000; // 30일 (초 단위)
 
-//Redis는 테이블 생성없이 메모리에 데이터를 k-v{hash(map)}형태로 저장
-
 module.exports = (redisClient) => {
-   //  장바구니 키 가져오는 함수 (user_email 또는 session 기반)
    const getCartKey = (req) => {
-      const userCartId = req.session?.user?.email; // 로그인
-      const guestCartId = req.sessionID; // 비로그인
+      const userCartId = req.session?.user?.email;
+      const guestCartId = req.sessionID;
       return userCartId ? `cart:${userCartId}` : `cart:session_${guestCartId}`;
    };
 
    const generateTempOrderId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-   // const generateTempOrderId = () => `order:${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-   // 장바구니 병합 함수
    async function mergeCart(guestCartId, userCartId) {
       try {
          const guestCartData = await redisClient.hGetAll(guestCartId);
          const userCartData = await redisClient.hGetAll(userCartId);
          const mergedCart = {};
 
-         // 로그인 장바구니 항목 추가
          Object.entries(userCartData).forEach(([key, value]) => {
-            mergedCart[key] = JSON.parse(value);
+            if (key !== 'tempOrderId') mergedCart[key] = JSON.parse(value);
          });
 
-         // 비로그인 장바구니 병합
          Object.entries(guestCartData).forEach(([key, value]) => {
             if (key === 'tempOrderId') return;
-            const guestItem = JSON.parse(value);
-            if (mergedCart[key]) {
-               mergedCart[key].quantity += guestItem.quantity;
-               mergedCart[key].updatedAt = new Date().toISOString();
-            } else {
-               mergedCart[key] = guestItem;
+            try {
+               const guestItem = JSON.parse(value);
+               if (mergedCart[key]) {
+                  mergedCart[key].quantity += guestItem.quantity;
+                  mergedCart[key].updatedAt = new Date().toISOString();
+               } else {
+                  mergedCart[key] = guestItem;
+               }
+            } catch (err) {
+               console.error('Guest cart parsing error:', err, value);
             }
          });
 
-         // 병합된 데이터를 Redis에 저장
-         await redisClient.del(userCartId); // 기존 데이터 제거
-         await redisClient.hSet(userCartId, Object.fromEntries(
-            Object.entries(mergedCart).map(([key, item]) => [key, JSON.stringify(item)])
-         ));
+         await redisClient.del(userCartId);
+
+         const redisHSetArgs = [];
+         Object.entries(mergedCart).forEach(([key, item]) => {
+            redisHSetArgs.push(key, JSON.stringify(item));
+         });
+
+         if (redisHSetArgs.length > 0) {
+            await redisClient.hSet(userCartId, redisHSetArgs);
+         }
 
          const tempOrderId = userCartData.tempOrderId || guestCartData.tempOrderId || generateTempOrderId();
          await redisClient.hSet(userCartId, 'tempOrderId', tempOrderId);
 
-         // 비로그인 장바구니 삭제(선택사항)
          await redisClient.del(guestCartId);
-
          await redisClient.expire(userCartId, CART_TTL);
 
          return mergedCart;
-         // return { tempOrderId, products: Object.values(mergeCart) };
+
       } catch (error) {
-         console.error('장바구니 병합 오류:', error);
+         console.error('Cart merge error:', error);
          throw new Error('장바구니 병합 실패');
       }
-   };
+   }
 
-   // redis토큰 검증
+   // 토큰 인증
    const authenticateToken = async (req, res, next) => {
       const token = req.headers['authorization']?.split(' ')[1];
       if (token) {
          try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             const storedToken = await redisClient.get(`token:${decoded.email}`);
-            if (storedToken && storedToken == token) {
-               // return res.status(403).json({ message: '토큰 불일치' });
-               req.user = decoded;
+            if (storedToken !== token) {
+               return res.status(403).json({ message: '유효하지 않은 토큰입니다.' });
             }
             req.user = decoded;
          } catch (error) {
-            console.error('토큰 검증 중 오류 발생:', error);
             return res.status(403).json({ message: '토큰 검증 오류' });
          }
       }
       next();
    };
 
-
-   // 로그인 시 장바구니 자동 병합  
+   // 로그인 시 장바구니 병합
    router.post('/auth/login', async (req, res) => {
       try {
-         const { user_email, password } = req.body;
-         const user = await authenticateUser(user_email, password);
-         if (!user) {
-            return res.status(401).json({ success: false, message: '로그인 인증 실패' });
-         }
+         const { user_email, guestSessionId } = req.body;
+
          req.session.user = { email: user_email };
-         const key = getCartKey(req);
-         const guestCartId = `cart:session_${req.sessionID}`;
+
+         const guestCartId = `cart:${guestSessionId}`;
          const userCartId = `cart:${user_email}`;
+
          const mergedCart = await mergeCart(guestCartId, userCartId);
-         // jwt 토큰
+
+         // Redis에서 새 tempOrderId 조회 (중요!)
+         const newTempOrderId = await redisClient.hGet(userCartId, 'tempOrderId');
+         console.log(newTempOrderId);
+
+
          const token = jwt.sign({ email: user_email }, process.env.JWT_SECRET, { expiresIn: '1h' });
          await redisClient.set(`token:${user_email}`, token);
-         res.status(200).json({ success: true, token, message: '로그인/장바구니 병합 성공', cart: mergedCart });
-      }
-      catch (error) {
-         console.error('로그인 오류:', error);
-         res.status(500).json({ success: false, message: '로그인 중 오류 발생' });
+
+         res.status(200).json({
+            success: true,
+            token,
+            message: '장바구니 병합 성공',
+            cart: mergedCart,
+            tempOrderId: newTempOrderId // 새 tempOrderId 전달
+         });
+      } catch (error) {
+         console.error('로그인(장바구니 병합) 오류:', error);
+         res.status(500).json({ success: false, message: '장바구니 병합 중 오류 발생' });
       }
    });
 
