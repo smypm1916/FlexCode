@@ -11,6 +11,7 @@ import {
 } from "../../style/Common_Style";
 import { Title } from "../../style/Modal_Style";
 import axios from "axios";
+import { Email_Box } from "../../style/SignUp_Style";
 
 const FindPw = ({ onBack }) => {
   // 비밀번호 찾기/재설정 화면을 각각 나누어서 관리하는 상태관리 변수
@@ -168,35 +169,35 @@ const FindPw = ({ onBack }) => {
             </Input_Box>
           </Input_Wrapper>
           <Input_Wrapper>
-            <div className="findPw-email-label">
-              <label>EMAIL</label>
-            </div>
-            <Input_Box>
-              <Input_Style
-                type="text"
-                name="email_id"
-                placeholder="EMAIL을 입력하세요"
-                value={email_id}
-                onChange={handleInputEmailChange}
-              />
-            </Input_Box>
-            <label>@</label>
-            <Select_Style
-              value={email_address}
-              onChange={handleSelectEmailChange}
-            >
-              <option value="naver.com">naver.com</option>
-              <option value="hanmail.net">hanmail.net</option>
-              <option value="daum.net">daum.net</option>
-              <option value="gmail.com">gmail.com</option>
-              <option value="nate.com">nate.com</option>
-              <option value="hotmail.com">hotmail.com</option>
-              <option value="outlook.com">outlook.com</option>
-              <option value="icloud.com">icloud.com</option>
-            </Select_Style>
+            <label>EMAIL</label>
+            <Email_Box>
+              <Input_Box>
+                <Input_Style
+                  type="text"
+                  name="email_id"
+                  placeholder="EMAIL을 입력하세요"
+                  value={email_id}
+                  onChange={handleInputEmailChange}
+                />
+              </Input_Box>
+              <label>@</label>
+              <Select_Style
+                value={email_address}
+                onChange={handleSelectEmailChange}
+              >
+                <option value="naver.com">naver.com</option>
+                <option value="hanmail.net">hanmail.net</option>
+                <option value="daum.net">daum.net</option>
+                <option value="gmail.com">gmail.com</option>
+                <option value="nate.com">nate.com</option>
+                <option value="hotmail.com">hotmail.com</option>
+                <option value="outlook.com">outlook.com</option>
+                <option value="icloud.com">icloud.com</option>
+              </Select_Style>
+            </Email_Box>
           </Input_Wrapper>
           {errorMessage && <p>{errorMessage}</p>}
-          <Button_Wrapper_100>
+          <Button_Wrapper_100 className="grid2">
             {/* <button
               onClick={() => {
                 setFinePwView("reset");

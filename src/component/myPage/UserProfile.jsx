@@ -85,7 +85,7 @@ const UserProfile = ({ email, nickname, profile }) => {
   return (
     <Wrapper className="mypageCon" id="account">
       <User_Status_Row>
-        <Profile_Img>
+        <Profile_Img className="mypageProfile">
           <img src={userProfileImg} alt="profile"></img>
         </Profile_Img>
         <User_Status_Column>

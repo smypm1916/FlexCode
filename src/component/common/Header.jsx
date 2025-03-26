@@ -111,6 +111,7 @@ const App = () => {
       <Menu_Wrapper>
         <Menu onClick={() => navigate("/")}>HOME</Menu>
         <Menu onClick={() => navigate("/community")}>COMMUNITY</Menu>
+        <Menu onClick={() => navigate("/team")}>TEAM</Menu>
       </Menu_Wrapper>
       {/* <Menu_Wrapper>
         <Button_Login onClick={() => setShowModal(true)}>LOGIN</Button_Login>

@@ -49,6 +49,8 @@ const MyPageMain = () => {
       </Container_Style>
       <Container_Style>
         <UserCommunitys nickname={userNickname} profile={userProfile} />
+      </Container_Style>
+      <Container_Style>
         <DeleteUser />
       </Container_Style>
     </Wrapper>

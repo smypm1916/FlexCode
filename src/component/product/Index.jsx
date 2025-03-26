@@ -7,6 +7,7 @@ import Category from "./Category";
 import EventBanner from "./EventBanner";
 import Pick from "./Pick";
 import ProductLists from "./ProductLists";
+import { Container_Banner } from "../../style/EventBanner_Style";
 
 const Index = () => {
   const [products, setProducts] = useState([]);
@@ -16,40 +17,48 @@ const Index = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const fetchProducts = useCallback(async (reset = false) => {
-    if (loading || (!hasMore && !reset)) return;
+  const fetchProducts = useCallback(
+    async (reset = false) => {
+      if (loading || (!hasMore && !reset)) return;
 
-    setLoading(true);
-    const currentPage = reset ? 1 : page;
-    const params = {
-      page: currentPage,
-      limit: 9,
-      keyword: searchKeyword,
-      category: selectedCategory,
-    };
+      setLoading(true);
+      const currentPage = reset ? 1 : page;
+      const params = {
+        page: currentPage,
+        limit: 9,
+        keyword: searchKeyword,
+        category: selectedCategory,
+      };
 
-    try {
-      const res = await axios.get("http://localhost:8080/api/products/lists", { params });
-      if (res.data && res.data.success) {
-        const newProducts = res.data.data || [];
-        setProducts((prev) => (reset ? newProducts : [...prev, ...newProducts]));
-        setHasMore(newProducts.length === 9);
-        setPage(currentPage + 1);
+      try {
+        const res = await axios.get(
+          "http://localhost:8080/api/products/lists",
+          { params }
+        );
+        if (res.data && res.data.success) {
+          const newProducts = res.data.data || [];
+          setProducts((prev) =>
+            reset ? newProducts : [...prev, ...newProducts]
+          );
+          setHasMore(newProducts.length === 9);
+          setPage(currentPage + 1);
+        }
+      } catch (error) {
+        console.error("상품 불러오기 오류", error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("상품 불러오기 오류", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [page, loading, searchKeyword, selectedCategory, hasMore]);
+    },
+    [page, loading, searchKeyword, selectedCategory, hasMore]
+  );
 
   // 검색 초기화
   const handleResetSearch = () => {
-    setSearchKeyword("");        // 검색어 초기화
-    setSelectedCategory("");     // 카테고리도 초기화할지 선택
-    setPage(1);                  // 페이지 초기화
-    setHasMore(true);            // 다시 무한 스크롤 활성화
-    setProducts([]);             // 기존 리스트 제거
+    setSearchKeyword(""); // 검색어 초기화
+    setSelectedCategory(""); // 카테고리도 초기화할지 선택
+    setPage(1); // 페이지 초기화
+    setHasMore(true); // 다시 무한 스크롤 활성화
+    setProducts([]); // 기존 리스트 제거
 
     // 상태 변경 후 useEffect가 fetchProducts(true) 호출
   };
@@ -62,17 +71,23 @@ const Index = () => {
   return (
     <Wrapper className="wrap" id="home">
       <Header />
-      <EventBanner />
+      <Container_Banner>
+        <EventBanner />
+      </Container_Banner>
       <Pick />
-      <Searchbox onSearch={(keyword) => {
-        setSelectedCategory(""); // 검색하면 카테고리 초기화
-        setSearchKeyword(keyword);
-        onReset = { handleResetSearch }
-      }} />
-      <Category onSelectCategory={(category) => {
-        setSearchKeyword(""); // 카테고리 선택하면 검색 초기화
-        setSelectedCategory(category);
-      }} />
+      <Searchbox
+        onSearch={(keyword) => {
+          setSelectedCategory(""); // 검색하면 카테고리 초기화
+          setSearchKeyword(keyword);
+          onReset = { handleResetSearch };
+        }}
+      />
+      <Category
+        onSelectCategory={(category) => {
+          setSearchKeyword(""); // 카테고리 선택하면 검색 초기화
+          setSelectedCategory(category);
+        }}
+      />
       <ProductLists
         products={products}
         loading={loading}
