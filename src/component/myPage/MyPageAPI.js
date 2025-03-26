@@ -47,4 +47,27 @@ export const fetchGetOrder = async (email) => {
   }
 };
 
-export default { fetchGetCommunity, fetchGetOrder };
+export const fetchGetOrderDetail = async (id) => {
+  console.log("API 구매번호:", id);
+  try {
+    const response = await axios.get(
+      "http://localhost:8080/api/users/getUserOrderDetail",
+      {
+        params: { order_no: id },
+      }
+    );
+    if (response.data.success) {
+      console.log("보내준 데이터[구매내역상세]:", response.data.result.rows[0]);
+      return response.data.result.rows[0];
+    } else {
+      alert("조회된 구매내역 없음.");
+      return null;
+    }
+  } catch (error) {
+    console.error("회원 주문정보 조회 요청 실패", error);
+    alert("API 요청에 실패하였습니다.");
+    return null;
+  }
+};
+
+export default { fetchGetCommunity, fetchGetOrder, fetchGetOrderDetail };
