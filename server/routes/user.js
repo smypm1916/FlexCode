@@ -50,4 +50,10 @@ router.post("/getUserCommunitys", userController.getUserCommunitys);
 // 회원 구매내역 조회
 router.post("/getUserOrders", userController.getUserOrders);
 
+// 회원 구매내역 상세조회
+router.get("/getUserOrderDetail", userController.getUserOrderDetail);
+
+// 회원 구매내역 주문상태 변경
+router.get("/updateOrderState", userController.updateOrderState);
+
 module.exports = router;

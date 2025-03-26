@@ -52,6 +52,11 @@ const UserOrderList = () => {
               return (
                 <div
                   key={order.ORDER_NO}
+                  onClick={() =>
+                    navigate(`/userOrder_detail/${order.ORDER_NO}`, {
+                      state: { orders },
+                    })
+                  }
                   style={{
                     border: "1px solid #ccc",
                     margin: "20px",

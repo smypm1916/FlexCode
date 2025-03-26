@@ -27,7 +27,7 @@ const UserOrders = ({ email }) => {
   }, [email]);
 
   return orders.length > 0 ? (
-    <Order_wrapper>
+    <Order_Wrapper>
       <h2>나의 구매내역</h2>
       <h3
         onClick={() => {
@@ -39,6 +39,11 @@ const UserOrders = ({ email }) => {
       {orders.slice(0, 3).map((order) => (
         <div
           key={order.ORDER_NO}
+          onClick={() =>
+            navigate(`/userOrder_detail/${order.ORDER_NO}`, {
+              state: { orders },
+            })
+          }
           style={{ border: "1px solid #ccc", margin: "20px", padding: "15px" }}
         >
           <p>
@@ -83,7 +88,7 @@ const UserOrders = ({ email }) => {
           </ul>
         </div>
       ))}
-    </Order_wrapper>
+    </Order_Wrapper>
   ) : (
     <Order_Wrapper>
       <h2>나의 구매내역</h2>
