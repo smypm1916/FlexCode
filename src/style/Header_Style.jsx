@@ -162,13 +162,7 @@ export const Menu_Wrapper = styled.div`
 `;
 
 // 프로필 이미지 감싸는 컨테이너
-export const ProfileWrapper = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  overflow: hidden;
-  cursor: pointer;
-`;
+export const ProfileWrapper = styled.div``;
 
 // 프로필 이미지 스타일
 export const ProfileImg = styled.img`

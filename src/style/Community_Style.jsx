@@ -1,13 +1,17 @@
 import styled from "styled-components";
 
 //------------------------- CmMain--------------------------------------------------
-export const Container01 = styled.div`
+export const Container01 = styled.h2`
   width: -webkit-fill-available;
   padding: 20px;
-  background-color: #bb9393;
+  background: url("src/style/img/Launching_banner.png") no-repeat;
+  background-size: cover;
+  background-position: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  color: white;
+  text-align: center;
 `;
 
 //------------------------- community 하단 페이지네이션 -------------------------------

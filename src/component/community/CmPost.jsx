@@ -35,7 +35,7 @@ const CmPost = ({ handleSubmit, post }) => {
       key={post.COMMUNITY_NO}
       className="border p-2 mb-2"
     >
-      <List_Column key={post.COMMUNITY_NO}>
+      <List_Column className="statusBox" key={post.COMMUNITY_NO}>
         <List_Profile>
           <Profile_Img>
             <img src={`${imgPath}/${post.USER_PROFILE}`} />
