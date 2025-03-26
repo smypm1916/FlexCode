@@ -9,9 +9,12 @@ import ShippingAddress from "./ShippingAddress";
 import {
   Button_Wrapper_100,
   Container_Style,
+  Title,
   Wrapper,
 } from "../../style/Common_Style";
 import { Order_Wrapper } from "../../style/Mypage_Style";
+import { System_message } from "../../style/ProductLists_Style";
+import { Text } from "../../style/Product_Detail_Style";
 
 /*  
     1. 모든/일부 상품 선택
@@ -157,11 +160,11 @@ const Order = () => {
         }, 0);
 
   return (
-    <Wrapper>
+    <Wrapper className="wrap" id="shipping">
       <Container_Style>
         {/* <h1>주문 번호 : {tempOrderId}</h1> */}
-        {loading && <p>...LOADING...</p>}
-        {error && <p>{error}</p>}
+        {loading && <System_message>...LOADING...</System_message>}
+        {error && <System_messagep>{error}</System_messagep>}
 
         {/* 장바구니 리스트 */}
         {!loading &&
@@ -172,15 +175,16 @@ const Order = () => {
               const productKey = `product:${product.PRODUCT_NO}:option:${item.OPTION_NO}`;
               return (
                 <Order_Wrapper key={`direct:${item.OPTION_NO}`}>
-                  <p>상품명: {product.PRODUCT_NAME}</p>
-                  <p>옵션명: {item.OPTION_TITLE}</p>
-                  <p>수량: {item.quantity}</p>
-                  <p>
+                  <Title>{product.PRODUCT_NAME}</Title>
+                  <Text>옵션명: {item.OPTION_TITLE}</Text>
+                  <Text>수량: {item.quantity}</Text>
+                  <hr />
+                  <Title>
                     금액:{" "}
                     {(product.PRODUCT_PRICE + item.OPTION_PRICE) *
                       item.quantity}
                     원
-                  </p>
+                  </Title>
                   <Button_Wrapper_100 className="grid2">
                     <Button
                       btnTxt="옵션/수량 수정"
@@ -273,27 +277,25 @@ const Order = () => {
         </ReactModal>
 
         {/* 배송&수령 정보 */}
-        <div>
-          <ShippingAddress
-            title="주문자 정보"
-            data={deliveryInfo}
-            setData={setDeliveryInfo}
-          />
-          <label>
-            <input
-              type="checkbox"
-              checked={isSame}
-              onChange={handleCheckboxChange}
-            />{" "}
-            주문자 정보와 동일
-          </label>
-          <ShippingAddress
-            title="받는 사람"
-            data={receiveInfo}
-            setData={setReceiveInfo}
-            isReadOnly={isSame}
-          />
-        </div>
+        <ShippingAddress
+          title="주문자 정보"
+          data={deliveryInfo}
+          setData={setDeliveryInfo}
+        />
+        <label>
+          <input
+            type="checkbox"
+            checked={isSame}
+            onChange={handleCheckboxChange}
+          />{" "}
+          주문자 정보와 동일
+        </label>
+        <ShippingAddress
+          title="받는 사람"
+          data={receiveInfo}
+          setData={setReceiveInfo}
+          isReadOnly={isSame}
+        />
 
         {/* 결제/취소 */}
         <Button_Wrapper_100 className="grid2">

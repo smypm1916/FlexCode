@@ -1,10 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
-import { Title } from "../../style/Common_Style";
+import { Container_Style, Title } from "../../style/Common_Style";
 import {
   Container_Bucket,
   Bucket_option,
+  Text,
+  Bucket_Text,
 } from "../../style/Product_Detail_Style";
 const CheckedProduct = ({
   mode = "detail",
@@ -28,19 +30,19 @@ const CheckedProduct = ({
   if (mode === "detail") {
     return (
       // productInfo
-      <div>
-        <Title onClick={() => navigate(`/detail/${product.PRODUCT_NO}`)}>
-          {product.PRODUCT_NAME}
-        </Title>
+      <Container_Style className="Bucket" id="Bucket_Module">
         <div>
+          <Title onClick={() => navigate(`/detail/${product.PRODUCT_NO}`)}>
+            {product.PRODUCT_NAME}
+          </Title>
           {options.length > 0 ? (
             options.map((option) => (
               <Container_Bucket key={option.OPTION_NO}>
-                <div>
-                  <div>{option.OPTION_TITLE}</div>
-                  <div>{option.OPTION_PRICE}원</div>
-                  <div>재고: {option.OPTION_STATE} 개</div>
-                </div>
+                <Bucket_Text>
+                  <Text>{option.OPTION_TITLE}</Text>
+                  <Text>{option.OPTION_PRICE}원</Text>
+                  <Text>재고: {option.OPTION_STATE} 개</Text>
+                </Bucket_Text>
                 <Bucket_option>
                   <Button
                     btnTxt="-"
@@ -81,7 +83,7 @@ const CheckedProduct = ({
             <p>선택된 옵션이 없습니다.</p>
           )}
         </div>
-      </div>
+      </Container_Style>
     );
   } else {
     // order
@@ -90,7 +92,7 @@ const CheckedProduct = ({
     }
     const items = cartItems || [];
     return (
-      <div>
+      <Container_Style className="Bucket">
         <h2>옵션/수량 수정</h2>
         {items.map((item) => {
           const productKey = `product:${item.product_no}:option:${item.option_no}`;
@@ -118,12 +120,12 @@ const CheckedProduct = ({
                 />
               </p>
 
-              <p>
+              <Title>
                 합계 금액:{" "}
                 {((item.product_price || 0) + (item.option_price || 0)) *
                   item.quantity}
                 원
-              </p>
+              </Title>
 
               {/* <p>합계 금액: {(item.PRODUCT_PRICE + item.OPTION_PRICE) * item.quantity}원</p> */}
 
@@ -135,7 +137,7 @@ const CheckedProduct = ({
             </div>
           );
         })}
-      </div>
+      </Container_Style>
     );
   }
 };

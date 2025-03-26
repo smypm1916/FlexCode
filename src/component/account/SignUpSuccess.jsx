@@ -20,8 +20,8 @@ const SignUpSuccess = () => {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <Wrapper className="wrap" id="success">
-      <Container_Style className="RegComplete">
+    <Wrapper className="wrap nomargin" id="success">
+      <Container_Style className="RegComplete wrap">
         <div className="signUpSuccess-message">회원가입이 완료되었습니다!</div>
         <Button_Wrapper_100 className="grid2">
           <Button

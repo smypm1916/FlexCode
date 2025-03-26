@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const Search_Box = styled.div`
   height: fit-content;
   display: grid;
-  grid-template-columns: 5.5fr 1fr;
+  grid-template-columns: 6fr 1fr 1fr;
   gap: 20px;
   align-items: center;
 `;

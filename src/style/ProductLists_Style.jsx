@@ -59,4 +59,15 @@ export const System_message = styled.h2`
     top: 20px;
     left: 25px;
   }
+
+  &.Inner_con {
+    margin: 30px auto;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.1);
+    background:rgba(255,255,255,0.5)
+  },
 `;

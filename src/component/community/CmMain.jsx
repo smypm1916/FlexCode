@@ -91,7 +91,7 @@ const CmMain = () => {
   }, [posts, pageNum]);
 
   return (
-    <Wrapper className="wrap" id="community">
+    <Wrapper className="wrap marginTop" id="community">
       <Container_Style>
         <Container01>상단 광고</Container01>
         <Input_Wrapper>

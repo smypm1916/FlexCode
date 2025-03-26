@@ -3,7 +3,6 @@ import styled from "styled-components";
 //------------------------- CmMain--------------------------------------------------
 export const Container01 = styled.div`
   width: -webkit-fill-available;
-  height: 80px;
   padding: 20px;
   background-color: #bb9393;
   display: flex;

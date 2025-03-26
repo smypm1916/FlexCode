@@ -15,7 +15,7 @@ import FileUpload from "../common/FileUpload";
 import Select from "../common/Select";
 import TextInput from "../common/TextInput";
 import PostCodeModal from "../account/PostCodeModal";
-import { Button_Wrapper } from "../../style/Product_detail_style";
+import { Button_Wrapper } from "../../style/Product_Detail_Style";
 import {
   Email_Box,
   Email_Input,
@@ -287,10 +287,10 @@ const ModifyUserProfile = () => {
   };
 
   return (
-    <div>
+    <Wrapper className="nomargin" id="modiuser">
       {userData && userData.USER_EMAIL ? (
         <Wrapper className="wrap" id="register">
-          <Container_Style>
+          <Container_Style className="wrap">
             <div className="signUp-title">
               <h2>회원정보 수정</h2>
             </div>
@@ -491,7 +491,7 @@ const ModifyUserProfile = () => {
       ) : (
         <p>회원 정보를 불러오는 중...</p> // 데이터가 없으면 로딩 메시지 출력
       )}
-    </div>
+    </Wrapper>
   );
 };
 

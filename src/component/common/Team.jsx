@@ -1,19 +1,28 @@
-import React from 'react'
+import React from "react";
+import { Wrapper } from "../../style/Common_Style";
+import styled from "styled-components";
+
+const TeamTitle = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+`;
+const TeamBox = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+`;
 
 const Team = () => {
-   return (
-      <>
-         <p>팀원 이름</p>
-         <p>윤성민</p>
-         <p>박채은</p>
-         <p>함유진</p>
-         <p>이민재</p>
-         {/*  */}
-         <p>
-            팀원 : 윤성민, 박채은, 함유진, 이민재
-         </p>
-      </>
-   )
-}
+  return (
+    <Wrapper className="wrap nomargin" id="team">
+      <TeamTitle>FINAL PROJECT : </TeamTitle>
+      <TeamBox>윤성민</TeamBox>
+      <TeamBox>박채은</TeamBox>
+      <TeamBox>함유진</TeamBox>
+      <TeamBox>이민재</TeamBox>
+    </Wrapper>
+  );
+};
 
-export default Team
+export default Team;

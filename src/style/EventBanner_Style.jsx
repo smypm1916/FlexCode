@@ -20,6 +20,7 @@ export const Event_Wrapper = styled.div`
   background: url("src/style/img/launching_banner.png") no-repeat right;
   background-size: contain;
   width: 60%;
+
   height: 100%;
   padding: 30px;
   display: flex;

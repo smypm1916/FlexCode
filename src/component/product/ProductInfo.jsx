@@ -254,8 +254,10 @@ const ProductInfo = () => {
     loadProductData();
   }, [product_no]);
 
-  if (loading) return <System_message>Loading...</System_message>;
-  if (error) return <System_message>Error...</System_message>;
+  if (loading)
+    return <System_message className="Inner_con">Loading...</System_message>;
+  if (error)
+    return <System_message className="Inner_con">Error...</System_message>;
 
   return (
     <Wrapper>
@@ -272,13 +274,10 @@ const ProductInfo = () => {
           {/* 상품정보 */}
           <Product_Wrapper>
             <Text_wrapper>
-              <Text_box>
-                <Text>카 테 고 리</Text>
-                <Title>{product.PRODUCT_TYPE}</Title>
-              </Text_box>
-              <Text_box>
-                <Text>상 품 명</Text>
-                <Product_Title>{product.PRODUCT_NAME}</Product_Title>
+              <Text_box className="column">
+                <Text>{product.PRODUCT_TYPE}</Text>
+
+                <h1>{product.PRODUCT_NAME}</h1>
               </Text_box>
               <Text_box>
                 <Title>판매 가격</Title>
@@ -322,10 +321,7 @@ const ProductInfo = () => {
                         onChange={handleQuantityChange}
                         defaultValue={1}
                       />
-                      <Button
-                        btnTxt="장바구니 추가"
-                        onClick={addOptionHandler}
-                      />
+                      <Button btnTxt="추가" onClick={addOptionHandler} />
                     </div>
                   </div>
                 </div>
@@ -344,7 +340,7 @@ const ProductInfo = () => {
             </Text_wrapper>
 
             {/* 버튼 */}
-            <Button_Wrapper_100>
+            <Button_Wrapper_100 className="grid2">
               <Button onClick={goToOrder} btnTxt="바로구매" />
               <Button
                 onClick={addToCartHandler}
