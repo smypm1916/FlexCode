@@ -70,6 +70,12 @@ const detailPost = async (id) => {
   return await executeQuery(query, [id]);
 };
 
+const increaseViewCount = async (id) => {
+  const query = `UPDATE ${community_info.tableName} SET ${community_info.columns.community_readcnt} = ${community_info.columns.community_readcnt} +1 WHERE ${community_info.columns.community_no} = :id`;
+  console.log("조회수 증가 쿼리 실행:", query, id);
+  await executeQuery(query, [id]);
+};
+
 const deletePost = async (id) => {
   const query = `delete ${community_info.tableName} where ${community_info.columns.community_no} =:id`;
   return await executeQuery(query, [id]);
@@ -90,4 +96,11 @@ const updatePost = async ({
   };
   return await executeQuery(query, values);
 };
-module.exports = { getPosts, regPost, detailPost, deletePost, updatePost };
+module.exports = {
+  getPosts,
+  regPost,
+  detailPost,
+  increaseViewCount,
+  deletePost,
+  updatePost,
+};

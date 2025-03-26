@@ -111,6 +111,7 @@ const CmDetail = () => {
       console.error("작성 실패:", error);
     }
   };
+
   useEffect(() => {
     fetchPost(id);
   }, [id, updateTrigger]);
@@ -128,6 +129,18 @@ const CmDetail = () => {
             </Profile_Img>
             <label>{post.USER_NICKNAME}</label>
           </List_Profile>
+          <Input_Wrapper>
+            <div>
+              <label>조회수</label>
+            </div>
+            <div>{post.COMMUNITY_READCNT}</div>
+          </Input_Wrapper>
+          <Input_Wrapper>
+            <div>
+              <label>작성일</label>
+            </div>
+            <div>{post.COMMUNITY_DATE}</div>
+          </Input_Wrapper>
 
           <Input_Wrapper>
             <label>제목</label>

@@ -572,7 +572,7 @@ const SignUp = () => {
           <Button
             className={"cancel"}
             btnTxt={"취소"}
-            onClick={() => Navigate("/")}
+            onClick={() => navigate("/")}
           />
         </Button_Wrapper>
       </Container_Style>

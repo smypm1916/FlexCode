@@ -136,3 +136,18 @@ export const Search_Box = styled.div`
   gap: 20px;
   align-items: center;
 `;
+
+// --------------------채팅 아이콘 이미지-------------------------------
+
+export const Chat_icon = styled.div`
+  display: flex;
+
+  img {
+    width: 100px;
+    height: 100px;
+
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+  }
+`;

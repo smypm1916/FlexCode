@@ -7,10 +7,26 @@ import {
   Profile_Img,
 } from "../../style/List_Style";
 import { Pagination_List } from "../../style/Community_Style";
+import axios from "axios";
 
 const CmPost = ({ handleSubmit, post }) => {
   const navigate = useNavigate();
   const imgPath = import.meta.env.VITE_IMG_PATH;
+
+  const handleClick = async () => {
+    try {
+      console.log("조회수 증가 요청 보냄");
+      console.log(post.COMMUNITY_NO);
+      await axios.post(
+        `http://localhost:8080/api/post/increaseView/${post.COMMUNITY_NO}`
+      );
+      console.log("조회수 증가 완료" + response);
+    } catch (error) {
+      console.error("조회수 증가 실패:", error);
+    }
+    navigate("/CmDetail/" + post.COMMUNITY_NO, { state: handleSubmit });
+  };
+
   return (
     <Pagination_List
       onClick={() =>
