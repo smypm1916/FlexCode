@@ -2,7 +2,9 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchGetOrder } from "./MyPageAPI";
-import { Order_Wrapper } from "../../style/Mypage_Style";
+import { Order_Wrapper, User_Status_Row } from "../../style/Mypage_Style";
+import { Text, Title } from "../../style/Product_Detail_Style";
+import { Input_Wrapper } from "../../style/Common_Style";
 
 const UserOrders = ({ email }) => {
   console.log("넘겨받은 이메일:", email);
@@ -28,16 +30,20 @@ const UserOrders = ({ email }) => {
 
   return orders.length > 0 ? (
     <Order_Wrapper>
-      <h2>나의 구매내역</h2>
-      <h3
-        onClick={() => {
-          navigate("/userOrder-list", { state: { email } });
-        }}
-      >
-        더보기
-      </h3>
+      <User_Status_Row className="borderBottom">
+        <Title>나의 구매내역</Title>
+        <Text
+          className="more"
+          onClick={() => {
+            navigate("/userOrder-list", { state: { email } });
+          }}
+        >
+          더보기
+        </Text>
+      </User_Status_Row>
       {orders.slice(0, 3).map((order) => (
-        <div
+        <Input_Wrapper
+          className="flex userOrder"
           key={order.ORDER_NO}
           onClick={() =>
             navigate(`/userOrder_detail/${order.ORDER_NO}`, {
@@ -46,17 +52,6 @@ const UserOrders = ({ email }) => {
           }
           style={{ border: "1px solid #ccc", margin: "20px", padding: "15px" }}
         >
-          <p>
-            주문일자 :{" "}
-            {new Date(order.ORDER_DATE).toLocaleString("ko-KR", {
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-            })}
-          </p>
-          <p>주문상태 : {order.ORDER_STATE === 0 ? "주문완료" : "주문취소"}</p>
-          <p>총 금액: {order.TOTAL_PRICE.toLocaleString()}원</p>
-          <h4>주문상품</h4>
           <ul>
             {order.ITEMS.slice(0, 1).map((item, index) => (
               <li
@@ -86,7 +81,17 @@ const UserOrders = ({ email }) => {
               </li>
             ))}
           </ul>
-        </div>
+          <p>
+            주문일자 :{" "}
+            {new Date(order.ORDER_DATE).toLocaleString("ko-KR", {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+            })}
+          </p>
+          <p>주문상태 : {order.ORDER_STATE === 0 ? "주문완료" : "주문취소"}</p>
+          <p>총 금액: {order.TOTAL_PRICE.toLocaleString()}원</p>
+        </Input_Wrapper>
       ))}
     </Order_Wrapper>
   ) : (

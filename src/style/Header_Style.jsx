@@ -28,7 +28,7 @@ export const Wrapper_Header = styled.div`
 export const Logo = styled.div`
   img {
     margin: 0;
-    font-size: 20px;
+    font-size: 3vmin;
     width: 150px;
   }
 
@@ -51,7 +51,7 @@ export const Button_Log = styled.button`
   display: inline-block;
   color: black;
   cursor: pointer;
-  font-size: 12pt;
+  font-size: 2vmin;
   transition: all 0.5s;
   background: none;
   border: none;
@@ -79,7 +79,7 @@ export const Button_Bucket = styled.button`
   display: inline-block;
   color: black;
   cursor: pointer;
-  font-size: 12pt;
+  font-size: 2vmin;
   transition: all 0.5s;
   background: none;
   border: none;
@@ -106,7 +106,7 @@ export const Button_Bucket = styled.button`
 export const Button_Register = styled.button`
   color: black;
   cursor: pointer;
-  font-size: 12pt;
+  font-size: 2vmin;
   transition: all 0.5s;
   background: none;
   border: none;

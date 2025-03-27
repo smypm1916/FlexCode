@@ -9,6 +9,8 @@ import {
 } from "../../style/List_Style";
 import { fetchGetCommunity } from "../myPage/MyPageAPI";
 import { User_Status_Row, Wrapper_Post } from "../../style/Mypage_Style";
+import { Text, Title } from "../../style/Product_Detail_Style";
+import { Input_Wrapper } from "../../style/Common_Style";
 
 const UserCommunitys = ({ nickname, profile }) => {
   console.log("넘겨받은 닉네임:", nickname);
@@ -34,14 +36,15 @@ const UserCommunitys = ({ nickname, profile }) => {
   }, [nickname, profile]);
 
   if (Array.isArray(communitys) && communitys.length === 0) {
-    return <h2>작성한 커뮤니티 글이 없습니다.</h2>;
+    return <Title>작성한 커뮤니티 글이 없습니다.</Title>;
   }
   return communitys.length > 0 ? (
-    <Wrapper_Post>
-      <User_Status_Row>
-        <h2>나의 커뮤니티</h2>
+    <Wrapper_Post className="nonePadding">
+      <User_Status_Row className="borderBottom">
+        <Title>나의 커뮤니티</Title>
 
-        <p
+        <Text
+          className="more"
           onClick={() => {
             navigate("/userCommunity-list", {
               state: { nickname, profile },
@@ -49,11 +52,11 @@ const UserCommunitys = ({ nickname, profile }) => {
           }}
         >
           더보기
-        </p>
+        </Text>
       </User_Status_Row>
       {communitys.slice(0, 3).map((post) => {
         return (
-          <div>
+          <>
             <List_Column
               onClick={() =>
                 navigate(`${imgPath}/${post.COMMUNITY_NO}`, {
@@ -90,14 +93,14 @@ const UserCommunitys = ({ nickname, profile }) => {
                 <p></p>
               )}
             </List_Content>
-          </div>
+          </>
         );
       })}
     </Wrapper_Post>
   ) : (
     <Wrapper_Post>
-      <h2>나의 커뮤니티</h2>
-      <p>작성한 커뮤니티 글이 없습니다.</p>
+      <Title>나의 커뮤니티</Title>
+      <Title>작성한 커뮤니티 글이 없습니다.</Title>
     </Wrapper_Post>
   );
 };

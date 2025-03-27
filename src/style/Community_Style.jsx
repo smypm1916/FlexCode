@@ -126,11 +126,10 @@ export const Pagination_Wrapper = styled.div`
 
 export const Pagination_List = styled.div`
   display: flex;
-  flex-direction:column;
-  gap:20px;
+  flex-direction: column;
+  gap: 20px;
   padding: 20px;
   border-bottom: 1px solid black;
-  T
 `;
 
 export const Search_Box = styled.div`
@@ -145,13 +144,22 @@ export const Search_Box = styled.div`
 
 export const Chat_icon = styled.div`
   display: flex;
+  border-radius: 100%;
+  box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.1);
+  width: 100px;
+  height: 100px;
+  transition: all 0.5s;
+  background-color: white;
+  position: fixed;
+  right: 10%;
+  bottom: 10%;
+  z-index: 300;
+  &:hover {
+    background-color: #bb9393;
+    box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.1);
+  }
 
   img {
-    width: 100px;
-    height: 100px;
-
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
+    width: 100%;
   }
 `;

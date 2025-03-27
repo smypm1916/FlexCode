@@ -5,6 +5,14 @@ import { fetchGetOrderDetail } from "./MyPageAPI";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import Button from "../common/Button";
+import {
+  Button_Wrapper_100,
+  Container_Style,
+  Input_Wrapper,
+  Wrapper,
+} from "../../style/Common_Style";
+import { Title } from "../../style/Modal_Style";
+import { System_message } from "../../style/ProductLists_Style";
 
 const UserOrderDetail = () => {
   const [email, setEmail] = useState("");
@@ -81,7 +89,7 @@ const UserOrderDetail = () => {
   }, [id]);
 
   if (!order || !userData) {
-    return <div>Loading...</div>;
+    return <System_message className="Inner_con">Loading...</System_message>;
   }
 
   const handleCancelOrder = async () => {
@@ -105,81 +113,89 @@ const UserOrderDetail = () => {
   };
 
   return (
-    <div>
-      {/* 주문상품정보 */}
-      <div>
-        <h2>Order</h2>
+    <Wrapper className="wrap marginTop" id="order">
+      <Container_Style className="wrap">
+        {/* 주문상품정보 */}
         <div>
-          {order.ITEMS.map((item, index) => (
-            <div key={index} style={{ marginBottom: "20px" }}>
-              <img
-                src={`${imgPath}/${item.product_img}`} // 상품 이미지 경로
-                alt={item.product_name}
-                style={{ width: "100px", height: "100px" }}
+          <Title>Order</Title>
+          <div>
+            {order.ITEMS.map((item, index) => (
+              <Input_Wrapper
+                className="flex userOrder"
+                key={index}
+                style={{ marginBottom: "20px" }}
+              >
+                <img
+                  src={`${imgPath}/${item.product_img}`} // 상품 이미지 경로
+                  alt={item.product_name}
+                  style={{ width: "100px", height: "100px" }}
+                />
+                <div>
+                  <div>상품명: {item.product_name}</div>
+                  <div>선택옵션: {item.option_name}</div>
+                  <div>수량: {item.product_quantity}</div>
+                  <div>
+                    상품금액:{" "}
+                    {Intl.NumberFormat("ko-KR").format(
+                      item.product_price * item.product_quantity
+                    )}{" "}
+                    원
+                  </div>
+                  <div>
+                    옵션금액:{" "}
+                    {Intl.NumberFormat("ko-KR").format(
+                      item.option_price * item.product_quantity
+                    )}{" "}
+                    원
+                  </div>
+                </div>
+              </Input_Wrapper>
+            ))}
+          </div>
+        </div>
+        {/* 총 주문 금액 */}
+        <div style={{ marginBottom: "20px" }}>
+          <div>
+            <h2>Total</h2>
+          </div>
+          <div>주문상품건수: {order.ITEMS.length} 건</div>
+          <div>배송비: 2,500원</div>
+          <div>
+            총 합계 금액:{" "}
+            {Intl.NumberFormat("ko-KR").format(order.TOTAL_PRICE + 2500)}원
+          </div>
+        </div>
+        {/* 주문자 정보 */}
+        <div style={{ marginBottom: "20px" }}>
+          <div>
+            <h2>주문자정보</h2>
+          </div>
+          <div>받는사람: {userData.USER_NAME}</div>
+          <div>배송지주소: {userData.USER_ADDR}</div>
+          <div>전화번호: {userData.USER_TEL}</div>
+          <div>이메일: {userData.USER_EMAIL}</div>
+        </div>
+        {/* 주문취소/목록 버튼 */}
+        <Button_Wrapper_100 className="grid1">
+          {order.ORDER_STATE !== 1 ? (
+            <>
+              <Button
+                type="button"
+                onClick={handleCancelOrder}
+                btnTxt={"주문취소"}
               />
-              <div>상품명: {item.product_name}</div>
-              <div>선택옵션: {item.option_name}</div>
-              <div>수량: {item.product_quantity}</div>
-              <div>
-                상품금액:{" "}
-                {Intl.NumberFormat("ko-KR").format(
-                  item.product_price * item.product_quantity
-                )}{" "}
-                원
-              </div>
-              <div>
-                옵션금액:{" "}
-                {Intl.NumberFormat("ko-KR").format(
-                  item.option_price * item.product_quantity
-                )}{" "}
-                원
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      {/* 총 주문 금액 */}
-      <div style={{ marginBottom: "20px" }}>
-        <div>
-          <h2>Total</h2>
-        </div>
-        <div>주문상품건수: {order.ITEMS.length} 건</div>
-        <div>배송비: 2,500원</div>
-        <div>
-          총 합계 금액:{" "}
-          {Intl.NumberFormat("ko-KR").format(order.TOTAL_PRICE + 2500)}원
-        </div>
-      </div>
-      {/* 주문자 정보 */}
-      <div style={{ marginBottom: "20px" }}>
-        <div>
-          <h2>주문자정보</h2>
-        </div>
-        <div>받는사람: {userData.USER_NAME}</div>
-        <div>배송지주소: {userData.USER_ADDR}</div>
-        <div>전화번호: {userData.USER_TEL}</div>
-        <div>이메일: {userData.USER_EMAIL}</div>
-      </div>
-      {/* 주문취소/목록 버튼 */}
-      <div>
-        {order.ORDER_STATE !== 1 ? (
-          <>
-            <Button
-              type="button"
-              onClick={handleCancelOrder}
-              btnTxt={"주문취소"}
-            />
-          </>
-        ) : null}
-        <Button
-          type="button"
-          onClick={() => {
-            navigate("/userOrder-list", { state: { email } });
-          }}
-          btnTxt={"목록으로"}
-        />
-      </div>
-    </div>
+            </>
+          ) : null}
+          <Button
+            type="button"
+            onClick={() => {
+              navigate("/userOrder-list", { state: { email } });
+            }}
+            btnTxt={"목록으로"}
+          />
+        </Button_Wrapper_100>
+      </Container_Style>
+    </Wrapper>
   );
 };
 

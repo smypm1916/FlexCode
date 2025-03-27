@@ -106,7 +106,7 @@ const App = () => {
   return (
     <Wrapper_Header>
       <Logo onClick={() => navigate("/")}>
-        <img src="src\style\img\logo.png"></img>
+        <img src="\src\style\img\logo.png"></img>
       </Logo>
       <Menu_Wrapper>
         <Menu onClick={() => navigate("/")}>HOME</Menu>

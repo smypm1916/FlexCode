@@ -119,7 +119,7 @@ const CmMain = () => {
   };
 
   return (
-    <Wrapper className="wrap marginTop" id="community">
+    <Wrapper className="wrap marginTop bottomNone" id="community">
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}
       <Container_Style>
         <Container01>Brand New Launch, We are GENDERLESS</Container01>
@@ -148,16 +148,18 @@ const CmMain = () => {
             </Button>
           </Search_Box>
         </Input_Wrapper>
-        <Chat_icon>
-          <img onClick={openChat} src={`${imgPath}/Chat_icon.png`} />
+        <Chat_icon onClick={openChat}>
+          {/* <img src={`${imgPath}/Chat_icon.png`} /> */}
         </Chat_icon>
-        {posts.length > 0 ? (
-          paginatedPosts.map((post) => (
-            <CmPost key={post.COMMUNITY_NO} post={post} />
-          ))
-        ) : (
-          <h2>投稿が見つかりません</h2>
-        )}
+        <Container_Style className="CmPost">
+          {posts.length > 0 ? (
+            paginatedPosts.map((post) => (
+              <CmPost key={post.COMMUNITY_NO} post={post} />
+            ))
+          ) : (
+            <h2>投稿が見つかりません</h2>
+          )}
+        </Container_Style>
         <Input_Wrapper>
           <Button btnTxt={"글쓰기"} onClick={() => navigate("/CmAdd")}>
             글쓰기
