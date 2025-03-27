@@ -16,7 +16,7 @@ export const fetchGetCommunity = async (nickname) => {
       console.log("보내준 데이터[커뮤니티]:", response.data.result.rows);
       return response.data.result.rows;
     } else {
-      alert("조회된 글 없음.");
+      // alert("조회된 글 없음.");
       return [];
     }
   } catch (error) {
@@ -38,7 +38,7 @@ export const fetchGetOrder = async (email) => {
       console.log("보내준 데이터[구매내역]:", response.data.result.rows);
       return response.data.result;
     } else {
-      alert("조회된 구매내역 없음.");
+      // alert("조회된 구매내역 없음.");
       return [];
     }
   } catch (error) {
@@ -60,7 +60,7 @@ export const fetchGetOrderDetail = async (id) => {
       console.log("보내준 데이터[구매내역상세]:", response.data.result.rows[0]);
       return response.data.result.rows[0];
     } else {
-      alert("조회된 구매내역 없음.");
+      // alert("조회된 구매내역 없음.");
       return null;
     }
   } catch (error) {
