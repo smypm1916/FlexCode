@@ -97,10 +97,12 @@ const App = () => {
   const handleLogout = () => {
     sessionStorage.removeItem("token"); // 토큰 삭제
     sessionStorage.removeItem("profile"); // 프로필 이미지 삭제
+    localStorage.removeItem("tempOrderId");
     console.log("로그아웃성공 ui 전환들어옴");
     setIsLoggedIn(false);
     setProfileImg(null);
-    window.location.reload(); // 페이지 새로고침으로 상태 초기화
+    // window.location.reload(); // 페이지 새로고침으로 상태 초기화
+    navigate("/")
   };
 
   return (

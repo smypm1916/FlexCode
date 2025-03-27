@@ -33,6 +33,7 @@ const OrderComplete = () => {
             headers: { Authorization: `Bearer ${token}` },
             withCredentials: true,
          });
+         console.log(res)
          if (res.data.success) {
             setOrderInfo(res.data.orderInfo);
             setOrderItems(res.data.orderItems);

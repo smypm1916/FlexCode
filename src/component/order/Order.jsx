@@ -15,6 +15,7 @@ import Button from "../common/Button";
 import CheckedProduct from "../common/CheckedProduct";
 import { useCart } from "../common/useCart";
 import ShippingAddress from "./ShippingAddress";
+import LoginModal from '../account/LoginModal';
 
 /*  
     1. 모든/일부 상품 선택
@@ -62,14 +63,14 @@ const Order = () => {
   // 결제 기능
   const goToPayment = async () => {
     sessionStorage.getItem("token");
-    // if (!token) {
-    //   alert("로그인이 필요합니다.");
-    //   setIsLoginModalOpen(true); // 로그인 모달 열기
-    //   return;
-    // }
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      setIsLoginModalOpen(true); // 로그인 모달 열기
+      return;
+    }
     // if (!isLoggedIn) {
-    alert("로그인이 필요합니다.");
-    setIsLoginModalOpen(true); // 로그인 모달 열기
+    // alert("로그인이 필요합니다!!");
+    // setIsLoginModalOpen(true); // 로그인 모달 열기
     // return;
     // }
 
@@ -83,7 +84,7 @@ const Order = () => {
     try {
       // const response = await axios.post(`${API_BASE_URL}/order/pay/${from === 'direct' ? 'direct' : tempOrderId}`, {
       const response = await axios.post(`${API_BASE_URL}/order/pay/${tempOrderId}`, {
-        tempOrderId: from === 'direct' ? null : tempOrderId,
+        tempOrderId: tempOrderId,
         from,
         checkedProducts,
         product,
@@ -372,6 +373,14 @@ const Order = () => {
           <Button btnTxt="결제하기" onClick={goToPayment} />
           <Button btnTxt="돌아가기" onClick={goToHome} />
         </Button_Wrapper_100>
+        <ReactModal
+        isOpen={isLoginModalOpen}
+        onRequestClose={closeLoginModal}
+        shouldCloseOnOverlayClick={true}
+        shouldCloseOnEsc={true}
+      >
+        <LoginModal onClose={closeLoginModal} />
+      </ReactModal>
       </Container_Style>
     </Wrapper>
   );

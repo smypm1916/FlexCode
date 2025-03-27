@@ -122,7 +122,6 @@ const initRedisClient = async () => {
     console.error("Redis Connect Error:", error);
   }
 };
-
 // middleware
 
 // Express 세션과 Socket.IO 통합
