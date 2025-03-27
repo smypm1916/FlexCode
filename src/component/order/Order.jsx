@@ -320,13 +320,15 @@ const Order = () => {
                 if (from === "direct") {
                   setCheckedProducts((prev) =>
                     prev.map((opt) =>
-                      opt.OPTION_NO === selectedProduct.option_no
+                      // opt.OPTION_NO === selectedProduct.option_no
+                      opt.OPTION_NO === option_no
                         ? { ...opt, quantity }
                         : opt
                     )
                   );
                 } else {
-                  updateCartQuantity(product_no, quantity);
+                  // updateCartQuantity(product_no, quantity);
+                  updateCartQuantity(option_no, quantity);
                 }
               }}
               removeFromCart={(productKey) => {
