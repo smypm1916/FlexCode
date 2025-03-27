@@ -1,40 +1,62 @@
 import React from "react";
 import ReactModal from "react-modal";
-import { Title } from "../../style/Modal_Style";
 import Button from "./Button";
 import {
   Button_Wrapper_100,
   Container_Modal,
   Modal_Wrapper,
 } from "../../style/Common_Style";
+import { Title } from "../../style/Product_Detail_Style";
 ReactModal.setAppElement("#root");
 
 const CartModal = ({ isOpen, onClose, goToOrder }) => {
   if (!isOpen) return null;
 
   return (
-    <Container_Modal>
-      <Modal_Wrapper>
-        <ReactModal
-          isOpen={isOpen}
-          onRequestClose={onClose}
-          shouldCloseOnOverlayClick={true}
-          shouldCloseOnEsc={true}
-        >
-          <Title>장바구니에 추가 되었습니다</Title>
+    <ReactModal
+      isOpen={isOpen}
+      onRequestClose={onClose}
+      shouldCloseOnOverlayClick={true}
+      shouldCloseOnEsc={true}
+      style={{
+        overlay: {
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "rgba(0, 0, 0, 0.5)", // 배경색
+          zIndex: 300,
+        },
+        content: {
+          width: "40%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+          position: "static", // static으로 변경
+          background: "white",
+          padding: "20px",
+          borderRadius: "0",
+          border: "none",
+          padding: "50px",
+        },
+      }}
+    >
+      <Title>장바구니에 추가 되었습니다</Title>
 
-          {/* 장바구니 상품 리스트 */}
-          {/* <div> */}
-          {/* <CheckedProduct cartItems={cartItems} /> */}
-          {/* </div> */}
-          <Button_Wrapper_100 className="grid2">
-            <Button btnTxt="주문하기" onClick={goToOrder} />
+      {/* 장바구니 상품 리스트 */}
+      {/* <div> */}
+      {/* <CheckedProduct cartItems={cartItems} /> */}
+      {/* </div> */}
+      <Button_Wrapper_100 className="grid2">
+        <Button btnTxt="주문하기" onClick={goToOrder} />
 
-            <Button onClick={onClose} btnTxt="닫기"></Button>
-          </Button_Wrapper_100>
-        </ReactModal>
-      </Modal_Wrapper>
-    </Container_Modal>
+        <Button onClick={onClose} btnTxt="닫기"></Button>
+      </Button_Wrapper_100>
+    </ReactModal>
   );
 };
 

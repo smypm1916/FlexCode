@@ -58,8 +58,8 @@ const UserCommunityList = () => {
   }
 
   return (
-    <Wrapper className="nomargin">
-      <Container_Style>
+    <Wrapper className="wrap nomargin" id="community">
+      <Container_Style className="wrap">
         {communitys.length > 0 ? (
           <div>
             <h2>작성한 커뮤니티글</h2>

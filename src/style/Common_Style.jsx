@@ -104,9 +104,7 @@ export const Wrapper = styled.div`
     content: "TEAM";
   }
   &#team {
-    width: -webkit-fill-available;
-    display: grid;
-    grid-template-rows: repeat(5, 1fr);
+    height: calc(100vh-100px);
     gap: 0;
   }
 
