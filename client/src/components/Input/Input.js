@@ -13,13 +13,13 @@ const Input = ({ message, setMessage, sendMessage }) => (
     <input
       className="input"
       type="text"
-      placeholder="Type a message..."
+      placeholder="メッセージを入力してください…"
       value={message}
       onChange={(e) => setMessage(e.target.value)}
       onkeyPress={(e) => (e.key === "Enter" ? sendMessage(e) : null)}
     />
     <button className="sendButton" type="submit">
-      Send
+      送信
     </button>
   </form>
 );
