@@ -70,7 +70,7 @@ const FindId = ({ onBack, onClose }) => {
       console.log("이메일 찾기 응답:", response.data);
       setFindEmail(
         response.data.success
-          ? response.data.user_email
+          ? "회원님의 이메일은 " + response.data.user_email + "입니다."
           : "이메일을 찾을 수 없습니다."
       );
     } catch (error) {
@@ -131,11 +131,7 @@ const FindId = ({ onBack, onClose }) => {
         </Input_Wrapper>
 
         {/* 이메일 결과 출력 */}
-        {findEmail && (
-          <Text>
-            회원님의 아이디는 <h3>{findEmail}</h3>입니다.
-          </Text>
-        )}
+        {findEmail && <Text>{findEmail}</Text>}
 
         {/* 버튼 */}
         <Button_Wrapper_100 className="grid2">

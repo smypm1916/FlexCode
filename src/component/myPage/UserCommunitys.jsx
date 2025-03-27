@@ -56,7 +56,7 @@ const UserCommunitys = ({ nickname, profile }) => {
           <div>
             <List_Column
               onClick={() =>
-                navigate(`${imgPath}/${post.COMMUNITY_NO}`, {
+                navigate(`/userCommunity_detail/${post.COMMUNITY_NO}`, {
                   state: { communitys },
                 })
               }
