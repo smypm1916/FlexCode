@@ -78,8 +78,8 @@ const Index = () => {
         onSearch={(keyword) => {
           setSelectedCategory(""); // 검색하면 카테고리 초기화
           setSearchKeyword(keyword);
-          onReset = { handleResetSearch };
         }}
+        onReset={handleResetSearch}
       />
       <Category
         onSelectCategory={(category) => {

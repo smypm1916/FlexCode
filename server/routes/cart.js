@@ -5,14 +5,16 @@ const CART_TTL = 2592000; // 30일 (초 단위)
 
 module.exports = (redisClient) => {
    const getCartKey = (req) => {
+      // jwt인증 후 req.user에서 취득
       const userCartId = req.session?.user?.email;
+      // 비로그인 시 express-sessionID
       const guestCartId = req.sessionID;
       return userCartId ? `cart:${userCartId}` : `cart:session_${guestCartId}`;
    };
 
    const generateTempOrderId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-   async function mergeCart(guestCartId, userCartId) {
+   async function mergeCart(guestCartId, userCartId, guestSessionId) {
       try {
          const guestCartData = await redisClient.hGetAll(guestCartId);
          const userCartData = await redisClient.hGetAll(userCartId);
@@ -55,7 +57,7 @@ module.exports = (redisClient) => {
                   ...acc,
                   [key]: JSON.stringify(item),
                }), {}),
-               tempOrderId,
+               guestSessionId,
             });
          }
 
@@ -106,12 +108,12 @@ module.exports = (redisClient) => {
       try {
          const { user_email, guestSessionId } = req.body;
 
-         req.session.user = { email: user_email };
+         // req.session.user = { email: user_email };
 
          const guestCartId = `cart:${guestSessionId}`;
          const userCartId = `cart:${user_email}`;
          console.log(guestCartId)
-         const mergedCart = await mergeCart(guestCartId, userCartId);
+         const mergedCart = await mergeCart(guestCartId, userCartId, guestSessionId);
          console.log(mergedCart)
          // Redis에서 새 tempOrderId 조회 (중요!)
          const newTempOrderId = await redisClient.hGet(userCartId, 'tempOrderId');
@@ -139,10 +141,8 @@ module.exports = (redisClient) => {
       console.log("cart read >>>>>>>>>>>>>>")
 
       try {
-         // const { tempOrderId: paramOrderId } = req.params;
          const cartKey = getCartKey(req);
-         console.log(cartKey)
-
+         console.log(cartKey);
          if (!cartKey) {
             return res.status(400).json({ success: false, message: '장바구니 키가 없습니다' });
          }

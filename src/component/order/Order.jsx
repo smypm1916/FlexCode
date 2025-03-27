@@ -11,6 +11,7 @@ import {
 import { Order_Wrapper } from "../../style/Mypage_Style";
 import { System_message } from "../../style/ProductLists_Style";
 import { Text } from "../../style/Product_Detail_Style";
+import LoginModal from "../account/LoginModal";
 import Button from "../common/Button";
 import CheckedProduct from "../common/CheckedProduct";
 import { useCart } from "../common/useCart";
@@ -62,14 +63,14 @@ const Order = () => {
   // 결제 기능
   const goToPayment = async () => {
     sessionStorage.getItem("token");
-    // if (!token) {
-    //   alert("로그인이 필요합니다.");
-    //   setIsLoginModalOpen(true); // 로그인 모달 열기
-    //   return;
-    // }
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      setIsLoginModalOpen(true); // 로그인 모달 열기
+      return;
+    }
     // if (!isLoggedIn) {
-    alert("로그인이 필요합니다.");
-    setIsLoginModalOpen(true); // 로그인 모달 열기
+    // alert("로그인이 필요합니다.");
+    // setIsLoginModalOpen(true); // 로그인 모달 열기
     // return;
     // }
 
@@ -372,6 +373,9 @@ const Order = () => {
           <Button btnTxt="결제하기" onClick={goToPayment} />
           <Button btnTxt="돌아가기" onClick={goToHome} />
         </Button_Wrapper_100>
+        <ReactModal>
+          <LoginModal onClose={closeLoginModal}></LoginModal>
+        </ReactModal>
       </Container_Style>
     </Wrapper>
   );
