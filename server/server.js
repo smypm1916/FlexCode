@@ -139,7 +139,7 @@ io.use(async (socket, next) => {
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const storedToken = await redisClient.get(`token:${decoded.email}`); 
+    const storedToken = await redisClient.get(`token:${decoded.email}`);
     if (storedToken !== token) {
       return next(new Error("JWT 토큰 불일치"));
     }

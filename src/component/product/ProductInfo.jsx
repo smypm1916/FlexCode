@@ -383,7 +383,6 @@ const ProductInfo = () => {
                   <img src="src/style/img/shirts.png" alt="" />
                </Image_Wrapper>
             </Container02>
-
             <Divide_Box>
                <p>DETAIL INFO</p>
             </Divide_Box>
@@ -404,7 +403,7 @@ const ProductInfo = () => {
                   </Info_Text>
                </Info_Wrapper>
             </Container03>
-         </Container_Style>
+         </Container_Style> */
 
          {/* 장바구니 추가 모달 */}
          <CartModal

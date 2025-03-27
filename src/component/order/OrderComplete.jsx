@@ -235,17 +235,10 @@ const OrderComplete = () => {
 
             {/* 결제/취소/목록 버튼들 */}
             <Button_Wrapper_100>
-               {orderInfo.ORDER_STATE !== 1 && (
-                  <Button
-                     type="button"
-                     onClick={handleCancelOrder}
-                     btnTxt="주문취소"
-                  />
-               )}
                <Button
                   type="button"
-                  onClick={() => navigate("/userOrder-list", { state: { email } })}
-                  btnTxt="목록으로"
+                  onClick={() => navigate('/')}
+                  btnTxt="戻る"
                />
             </Button_Wrapper_100>
          </Container_Style>
