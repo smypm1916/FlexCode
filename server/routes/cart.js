@@ -26,6 +26,8 @@ module.exports = (redisClient) => {
             if (key === 'tempOrderId') return;
             try {
                const guestItem = JSON.parse(value);
+               console.log(guestItem)
+               console.log("~~~~~~~~~~~~~~~~")
                if (mergedCart[key]) {
                   mergedCart[key].quantity += guestItem.quantity;
                   mergedCart[key].updatedAt = new Date().toISOString();
@@ -39,19 +41,29 @@ module.exports = (redisClient) => {
 
          await redisClient.del(guestCartId);
 
-         const redisHSetArgs = [];
-         Object.entries(mergedCart).forEach(([key, item]) => {
-            redisHSetArgs.push(key, JSON.stringify(item));
-         });
+         // const redisHSetArgs = [];
+         // Object.entries(mergedCart).forEach(([key, item]) => {
+         //    redisHSetArgs.push(key, JSON.stringify(item));
+         // });
 
-         if (redisHSetArgs.length > 0) {
-            await redisClient.hSet(userCartId, redisHSetArgs);
+         // if (redisHSetArgs.length > 0) {
+         //    await redisClient.hSet(userCartId, redisHSetArgs);
+         // }
+         if (Object.keys(mergedCart).length > 0) {
+            await redisClient.hSet(userCartId, {
+               ...Object.entries(mergedCart).reduce((acc, [key, item]) => ({
+                  ...acc,
+                  [key]: JSON.stringify(item),
+               }), {}),
+               tempOrderId,
+            });
          }
+
 
          const tempOrderId = userCartData.tempOrderId || guestCartData.tempOrderId || generateTempOrderId();
          await redisClient.hSet(userCartId, 'tempOrderId', tempOrderId);
 
-         await redisClient.del(guestCartId);
+         // await redisClient.del(guestCartId);
          await redisClient.expire(userCartId, CART_TTL);
          console.log(mergedCart)
          return mergedCart;
@@ -65,17 +77,26 @@ module.exports = (redisClient) => {
    // 토큰 인증
    const authenticateToken = async (req, res, next) => {
       const token = req.headers['authorization']?.split(' ')[1];
+      console.log("JWT Token:", token);
       if (token) {
          try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            const storedToken = await redisClient.get(`token:${decoded.email}`);
+            console.log("Decoded JWT:", decoded);
+            storedToken = await redisClient.get(`token:${decoded.email}`);
+            console.log("Redis token:", storedToken);
+
+            // !!발생중
             if (storedToken !== token) {
+               console.log("Token mismatch:", storedToken, token);
                return res.status(403).json({ message: '유효하지 않은 토큰입니다.' });
             }
             req.user = decoded;
          } catch (error) {
+            console.error("JWT 검증 오류", error.message);
             return res.status(403).json({ message: '토큰 검증 오류' });
          }
+      } else {
+         console.log("JWT가 없습니다.");
       }
       next();
    };
@@ -94,10 +115,10 @@ module.exports = (redisClient) => {
          console.log(mergedCart)
          // Redis에서 새 tempOrderId 조회 (중요!)
          const newTempOrderId = await redisClient.hGet(userCartId, 'tempOrderId');
-         console.log("newtemp : " + newTempOrderId);
+         console.log("newTempOrderId : " + newTempOrderId);
 
 
-         const token = jwt.sign({ email: user_email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+         const token = jwt.sign({ email: user_email }, process.env.JWT_SECRET, { expiresIn: '1320h' });
          await redisClient.set(`token:${user_email}`, token);
 
          res.status(200).json({
@@ -114,19 +135,14 @@ module.exports = (redisClient) => {
    });
 
    // 장바구니 조회
-   router.get("/read/", authenticateToken, async (req, res) => {
+   router.get("/read", async (req, res) => {
       console.log("cart read >>>>>>>>>>>>>>")
+
       try {
          // const { tempOrderId: paramOrderId } = req.params;
+         const cartKey = getCartKey(req);
+         console.log(cartKey)
 
-         let cartKey;
-         if (paramOrderId) {
-            // URL 파라미터로 받은 tempOrderId를 직접 사용
-            cartKey = `cart:${paramOrderId}`;
-         } else {
-            // 파라미터가 없으면 세션/로그인 유저 기반으로 장바구니 식별
-            cartKey = getCartKey(req);
-         }
          if (!cartKey) {
             return res.status(400).json({ success: false, message: '장바구니 키가 없습니다' });
          }
@@ -193,9 +209,12 @@ module.exports = (redisClient) => {
             }));
          }
          await redisClient.expire(cartKey, CART_TTL);
+         console.log("장바구니에 추가되었습니다.")
+         console.log(tempOrderId)
          res.status(200).json({ success: true, message: "장바구니에 추가되었습니다.", tempOrderId });
       } catch (error) {
          console.error('server error:', error);
+         console.log("장바구니 오류")
          res.status(500).json({ success: false, message: "장바구니 추가 중 오류 발생.", error: error.message });
       }
    });

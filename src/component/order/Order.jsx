@@ -2,11 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import ReactModal from "react-modal";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import LoginModal from "../account/LoginModal";
-import Button from "../common/Button";
-import CheckedProduct from "../common/CheckedProduct";
-import { useCart } from "../common/useCart";
-import ShippingAddress from "./ShippingAddress";
 import {
   Button_Wrapper_100,
   Container_Style,
@@ -16,6 +11,10 @@ import {
 import { Order_Wrapper } from "../../style/Mypage_Style";
 import { System_message } from "../../style/ProductLists_Style";
 import { Text } from "../../style/Product_Detail_Style";
+import Button from "../common/Button";
+import CheckedProduct from "../common/CheckedProduct";
+import { useCart } from "../common/useCart";
+import ShippingAddress from "./ShippingAddress";
 
 /*  
     1. 모든/일부 상품 선택
@@ -228,7 +227,7 @@ const Order = () => {
       const optionPrice = item.option_price || 0;
       return sum + (productPrice + optionPrice) * item.quantity;
     }, 0);
-  
+
   return (
     <Wrapper className="wrap" id="shipping">
       <Container_Style>
@@ -238,48 +237,48 @@ const Order = () => {
 
         {/* 장바구니 리스트 */}
         {!loading &&
-        from === "direct" &&
-        Array.isArray(checkedProducts) &&
-        checkedProducts.length > 0
+          from === "direct" &&
+          Array.isArray(checkedProducts) &&
+          checkedProducts.length > 0
           ? checkedProducts.map((item) => {
-              const productKey = `product:${product.PRODUCT_NO}:option:${item.OPTION_NO}`;
-              return (
-                <Order_Wrapper key={`direct:${item.OPTION_NO}`}>
-                  <Title>{product.PRODUCT_NAME}</Title>
-                  <Text>옵션명: {item.OPTION_TITLE}</Text>
-                  <Text>수량: {item.quantity}</Text>
-                  <hr />
-                  <Title>
-                    금액:{" "}
-                    {(product.PRODUCT_PRICE + item.OPTION_PRICE) *
-                      item.quantity}
-                    원
-                  </Title>
-                  <Button_Wrapper_100 className="grid2">
-                    <Button
-                      btnTxt="옵션/수량 수정"
-                      onClick={() =>
-                        openEditModal({
-                          ...item,
-                          product_name: product.PRODUCT_NAME,
-                          product_price: product.PRODUCT_PRICE,
-                          product_no: product.PRODUCT_NO,
-                          option_title: item.OPTION_TITLE,
-                          option_price: item.OPTION_PRICE,
-                          option_no: item.OPTION_NO,
-                        })
-                      }
-                    />
-                    <Button
-                      btnTxt="옵션 삭제"
-                      onClick={onRemove(item.OPTION_NO)}
-                    />
-                  </Button_Wrapper_100>
-                </Order_Wrapper>
-              );
-            })
+            const productKey = `product:${product.PRODUCT_NO}:option:${item.OPTION_NO}`;
+            return (
+              <Order_Wrapper key={`direct:${item.OPTION_NO}`}>
+                <Title>{product.PRODUCT_NAME}</Title>
+                <Text>옵션명: {item.OPTION_TITLE}</Text>
+                <Text>수량: {item.quantity}</Text>
+                <hr />
+                <Title>
+                  금액:{" "}
+                  {(product.PRODUCT_PRICE + item.OPTION_PRICE) *
+                    item.quantity}
+                  원
+                </Title>
+                <Button_Wrapper_100 className="grid2">
+                  <Button
+                    btnTxt="옵션/수량 수정"
+                    onClick={() =>
+                      openEditModal({
+                        ...item,
+                        product_name: product.PRODUCT_NAME,
+                        product_price: product.PRODUCT_PRICE,
+                        product_no: product.PRODUCT_NO,
+                        option_title: item.OPTION_TITLE,
+                        option_price: item.OPTION_PRICE,
+                        option_no: item.OPTION_NO,
+                      })
+                    }
+                  />
+                  <Button
+                    btnTxt="옵션 삭제"
+                    onClick={onRemove(item.OPTION_NO)}
+                  />
+                </Button_Wrapper_100>
+              </Order_Wrapper>
+            );
+          })
           : !loading && cartItems.length > 0
-          ? cartItems.map((item) => {
+            ? cartItems.map((item) => {
               const productKey = `product:${item.product_no}:option:${item.option_no}`;
               return (
                 <div key={productKey}>
@@ -303,7 +302,7 @@ const Order = () => {
                 </div>
               );
             })
-          : !loading && <h2>장바구니가 비어있습니다.</h2>}
+            : !loading && <h2>장바구니가 비어있습니다.</h2>}
 
         {/* 합계 금액 */}
         <p>합계 금액 : {totalPrice.toLocaleString()} 원</p>
@@ -315,6 +314,7 @@ const Order = () => {
               style={{ flexDirection: "row-reverse" }}
               mode="order"
               cartItems={[selectedProduct]}
+              // !!수량변경 및 옵션 삭제 작동안함!!!
               updateCartQuantity={(product_no, quantity) => {
                 if (from === "direct") {
                   setCheckedProducts((prev) =>

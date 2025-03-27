@@ -26,8 +26,8 @@ const Searchbox = ({ onSearch, onReset }) => {
         </Input_Box>
         <Button onClick={handleSearch} btnTxt="검색" />
         <Button onClick={() => {
-          setKeyword("");
-          onReset();
+          setKeyword(""),
+            onReset();
         }} btnTxt="초기화" />
       </Search_Box>
     </Container_Style>

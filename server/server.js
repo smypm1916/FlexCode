@@ -59,12 +59,13 @@ io.use((socket, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     socket.user = decoded;
-    activeTokens.add(token);
+
     next();
   } catch (error) {
     return next(new Error("JWT 인증 실패"));
   }
 });
+
 
 // WebSocket 연결 이벤트
 io.on("connection", (socket) => {
@@ -86,6 +87,25 @@ const redisClient = createClient({
 }); // 기본 Redis 포트로 변경
 redisClient.on("error", (err) => console.error("Redis Client Error:", err));
 
+const sessionMiddleware = session({
+  store: new RedisStore({ client: redisClient, disableTouch: true }),
+  secret: process.env.JWT_SECRET || "your_secret_key",
+  resave: false,
+  saveUninitialized: false,
+  rolling: true,
+  cookie: { maxAge: 30 * 60 * 1000 }, // 30분
+});
+// app.use(
+//   session({
+//     store: new RedisStore({ client: redisClient, disableTouch: true }),
+//     secret: process.env.JWT_SECRET || "your_secret_key",
+//     resave: false,
+//     saveUninitialized: true,
+//     rolling: true, // 로그인, 새로고침 시 세션유지
+//     cookie: { maxAge: 30 * 60 * 1000 }, // 30분 유지
+//   })
+// );
+
 const initRedisClient = async () => {
   try {
     await redisClient.connect();
@@ -104,6 +124,10 @@ const initRedisClient = async () => {
 };
 
 // middleware
+
+// Express 세션과 Socket.IO 통합
+io.engine.use(sessionMiddleware);
+app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(morgan("dev"));
 app.use(express.json());
@@ -125,24 +149,15 @@ io.use(async (socket, next) => {
     return next(new Error("JWT 인증 실패"));
   }
 });
-
+  
 // 정적 파일 제공(프로필 이미지 경로 설정)
 // const imagePath = "C:/Users/codms/Documents/FlexCode/src/assets/imgs";
 // console.log("프로필 이미지 절대경로:", imagePath);
 // app.use("/uploads", express.static(imagePath));
 
-app.use(
-  session({
-    store: new RedisStore({ client: redisClient, disableTouch: true }),
-    secret: process.env.JWT_SECRET || "your_secret_key",
-    resave: false,
-    saveUninitialized: true,
-    rolling: true, // 로그인, 새로고침 시 세션유지
-    cookie: { maxAge: 30 * 60 * 1000 }, // 30분 유지
-  })
-);
 
 // 라우터 등록
+app.use(sessionMiddleware);
 app.use("/api/order", orderRouter);
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
@@ -155,12 +170,12 @@ app.use('/api/search', searchRouter);
 
 // 서버 실행 함수
 const startServer = async () => {
+  initRedisClient();
   try {
     server.listen(PORT, () => {
       console.log(`서버가 포트 ${PORT}에서 실행 중...`);
       console.log("WebSocket 서버 실행 완료!");
     });
-    initRedisClient();
   } catch (error) {
     console.error("서버 시작 중 오류 발생:", error);
   }

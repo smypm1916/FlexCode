@@ -126,7 +126,7 @@ const LoginModal = ({ onClose }) => {
         }
       );
       console.log("로그인 응답:", response.data);
-
+      alert("로그인 성공");
       // 로그인 성공 시 장바구니 병합 요청
       if (response.data.success) {
         // 로그인 성공 시 토큰 저장 
@@ -158,7 +158,7 @@ const LoginModal = ({ onClose }) => {
           // tempOrderId와 카트 갱신
           await refreshCart(newTempOrderId);
 
-          alert("로그인 성공");
+
           navigate("/");
           onClose();
         } else {
@@ -263,7 +263,7 @@ const LoginModal = ({ onClose }) => {
         </ButtonContainer>
       </Modal_Wrapper>
     </Container_Modal>
-  );
+  )
 };
 
 export default LoginModal;

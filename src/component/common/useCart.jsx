@@ -26,40 +26,17 @@ export const useCart = () => {
          setCartItems(res.data.products || []);
          setTempOrderId(res.data.tempOrderId || null);
       } catch (err) {
-         setError(err.response?.data?.message || err.message);
+         // !!계속 403발생중
+         if (err.response?.status === 403) {
+            alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
+         } else {
+            setError(err.response?.data?.message || err.message);
+            console.log('fetchcart error : ', err.message);
+         }
       } finally {
          setLoading(false);
       }
    };
-
-   // const fetchCart = useCallback(async (forceTempOrderId = null) => {
-   //    setLoading(true);
-   //    try {
-   //       const targetOrderId = forceTempOrderId || sessionStorage.getItem("tempOrderId");
-   //       const token = localStorage.getItem('token');
-   //       const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-
-   //       const res = await axios.get(`${API_BASE_URL}/cart/read/${targetOrderId}`, {
-   //          withCredentials: true,
-   //          ...config
-   //       });
-
-   //       if (res.data.success) {
-   //          setCartItems(res.data.products || []);
-   //          // tempOrderId 업데이트 통합
-   //          if (res.data.tempOrderId) {
-   //             sessionStorage.setItem("tempOrderId", res.data.tempOrderId);
-   //             setTempOrderId(res.data.tempOrderId);
-   //          }
-   //       }
-   //       // return res.data;
-   //    } catch (err) {
-   //       setError(err.response?.data?.message || err.message);
-   //       throw err;
-   //    } finally {
-   //       setLoading(false);
-   //    }
-   // });
 
    // refreshCart를 더 간결하게 수정
    const refreshCart = async (newTempOrderId) => {
