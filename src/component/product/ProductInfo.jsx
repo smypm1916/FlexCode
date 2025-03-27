@@ -13,21 +13,20 @@ import Select from "../common/Select";
 import { useCart } from "../common/useCart";
 
 import {
-  Container01,
-  Container02,
-  Container03,
-  Divide_Box,
-  Image_Wrapper,
-  Info_Text,
-  Info_Text_Box,
-  Info_Title,
-  Info_Wrapper,
-  Product_Title,
-  Product_Wrapper,
-  Text,
-  Text_box,
-  Text_wrapper,
-  Title,
+   Container01,
+   Container02,
+   Container03,
+   Divide_Box,
+   Image_Wrapper,
+   Info_Text,
+   Info_Text_Box,
+   Info_Title,
+   Info_Wrapper,
+   Product_Wrapper,
+   Text,
+   Text_box,
+   Text_wrapper,
+   Title
 } from "../../style/Product_Detail_Style";
 import { System_message } from "../../style/ProductLists_Style";
 
@@ -176,7 +175,7 @@ const ProductInfo = () => {
             `${API_BASE_URL}/products/detail/${product_no}`,
             {
                withCredentials: true,
-               headers: { Accept: "application/json" },
+               headers: { Accept: "application/json; charset=utf-8" },
             }
          );
          if (res.data?.success) {
@@ -206,7 +205,7 @@ const ProductInfo = () => {
          const resOptions = await axios.get(
             `${API_BASE_URL}/options/detail/${product_no}`, {
             withCredentials: true,
-            headers: { Accept: "application/json" },
+            headers: { Accept: "application/json; charset=utf-8" },
          }
          );
          if (resOptions.data?.success) {
@@ -255,53 +254,53 @@ const ProductInfo = () => {
    };
 
 
-  // product_no 변경 시 상품 정보 로드
-  useEffect(() => {
-    if (!product_no) {
-      console.error("product_no 필요");
-      return;
-    }
-    const loadProductData = async () => {
-      console.log("제품 코드:", product_no);
-      setLoading(true);
-      await Promise.all([
-        fetchProductDetail(product_no),
-        fetchOptions(product_no),
-      ]);
-      setLoading(false);
-    };
-    loadProductData();
-  }, [product_no]);
+   // product_no 변경 시 상품 정보 로드
+   useEffect(() => {
+      if (!product_no) {
+         console.error("product_no 필요");
+         return;
+      }
+      const loadProductData = async () => {
+         console.log("제품 코드:", product_no);
+         setLoading(true);
+         await Promise.all([
+            fetchProductDetail(product_no),
+            fetchOptions(product_no),
+         ]);
+         setLoading(false);
+      };
+      loadProductData();
+   }, [product_no]);
 
-  if (loading)
-    return <System_message className="Inner_con">Loading...</System_message>;
-  if (error)
-    return <System_message className="Inner_con">Error...</System_message>;
+   if (loading)
+      return <System_message className="Inner_con">Loading...</System_message>;
+   if (error)
+      return <System_message className="Inner_con">Error...</System_message>;
 
-  return (
-    <Wrapper>
-      <Container_Style>
-        <Container01>
-          {/* 이미지 */}
-          <Image_Wrapper>
-            <img
-              src={`${imgPath}/${product?.PRODUCT_IMG}`}
-              alt={product?.PRODUCT_NAME}
-            />
-          </Image_Wrapper>
+   return (
+      <Wrapper>
+         <Container_Style>
+            <Container01>
+               {/* 이미지 */}
+               <Image_Wrapper>
+                  <img
+                     src={`${imgPath}/${product?.PRODUCT_IMG}`}
+                     alt={product?.PRODUCT_NAME}
+                  />
+               </Image_Wrapper>
 
-          {/* 상품정보 */}
-          <Product_Wrapper>
-            <Text_wrapper>
-              <Text_box className="column">
-                <Text>{product.PRODUCT_TYPE}</Text>
+               {/* 상품정보 */}
+               <Product_Wrapper>
+                  <Text_wrapper>
+                     <Text_box className="column">
+                        <Text>{product.PRODUCT_TYPE}</Text>
 
-                <h1>{product.PRODUCT_NAME}</h1>
-              </Text_box>
-              <Text_box>
-                <Title>판매 가격</Title>
-                <Text>{product.PRODUCT_PRICE} 원</Text>
-              </Text_box>
+                        <h1>{product.PRODUCT_NAME}</h1>
+                     </Text_box>
+                     <Text_box>
+                        <Title>판매 가격</Title>
+                        <Text>{product.PRODUCT_PRICE} 원</Text>
+                     </Text_box>
 
                      {/* 옵션 선택 */}
                      <Select
@@ -318,102 +317,102 @@ const ProductInfo = () => {
                         defaultValue=""
                      />
 
-              {/* 수량 선택 (옵션 선택 시에만 표시) */}
-              {currentOption && (
-                <div style={{ marginTop: "10px" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div>
-                      <Title>{currentOption.OPTION_TITLE}</Title>
-                      <Text>+{currentOption.OPTION_PRICE} 원</Text>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <Select
-                        options={Array.from({ length: 10 }, (_, i) => ({
-                          value: i + 1,
-                          label: `${i + 1}개`,
-                        }))}
-                        onChange={handleQuantityChange}
-                        defaultValue={1}
-                      />
-                      <Button btnTxt="추가" onClick={addOptionHandler} />
-                    </div>
-                  </div>
-                </div>
-              )}
+                     {/* 수량 선택 (옵션 선택 시에만 표시) */}
+                     {currentOption && (
+                        <div style={{ marginTop: "10px" }}>
+                           <div
+                              style={{
+                                 display: "flex",
+                                 justifyContent: "space-between",
+                                 alignItems: "center",
+                              }}
+                           >
+                              <div>
+                                 <Title>{currentOption.OPTION_TITLE}</Title>
+                                 <Text>+{currentOption.OPTION_PRICE} 원</Text>
+                              </div>
+                              <div style={{ display: "flex", alignItems: "center" }}>
+                                 <Select
+                                    options={Array.from({ length: 10 }, (_, i) => ({
+                                       value: i + 1,
+                                       label: `${i + 1}개`,
+                                    }))}
+                                    onChange={handleQuantityChange}
+                                    defaultValue={1}
+                                 />
+                                 <Button btnTxt="추가" onClick={addOptionHandler} />
+                              </div>
+                           </div>
+                        </div>
+                     )}
 
-              {/* 선택된 옵션 표시 */}
-              {checkedProducts.length > 0 && (
-                <CheckedProduct
-                  mode="detail"
-                  product={product}
-                  options={checkedProducts}
-                  quantityHandler={quantityHandler}
-                  onRemove={onRemove}
-                />
-              )}
-            </Text_wrapper>
+                     {/* 선택된 옵션 표시 */}
+                     {checkedProducts.length > 0 && (
+                        <CheckedProduct
+                           mode="detail"
+                           product={product}
+                           options={checkedProducts}
+                           quantityHandler={quantityHandler}
+                           onRemove={onRemove}
+                        />
+                     )}
+                  </Text_wrapper>
 
-            {/* 버튼 */}
-            <Button_Wrapper_100 className="grid2">
-              <Button onClick={goToOrder} btnTxt="바로구매" />
-              <Button
-                onClick={addToCartHandler}
-                disabled={cartLoading || checkedProducts.length === 0}
-                btnTxt="장바구니"
-              />
-              {/* 장바구니 모달 출현 */}
-            </Button_Wrapper_100>
-          </Product_Wrapper>
-        </Container01>
+                  {/* 버튼 */}
+                  <Button_Wrapper_100 className="grid2">
+                     <Button onClick={goToOrder} btnTxt="바로구매" />
+                     <Button
+                        onClick={addToCartHandler}
+                        disabled={cartLoading || checkedProducts.length === 0}
+                        btnTxt="장바구니"
+                     />
+                     {/* 장바구니 모달 출현 */}
+                  </Button_Wrapper_100>
+               </Product_Wrapper>
+            </Container01>
 
-        <Divide_Box>
-          <Title>PRODUCT IMAGE</Title>
-        </Divide_Box>
+            <Divide_Box>
+               <Title>PRODUCT IMAGE</Title>
+            </Divide_Box>
 
-        {/* 컨테이너 2 */}
-        <Container02>
-          <Image_Wrapper>
-            <img src="src/style/img/shirts.png" alt="" />
-            <img src="src/style/img/shirts.png" alt="" />
-            <img src="src/style/img/shirts.png" alt="" />
-          </Image_Wrapper>
-        </Container02>
+            {/* 컨테이너 2 */}
+            <Container02>
+               <Image_Wrapper>
+                  <img src="src/style/img/shirts.png" alt="" />
+                  <img src="src/style/img/shirts.png" alt="" />
+                  <img src="src/style/img/shirts.png" alt="" />
+               </Image_Wrapper>
+            </Container02>
 
-        <Divide_Box>
-          <p>DETAIL INFO</p>
-        </Divide_Box>
+            <Divide_Box>
+               <p>DETAIL INFO</p>
+            </Divide_Box>
 
-        {/* 컨테이너 3 - 상세 정보 */}
-        <Container03>
-          <Info_Wrapper>
-            <Info_Title>
-              <p>상세 정보</p>
-            </Info_Title>
-            <Info_Text>
-              <Info_Text_Box>
-                <p>RCS 인증된 재활용 폴리에스터</p>
-                <Info_Wrapper>
-                  <p>RCS(Recycled Claim Standard) 인증 설명</p>
-                </Info_Wrapper>
-              </Info_Text_Box>
-            </Info_Text>
-          </Info_Wrapper>
-        </Container03>
-      </Container_Style>
+            {/* 컨테이너 3 - 상세 정보 */}
+            <Container03>
+               <Info_Wrapper>
+                  <Info_Title>
+                     <p>상세 정보</p>
+                  </Info_Title>
+                  <Info_Text>
+                     <Info_Text_Box>
+                        <p>RCS 인증된 재활용 폴리에스터</p>
+                        <Info_Wrapper>
+                           <p>RCS(Recycled Claim Standard) 인증 설명</p>
+                        </Info_Wrapper>
+                     </Info_Text_Box>
+                  </Info_Text>
+               </Info_Wrapper>
+            </Container03>
+         </Container_Style>
 
-      {/* 장바구니 추가 모달 */}
-      <CartModal
-        isOpen={isCartModalOpen}
-        onClose={closeModal}
-        goToOrder={goToOrder}
-      />
-    </Wrapper>
-  );
+         {/* 장바구니 추가 모달 */}
+         <CartModal
+            isOpen={isCartModalOpen}
+            onClose={closeModal}
+            goToOrder={goToOrder}
+         />
+      </Wrapper>
+   );
 };
 export default ProductInfo;

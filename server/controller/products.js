@@ -2,6 +2,7 @@ const productService = require('../services/products');
 
 // 전체 상품 조회
 async function getAllProducts(req, res) {
+   res.setHeader("Content-Type", "application/json; charset=utf-8");
    const page = Math.max(Number(req.query.page) || 1, 1);
    const limit = Math.max(Number(req.query.limit) || 9, 1);
    const keyword = req.query.keyword || "";
@@ -38,6 +39,7 @@ async function getAllProducts(req, res) {
 
 // 단일 상품 조회
 async function getProductDetail(req, res) {
+   res.setHeader("Content-Type", "application/json; charset=utf-8");
    try {
       const productDetail = await productService.getProductDetail(req.params.product_no);
       if (!req.params.product_no) {

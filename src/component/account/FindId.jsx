@@ -1,22 +1,20 @@
+import axios from "axios";
 import { useState } from "react";
 import Button from "../common/Button";
-import TextInput from "../common/TextInput";
-import Select from "../common/Select";
-import axios from "axios";
 
 // 스타일 임포트
 import {
+  Button_Wrapper_100,
   Container_Modal,
   Input_Box,
   Input_Style,
+  Input_Wrapper,
   Modal_Wrapper,
   Select_Style,
-  Input_Wrapper,
-  Button_Wrapper_100,
   Title,
 } from "../../style/Common_Style";
 import { Phone_Box } from "../../style/Modal_Style";
-import { Info_Title, Text } from "../../style/Product_Detail_Style";
+import { Text } from "../../style/Product_Detail_Style";
 
 const FindId = ({ onBack, onClose }) => {
   // 상태 관리

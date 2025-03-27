@@ -1,5 +1,5 @@
 import axios from "axios";
-import jwtDecode from "jwt-decode"; // 혹시 패키지 이름이 다르다면, 실제 import 구문에 맞춰주세요.
+import { jwtDecode } from "jwt-decode"; // 혹시 패키지 이름이 다르다면, 실제 import 구문에 맞춰주세요.
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
