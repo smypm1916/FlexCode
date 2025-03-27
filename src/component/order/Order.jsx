@@ -250,7 +250,7 @@ const Order = () => {
                 <Text>수량: {item.quantity}</Text>
                 <hr />
                 <Title>
-                  금액:{" "}
+                  {/* 금액:{" "} */}
                   {(product.PRODUCT_PRICE + item.OPTION_PRICE) *
                     item.quantity}
                   원
@@ -283,9 +283,9 @@ const Order = () => {
               const productKey = `product:${item.product_no}:option:${item.option_no}`;
               return (
                 <div key={productKey}>
-                  <p>상품명: {item.product_name}</p>
-                  <p>옵션명: {item.option_title}</p>
-                  <p>수량: {item.quantity}</p>
+                  <p>상 품 명: {item.product_name}</p>
+                  <p>옵 션 명: {item.option_title}</p>
+                  <p>선택 수량: {item.quantity}</p>
                   <p>
                     금액:{" "}
                     {(item.product_price + item.option_price) * item.quantity}원
