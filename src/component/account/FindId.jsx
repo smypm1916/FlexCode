@@ -61,7 +61,7 @@ const FindId = ({ onBack, onClose }) => {
         "http://localhost:8080/api/users/findId",
         findIdData,
         {
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": " p" },
         }
       );
 
