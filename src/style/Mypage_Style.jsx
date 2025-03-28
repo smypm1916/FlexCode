@@ -32,6 +32,11 @@ export const User_Status_Row = styled.div`
     gap: 20px;
     align-items: center;
   }
+
+  &.borderBottom {
+    padding: 20px 0;
+    border-bottom: 1px solid black;
+  }
 `;
 
 // --------------------- order ---------------------
@@ -55,5 +60,8 @@ export const Wrapper_Post = styled.div`
   flex-direction: column;
   padding: 20px;
   gap: 20px;
-  border: 1px solid black;
+
+  &.nonePadding {
+    padding: 0;
+  }
 `;

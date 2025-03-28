@@ -230,7 +230,7 @@ const Order = () => {
     }, 0);
 
   return (
-    <Wrapper className="wrap" id="shipping">
+    <Wrapper className="marginTop wrap" id="shipping">
       <Container_Style>
         {/* <h1>주문 번호 : {tempOrderId}</h1> */}
         {loading && <System_message>...LOADING...</System_message>}
@@ -282,14 +282,14 @@ const Order = () => {
             ? cartItems.map((item) => {
               const productKey = `product:${item.product_no}:option:${item.option_no}`;
               return (
-                <div key={productKey}>
-                  <p>상품명: {item.product_name}</p>
-                  <p>옵션명: {item.option_title}</p>
-                  <p>수량: {item.quantity}</p>
-                  <p>
+                <Order_Wrapper key={productKey}>
+                  <Title>상품명: {item.product_name}</Title>
+                  <Text>옵션명: {item.option_title}</Text>
+                  <Text>수량: {item.quantity}</Text>
+                  <Text>
                     금액:{" "}
                     {(item.product_price + item.option_price) * item.quantity}원
-                  </p>
+                  </Text>
                   <Button_Wrapper_100>
                     <Button
                       btnTxt="옵션 수정"
@@ -300,16 +300,45 @@ const Order = () => {
                       onClick={() => removeFromCart(productKey)}
                     />
                   </Button_Wrapper_100>
-                </div>
+                </Order_Wrapper>
               );
             })
             : !loading && <h2>장바구니가 비어있습니다.</h2>}
 
         {/* 합계 금액 */}
-        <p>합계 금액 : {totalPrice.toLocaleString()} 원</p>
+        <Text>합계 금액 : {totalPrice.toLocaleString()} 원</Text>
 
         {/* 옵션 변경 모달 */}
-        <ReactModal isOpen={isCartModalOpen} onRequestClose={closeEditModal}>
+        <ReactModal
+          isOpen={isCartModalOpen}
+          onRequestClose={closeEditModal}
+          style={{
+            overlay: {
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "rgba(0, 0, 0, 0.5)", // 배경색
+              zIndex: 300,
+            },
+            content: {
+              width: "40%",
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+              position: "static", // static으로 변경
+              background: "white",
+              padding: "20px",
+              borderRadius: "0",
+              border: "none",
+              padding: "50px",
+            },
+          }}
+        >
           {selectedProduct && (
             <CheckedProduct
               style={{ flexDirection: "row-reverse" }}

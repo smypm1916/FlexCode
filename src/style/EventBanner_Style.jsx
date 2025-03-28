@@ -31,7 +31,7 @@ export const Event_Wrapper = styled.div`
 // Event 설명 텍스트
 export const Text = styled.p`
   width: fit-content;
-  font-size: 15pt;
+  font-size: 2.5vmin;
   color: black;
 `;
 
@@ -42,7 +42,7 @@ export const Title = styled.h2`
   color: white;
   margin: 0;
   letter-spacing: 2px;
-  font-size: 40pt;
+  font-size: 7.5vmin;
 `;
 
 export const Logo = styled.div`
@@ -51,7 +51,6 @@ export const Logo = styled.div`
   img {
     padding: 10px;
     margin: 0;
-    font-size: 20px;
     width: 300px;
   }
 `;

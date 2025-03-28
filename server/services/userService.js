@@ -254,8 +254,32 @@ const updateProfileWithImage = async (userData) => {
   // 업로드된 프로필 이미지 파일 이름만 추출
   const profileImg = user_profile.filename;
 
-  // 커뮤니티 테이블 닉네임 수정 쿼리
-  const communityTBQuery = `update community_info set user_nickname = :user_nickname where user_nickname = :oldNickname`;
+  // 회원이 커뮤니티에 작성한 글이 있는지 체크하는 쿼리
+  const checkCommunityContentByUser = `select * from community_info where user_nickname = :oldNickname`;
+
+  const checkCommunityResult = await userExecuteQuery(
+    checkCommunityContentByUser,
+    { oldNickname }
+  );
+
+  const checkCommunityRows = checkCommunityResult.rows;
+  if (checkCommunityRows.length > 0) {
+    // 커뮤니티 테이블 닉네임 수정 쿼리
+    const communityTBQuery = `update community_info set user_nickname = :user_nickname where user_nickname = :oldNickname`;
+    const updateCommunityResult = await userExecuteQuery(communityTBQuery, {
+      user_nickname,
+      oldNickname,
+    });
+    const communityRowsAffected = updateCommunityResult.rowsAffected;
+    if (!communityRowsAffected && communityRowsAffected === 0) {
+      console.log("회원정보 수정 실패 - 커뮤니티 테이블");
+      return {
+        success: false,
+        message: "회원정보 수정 실패 - 커뮤니티 테이블",
+      };
+    }
+  }
+
   // 사용자 계정 테이블 수정 쿼리
   const userTBQuery = `update user_account set user_name = :user_name, user_nickname = :user_nickname, user_tel = :user_tel, user_addr = :user_addr, user_profile = :user_profile where user_email = :user_email`;
 
@@ -268,22 +292,11 @@ const updateProfileWithImage = async (userData) => {
     user_profile: profileImg,
   });
 
-  const updateCommunityResult = await userExecuteQuery(communityTBQuery, {
-    user_nickname,
-    oldNickname,
-  });
-
   const userRowsAffected = updateUserResult.rowsAffected;
-  const communityRowsAffected = updateCommunityResult.rowsAffected;
 
   if (!userRowsAffected && userRowsAffected === 0) {
     console.log("회원정보 수정 실패 - 회원 테이블");
     return { success: false, message: "회원정보 수정 실패 - 회원 테이블" };
-  }
-
-  if (!communityRowsAffected && communityRowsAffected === 0) {
-    console.log("회원정보 수정 실패 - 커뮤니티 테이블");
-    return { success: false, message: "회원정보 수정 실패 - 커뮤니티 테이블" };
   }
 
   // 회원정보 재조회 (최신 정보 가져오기)
@@ -329,7 +342,33 @@ const updateProfile = async (userData) => {
     oldNickname,
   } = userData;
 
-  const communityTBQuery = `update community_info set user_nickname = :user_nickname where user_nickname = :oldNickname`;
+  // 회원이 커뮤니티에 작성한 글이 있는지 체크하는 쿼리
+  const checkCommunityContentByUser = `select * from community_info where user_nickname = :oldNickname`;
+
+  const checkCommunityResult = await userExecuteQuery(
+    checkCommunityContentByUser,
+    { oldNickname }
+  );
+
+  const checkCommunityRows = checkCommunityResult.rows;
+
+  if (checkCommunityRows.length > 0) {
+    // 커뮤니티 테이블 닉네임 수정 쿼리
+    const communityTBQuery = `update community_info set user_nickname = :user_nickname where user_nickname = :oldNickname`;
+    const updateCommunityResult = await userExecuteQuery(communityTBQuery, {
+      user_nickname,
+      oldNickname,
+    });
+    const communityRowsAffected = updateCommunityResult.rowsAffected;
+    if (!communityRowsAffected && communityRowsAffected === 0) {
+      console.log("회원정보 수정 실패 - 커뮤니티 테이블");
+      return {
+        success: false,
+        message: "회원정보 수정 실패 - 커뮤니티 테이블",
+      };
+    }
+  }
+
   const userTBQuery = `update user_account set user_name = :user_name, user_nickname = :user_nickname, user_tel = :user_tel, user_addr = :user_addr where user_email = :user_email`;
 
   const updateUserResult = await userExecuteQuery(userTBQuery, {
@@ -340,22 +379,11 @@ const updateProfile = async (userData) => {
     user_addr,
   });
 
-  const updateCommunityResult = await userExecuteQuery(communityTBQuery, {
-    user_nickname,
-    oldNickname,
-  });
-
   const userRowsAffected = updateUserResult.rowsAffected;
-  const communityRowsAffected = updateCommunityResult.rowsAffected;
 
   if (!userRowsAffected && userRowsAffected === 0) {
     console.log("회원정보 수정 실패 - 회원 테이블");
     return { success: false, message: "회원정보 수정 실패 - 회원 테이블" };
-  }
-
-  if (!communityRowsAffected && communityRowsAffected === 0) {
-    console.log("회원정보 수정 실패 - 커뮤니티 테이블");
-    return { success: false, message: "회원정보 수정 실패 - 커뮤니티 테이블" };
   }
 
   const selectUserQuery = `select * from user_account where user_email = :email`;
@@ -518,7 +546,7 @@ const updateOrderState = async (order_no) => {
   try {
     console.log("변경대상 구매번호:", order_no);
 
-    const query = `update order_info set order_state = 1 where order_no =: order_no`;
+    const query = `update order_info set order_state = 0 where order_no =: order_no`;
     const result = await userExecuteQuery(query, { order_no });
 
     const rowsAffected = result.rowsAffected;

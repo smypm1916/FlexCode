@@ -38,7 +38,7 @@ export const Pick_Text = styled.div`
   di; flex;
   flex-direction: column;
   gap: 10px;
-  font-size: 15pt; 
+  font-size: 2.5vmin; 
   padding: 20px;
   gap: 15px;
   

@@ -28,11 +28,6 @@ export const List_Column = styled.div`
   display: grid;
   grid-template-columns: 1fr 3fr 2fr 2fr;
   align-items: center;
-  background: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1);
-  &.statusBox {
-    padding: 10px;
-  }
 `;
 
 export const List_Profile = styled.div`
