@@ -543,7 +543,7 @@ const updateOrderState = async (order_no) => {
   try {
     console.log("변경대상 구매번호:", order_no);
 
-    const query = `update order_info set order_state = 1 where order_no =: order_no`;
+    const query = `update order_info set order_state = 0 where order_no =: order_no`;
     const result = await userExecuteQuery(query, { order_no });
 
     const rowsAffected = result.rowsAffected;

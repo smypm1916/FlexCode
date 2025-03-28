@@ -54,7 +54,7 @@ const UserOrders = ({ email }) => {
               day: "2-digit",
             })}
           </p>
-          <p>주문상태 : {order.ORDER_STATE === 0 ? "주문완료" : "주문취소"}</p>
+          <p>주문상태 : {order.ORDER_STATE === 0 ? "주문취소" : "주문완료"}</p>
           <p>총 금액: {order.TOTAL_PRICE.toLocaleString()}원</p>
           <h4>주문상품</h4>
           <ul>

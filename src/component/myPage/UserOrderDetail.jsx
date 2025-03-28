@@ -109,6 +109,7 @@ const UserOrderDetail = () => {
       {/* 주문상품정보 */}
       <div>
         <h2>Order</h2>
+
         <div>
           {order.ITEMS.map((item, index) => (
             <div key={index} style={{ marginBottom: "20px" }}>
@@ -127,6 +128,7 @@ const UserOrderDetail = () => {
                 )}{" "}
                 원
               </div>
+
               <div>
                 옵션금액:{" "}
                 {Intl.NumberFormat("ko-KR").format(
@@ -149,6 +151,9 @@ const UserOrderDetail = () => {
           총 합계 금액:{" "}
           {Intl.NumberFormat("ko-KR").format(order.TOTAL_PRICE + 2500)}원
         </div>
+        <div>
+          주문일자: {new Date(order.ORDER_DATE).toISOString().slice(0, 10)}
+        </div>
       </div>
       {/* 주문자 정보 */}
       <div style={{ marginBottom: "20px" }}>
@@ -162,7 +167,7 @@ const UserOrderDetail = () => {
       </div>
       {/* 주문취소/목록 버튼 */}
       <div>
-        {order.ORDER_STATE !== 1 ? (
+        {order.ORDER_STATE !== 0 ? (
           <>
             <Button
               type="button"
