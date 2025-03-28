@@ -63,7 +63,7 @@ export const System_message = styled.h2`
   &.Inner_con {
     margin: 30px auto;
     width: 300px;
-    height: 300px;
+    height: calc(100vh-100px) !important;
     display: flex;
     align-items: center;
     justify-content: center;

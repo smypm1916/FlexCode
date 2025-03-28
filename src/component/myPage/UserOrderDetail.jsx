@@ -5,6 +5,14 @@ import { fetchGetOrderDetail } from "./MyPageAPI";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import Button from "../common/Button";
+import {
+  Button_Wrapper_100,
+  Container_Style,
+  Input_Wrapper,
+  Wrapper,
+} from "../../style/Common_Style";
+import { Title } from "../../style/Modal_Style";
+import { System_message } from "../../style/ProductLists_Style";
 
 const UserOrderDetail = () => {
   const [email, setEmail] = useState("");
@@ -81,7 +89,7 @@ const UserOrderDetail = () => {
   }, [id]);
 
   if (!order || !userData) {
-    return <div>Loading...</div>;
+    return <System_message className="Inner_con">Loading...</System_message>;
   }
 
   const handleCancelOrder = async () => {
@@ -144,12 +152,19 @@ const UserOrderDetail = () => {
       <div style={{ marginBottom: "20px" }}>
         <div>
           <h2>Total</h2>
+
         </div>
-        <div>주문상품건수: {order.ITEMS.length} 건</div>
-        <div>배송비: 2,500원</div>
-        <div>
-          총 합계 금액:{" "}
-          {Intl.NumberFormat("ko-KR").format(order.TOTAL_PRICE + 2500)}원
+        {/* 총 주문 금액 */}
+        <div style={{ marginBottom: "20px" }}>
+          <div>
+            <h2>Total</h2>
+          </div>
+          <div>주문상품건수: {order.ITEMS.length} 건</div>
+          <div>배송비: 2,500원</div>
+          <div>
+            총 합계 금액:{" "}
+            {Intl.NumberFormat("ko-KR").format(order.TOTAL_PRICE + 2500)}원
+          </div>
         </div>
         <div>
           주문일자: {new Date(order.ORDER_DATE).toISOString().slice(0, 10)}

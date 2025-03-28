@@ -10,6 +10,7 @@ import {
   Wrapper,
 } from "../../style/Common_Style";
 import { Button_Pagination } from "../../style/Community_Style";
+import { Title } from "../../style/Product_Detail_Style";
 
 const UserOrderList = () => {
   const [orders, setOrders] = useState([]);
@@ -48,22 +49,17 @@ const UserOrderList = () => {
   }
 
   return (
-    <Wrapper className="wrap" id="order">
-      <Container_Style>
+    <Wrapper className="wrap marginTop" id="order">
+      <Container_Style className="wrap">
         {orders.length > 0 ? (
           <div>
-            <h2>나의 구매내역</h2>
+            <Title>나의 구매내역</Title>
             {currentPosts.length > 0}
             <ul>
               {currentPosts.map((order) => {
                 return (
                   <div
                     key={order.ORDER_NO}
-                    onClick={() =>
-                      navigate(`/userOrder_detail/${order.ORDER_NO}`, {
-                        state: { orders },
-                      })
-                    }
                     style={{
                       border: "1px solid #ccc",
                       margin: "20px",
@@ -123,33 +119,34 @@ const UserOrderList = () => {
             <h2>작성한 커뮤니티 글이 없습니다.</h2>
           </div>
         )}
-        {/* 페이지네이션 버튼 */}
-        {totalPages > 1 && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              margin: "20px 0",
-            }}
-          >
-            {Array.from({ length: totalPages }, (_, i) => (
-              <Button_Pagination
-                key={i + 1}
-                onClick={() => setCurrentPage(i + 1)}
-                style={{
-                  margin: "0 5px",
-                  padding: "5px 10px",
-                  backgroundColor: currentPage === i + 1 ? "none" : "none",
-                  color: currentPage === i + 1 ? "#bb9393" : "black",
-                  cursor: "pointer",
-                  transition: "all 0.5s",
-                }}
-              >
-                {i + 1}
-              </Button_Pagination>
-            ))}
-          </div>
-        )}
+      </Container_Style>
+      {/* 페이지네이션 버튼 */}
+      {totalPages > 1 && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            margin: "20px 0",
+          }}
+        >
+          {Array.from({ length: totalPages }, (_, i) => (
+            <Button_Pagination
+              key={i + 1}
+              onClick={() => setCurrentPage(i + 1)}
+              style={{
+                margin: "0 5px",
+                padding: "5px 10px",
+                color: currentPage === i + 1 ? "#bb9393" : "black",
+                cursor: "pointer",
+                borderRadius: "5px",
+              }}
+            >
+              {i + 1}
+            </Button_Pagination>
+          ))}
+        </div>
+      )}
+      <Container_Style>
         <Button_Wrapper_100 className="grid1">
           <Button
             className={"returnToMyPage"}

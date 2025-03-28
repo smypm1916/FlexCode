@@ -70,7 +70,6 @@ const Index = () => {
 
   return (
     <Wrapper className="wrap" id="home">
-      <Header />
       <Container_Banner>
         <EventBanner />
       </Container_Banner>

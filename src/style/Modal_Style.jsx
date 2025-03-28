@@ -16,7 +16,7 @@ export const Phone_Box = styled.div`
 `;
 
 export const Title = styled.h2`
-  font-size: 40pt;
+  font-size: 7.5vmin;
   margin: 0;
   text-align: left;
 `;
