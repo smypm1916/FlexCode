@@ -4,6 +4,13 @@ import Button from "../common/Button";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {
+  Button_Wrapper_100,
+  Container_Style,
+  Input_Box,
+  Title,
+  Wrapper,
+} from "../../style/Common_Style";
 
 const DeleteUserCheck = () => {
   const [userEmail, setUserEmail] = useState("");
@@ -78,29 +85,29 @@ const DeleteUserCheck = () => {
   };
 
   return (
-    <div>
-      <div className="deleteUser-title">
-        <h2>회원탈퇴</h2>
-      </div>
-      <div>
-        <TextInput
-          type={"password"}
-          name={"password"}
-          placeholder={"PW"}
-          value={userPassword}
-          onChange={(e) => {
-            setUserPassword(e.target.value);
-          }}
-        />
-      </div>
-      <div>
-        <Button
-          className={"deleteUser"}
-          btnTxt={"회원탈퇴"}
-          onClick={handleCheckPw}
-        />
-      </div>
-    </div>
+    <Wrapper className="wrap" id="delete">
+      <Container_Style className="wrap gap">
+        <Title>회원탈퇴</Title>
+        <Input_Box>
+          <TextInput
+            type={"password"}
+            name={"password"}
+            placeholder={"PW"}
+            value={userPassword}
+            onChange={(e) => {
+              setUserPassword(e.target.value);
+            }}
+          />
+        </Input_Box>
+        <Button_Wrapper_100 className="grid1">
+          <Button
+            className={"deleteUser"}
+            btnTxt={"회원탈퇴"}
+            onClick={handleCheckPw}
+          />
+        </Button_Wrapper_100>
+      </Container_Style>
+    </Wrapper>
   );
 };
 

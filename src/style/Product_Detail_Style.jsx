@@ -165,6 +165,12 @@ export const Info_Text_Box = styled.div`
   display: grid;
   grid-template-columns: 1fr 5fr;
   padding: 10px 0;
+
+  &.grid6 {
+    display: grid;
+    grid-template-columns: 6fr;
+    padding: 10px 0;
+  }
 `;
 
 export const Container_Bucket = styled.div`
