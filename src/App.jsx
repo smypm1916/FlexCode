@@ -33,6 +33,7 @@ function App() {
         <Route path="/team" element={<Team />} />
         <Route path="/detail/:product_no" element={<ProductInfo />} />
         <Route path="/order/:tempOrderId" element={<Order />} />
+        {/* <Route path="/order/:currentOrderId" element={<Order />} /> */}
         <Route path="/order-complete/:orderNo" element={<OrderComplete />} />
         <Route path="/community" element={<CmMain />} />
         <Route path="/CmAdd" element={<CmAdd />} />

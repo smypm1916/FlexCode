@@ -2,10 +2,9 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  Button_Wrapper_100,
-  Container_Style,
-  Wrapper,
-  Wrapper_BucketInfo,
+   Button_Wrapper_100,
+   Container_Style,
+   Wrapper
 } from "../../style/Common_Style";
 import Button from "../common/Button";
 import CartModal from "../common/CartModal";
@@ -32,208 +31,228 @@ import {
 import { System_message } from "../../style/ProductLists_Style";
 
 const ProductInfo = () => {
-  const { product_no } = useParams();
-  const [product, setProduct] = useState({});
-  const [options, setOptions] = useState([]);
-  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
-  const [checkedProducts, setCheckedProducts] = useState([]); // 최종 선택된 옵션들
-  const [currentOption, setCurrentOption] = useState(null); // 현재 선택된 옵션
-  const [currentQuantity, setCurrentQuantity] = useState(1); // 현재 선택된 수량
-  const [localTempOrderId, setLocalTempOrderId] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  // const openModal = () => setIsCartModalOpen(true);
-  const closeModal = () => setIsCartModalOpen(false);
-  const navigate = useNavigate();
-  const imgPath = import.meta.env.VITE_IMG_PATH;
-  const {
-    addToCart,
-    fetchCart,
-    cartItems,
-    loading: cartLoading,
-    tempOrderId,
-  } = useCart();
+   const { product_no } = useParams();
+   const [product, setProduct] = useState({});
+   const [options, setOptions] = useState([]);
+   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
+   const [checkedProducts, setCheckedProducts] = useState([]); // 최종 선택된 옵션들
+   const [currentOption, setCurrentOption] = useState(null); // 현재 선택된 옵션
+   const [currentQuantity, setCurrentQuantity] = useState(1); // 현재 선택된 수량
+   const [localTempOrderId, setLocalTempOrderId] = useState(null);
+   const [loading, setLoading] = useState(true);
+   const [error, setError] = useState(null);
+   // const openModal = () => setIsCartModalOpen(true);
+   const closeModal = () => setIsCartModalOpen(false);
+   const navigate = useNavigate();
+   const imgPath = import.meta.env.VITE_IMG_PATH;
+   const {
+      addToCart,
+      fetchCart,
+      cartItems,
+      loading: cartLoading,
+      tempOrderId,
+   } = useCart();
 
-  const API_BASE_URL = "http://localhost:8080/api";
+   const API_BASE_URL = "http://localhost:8080/api";
 
-  //로그인 후 토큰 저장
-  const handleLogin = async (user_email, user_password) => {
-    const res = await axios.post(
-      `${API_BASE_URL}/cart/auth/login`,
-      {
-        user_email,
-        user_password,
-      },
-      { withCredentials: true }
-    );
-    if (res.data.success) {
-      localStorage.setItem("token", res.data.token);
+   //로그인 후 토큰 저장
+
+   //    const res = await axios.post(
+   //       `${API_BASE_URL}/cart/auth/login`,
+   //       {
+   //          user_email,
+   //          user_password,
+   //       },
+   //       { withCredentials: true }
+   //    );
+   //    if (res.data.success) {
+   //       localStorage.setItem("token", res.data.token);
+   //       await fetchCart();
+   //    }
+   // };
+
+   // 옵션 삭제
+   const onRemove = (OPTION_NO) => {
+      return () => {
+         setCheckedProducts((prev) =>
+            prev.filter((opt) => opt.OPTION_NO !== OPTION_NO)
+         );
+      };
+   };
+
+   const addToCartHandler = async () => {
+      if (checkedProducts.length === 0) {
+         alert("옵션을 선택하세요.");
+         return;
+      }
+
+      const newTempOrderId = await addToCart(
+         product_no,
+         product.PRODUCT_NAME,
+         product.PRODUCT_PRICE,
+         checkedProducts
+      );
+      if (newTempOrderId) {
+         setLocalTempOrderId(newTempOrderId);
+      }
       await fetchCart();
-    }
-  };
+      setIsCartModalOpen(true);
+      // setCheckedProducts([]);
+   };
 
-  // 옵션 삭제
-  const onRemove = (OPTION_NO) => {
-    return () => {
+   // 옵션 선택 핸들러
+   const optionHandler = (e) => {
+      // 선택된 값이 없으면 리턴
+      const OPTION_NO = parseInt(e.target.value);
+      if (!OPTION_NO) {
+         setCurrentOption(null);
+         setCurrentQuantity(1);
+         return;
+      }
+
+      const selected = options.find((opt) => opt.OPTION_NO === OPTION_NO);
+
+      if (!selected || selected.OPTION_STATE <= 0) {
+         alert('해당 옵션은 품절입니다.');
+         setCurrentOption(null);
+         setCurrentQuantity(1);
+         return;
+      }
+
+
+      // 이미 선택된 옵션인지 확인
+      const exist = checkedProducts.find((opt) => opt.OPTION_NO === OPTION_NO);
+      if (exist) {
+         // 이미 선택된 옵션이면 현재 선택 초기화
+         setCurrentOption(null);
+         setCurrentQuantity(1);
+         return;
+      }
+
+      // 현재 선택된 옵션 설정
+      setCurrentOption(selected);
+      setCurrentQuantity(1);
+   };
+
+   // 수량 변경 핸들러
+   const handleQuantityChange = (e) => {
+      const quantity = parseInt(e.target.value);
+      if (isNaN(quantity) || quantity < 1) return;
+      setCurrentQuantity(quantity);
+   };
+
+   // 옵션 추가 핸들러
+   const addOptionHandler = () => {
+      if (!currentOption) return;
+      setCheckedProducts((prev) => [
+         ...prev,
+         { ...currentOption, quantity: currentQuantity },
+      ]);
+      // 옵션 추가 후 현재 선택 초기화
+      setCurrentOption(null);
+      setCurrentQuantity(1);
+   };
+
+   // 최종 선택된 옵션 수량 변경 핸들러
+   const quantityHandler = (OPTION_NO, quantity) => {
       setCheckedProducts((prev) =>
-        prev.filter((opt) => opt.OPTION_NO !== OPTION_NO)
+         prev.map((opt) =>
+            opt.OPTION_NO === OPTION_NO ? { ...opt, quantity } : opt
+         )
       );
-    };
-  };
+   };
 
-  const addToCartHandler = async () => {
-    if (checkedProducts.length === 0) {
-      alert("옵션을 선택하세요.");
-      return;
-    }
-
-    const newTempOrderId = await addToCart(
-      product_no,
-      product.PRODUCT_NAME,
-      product.PRODUCT_PRICE,
-      checkedProducts
-    );
-    if (newTempOrderId) {
-      setLocalTempOrderId(newTempOrderId);
-    }
-    await fetchCart();
-    setIsCartModalOpen(true);
-    // setCheckedProducts([]);
-  };
-
-  // 옵션 선택 핸들러
-  const optionHandler = (e) => {
-    // 선택된 값이 없으면 리턴
-    const OPTION_NO = parseInt(e.target.value);
-    if (!OPTION_NO) {
-      setCurrentOption(null);
-      setCurrentQuantity(1);
-      return;
-    }
-
-    const selected = options.find((opt) => opt.OPTION_NO === OPTION_NO);
-
-    if (!selected) return;
-
-    // 이미 선택된 옵션인지 확인
-    const exist = checkedProducts.find((opt) => opt.OPTION_NO === OPTION_NO);
-    if (exist) {
-      // 이미 선택된 옵션이면 현재 선택 초기화
-      setCurrentOption(null);
-      setCurrentQuantity(1);
-      return;
-    }
-
-    // 현재 선택된 옵션 설정
-    setCurrentOption(selected);
-    setCurrentQuantity(1);
-  };
-
-  // 수량 변경 핸들러
-  const handleQuantityChange = (e) => {
-    const quantity = parseInt(e.target.value);
-    if (isNaN(quantity) || quantity < 1) return;
-    setCurrentQuantity(quantity);
-  };
-
-  // 옵션 추가 핸들러
-  const addOptionHandler = () => {
-    if (!currentOption) return;
-    setCheckedProducts((prev) => [
-      ...prev,
-      { ...currentOption, quantity: currentQuantity },
-    ]);
-    // 옵션 추가 후 현재 선택 초기화
-    setCurrentOption(null);
-    setCurrentQuantity(1);
-  };
-
-  // 최종 선택된 옵션 수량 변경 핸들러
-  const quantityHandler = (OPTION_NO, quantity) => {
-    setCheckedProducts((prev) =>
-      prev.map((opt) =>
-        opt.OPTION_NO === OPTION_NO ? { ...opt, quantity } : opt
-      )
-    );
-  };
-
-  // 상품 정보 조회
-  const fetchProductDetail = async (product_no) => {
-    if (!product_no || isNaN(product_no)) {
-      console.error("잘못된 product_no:", product_no);
-      setError("잘못된 상품 번호입니다.");
-      setLoading(false);
-      return;
-    }
-    try {
-      const res = await axios.get(
-        `${API_BASE_URL}/products/detail/${product_no}`,
-        {
-          withCredentials: true,
-          headers: { Accept: "application/json" },
-        }
-      );
-      if (res.data?.success) {
-        console.log("product :", res.data.data);
-        const tempDetail = res.data.data;
-        if (Array.isArray(tempDetail) && tempDetail.length > 0) {
-          setProduct(tempDetail[0]); // 객체 저장
-        } else {
-          setProduct({});
-        }
+   // 상품 정보 조회
+   const fetchProductDetail = async (product_no) => {
+      if (!product_no || isNaN(product_no)) {
+         console.error("잘못된 product_no:", product_no);
+         setError("잘못된 상품 번호입니다.");
+         setLoading(false);
+         return;
       }
-    } catch (error) {
-      console.error("detail load error", error);
-      setError(error.message);
-    }
-  };
-
-  // 상품 옵션 취득
-  const fetchOptions = async (product_no) => {
-    if (!product_no || isNaN(product_no)) {
-      console.error("잘못된 product_no:", product_no);
-      setLoading(false);
-      setError("잘못된 상품 번호입니다.");
-      return;
-    }
-    try {
-      const resOptions = await axios.get(
-        `${API_BASE_URL}/options/detail/${product_no}`,
-        {
-          withCredentials: true,
-          headers: { Accept: "application/json" },
-        }
-      );
-      if (resOptions.data?.success) {
-        setOptions(resOptions.data.data || []);
+      try {
+         const res = await axios.get(
+            `${API_BASE_URL}/products/detail/${product_no}`,
+            {
+               withCredentials: true,
+               headers: { Accept: "application/json" },
+            }
+         );
+         if (res.data?.success) {
+            console.log("product :", res.data.data);
+            const tempDetail = res.data.data;
+            if (Array.isArray(tempDetail) && tempDetail.length > 0) {
+               setProduct(tempDetail[0]); // 객체 저장
+            } else {
+               setProduct({});
+            }
+         }
+      } catch (error) {
+         console.error("detail load error", error);
+         setError(error.message);
       }
-    } catch (error) {
-      console.error("detail option load error", error);
-      setError(error.message);
-    }
-  };
+   };
 
-  // 장바구니 모달 닫기
-  const closeCartModal = () => {
-    dProducts([]);
-    setIsCartModalOpen(false);
-  };
+   // 상품 옵션 취득
+   const fetchOptions = async (product_no) => {
+      if (!product_no || isNaN(product_no)) {
+         console.error("잘못된 product_no:", product_no);
+         setLoading(false);
+         setError("잘못된 상품 번호입니다.");
+         return;
+      }
+      try {
+         const resOptions = await axios.get(
+            `${API_BASE_URL}/options/detail/${product_no}`, {
+            withCredentials: true,
+            headers: { Accept: "application/json" },
+         }
+         );
+         if (resOptions.data?.success) {
+            setOptions(resOptions.data.data || []);
+         }
+      } catch (error) {
+         console.error("detail option load error", error);
+         setError(error.message);
+      }
+   };
 
-  // 주문 페이지로 이동
-  const goToOrder = () => {
-    const currentOrderId = localTempOrderId || tempOrderId;
-    if (!currentOrderId) {
-      alert("장바구니가 비어있거나 아직 주문정보가 준비되지 않았습니다.");
-      return;
-    }
-    navigate(`/order/${currentOrderId}`, {
-      state: {
-        from: "direct",
-        product,
-        checkedProducts,
-      },
-    });
-  };
+   // 장바구니 모달 닫기
+   const closeCartModal = () => {
+      Products([]);
+      setIsCartModalOpen(false);
+   };
+
+   // // 주문 페이지로 이동
+   // const goToOrder = () => {
+   //    if (checkedProducts.length === 0) {
+   //       alert("옵션을 선택하세요.");
+   //       return;
+   //    }
+
+   //    navigate(`/order/direct`, {
+   //       state: {
+   //          from: "direct",
+   //          product,
+   //          checkedProducts,
+   //       },
+   //    });
+   // };
+   const goToOrder = () => {
+      const currentOrderId = localTempOrderId || tempOrderId;
+      if (!currentOrderId) {
+         alert("장바구니가 비어있거나 아직 주문정보가 준비되지 않았습니다.");
+         return;
+      }
+      navigate(`/order/${tempOrderId}`, {
+         state: {
+            from: "direct",
+            product,
+            checkedProducts,
+         },
+      });
+   };
+
 
   // product_no 변경 시 상품 정보 로드
   useEffect(() => {
@@ -283,19 +302,20 @@ const ProductInfo = () => {
                 <Text>{product.PRODUCT_PRICE} 원</Text>
               </Text_box>
 
-              {/* 옵션 선택 */}
-              <Select
-                className={"optionName"}
-                options={[
-                  { value: "", label: "옵션 선택" },
-                  ...options.map((opt) => ({
-                    value: opt.OPTION_NO,
-                    label: `${opt.OPTION_TITLE} (+${opt.OPTION_PRICE} 원)`,
-                  })),
-                ]}
-                onChange={optionHandler}
-                defaultValue=""
-              />
+                     {/* 옵션 선택 */}
+                     <Select
+                        className={"optionName"}
+                        options={[
+                           { value: "", label: "옵션 선택" },
+                           ...options.map((opt) => ({
+                              value: opt.OPTION_NO,
+                              label: `${opt.OPTION_TITLE} (+${opt.OPTION_PRICE} 원) ${opt.OPTION_STATE <= 0 ? '(품절)' : ''}`,
+                              disabled: opt.OPTION_STATE <= 0,
+                           }))
+                        ]}
+                        onChange={optionHandler}
+                        defaultValue=""
+                     />
 
               {/* 수량 선택 (옵션 선택 시에만 표시) */}
               {currentOption && (

@@ -41,7 +41,7 @@ const CmAdd = () => {
         setToken(storedToken);
       } catch (error) {
         console.error("커뮤 작성 토큰 디코딩 실패 :", error);
-        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
       }
     }
   }, []);

@@ -1,3 +1,7 @@
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Button_Wrapper_100,
   Container_Style,
@@ -7,18 +11,13 @@ import {
   Textarea_Style,
   Wrapper,
 } from "../../style/Common_Style";
-import Button from "../common/Button";
 import {
   List_Content,
   List_Profile,
   Profile_Img,
 } from "../../style/List_Style";
-import { useEffect, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import Button from "../common/Button";
 import FileUpload from "../common/FileUpload";
-import { jwtDecode } from "jwt-decode";
-import { System_message } from "../../style/ProductLists_Style";
 
 const CmDetail = () => {
   const storedToken = sessionStorage.getItem("token");

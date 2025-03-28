@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import FindId from "./FindId";
 import FindPw from "./FindPw";
-import styled from "styled-components";
 
 import {
   Container_Modal,
@@ -14,6 +14,7 @@ import {
 } from "../../style/Common_Style";
 
 import { Link_box } from "../../style/Modal_Style";
+import { useCart } from "../common/useCart";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -58,6 +59,7 @@ const Conwrapper = styled.div`
 const LoginModal = ({ onClose }) => {
   console.log("onClose 확인:", onClose);
 
+  const { refreshCart } = useCart();
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
 
   const [isFindId, setIsFindId] = useState(false);
@@ -124,17 +126,47 @@ const LoginModal = ({ onClose }) => {
         }
       );
       console.log("로그인 응답:", response.data);
-
-      // 로그인 성공 시 토큰 저장 & 메인 페이지 이동
+      alert(response.data.success);
+      // 로그인 성공 시 장바구니 병합 요청
       if (response.data.success) {
-        sessionStorage.setItem("token", response.data.token); // JWT 토큰 저장
-        // sessionStorage.setItem(
-        //   "profile",
-        //   response.data.profile || "default-profile.png"
-        // );
-        // alert("로그인 성공");
-        navigate("/"); // 메인 페이지로 이동
-        onClose();
+        // 로그인 성공 시 토큰 저장 
+
+        // 기존 저장 방법
+        // sessionStorage.setItem("token", response.data.token);
+
+        // 로컬 스토리지에 저장
+        const token = response.data.token;
+        sessionStorage.setItem("token", token);
+
+        // 게스트 세션 
+        const guestSessionId = localStorage.getItem("tempOrderId");
+
+        // 카트 병합
+        const cartMergeResponse = await axios.post(
+          "http://localhost:8080/api/cart/auth/login",
+          { user_email: login_email, guestSessionId },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true
+          }
+        );
+
+        if (cartMergeResponse.data.success) {
+          // 새로운 tempOrderId 저장
+          const newTempOrderId = cartMergeResponse.data.tempOrderId;
+
+          // tempOrderId와 카트 갱신
+          await refreshCart(newTempOrderId);
+
+
+          navigate("/");
+          onClose();
+        } else {
+          console.error("장바구니 병합 실패:", cartMergeResponse.data.message);
+          alert('장바구니 병합 실패');
+          navigate("/");
+          onClose();
+        }
       } else {
         console.log(response.data.exists);
         alert("이메일 또는 패스워드를 확인해주세요.");
@@ -231,7 +263,7 @@ const LoginModal = ({ onClose }) => {
         </ButtonContainer>
       </Modal_Wrapper>
     </Container_Modal>
-  );
+  )
 };
 
 export default LoginModal;
