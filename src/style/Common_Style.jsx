@@ -293,6 +293,7 @@ export const Input_Wrapper = styled.div`
 
 export const Container_Modal = styled.div`
   top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   position: fixed;
