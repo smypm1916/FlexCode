@@ -57,11 +57,38 @@ export const Text_wrapper = styled.div`
 export const Text = styled.h2`
   display: flex;
   width: fit-content;
-  font-size: 15pt;
+  font-size: 2.5vmin;
   color: black;
   font-weight: 300;
   align-items: center;
   gap: 20px;
+
+  &.more {
+    display: inline-block;
+    color: black;
+    cursor: pointer;
+    font-size: 2vmin;
+    transition: all 0.5s;
+    background: none;
+    border: none;
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &::after {
+      transition: 300ms;
+      content: "";
+      width: 0;
+      height: 1px;
+      display: block;
+      background: black;
+    }
+
+    &:hover::after {
+      width: 100%;
+    }
+  }
 `;
 
 //container01 상품 정보 제목
@@ -70,7 +97,7 @@ export const Title = styled.h2`
   color: black;
   margin: 0;
   letter-spacing: 2px;
-  font-size: 15pt;
+  font-size: 2.5vmin;
 `;
 
 //container01 상품 정보 상품명
@@ -79,7 +106,7 @@ export const Product_Title = styled.h1`
   color: black;
   margin: 0;
   letter-spacing: 2px;
-  font-size: 30pt;
+  font-size: 5vmin;
 `;
 
 //container01 상품 정보 텍스트 박스
@@ -129,7 +156,7 @@ export const Info_Text = styled.div`
   gap: 10px;
   padding: 10px 20px;
   width: fit-content;
-  font-size: 12pt;
+  font-size: 2vmin;
   color: black;
   font-weight: 300;
   width: -webkit-fill-available;
@@ -166,6 +193,6 @@ export const Bucket_option = styled.div`
 
 export const Bucket_Text = styled.div`
   Text {
-    font-size: 10pt;
+    font-size: 1.5vmin;
   }
 `;

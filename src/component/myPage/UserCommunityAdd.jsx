@@ -77,10 +77,10 @@ const UserCommunityAdd = () => {
   };
 
   return (
-    <Wrapper className="cm" id="add">
+    <Wrapper className="wrap marginTop" id="add">
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}
       <form onSubmit={handleSubmit}>
-        <Container_Style>
+        <Container_Style className="wrap">
           <Title>WRITE</Title>
           <List_Profile>
             <Profile_Img>
@@ -124,7 +124,7 @@ const UserCommunityAdd = () => {
               />
             </Input_Box>
           </Input_Wrapper>
-          <Button_Wrapper_100>
+          <Button_Wrapper_100 className="grid2">
             <Button
               btnTxt={"뒤로가기"}
               onClick={() =>

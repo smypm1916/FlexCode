@@ -36,6 +36,9 @@ export const Wrapper = styled.div`
   &.marginTop {
     margin-top: 50px;
   }
+  &.marginBottom {
+    margin-bottom: 50px;
+  }
 
   // index(메인페이지)의 Wrapper 전용 스타일
   &#home::after {
@@ -101,9 +104,7 @@ export const Wrapper = styled.div`
     content: "TEAM";
   }
   &#team {
-    width: -webkit-fill-available;
-    display: grid;
-    grid-template-rows: repeat(5, 1fr);
+    height: calc(100vh-100px);
     gap: 0;
   }
 
@@ -124,7 +125,7 @@ export const Title = styled.h2`
 
 // contents 를 묶는 container의 style
 export const Container_Style = styled.div`
-  width: 60%;
+  width: 63.4%;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -164,6 +165,12 @@ export const Container_Style = styled.div`
     background: rgba(255, 255, 255, 0.5);
     padding: 50px;
   }
+
+  &.CmPost {
+    width: -webkit-fill-available;
+    width: -moz-available;
+    gap: 0;
+  }
 `;
 
 // -------------------------button--------------------------------
@@ -179,7 +186,7 @@ export const Button_Style = styled.button`
   color: black;
   background: none;
   text-decoration: none;
-  font-size: 12pt;
+  font-size: 2vmin;
   &:hover {
     background-color: black;
     color: #bb9393;
@@ -209,7 +216,7 @@ export const Select_Style = styled.select`
   width: -webkit-fill-available;
   width: -moz-available;
   height: 45px;
-  font-size: 12pt;
+  font-size: 2vmin;
   padding: 10px;
   color: black;
   border: none;
@@ -229,7 +236,7 @@ export const Input_Style = styled.input`
   width: -webkit-fill-available;
   width: -moz-available;
   background: none;
-  font-size: 12pt;
+  font-size: 2vmin;
   color: black;
   border: none;
 
@@ -238,7 +245,7 @@ export const Input_Style = styled.input`
   }
 
   &::file-selector-button {
-    font-size: 12pt;
+    font-size: 2vmin;
     border: 1px solid black;
     color: black;
     background-color: none;
@@ -258,11 +265,30 @@ export const ThreePartGrid = styled.div`
 
 // wrapper로 묶어야할 자식요소가 있는경우 사용
 export const Input_Wrapper = styled.div`
-  width: 100%;
+  width: -webkit-fill-available;
+  width: -moz-available;
   display: grid;
   grid-template-columns: 1fr 7fr;
   align-items: center;
   gap: 20px;
+
+  &.flex {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+  }
+  &.userOrder {
+    margin: 0 !important;
+    border: none !important;
+    border-bottom: 1px solid black !important;
+    padding: 20px 0;
+  }
+  &.flexColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 `;
 
 export const Container_Modal = styled.div`
@@ -275,17 +301,9 @@ export const Container_Modal = styled.div`
   align-items: center;
   background-color: rgba(0, 0, 0, 0.25); /* 반투명 배경 */
   backdrop-filter: blur(5px); /* 배경 블러 효과 */
-  z-index: 500; /* 다른 요소들 위에 배치 */
+  z-index: 300; /* 다른 요소들 위에 배치 */
   flex-wrap: wrap;
   transition: ;
-
-  ReactModal {
-    display: flex;
-    position: absolute;
-    z-index: 600;
-    width: fit-content;
-    height: fit-content;
-  }
 `;
 
 export const Input_Box = styled.div`
@@ -304,6 +322,8 @@ export const Input_Box = styled.div`
 // ------------------------------------------------
 
 export const Modal_Wrapper = styled.div`
+  position: absolute;
+  z-index: 400;
   width: 40%;
   margin: 50px auto;
   background: white;
@@ -343,7 +363,7 @@ export const Textarea_Style = styled.textarea`
   border: none;
   height: 200px;
   resize: none;
-  font-size: 12pt;
+  font-size: 2vmin;
   scrollbar-width: 2px;
   scrollbar-color: #bb9393;
   background: none;

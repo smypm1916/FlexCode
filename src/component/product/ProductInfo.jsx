@@ -23,7 +23,6 @@ import {
   Info_Text_Box,
   Info_Title,
   Info_Wrapper,
-  Product_Title,
   Product_Wrapper,
   Text,
   Text_box,
