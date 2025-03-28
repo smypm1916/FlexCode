@@ -126,7 +126,6 @@ const LoginModal = ({ onClose }) => {
         }
       );
       console.log("로그인 응답:", response.data);
-      alert(response.data.success);
       // 로그인 성공 시 장바구니 병합 요청
       if (response.data.success) {
         // 로그인 성공 시 토큰 저장
