@@ -170,7 +170,7 @@ const ProductInfo = () => {
                setProduct(tempDetail[0]); // 객체 저장
                if (tempDetail[0].PRODUCT_IMG) {
                   const splitImages = tempDetail[0].PRODUCT_IMG
-                     .split(',')
+                     .split('*')
                      .map((img) => img.trim())
                      .filter(Boolean); // 빈 문자열 제거
                   setProductImages(splitImages);

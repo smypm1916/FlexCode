@@ -80,8 +80,24 @@ async function regProduct(req, res) {
 
 // 상품 수정
 async function updateProductByPk(req, res) {
+   const { product_img } = req.body;
+   const product_no = Number(req.params.product_no);
+
+   console.log('req.params:', req.params);
+   console.log('req.body:', req.body);
+   console.log('product_no:', product_no);
+   console.log('product_img:', product_img);
+
+
+   if (!product_no || !product_img) {
+      return res.status(400).json({
+         success: false,
+         message: '필수 데이터(product_no 또는 product_img)가 누락되었습니다.'
+      });
+   }
+
    try {
-      const productUpdater = await productService.updateProductByPk(req.body);
+      const productUpdater = await productService.updateProductByPk(product_no, product_img);
       console.log(req.body);
       res.status(201).json({
          success: true, message: 'product update controller success'
@@ -105,4 +121,4 @@ async function deleteProductByPk(req, res) {
 
 // async function updateProductByPk()
 
-module.exports = { getAllProducts, getProductDetail, regProduct, deleteProductByPk, getCategories, updateProductByPk };
+module.exports = { getAllProducts, getProductDetail, regProduct, deleteProductByPk, getCategories, updateProductByPk }
