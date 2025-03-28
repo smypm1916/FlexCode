@@ -16,7 +16,6 @@ import { Profile_Img } from "../../style/List_Style";
 import LoginModal from "../account/LoginModal";
 import { useCart } from "./useCart";
 
-
 const App = () => {
   const [showModal, setShowModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -102,7 +101,7 @@ const App = () => {
     setIsLoggedIn(false);
     setProfileImg(null);
     // window.location.reload(); // 페이지 새로고침으로 상태 초기화
-    navigate("/")
+    navigate("/");
   };
 
   return (
@@ -113,7 +112,6 @@ const App = () => {
       <Menu_Wrapper>
         <Menu onClick={() => navigate("/")}>HOME</Menu>
         <Menu onClick={() => navigate("/community")}>COMMUNITY</Menu>
-        <Menu onClick={() => navigate("/team")}>TEAM</Menu>
       </Menu_Wrapper>
       {/* <Menu_Wrapper>
         <Button_Login onClick={() => setShowModal(true)}>LOGIN</Button_Login>
@@ -131,11 +129,15 @@ const App = () => {
             </Profile_Img>
           </ProfileWrapper>
           {/* Button_Bucket으로 변경 */}
-          <Button_Bucket onClick={async () => {
-            await fetchCart(); // 장바구니 상태를 최신으로 업데이트
-            const latestTempOrderId = localStorage.getItem("tempOrderId");
-            navigate(`/order/${latestTempOrderId}`);
-          }}>CART</Button_Bucket>
+          <Button_Bucket
+            onClick={async () => {
+              await fetchCart(); // 장바구니 상태를 최신으로 업데이트
+              const latestTempOrderId = localStorage.getItem("tempOrderId");
+              navigate(`/order/${latestTempOrderId}`);
+            }}
+          >
+            CART
+          </Button_Bucket>
           {/* Button_Logout으로 수정, Button_Login/Logout = Button_Log로 통합 */}
           <Button_Log onClick={handleLogout}>LOGOUT</Button_Log>
         </Menu_Wrapper>

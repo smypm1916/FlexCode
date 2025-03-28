@@ -60,10 +60,12 @@ const CheckedProduct = ({
                       )
                     }
                     style={{
+                      outline: "none",
                       width: "50px",
                       textAlign: "center",
                       margin: "0 10px",
                     }}
+                    readOnly
                   />
                   <Button
                     btnTxt="+"
@@ -92,19 +94,16 @@ const CheckedProduct = ({
     }
     const items = cartItems || [];
     return (
-      <Container_Style className="Bucket">
-        <h2>옵션/수량 수정</h2>
+      <Container_Style className="Bucket noPaddingBorder">
+        <Title>옵션/수량 수정</Title>
         {items.map((item) => {
           const productKey = `product:${item.product_no}:option:${item.option_no}`;
           return (
-            <div
-              key={productKey}
-              style={{ border: "1px solid #ccc", marginBottom: 8 }}
-            >
-              <p>상품명: {item.product_name}</p>
+            <div key={productKey}>
+              <Title>{item.product_name}</Title>
 
               {/* 수량 변경 */}
-              <p>
+              <Text>
                 수량:{" "}
                 <input
                   type="number"
@@ -118,7 +117,7 @@ const CheckedProduct = ({
                   }}
                   style={{ width: "50px", textAlign: "center" }}
                 />
-              </p>
+              </Text>
 
               <Title>
                 합계 금액:{" "}

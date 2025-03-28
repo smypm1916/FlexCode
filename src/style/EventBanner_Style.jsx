@@ -19,10 +19,9 @@ export const Container_Banner = styled.div`
 export const Event_Wrapper = styled.div`
   background: url("src/style/img/launching_banner.png") no-repeat right;
   background-size: contain;
-  width: 60%;
+  width: 63.4%;
 
   height: 100%;
-  padding: 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -46,7 +45,7 @@ export const Title = styled.h2`
 `;
 
 export const Logo = styled.div`
-  width: 53.4%;
+  width: 60%;
   background: white;
   img {
     padding: 10px;
