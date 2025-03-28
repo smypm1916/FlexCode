@@ -92,16 +92,6 @@ const UserOrders = ({ email }) => {
               </li>
             ))}
           </ul>
-          <p>
-            주문일자 :{" "}
-            {new Date(order.ORDER_DATE).toLocaleString("ko-KR", {
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-            })}
-          </p>
-          <p>주문상태 : {order.ORDER_STATE === 0 ? "주문완료" : "주문취소"}</p>
-          <p>총 금액: {order.TOTAL_PRICE.toLocaleString()}원</p>
         </Input_Wrapper>
       ))}
     </Order_Wrapper>
