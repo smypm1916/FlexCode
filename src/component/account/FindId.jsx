@@ -113,6 +113,7 @@ const FindId = ({ onBack, onClose }) => {
                 type="text"
                 name="mid_tel"
                 placeholder="1234"
+                maxLength={4}
                 value={mid_tel}
                 onChange={handleInputTelChange}
               />
@@ -123,6 +124,7 @@ const FindId = ({ onBack, onClose }) => {
                 type="text"
                 name="last_tel"
                 placeholder="5678"
+                maxLength={4}
                 value={last_tel}
                 onChange={handleInputTelChange}
               />
