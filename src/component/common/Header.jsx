@@ -100,7 +100,8 @@ const App = () => {
     console.log("로그아웃성공 ui 전환들어옴");
     setIsLoggedIn(false);
     setProfileImg(null);
-    window.location.reload(); // 페이지 새로고침으로 상태 초기화
+    navigate("/");
+    // window.location.reload(); // 페이지 새로고침으로 상태 초기화
   };
 
   return (

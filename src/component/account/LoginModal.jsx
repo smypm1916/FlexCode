@@ -132,7 +132,7 @@ const LoginModal = ({ onClose }) => {
         //   "profile",
         //   response.data.profile || "default-profile.png"
         // );
-        alert("로그인 성공");
+        // alert("로그인 성공");
         navigate("/"); // 메인 페이지로 이동
         onClose();
       } else {
