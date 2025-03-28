@@ -13,44 +13,50 @@ import { System_message } from "../../style/ProductLists_Style";
 import { Text } from "../../style/Product_Detail_Style";
 
 const OrderComplete = () => {
-  const { orderNo } = useParams();
-  const navigate = useNavigate();
-  const [orderInfo, setOrderInfo] = useState([]);
-  const [orderItems, setOrderItems] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+   const { orderNo } = useParams();
+   const [isLoggedIn, setIsLoggedIn] = useState(false);
+   const navigate = useNavigate();
+   const [orderInfo, setOrderInfo] = useState([]);
+   const [orderItems, setOrderItems] = useState([]);
+
+   const [loading, setLoading] = useState(false);
+   const [error, setError] = useState(null);
 
   const API_BASE_URL = "http://localhost:8080/api";
 
-  const fetchOrderData = async () => {
-    setLoading(true);
-    try {
-      const token = localStorage.getItem("token");
-      const config = token
-        ? { headers: { Authorization: `Bearer ${token}` } }
-        : {};
-      const res = await axios.get(`${API_BASE_URL}/order/receipt/${orderNo}`, {
-        headers: { Authorization: `Bearer ${token}` },
-        withCredentials: true,
-      });
-      if (res.data.success) {
-        setOrderInfo(res.data.orderInfo);
-        setOrderItems(res.data.orderItems);
-      } else {
-        setError("주문 정보를 불러올 수 없습니다.");
+   const fetchOrderData = async () => {
+      setLoading(true);
+      try {
+         const token = sessionStorage.getItem('token');
+         const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+         const res = await axios.get(`${API_BASE_URL}/order/receipt/${orderNo}`, {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+         });
+         console.log(res)
+         if (res.data.success) {
+            setOrderInfo(res.data.orderInfo);
+            setOrderItems(res.data.orderItems);
+         } else {
+            setError('주문 정보를 불러올 수 없습니다.');
+         }
+      } catch (err) {
+         setError('에러 발생: ' + err.message);
+      } finally {
+         console.log('orderInfo : ', orderInfo);
+         console.log('orderItems : ', orderItems);
+         setLoading(false);
       }
-    } catch (err) {
-      setError("에러 발생: " + err.message);
-    } finally {
-      console.log("orderInfo : ", orderInfo);
-      console.log("orderItems : ", orderItems);
-      setLoading(false);
-    }
-  };
+   };
 
-  useEffect(() => {
-    fetchOrderData();
-  }, [orderNo]);
+   useEffect(() => {
+      fetchOrderData();
+   }, [orderNo]);
+
+   useEffect(() => {
+      const token = sessionStorage.getItem('token');
+      setIsLoggedIn(!!token);
+   }, []);
 
   if (loading)
     return <System_message className="Inner_con">LOADING</System_message>;

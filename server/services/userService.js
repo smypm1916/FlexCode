@@ -3,6 +3,7 @@ const user_account = require("../models/user_account");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+
 // 이메일 중복 체크 서비스
 const checkEmail = async (email) => {
   try {
@@ -131,6 +132,8 @@ const loginUser = async (email, password) => {
     );
 
     console.log("JWT 토큰 발급 성공:", token);
+
+
 
     return { success: true, token };
   } catch (error) {
@@ -543,7 +546,7 @@ const updateOrderState = async (order_no) => {
   try {
     console.log("변경대상 구매번호:", order_no);
 
-    const query = `update order_info set order_state = 1 where order_no =: order_no`;
+    const query = `update order_info set order_state = 0 where order_no =: order_no`;
     const result = await userExecuteQuery(query, { order_no });
 
     const rowsAffected = result.rowsAffected;

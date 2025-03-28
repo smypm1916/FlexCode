@@ -6,31 +6,44 @@ const API_BASE_URL = "http://localhost:8080/api";
 
 export const useCart = () => {
    const [cartItems, setCartItems] = useState([]);
-   const [tempOrderId, setTempOrderId] = useState(null);
+   const [tempOrderId, setTempOrderId] = useState(localStorage.getItem("tempOrderId"));
    const [loading, setLoading] = useState(false);
    const [error, setError] = useState(null);
 
-   // 장바구니 조회
+   // 장바구니 조회 (무조건 이메일로 레디스 조회)
    const fetchCart = async () => {
+
       setLoading(true);
       try {
-         const token = localStorage.getItem('token');
+         const token = sessionStorage.getItem('token');
          const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
-         const res = await axios.get(`${API_BASE_URL}/cart/read/${tempOrderId}`, {
+         const res = await axios.get(`${API_BASE_URL}/cart/read`, {
             withCredentials: true,
             ...config
          });
-         if (res.data.success) {
-            if (res.data.tempOrderId && res.data.tempOrderId !== tempOrderId) {
-               setTempOrderId(res.data.tempOrderId);
-            }
-            setCartItems(res.data.products || []);
-         }
+
+         setCartItems(res.data.products || []);
+         setTempOrderId(res.data.tempOrderId || null);
       } catch (err) {
-         setError(err.response?.data?.message || err.message);
+         // !!계속 403발생중
+         if (err.response?.status === 403) {
+            alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
+         } else {
+            setError(err.response?.data?.message || err.message);
+            console.log('fetchcart error : ', err.message);
+         }
       } finally {
          setLoading(false);
+      }
+   };
+
+   // refreshCart를 더 간결하게 수정
+   const refreshCart = async (newTempOrderId) => {
+      try {
+         await fetchCart(newTempOrderId);
+      } catch (error) {
+         console.error('장바구니 새로고침 실패', error);
       }
    };
 
@@ -45,7 +58,7 @@ export const useCart = () => {
 
       setLoading(true);
       try {
-         const token = localStorage.getItem('token');
+         const token = sessionStorage.getItem('token');
          const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
          const res = await axios.post(`${API_BASE_URL}/cart/add`, {
@@ -58,8 +71,10 @@ export const useCart = () => {
 
          if (res.data.success && res.data.tempOrderId) {
             setTempOrderId(res.data.tempOrderId);
+            localStorage.setItem("tempOrderId", res.data.tempOrderId);
          }
-         await fetchCart();
+
+         await fetchCart(res.data.tempOrderId);
          return res.data.tempOrderId;
       } catch (err) {
          setError(err.response?.data?.message || err.message);
@@ -68,23 +83,19 @@ export const useCart = () => {
       }
    };
 
-   // 장바구니 상품 수량변경
+   // 장바구니 상품 수량 변경
    const updateCartQuantity = async (product_no, new_quantity) => {
       setLoading(true);
       try {
-         const token = localStorage.getItem('token');
+         const token = sessionStorage.getItem('token');
          const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-         const res = await axios.put(`${API_BASE_URL}/cart/update`, {
+
+         await axios.put(`${API_BASE_URL}/cart/update`, {
             product_no,
             new_quantity
-         }, {
-            withCredentials: true,
-            ...config
-         });
-         if (res.data.success) {
-            // 성공 후 장바구니 재조회
-            await fetchCart();
-         }
+         }, { headers: { Authorization: `Bearer ${token}` }, withCredentials: true, ...config });
+
+         await fetchCart();
       }
       catch (err) {
          setError(err.response?.data?.message || err.message);
@@ -93,23 +104,19 @@ export const useCart = () => {
       }
    };
 
-   // 장바구니에서 제거
+   // 장바구니 상품 삭제
    const removeFromCart = async (productKey) => {
       setLoading(true);
       try {
-         const token = localStorage.getItem('token');
+         const token = sessionStorage.getItem('token');
          const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
          await axios.delete(`${API_BASE_URL}/cart/remove`, {
+            headers: { Authorization: `Bearer ${token}` },
             withCredentials: true,
             ...config,
             data: { productKey },
          });
-
-         setCartItems(prev => prev.filter(products => {
-            const pk = `product:${products.PRODUCT_NO}:option:${products.OPTION_NO}`;
-            return pk !== productKey;
-         }));
 
          await fetchCart();
       } catch (err) {
@@ -120,20 +127,11 @@ export const useCart = () => {
    };
 
    useEffect(() => {
-      const storedId = localStorage.getItem('tempOrderId');
-      if (storedId) setTempOrderId(storedId);
-   }, []);
-
-   useEffect(() => {
       if (tempOrderId) {
+         // sessionStorage.setItem('tempOrderId', tempOrderId);
          localStorage.setItem('tempOrderId', tempOrderId);
-         fetchCart(); // tempOrderId가 없으면 불필요
       }
    }, [tempOrderId]);
 
-   useEffect(() => {
-      console.log("현재 tempOrderId 값:", tempOrderId);
-   }, [tempOrderId]);
-
-   return { cartItems, tempOrderId, loading, error, addToCart, removeFromCart, fetchCart, updateCartQuantity };
+   return { cartItems, addToCart, updateCartQuantity, removeFromCart, fetchCart, refreshCart, tempOrderId, loading, error };
 };

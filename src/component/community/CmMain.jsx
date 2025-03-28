@@ -1,31 +1,24 @@
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
-import { PaginationComponent } from "./PaginationComponent";
-import Select from "../common/Select";
-import {
-  Pagination_List,
-  Search_Box,
-  Container01,
-  Chat_icon,
-} from "../../style/Community_Style";
-import Button from "../common/Button";
-import {
-  List_Column,
-  List_Content,
-  List_Profile,
-  Profile_Img,
-} from "../../style/List_Style";
+import { useNavigate } from "react-router-dom";
 import {
   Container_Style,
-  Wrapper,
-  Input_Wrapper,
   Input_Box,
+  Input_Wrapper,
+  Wrapper,
 } from "../../style/Common_Style";
+import {
+  Chat_icon,
+  Container01,
+  Search_Box
+} from "../../style/Community_Style";
+import LoginModal from "../account/LoginModal";
+import Button from "../common/Button";
+import Select from "../common/Select";
 import TextInput from "../common/TextInput";
 import CmPost from "./CmPost";
-import { jwtDecode } from "jwt-decode";
-import LoginModal from "../account/LoginModal";
+import { PaginationComponent } from "./PaginationComponent";
 
 const CmMain = () => {
   const navigate = useNavigate();
@@ -47,7 +40,6 @@ const CmMain = () => {
     9;
     const end = pageNum === Math.ceil(posts.length / cnt) ? 0 : start - cnt;
     return posts.slice(end, start).reverse();
-    9 + 1, 12;
   };
   const getPosts = async () => {
     console.log("진입?");
@@ -113,7 +105,7 @@ const CmMain = () => {
         }
       } catch (error) {
         console.error("커뮤 작성 토큰 디코딩 실패 :", error);
-        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
       }
     }
   };

@@ -1,13 +1,12 @@
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import { Wrapper } from "../../style/Common_Style";
-import Header from "../common/Header";
+import { Container_Banner } from "../../style/EventBanner_Style";
 import Searchbox from "../common/Searchbox";
 import Category from "./Category";
 import EventBanner from "./EventBanner";
 import Pick from "./Pick";
 import ProductLists from "./ProductLists";
-import { Container_Banner } from "../../style/EventBanner_Style";
 
 const Index = () => {
   const [products, setProducts] = useState([]);
@@ -70,6 +69,7 @@ const Index = () => {
 
   return (
     <Wrapper className="wrap" id="home">
+      {/* <Header /> */}
       <Container_Banner>
         <EventBanner />
       </Container_Banner>
