@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Container_Style, Title } from "../../style/Common_Style";
 import {
   Pick_Box,
@@ -8,12 +9,16 @@ import {
   Text,
 } from "../../style/Pick_Style";
 
+// const API_BASE_URL = 'http://localhost:8080/api/products';
+
 const Pick = () => {
+  const navigate = useNavigate();
+
   return (
     <Container_Style>
       <Title>MD'S PICK</Title>
       <Pick_Wrapper>
-        <Pick_Box>
+        <Pick_Box onClick={() => navigate(`/detail/23`)} >
           <Pick_img>
             <img src="src\style\img\blue_hat.png" />
           </Pick_img>
@@ -23,7 +28,7 @@ const Pick = () => {
             <Text>12,000원</Text>
           </Pick_Text>
         </Pick_Box>
-        <Pick_Box>
+        <Pick_Box onClick={() => navigate(`/detail/24`)} >
           <Pick_img>
             <img src="src/style/img/shirts.png" />
           </Pick_img>
@@ -34,7 +39,7 @@ const Pick = () => {
           </Pick_Text>
         </Pick_Box>
       </Pick_Wrapper>
-    </Container_Style>
+    </Container_Style >
   );
 };
 

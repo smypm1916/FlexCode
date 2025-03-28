@@ -45,7 +45,7 @@ const ProductLists = ({ products, loading, fetchMore, hasMore }) => {
         <div ref={loader} />
       </ProductList_Wrapper>
     </Container_Style>
-  );
+  )
 };
 
 export default ProductLists;
