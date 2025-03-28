@@ -26,21 +26,6 @@ import {
 } from "../../style/SignUp_Style";
 
 const ModifyUserProfile = () => {
-  const customModalStyle = {
-    overlay: {
-      backgroundColor: "rgba(0,0,0,0.5)",
-    },
-    content: {
-      top: "55%",
-      left: "50%",
-      transform: "translate(-50%, -50%)", // 정가운데 정렬
-      width: "500px",
-      height: "450px",
-      padding: "0",
-      overflow: "hidden",
-    },
-  };
-
   const location = useLocation();
   const userData = location.state;
 
@@ -403,7 +388,32 @@ const ModifyUserProfile = () => {
                 <Modal
                   isOpen={isPostCodeOpen}
                   onRequestClose={handleClosePostCode}
-                  style={customModalStyle}
+                  style={{
+                    overlay: {
+                      position: "fixed",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "rgba(0, 0, 0, 0.5)", // 배경색
+                      zIndex: 300,
+                    },
+                    content: {
+                      width: "40%",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "20px",
+                      position: "static", // static으로 변경
+                      background: "white",
+                      padding: "20px",
+                      borderRadius: "0",
+                      border: "none",
+                      padding: "50px",
+                    },
+                  }}
                 >
                   <PostCodeModal
                     onClose={handleClosePostCode}
