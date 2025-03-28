@@ -36,76 +36,51 @@ const CheckedProduct = ({
             {product.PRODUCT_NAME}
           </Title>
           {options.length > 0 ? (
-            <>
-              {options.map((option) => (
-                <Container_Bucket key={option.OPTION_NO}>
-                  <Bucket_Text>
-                    <Text>{option.OPTION_TITLE}</Text>
-                    <Text>옵션가: {option.OPTION_PRICE}원</Text>
-                    <Text>재고: {option.OPTION_STATE} 개</Text>
-                    <Text>
-                      {/* 총 금액:{" "} */}
-                      {(product.PRODUCT_PRICE + option.OPTION_PRICE) *
-                        option.quantity}{" "}
-                      원
-                    </Text>
-                  </Bucket_Text>
-                  <Bucket_option>
-                    <Button
-                      btnTxt="-"
-                      onClick={() =>
-                        countDown(option.OPTION_NO, option.quantity)
-                      }
-                    />
-                    <input
-                      type="number"
-                      min="1"
-                      max={option.OPTION_STATE}
-                      value={option.quantity}
-                      onChange={(e) =>
-                        quantityHandler(
-                          option.OPTION_NO,
-                          parseInt(e.target.value, 10)
-                        )
-                      }
-                      style={{
-                        width: "50px",
-                        textAlign: "center",
-                        margin: "0 10px",
-                      }}
-                    />
-                    <Button
-                      btnTxt="+"
-                      onClick={() =>
-                        countUp(
-                          option.OPTION_NO,
-                          option.quantity,
-                          option.OPTION_STATE
-                        )
-                      }
-                    />
-                    <Button btnTxt="X" onClick={onRemove(option.OPTION_NO)} />
-                  </Bucket_option>
-                </Container_Bucket>
-              ))}
-
-              {/* 총 합계 금액 */}
-              <div style={{ marginTop: "20px", textAlign: "right" }}>
-                <Title>
-                  합계 금액:{" "}
-                  {Intl.NumberFormat("ko-KR").format(
-                    options.reduce(
-                      (total, opt) =>
-                        total +
-                        (product.PRODUCT_PRICE + opt.OPTION_PRICE) *
-                        opt.quantity,
-                      0
-                    )
-                  )}{" "}
-                  원
-                </Title>
-              </div>
-            </>
+            options.map((option) => (
+              <Container_Bucket key={option.OPTION_NO}>
+                <Bucket_Text>
+                  <Text>{option.OPTION_TITLE}</Text>
+                  <Text>{option.OPTION_PRICE}원</Text>
+                  <Text>재고: {option.OPTION_STATE} 개</Text>
+                </Bucket_Text>
+                <Bucket_option>
+                  <Button
+                    btnTxt="-"
+                    onClick={() => countDown(option.OPTION_NO, option.quantity)}
+                  />
+                  <input
+                    type="number"
+                    min="1"
+                    max={option.OPTION_STATE}
+                    value={option.quantity}
+                    onChange={(e) =>
+                      quantityHandler(
+                        option.OPTION_NO,
+                        parseInt(e.target.value, 10)
+                      )
+                    }
+                    style={{
+                      outline: "none",
+                      width: "50px",
+                      textAlign: "center",
+                      margin: "0 10px",
+                    }}
+                    readOnly
+                  />
+                  <Button
+                    btnTxt="+"
+                    onClick={() =>
+                      countUp(
+                        option.OPTION_NO,
+                        option.quantity,
+                        option.OPTION_STATE
+                      )
+                    }
+                  />
+                  <Button btnTxt="X" onClick={onRemove(option.OPTION_NO)} />
+                </Bucket_option>
+              </Container_Bucket>
+            ))
           ) : (
             <p>선택된 옵션이 없습니다.</p>
           )}
@@ -119,19 +94,16 @@ const CheckedProduct = ({
     }
     const items = cartItems || [];
     return (
-      <Container_Style className="Bucket">
-        <h2>옵션/수량 수정</h2>
+      <Container_Style className="Bucket noPaddingBorder">
+        <Title>옵션/수량 수정</Title>
         {items.map((item) => {
           const productKey = `product:${item.product_no}:option:${item.option_no}`;
           return (
-            <div
-              key={productKey}
-              style={{ border: "1px solid #ccc", marginBottom: 8 }}
-            >
-              <p>상품명: {item.product_name}</p>
+            <div key={productKey}>
+              <Title>{item.product_name}</Title>
 
               {/* 수량 변경 */}
-              <p>
+              <Text>
                 수량:{" "}
                 <input
                   type="number"
@@ -145,7 +117,7 @@ const CheckedProduct = ({
                   }}
                   style={{ width: "50px", textAlign: "center" }}
                 />
-              </p>
+              </Text>
 
               <Title>
                 합계 금액:{" "}

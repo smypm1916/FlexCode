@@ -73,6 +73,9 @@ export const Wrapper = styled.div`
   &#mypage::after {
     content: "PROFILE";
   }
+  &#delete::after {
+    content: "DELETE";
+  }
 
   &.mypage {
     margin: 0;
@@ -170,6 +173,17 @@ export const Container_Style = styled.div`
     width: -webkit-fill-available;
     width: -moz-available;
     gap: 0;
+  }
+
+  &.noPaddingBorder {
+    padding: 0;
+    border: none;
+  }
+
+  &.gap {
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
   }
 `;
 
@@ -293,6 +307,7 @@ export const Input_Wrapper = styled.div`
 
 export const Container_Modal = styled.div`
   top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   position: fixed;
