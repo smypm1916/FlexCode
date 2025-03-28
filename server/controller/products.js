@@ -78,6 +78,20 @@ async function regProduct(req, res) {
    }
 };
 
+// 상품 수정
+async function updateProductByPk(req, res) {
+   try {
+      const productUpdater = await productService.updateProductByPk(req.body);
+      console.log(req.body);
+      res.status(201).json({
+         success: true, message: 'product update controller success'
+      });
+      return
+   } catch (error) {
+      res.status(500).json({ success: false, message: error.message })
+   }
+}
+
 // 상품 삭제
 async function deleteProductByPk(req, res) {
    try {
@@ -89,4 +103,6 @@ async function deleteProductByPk(req, res) {
    }
 }
 
-module.exports = { getAllProducts, getProductDetail, regProduct, deleteProductByPk, getCategories };
+// async function updateProductByPk()
+
+module.exports = { getAllProducts, getProductDetail, regProduct, deleteProductByPk, getCategories, updateProductByPk };

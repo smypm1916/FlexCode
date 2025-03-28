@@ -32,6 +32,7 @@ import { System_message } from "../../style/ProductLists_Style";
 
 const ProductInfo = () => {
    const { product_no } = useParams();
+   const [productImages, setProductImages] = useState([]);
    const [product, setProduct] = useState({});
    const [options, setOptions] = useState([]);
    const [isCartModalOpen, setIsCartModalOpen] = useState(false);
@@ -54,22 +55,6 @@ const ProductInfo = () => {
    } = useCart();
 
    const API_BASE_URL = "http://localhost:8080/api";
-
-   //로그인 후 토큰 저장
-
-   //    const res = await axios.post(
-   //       `${API_BASE_URL}/cart/auth/login`,
-   //       {
-   //          user_email,
-   //          user_password,
-   //       },
-   //       { withCredentials: true }
-   //    );
-   //    if (res.data.success) {
-   //       localStorage.setItem("token", res.data.token);
-   //       await fetchCart();
-   //    }
-   // };
 
    // 옵션 삭제
    const onRemove = (OPTION_NO) => {
@@ -183,6 +168,13 @@ const ProductInfo = () => {
             const tempDetail = res.data.data;
             if (Array.isArray(tempDetail) && tempDetail.length > 0) {
                setProduct(tempDetail[0]); // 객체 저장
+               if (tempDetail[0].PRODUCT_IMG) {
+                  const splitImages = tempDetail[0].PRODUCT_IMG
+                     .split(',')
+                     .map((img) => img.trim())
+                     .filter(Boolean); // 빈 문자열 제거
+                  setProductImages(splitImages);
+               }
             } else {
                setProduct({});
             }
@@ -223,21 +215,6 @@ const ProductInfo = () => {
       setIsCartModalOpen(false);
    };
 
-   // // 주문 페이지로 이동
-   // const goToOrder = () => {
-   //    if (checkedProducts.length === 0) {
-   //       alert("옵션을 선택하세요.");
-   //       return;
-   //    }
-
-   //    navigate(`/order/direct`, {
-   //       state: {
-   //          from: "direct",
-   //          product,
-   //          checkedProducts,
-   //       },
-   //    });
-   // };
    const goToOrder = () => {
       const currentOrderId = localTempOrderId || tempOrderId;
       if (!currentOrderId) {
@@ -252,7 +229,6 @@ const ProductInfo = () => {
          },
       });
    };
-
 
    // product_no 변경 시 상품 정보 로드
    useEffect(() => {
@@ -377,14 +353,26 @@ const ProductInfo = () => {
 
             {/* 컨테이너 2 */}
             <Container02>
+               {/* <Image_Wrapper>
+                  <img src="src/style/img/shirts.png" alt="" />
+                  <img src="src/style/img/shirts.png" alt="" />
+                  <img src="src/style/img/shirts.png" alt="" />
+               </Image_Wrapper> */}
                <Image_Wrapper>
-                  <img src="src/style/img/shirts.png" alt="" />
-                  <img src="src/style/img/shirts.png" alt="" />
-                  <img src="src/style/img/shirts.png" alt="" />
+                  {productImages.map((img, idx) => (
+                     <img
+                        key={idx}
+                        src={`${imgPath}/${img}`} // VITE_IMG_PATH 사용
+                        alt={`상품 이미지 ${idx + 1}`}
+                        style={{ width: '100%', marginBottom: '20px' }}
+                     />
+                  ))}
                </Image_Wrapper>
             </Container02>
             <Divide_Box>
                <p>DETAIL INFO</p>
+               {true ? <></> : <></>}
+
             </Divide_Box>
 
             {/* 컨테이너 3 - 상세 정보 */}

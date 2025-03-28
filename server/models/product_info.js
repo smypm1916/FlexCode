@@ -119,6 +119,21 @@ async function getCategories() {
   }
 }
 
+// 상품 업데이트
+async function updateProductByPk(product_no, product_img) {
+  const updateQuery = `UPDATE PRODUCT_INFO SET PRODUCT_IMG=:product_img WHERE PRODUCT_NO=:product_no`;
+  try {
+    const updateResult = await executeQuery(updateQuery, {
+      product_img,
+      product_no: product_no,
+    });
+    console.log('product update succcess at model');
+  } catch (error) {
+    console.error('product update failed at model');
+    throw error;
+  }
+}
+
 
 const product_info = {
   tableName: "PRODUCT_INFO",
@@ -133,5 +148,5 @@ const product_info = {
 };
 
 module.exports = {
-  getAllProducts, getProductDetail, regProduct, deleteProductByPk, getCategories
+  getAllProducts, getProductDetail, regProduct, deleteProductByPk, getCategories, updateProductByPk
 };
