@@ -91,7 +91,7 @@ export const useCart = () => {
          const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
          await axios.put(`${API_BASE_URL}/cart/update`, {
-            product_no,
+
             new_quantity
          }, { headers: { Authorization: `Bearer ${token}` }, withCredentials: true, ...config });
 

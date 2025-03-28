@@ -291,6 +291,7 @@ const Order = () => {
           Array.isArray(checkedProducts) &&
           checkedProducts.length > 0
           ? checkedProducts.map((item) => {
+            console.log('checkedProducts :', item);
             const productKey = `product:${product.PRODUCT_NO}:option:${item.OPTION_NO}`;
             return (
               <Order_Wrapper key={`direct:${item.OPTION_NO}`}>
@@ -310,12 +311,18 @@ const Order = () => {
                     onClick={() =>
                       openEditModal({
                         ...item,
-                        product_name: product.PRODUCT_NAME,
-                        product_price: product.PRODUCT_PRICE,
-                        product_no: product.PRODUCT_NO,
-                        option_title: item.OPTION_TITLE,
-                        option_price: item.OPTION_PRICE,
-                        option_no: item.OPTION_NO,
+                        product_name: product.product_name,
+                        product_price: product.product_price,
+                        product_no: product.product_no,
+                        option_title: item.option_title,
+                        option_price: item.option_price,
+                        option_no: item.option_no,
+                        // product_name: product.PRODUCT_NAME,
+                        // product_price: product.PRODUCT_PRICE,
+                        // product_no: product.PRODUCT_NO,
+                        // option_title: item.OPTION_TITLE,
+                        // option_price: item.OPTION_PRICE,
+                        // option_no: item.OPTION_NO,
                       })
                     }
                   />
@@ -329,6 +336,7 @@ const Order = () => {
           })
           : !loading && cartItems.length > 0
             ? cartItems.map((item) => {
+              console.log('cartItems :', item);
               const productKey = `product:${item.product_no}:option:${item.option_no}`;
               return (
                 <Order_Wrapper key={productKey}>
@@ -406,7 +414,7 @@ const Order = () => {
                   );
                 } else {
                   // updateCartQuantity(product_no, quantity);
-                  updateCartQuantity(option_no, quantity);
+                  updateCartQuantity(PRODUCT_NO, OPTION_NO, quantity);
                 }
               }}
               removeFromCart={(productKey) => {
