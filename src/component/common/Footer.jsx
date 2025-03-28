@@ -28,9 +28,7 @@ const Footer = () => {
   return (
     <FooterContainer>
       <Footer_Content>2025 Final Project</Footer_Content>
-      <Footer_Content>
-        © 2025 Your Company Name. All rights reserved.
-      </Footer_Content>
+      <Footer_Content>© 2025 FlexCode. All rights reserved.</Footer_Content>
     </FooterContainer>
   );
 };

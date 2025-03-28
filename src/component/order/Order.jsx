@@ -16,6 +16,7 @@ import Button from "../common/Button";
 import CheckedProduct from "../common/CheckedProduct";
 import { useCart } from "../common/useCart";
 import ShippingAddress from "./ShippingAddress";
+import LoginModal from '../account/LoginModal';
 
 /*  
     1. 모든/일부 상품 선택
@@ -69,7 +70,7 @@ const Order = () => {
       return;
     }
     // if (!isLoggedIn) {
-    // alert("로그인이 필요합니다.");
+    // alert("로그인이 필요합니다!!");
     // setIsLoginModalOpen(true); // 로그인 모달 열기
     // return;
     // }
@@ -84,7 +85,7 @@ const Order = () => {
     try {
       // const response = await axios.post(`${API_BASE_URL}/order/pay/${from === 'direct' ? 'direct' : tempOrderId}`, {
       const response = await axios.post(`${API_BASE_URL}/order/pay/${tempOrderId}`, {
-        tempOrderId: from === 'direct' ? null : tempOrderId,
+        tempOrderId: tempOrderId,
         from,
         checkedProducts,
         product,
@@ -230,7 +231,7 @@ const Order = () => {
     }, 0);
 
   return (
-    <Wrapper className="wrap" id="shipping">
+    <Wrapper className="marginTop wrap" id="shipping">
       <Container_Style>
         {/* <h1>주문 번호 : {tempOrderId}</h1> */}
         {loading && <System_message>...LOADING...</System_message>}
@@ -282,14 +283,14 @@ const Order = () => {
             ? cartItems.map((item) => {
               const productKey = `product:${item.product_no}:option:${item.option_no}`;
               return (
-                <div key={productKey}>
-                  <p>상 품 명: {item.product_name}</p>
-                  <p>옵 션 명: {item.option_title}</p>
-                  <p>선택 수량: {item.quantity}</p>
-                  <p>
+                <Order_Wrapper key={productKey}>
+                  <Title>상품명: {item.product_name}</Title>
+                  <Text>옵션명: {item.option_title}</Text>
+                  <Text>수량: {item.quantity}</Text>
+                  <Text>
                     금액:{" "}
                     {(item.product_price + item.option_price) * item.quantity}원
-                  </p>
+                  </Text>
                   <Button_Wrapper_100>
                     <Button
                       btnTxt="옵션 수정"
@@ -300,16 +301,45 @@ const Order = () => {
                       onClick={() => removeFromCart(productKey)}
                     />
                   </Button_Wrapper_100>
-                </div>
+                </Order_Wrapper>
               );
             })
             : !loading && <h2>장바구니가 비어있습니다.</h2>}
 
         {/* 합계 금액 */}
-        <p>합계 금액 : {totalPrice.toLocaleString()} 원</p>
+        <Text>합계 금액 : {totalPrice.toLocaleString()} 원</Text>
 
         {/* 옵션 변경 모달 */}
-        <ReactModal isOpen={isCartModalOpen} onRequestClose={closeEditModal}>
+        <ReactModal
+          isOpen={isCartModalOpen}
+          onRequestClose={closeEditModal}
+          style={{
+            overlay: {
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "rgba(0, 0, 0, 0.5)", // 배경색
+              zIndex: 300,
+            },
+            content: {
+              width: "40%",
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+              position: "static", // static으로 변경
+              background: "white",
+              padding: "20px",
+              borderRadius: "0",
+              border: "none",
+              padding: "50px",
+            },
+          }}
+        >
           {selectedProduct && (
             <CheckedProduct
               style={{ flexDirection: "row-reverse" }}
@@ -375,9 +405,14 @@ const Order = () => {
           <Button btnTxt="결제하기" onClick={goToPayment} />
           <Button btnTxt="돌아가기" onClick={goToHome} />
         </Button_Wrapper_100>
-        <ReactModal>
-          <LoginModal onClose={closeLoginModal}></LoginModal>
-        </ReactModal>
+        <ReactModal
+        isOpen={isLoginModalOpen}
+        onRequestClose={closeLoginModal}
+        shouldCloseOnOverlayClick={true}
+        shouldCloseOnEsc={true}
+      >
+        <LoginModal onClose={closeLoginModal} />
+      </ReactModal>
       </Container_Style>
     </Wrapper>
   );

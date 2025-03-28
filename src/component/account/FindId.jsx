@@ -111,6 +111,7 @@ const FindId = ({ onBack, onClose }) => {
                 type="text"
                 name="mid_tel"
                 placeholder="1234"
+                maxLength={4}
                 value={mid_tel}
                 onChange={handleInputTelChange}
               />
@@ -121,6 +122,7 @@ const FindId = ({ onBack, onClose }) => {
                 type="text"
                 name="last_tel"
                 placeholder="5678"
+                maxLength={4}
                 value={last_tel}
                 onChange={handleInputTelChange}
               />
@@ -129,7 +131,7 @@ const FindId = ({ onBack, onClose }) => {
         </Input_Wrapper>
 
         {/* 이메일 결과 출력 */}
-        {findEmail && <Text>{findEmail}</Text>}
+        {findEmail && <Text>회원님의 아이디는 {findEmail} 입니다.</Text>}
 
         {/* 버튼 */}
         <Button_Wrapper_100 className="grid2">

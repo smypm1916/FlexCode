@@ -91,7 +91,7 @@ const OrderComplete = () => {
          const res = await axios.get(`http://localhost:8080/api/order/detail/${orderNo}`, {
             withCredentials: true,
          });
-
+         console.log(res)
          if (res.data.success) {
             const data = res.data.result; // 백엔드 응답에 맞게 구조 수정
             // ITEMS가 JSON 문자열이라면 파싱

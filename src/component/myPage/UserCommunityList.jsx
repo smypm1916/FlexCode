@@ -11,6 +11,7 @@ import {
 } from "../../style/List_Style";
 import { Pagination_List } from "../../style/Community_Style";
 import { fetchGetCommunity } from "../myPage/MyPageAPI";
+import { Container_Style, Wrapper } from "../../style/Common_Style";
 
 const UserCommunityList = () => {
   const [communitys, setCommunitys] = useState([]);
@@ -57,106 +58,111 @@ const UserCommunityList = () => {
   }
 
   return (
-    <div>
-      {communitys.length > 0 ? (
-        <div>
-          <h2>작성한 커뮤니티글</h2>
-          <Button
-            type="button"
-            onClick={() => {
-              navigate("/userCommunity_add", { state: { communitys } });
-            }}
-            btnTxt={"글쓰기"}
-          />
-          {currentPosts.length > 0}
-          <ul>
-            {currentPosts.map((post) => {
-              return (
-                <Pagination_List
-                  onClick={() =>
-                    navigate(`/userCommunity_detail/${post.COMMUNITY_NO}`, {
-                      state: { communitys },
-                    })
-                  }
-                  key={post.COMMUNITY_NO}
-                  className="border p-2 mb-2"
-                >
-                  <List_Column key={post.COMMUNITY_NO}>
-                    <p>{post.COMMUNITY_TITLE}</p>
-                    <List_Profile>
-                      <p>작성자</p>
-                      <img
-                        src={`${imgPath}/${userProfileImg}`}
-                        width="100"
-                        height="100"
-                      />
-                      <p>{post.USER_NICKNAME}</p>
-                    </List_Profile>
-                    <List_Profile>
-                      <p>작성일자</p>
-                      <p>
-                        {" "}
-                        {new Date(post.COMMUNITY_DATE).toLocaleString("ko-KR", {
-                          year: "numeric",
-                          month: "2-digit",
-                          day: "2-digit",
-                        })}
-                      </p>
-                    </List_Profile>
-                  </List_Column>
-                  <List_Content>
-                    {post.COMMUNITY_IMG ? (
-                      <img src={`${imgPath}/${post.COMMUNITY_IMG}`} />
-                    ) : (
-                      <p></p>
-                    )}
-                  </List_Content>
-                </Pagination_List>
-              );
-            })}
-          </ul>
-        </div>
-      ) : (
-        <div>
-          <h2>작성한 커뮤니티 글이 없습니다.</h2>
-        </div>
-      )}
-      {/* 페이지네이션 버튼 */}
-      {totalPages > 1 && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            margin: "20px 0",
-          }}
-        >
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button
-              key={i + 1}
-              onClick={() => setCurrentPage(i + 1)}
-              style={{
-                margin: "0 5px",
-                padding: "5px 10px",
-                backgroundColor: currentPage === i + 1 ? "black" : "white",
-                color: currentPage === i + 1 ? "white" : "black",
-                border: "1px solid black",
-                cursor: "pointer",
-                borderRadius: "5px",
+    <Wrapper className="wrap nomargin" id="community">
+      <Container_Style className="wrap">
+        {communitys.length > 0 ? (
+          <div>
+            <h2>작성한 커뮤니티글</h2>
+            <Button
+              type="button"
+              onClick={() => {
+                navigate("/userCommunity_add", { state: { communitys } });
               }}
-            >
-              {i + 1}
-            </button>
-          ))}
+              btnTxt={"글쓰기"}
+            />
+            {currentPosts.length > 0}
+            <ul>
+              {currentPosts.map((post) => {
+                return (
+                  <Pagination_List
+                    onClick={() =>
+                      navigate(`/userCommunity_detail/${post.COMMUNITY_NO}`, {
+                        state: { communitys },
+                      })
+                    }
+                    key={post.COMMUNITY_NO}
+                    className="border p-2 mb-2"
+                  >
+                    <List_Column key={post.COMMUNITY_NO}>
+                      <p>{post.COMMUNITY_TITLE}</p>
+                      <List_Profile>
+                        <p>작성자</p>
+                        <img
+                          src={`${imgPath}/${userProfileImg}`}
+                          width="100"
+                          height="100"
+                        />
+                        <p>{post.USER_NICKNAME}</p>
+                      </List_Profile>
+                      <List_Profile>
+                        <p>작성일자</p>
+                        <p>
+                          {" "}
+                          {new Date(post.COMMUNITY_DATE).toLocaleString(
+                            "ko-KR",
+                            {
+                              year: "numeric",
+                              month: "2-digit",
+                              day: "2-digit",
+                            }
+                          )}
+                        </p>
+                      </List_Profile>
+                    </List_Column>
+                    <List_Content>
+                      {post.COMMUNITY_IMG ? (
+                        <img src={`${imgPath}/${post.COMMUNITY_IMG}`} />
+                      ) : (
+                        <p></p>
+                      )}
+                    </List_Content>
+                  </Pagination_List>
+                );
+              })}
+            </ul>
+          </div>
+        ) : (
+          <div>
+            <h2>작성한 커뮤니티 글이 없습니다.</h2>
+          </div>
+        )}
+        {/* 페이지네이션 버튼 */}
+        {totalPages > 1 && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "20px 0",
+            }}
+          >
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i + 1}
+                onClick={() => setCurrentPage(i + 1)}
+                style={{
+                  margin: "0 5px",
+                  padding: "5px 10px",
+                  backgroundColor: currentPage === i + 1 ? "black" : "white",
+                  color: currentPage === i + 1 ? "white" : "black",
+                  border: "1px solid black",
+                  cursor: "pointer",
+                  borderRadius: "5px",
+                }}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </div>
+        )}
+        <div>
+          <Button
+            className={"returnToMyPage"}
+            btnTxt={"마이페이지"}
+            onClick={() => navigate("/mypage")}
+          />
         </div>
-      )}
-      <div>
-        <Button
-          className={"returnToMyPage"}
-          btnTxt={"마이페이지"}
-          onClick={() => navigate("/mypage")}
-        />
-      </div>
-    </div>
+      </Container_Style>
+    </Wrapper>
   );
 };
 
