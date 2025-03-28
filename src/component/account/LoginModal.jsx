@@ -129,7 +129,7 @@ const LoginModal = ({ onClose }) => {
       alert(response.data.success);
       // 로그인 성공 시 장바구니 병합 요청
       if (response.data.success) {
-        // 로그인 성공 시 토큰 저장 
+        // 로그인 성공 시 토큰 저장
 
         // 기존 저장 방법
         // sessionStorage.setItem("token", response.data.token);
@@ -138,7 +138,7 @@ const LoginModal = ({ onClose }) => {
         const token = response.data.token;
         sessionStorage.setItem("token", token);
 
-        // 게스트 세션 
+        // 게스트 세션
         const guestSessionId = localStorage.getItem("tempOrderId");
 
         // 카트 병합
@@ -147,7 +147,7 @@ const LoginModal = ({ onClose }) => {
           { user_email: login_email, guestSessionId },
           {
             headers: { Authorization: `Bearer ${token}` },
-            withCredentials: true
+            withCredentials: true,
           }
         );
 
@@ -158,12 +158,11 @@ const LoginModal = ({ onClose }) => {
           // tempOrderId와 카트 갱신
           await refreshCart(newTempOrderId);
 
-
           navigate("/");
           onClose();
         } else {
           console.error("장바구니 병합 실패:", cartMergeResponse.data.message);
-          alert('장바구니 병합 실패');
+          alert("장바구니 병합 실패");
           navigate("/");
           onClose();
         }
@@ -251,7 +250,14 @@ const LoginModal = ({ onClose }) => {
             />
           </Input_Box>
           <Link_box>
-            <a onClick={() => navigate("/signup")}>회원가입</a>
+            <a
+              onClick={() => {
+                navigate("/signup");
+                onClose();
+              }}
+            >
+              회원가입
+            </a>
             <a onClick={handleFindId}>ID 찾기</a>
             <a onClick={handleFindPw}>비밀번호 찾기</a>
           </Link_box>
@@ -263,7 +269,7 @@ const LoginModal = ({ onClose }) => {
         </ButtonContainer>
       </Modal_Wrapper>
     </Container_Modal>
-  )
+  );
 };
 
 export default LoginModal;
