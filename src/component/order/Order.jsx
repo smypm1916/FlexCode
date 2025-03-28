@@ -16,7 +16,6 @@ import Button from "../common/Button";
 import CheckedProduct from "../common/CheckedProduct";
 import { useCart } from "../common/useCart";
 import ShippingAddress from "./ShippingAddress";
-import LoginModal from '../account/LoginModal';
 
 /*  
     1. 모든/일부 상품 선택
@@ -60,6 +59,44 @@ const Order = () => {
   // console.log(localStorage.getItem('token'))
 
   const API_BASE_URL = "http://localhost:8080/api";
+
+  // 주문자 기본 정보 조회
+  const getUserInfo = async (email) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/users/getUser`, { email }, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (response.data.success) {
+        const user = response.data.result.rows[0]; // 오라클은 rows 배열로 옴
+        if (user) {
+          // 주소는 "기본주소/상세주소"로 저장되어 있다고 가정
+          const [base_address, detail_address] = user.USER_ADDR?.split("/") || ["", ""];
+
+          const [tel_first, tel_mid, tel_last] = user.USER_TEL?.split("-") || ["010", "", ""];
+
+          setDeliveryInfo({
+            name: user.USER_NAME || "",
+            base_address,
+            detail_address,
+            tel_first,
+            tel_mid,
+            tel_last,
+            email_id: user.USER_EMAIL?.split("@")[0] || "",
+            email_domain: user.USER_EMAIL?.split("@")[1] || "naver.com",
+          });
+        }
+      } else {
+        console.warn("회원 정보 불러오기 실패:", response.data.message);
+      }
+    } catch (err) {
+      console.error("회원정보 조회 오류:", err);
+    }
+  };
+
 
   // 결제 기능
   const goToPayment = async () => {
@@ -182,6 +219,17 @@ const Order = () => {
       setError("주문 정보가 올바르지 않습니다.");
     }
   }, [from, directOptions, tempOrderId]);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    setToken(token);
+
+    if (token) {
+      const email = JSON.parse(atob(token.split('.')[1]))?.email; // JWT 디코딩 (email 추출)
+      if (email) getUserInfo(email);
+    }
+  }, []);
+
 
 
   useEffect(() => {
@@ -406,13 +454,13 @@ const Order = () => {
           <Button btnTxt="돌아가기" onClick={goToHome} />
         </Button_Wrapper_100>
         <ReactModal
-        isOpen={isLoginModalOpen}
-        onRequestClose={closeLoginModal}
-        shouldCloseOnOverlayClick={true}
-        shouldCloseOnEsc={true}
-      >
-        <LoginModal onClose={closeLoginModal} />
-      </ReactModal>
+          isOpen={isLoginModalOpen}
+          onRequestClose={closeLoginModal}
+          shouldCloseOnOverlayClick={true}
+          shouldCloseOnEsc={true}
+        >
+          <LoginModal onClose={closeLoginModal} />
+        </ReactModal>
       </Container_Style>
     </Wrapper>
   );

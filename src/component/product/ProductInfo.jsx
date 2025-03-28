@@ -13,20 +13,20 @@ import Select from "../common/Select";
 import { useCart } from "../common/useCart";
 
 import {
-  Container01,
-  Container02,
-  Container03,
-  Divide_Box,
-  Image_Wrapper,
-  Info_Text,
-  Info_Text_Box,
-  Info_Title,
-  Info_Wrapper,
-  Product_Wrapper,
-  Text,
-  Text_box,
-  Text_wrapper,
-  Title,
+   Container01,
+   Container02,
+   Container03,
+   Divide_Box,
+   Image_Wrapper,
+   Info_Text,
+   Info_Text_Box,
+   Info_Title,
+   Info_Wrapper,
+   Product_Wrapper,
+   Text,
+   Text_box,
+   Text_wrapper,
+   Title,
 } from "../../style/Product_Detail_Style";
 import { System_message } from "../../style/ProductLists_Style";
 
