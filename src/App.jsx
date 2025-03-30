@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import "./App.css";
+import SignUp from "./component/account/SignUp";
+import SignUpSuccess from "./component/account/SignUpSuccess";
+import Footer from "./component/common/Footer";
+import Header from "./component/common/Header";
+import ScrollToTop from "./component/common/ScrollToTop";
+import CmAdd from "./component/community/CmAdd";
+import CmDetail from "./component/community/CmDetail";
+import CmMain from "./component/community/CmMain";
+import DeleteUserCheck from "./component/myPage/DeleteUserCheck";
+import ModifyUserProfile from "./component/myPage/ModifyUserProfile";
+import MyPageMain from "./component/myPage/MyPageMain";
+import UserCommunityAdd from "./component/myPage/UserCommunityAdd";
+import UserCommunityDetail from "./component/myPage/UserCommunityDetail";
+import UserCommunityList from "./component/myPage/UserCommunityList";
+import UserOrderList from "./component/myPage/UserOrderList";
+import UserOrderDetail from "./component/myPage/UserOrderDetail";
+import Order from "./component/order/Order";
+import OrderComplete from "./component/order/OrderComplete";
+import Index from "./component/product/Index";
+import ProductInfo from "./component/product/ProductInfo";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Router>
+      <Header />
+      <ScrollToTop />
+      {/* 루팅 */}
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/detail/:product_no" element={<ProductInfo />} />
+        <Route path="/order/:tempOrderId" element={<Order />} />
+        {/* <Route path="/order/:currentOrderId" element={<Order />} /> */}
+        <Route path="/order-complete/:orderNo" element={<OrderComplete />} />
+        <Route path="/community" element={<CmMain />} />
+        <Route path="/CmAdd" element={<CmAdd />} />
+        <Route path="/CmDetail/:id" element={<CmDetail />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signup-success" element={<SignUpSuccess />} />
+        <Route path="/mypage" element={<MyPageMain />} />
+        <Route path="/modifyUser" element={<ModifyUserProfile />} />
+        <Route path="/deleteAccount" element={<DeleteUserCheck />} />
+        <Route path="/userCommunity-list" element={<UserCommunityList />} />
+        <Route
+          path="/userCommunity_detail/:id"
+          element={<UserCommunityDetail />}
+        />
+        <Route path="/userCommunity_add" element={<UserCommunityAdd />} />
+        <Route path="/userOrder-list" element={<UserOrderList />} />
+        <Route path="userOrder_detail/:id" element={<UserOrderDetail />} />
+      </Routes>
+      {/* 루팅 */}
+
+      <Footer />
+    </Router>
+  );
 }
 
-export default App
+export default App;
