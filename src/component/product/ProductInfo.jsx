@@ -167,12 +167,18 @@ const ProductInfo = () => {
             const tempDetail = res.data.data;
             if (Array.isArray(tempDetail) && tempDetail.length > 0) {
                setProduct(tempDetail[0]); // 객체 저장
+               // if (tempDetail[0].PRODUCT_IMG) {
+               //    const splitImages = tempDetail[0].PRODUCT_IMG
+               //       .split('*')
+               //       .map((img) => img.trim())
+               //       .filter(Boolean); // 빈 문자열 제거
+               //    setProductImages(splitImages);
+               // }
                if (tempDetail[0].PRODUCT_IMG) {
-                  const splitImages = tempDetail[0].PRODUCT_IMG
-                     .split('*')
-                     .map((img) => img.trim())
-                     .filter(Boolean); // 빈 문자열 제거
-                  setProductImages(splitImages);
+                  const matches = tempDetail[0].PRODUCT_IMG.match(/\*[^*]+\.(png|jpg|jpeg|gif)/gi);
+                  if (matches) {
+                     setProductImages(matches.map(img => img.trim()));
+                  }
                }
             } else {
                setProduct({});
