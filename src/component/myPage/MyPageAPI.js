@@ -8,7 +8,7 @@ export const fetchGetCommunity = async (nickname) => {
       { nickname: nickname },
       {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json;charset=utf-8 ",
         },
       }
     );
@@ -32,7 +32,7 @@ export const fetchGetOrder = async (email) => {
     const response = await axios.post(
       "http://localhost:8080/api/users/getUserOrders",
       { email: email },
-      { headers: { "Content-Type": "application/json" } }
+      { headers: { "Content-Type": "application/json; charset=utf-8" } }
     );
     if (response.data.success) {
       console.log("보내준 데이터[구매내역]:", response.data.result.rows);

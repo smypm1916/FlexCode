@@ -119,6 +119,36 @@ async function getCategories() {
   }
 }
 
+// 상품 업데이트
+async function updateProductByPk(product_no, product_img) {
+  const updateQuery = `
+    UPDATE PRODUCT_INFO 
+    SET PRODUCT_IMG = :product_img 
+    WHERE PRODUCT_NO = :product_no
+  `;
+
+  // 👇 NJS-011 방지를 위해 type과 val을 모두 명시적으로 지정
+  const binds = {
+    product_img: {
+      val: String(product_img),          // 반드시 문자열
+      type: oracledb.STRING
+    },
+    product_no: {
+      val: Number(product_no),           // 반드시 숫자
+      type: oracledb.NUMBER
+    }
+  };
+
+  try {
+    const result = await executeQuery(updateQuery, binds);
+    console.log("product update success at model");
+    return result;
+  } catch (error) {
+    console.error("product update failed at model");
+    throw error;
+  }
+}
+
 
 const product_info = {
   tableName: "PRODUCT_INFO",
@@ -133,5 +163,5 @@ const product_info = {
 };
 
 module.exports = {
-  getAllProducts, getProductDetail, regProduct, deleteProductByPk, getCategories
+  getAllProducts, getProductDetail, regProduct, deleteProductByPk, getCategories, updateProductByPk
 };

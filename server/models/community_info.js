@@ -5,7 +5,7 @@ const oracledb = require("../config/oracledb");
  * community_no(pk)
  * user_nickname(fk)
  * community_title
- * commnity_content
+ * community_content
  * community_img
  * community_date
  * community_readcnt

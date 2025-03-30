@@ -8,6 +8,7 @@
     "dev:vite": "vite --host",
     "dev:server": "nodemon server/server.js",
     "build": "vite build",
+    "chat-client": "npm --prefix client start",
     "lint": "eslint .",
     "preview": "vite preview",
     "dev:client": "cd client && npm start",

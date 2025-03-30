@@ -1,7 +1,8 @@
 const optionService = require('../services/options');
 
 // 옵션 조회
-async function getOptionProduct(req, res) {
+async function
+   getOptionProduct(req, res) {
    try {
       const optionDetail = await optionService.getOptionProduct(req.params.product_no);
       if (!req.params.product_no) {

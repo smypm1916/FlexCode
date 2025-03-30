@@ -51,6 +51,16 @@ async function deleteProductByPk(product_no) {
    }
 };
 
+//상품 수정
+async function updateProductByPk(product_no, product_img) {
+   try {
+      return await productModel.updateProductByPk(product_no, product_img);
+   } catch (error) {
+      console.error('update service error', error);
+      throw error;
+   }
+}
+
 // 카테고리 조회
 async function getCategories() {
    try {
@@ -63,4 +73,4 @@ async function getCategories() {
 }
 
 
-module.exports = { getAllProducts, getProductDetail, regProduct, deleteProductByPk, getCategories };
+module.exports = { getAllProducts, getProductDetail, regProduct, deleteProductByPk, getCategories, updateProductByPk };

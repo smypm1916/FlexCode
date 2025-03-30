@@ -11,11 +11,11 @@ import {
 import { Order_Wrapper } from "../../style/Mypage_Style";
 import { System_message } from "../../style/ProductLists_Style";
 import { Text } from "../../style/Product_Detail_Style";
+import LoginModal from "../account/LoginModal";
 import Button from "../common/Button";
 import CheckedProduct from "../common/CheckedProduct";
 import { useCart } from "../common/useCart";
 import ShippingAddress from "./ShippingAddress";
-import LoginModal from '../account/LoginModal';
 
 /*  
     1. 모든/일부 상품 선택
@@ -59,6 +59,44 @@ const Order = () => {
   // console.log(localStorage.getItem('token'))
 
   const API_BASE_URL = "http://localhost:8080/api";
+
+  // 주문자 기본 정보 조회
+  const getUserInfo = async (email) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/users/getUser`, { email }, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (response.data.success) {
+        const user = response.data.result.rows[0]; // 오라클은 rows 배열로 옴
+        if (user) {
+          // 주소는 "기본주소/상세주소"로 저장되어 있다고 가정
+          const [base_address, detail_address] = user.USER_ADDR?.split("/") || ["", ""];
+
+          const [tel_first, tel_mid, tel_last] = user.USER_TEL?.split("-") || ["010", "", ""];
+
+          setDeliveryInfo({
+            name: user.USER_NAME || "",
+            base_address,
+            detail_address,
+            tel_first,
+            tel_mid,
+            tel_last,
+            email_id: user.USER_EMAIL?.split("@")[0] || "",
+            email_domain: user.USER_EMAIL?.split("@")[1] || "naver.com",
+          });
+        }
+      } else {
+        console.warn("회원 정보 불러오기 실패:", response.data.message);
+      }
+    } catch (err) {
+      console.error("회원정보 조회 오류:", err);
+    }
+  };
+
 
   // 결제 기능
   const goToPayment = async () => {
@@ -182,6 +220,17 @@ const Order = () => {
     }
   }, [from, directOptions, tempOrderId]);
 
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    setToken(token);
+
+    if (token) {
+      const email = JSON.parse(atob(token.split('.')[1]))?.email; // JWT 디코딩 (email 추출)
+      if (email) getUserInfo(email);
+    }
+  }, []);
+
+
 
   useEffect(() => {
     if (from === "direct" && Array.isArray(directOptions)) {
@@ -242,6 +291,7 @@ const Order = () => {
           Array.isArray(checkedProducts) &&
           checkedProducts.length > 0
           ? checkedProducts.map((item) => {
+            console.log('checkedProducts :', item);
             const productKey = `product:${product.PRODUCT_NO}:option:${item.OPTION_NO}`;
             return (
               <Order_Wrapper key={`direct:${item.OPTION_NO}`}>
@@ -250,7 +300,7 @@ const Order = () => {
                 <Text>수량: {item.quantity}</Text>
                 <hr />
                 <Title>
-                  금액:{" "}
+                  {/* 금액:{" "} */}
                   {(product.PRODUCT_PRICE + item.OPTION_PRICE) *
                     item.quantity}
                   원
@@ -261,12 +311,18 @@ const Order = () => {
                     onClick={() =>
                       openEditModal({
                         ...item,
-                        product_name: product.PRODUCT_NAME,
-                        product_price: product.PRODUCT_PRICE,
-                        product_no: product.PRODUCT_NO,
-                        option_title: item.OPTION_TITLE,
-                        option_price: item.OPTION_PRICE,
-                        option_no: item.OPTION_NO,
+                        product_name: product.product_name,
+                        product_price: product.product_price,
+                        product_no: product.product_no,
+                        option_title: item.option_title,
+                        option_price: item.option_price,
+                        option_no: item.option_no,
+                        // product_name: product.PRODUCT_NAME,
+                        // product_price: product.PRODUCT_PRICE,
+                        // product_no: product.PRODUCT_NO,
+                        // option_title: item.OPTION_TITLE,
+                        // option_price: item.OPTION_PRICE,
+                        // option_no: item.OPTION_NO,
                       })
                     }
                   />
@@ -280,6 +336,7 @@ const Order = () => {
           })
           : !loading && cartItems.length > 0
             ? cartItems.map((item) => {
+              console.log('cartItems :', item);
               const productKey = `product:${item.product_no}:option:${item.option_no}`;
               return (
                 <Order_Wrapper key={productKey}>
@@ -349,13 +406,15 @@ const Order = () => {
                 if (from === "direct") {
                   setCheckedProducts((prev) =>
                     prev.map((opt) =>
-                      opt.OPTION_NO === selectedProduct.option_no
+                      // opt.OPTION_NO === selectedProduct.option_no
+                      opt.OPTION_NO === option_no
                         ? { ...opt, quantity }
                         : opt
                     )
                   );
                 } else {
-                  updateCartQuantity(product_no, quantity);
+                  // updateCartQuantity(product_no, quantity);
+                  updateCartQuantity(PRODUCT_NO, OPTION_NO, quantity);
                 }
               }}
               removeFromCart={(productKey) => {
@@ -403,13 +462,13 @@ const Order = () => {
           <Button btnTxt="돌아가기" onClick={goToHome} />
         </Button_Wrapper_100>
         <ReactModal
-        isOpen={isLoginModalOpen}
-        onRequestClose={closeLoginModal}
-        shouldCloseOnOverlayClick={true}
-        shouldCloseOnEsc={true}
-      >
-        <LoginModal onClose={closeLoginModal} />
-      </ReactModal>
+          isOpen={isLoginModalOpen}
+          onRequestClose={closeLoginModal}
+          shouldCloseOnOverlayClick={true}
+          shouldCloseOnEsc={true}
+        >
+          <LoginModal onClose={closeLoginModal} />
+        </ReactModal>
       </Container_Style>
     </Wrapper>
   );

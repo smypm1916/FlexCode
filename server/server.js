@@ -148,10 +148,10 @@ io.use(async (socket, next) => {
     return next(new Error("JWT 인증 실패"));
   }
 });
-  
+
 // 정적 파일 제공(프로필 이미지 경로 설정)
 // const imagePath = "C:/Users/codms/Documents/FlexCode/src/assets/imgs";
-// console.log("프로필 이미지 절대경로:", imagePath);
+// console.log("프로필 이미지 절대경로:", imagePath); 
 // app.use("/uploads", express.static(imagePath));
 
 

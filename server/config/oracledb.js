@@ -1,3 +1,5 @@
+process.env.NLS_LANG = "KOREAN_KOREA.AL32UTF8";
+
 const oracledb = require("oracledb");
 require("dotenv").config();
 
