@@ -12,7 +12,7 @@ const EventBanner = () => {
   return (
     <Event_Wrapper>
       <Logo>
-        <img src="src\style\img\logo.png"></img>
+        <img src="/src/assets/imgs/logo.png"></img>
       </Logo>
       <Title>Brand New Launch</Title>
       <Text>We got a GENDERLESS</Text>

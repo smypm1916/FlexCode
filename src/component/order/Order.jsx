@@ -25,7 +25,7 @@ import ShippingAddress from "./ShippingAddress";
 
 const Order = () => {
   const { tempOrderId } = useParams();
-  const [token, setToken] = useState(sessionStorage.getItem('token'));
+  const [token, setToken] = useState(sessionStorage.getItem("token"));
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from;
@@ -53,8 +53,7 @@ const Order = () => {
   const { cartItems, updateCartQuantity, loading, fetchCart, removeFromCart } =
     useCart();
   const [checkedProducts, setCheckedProducts] = useState([]);
-  console.log(tempOrderId)
-
+  console.log(tempOrderId);
 
   // console.log(localStorage.getItem('token'))
 
@@ -63,20 +62,31 @@ const Order = () => {
   // 주문자 기본 정보 조회
   const getUserInfo = async (email) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/users/getUser`, { email }, {
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}`
+      const response = await axios.post(
+        `${API_BASE_URL}/users/getUser`,
+        { email },
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
+      );
 
       if (response.data.success) {
         const user = response.data.result.rows[0]; // 오라클은 rows 배열로 옴
         if (user) {
           // 주소는 "기본주소/상세주소"로 저장되어 있다고 가정
-          const [base_address, detail_address] = user.USER_ADDR?.split("/") || ["", ""];
+          const [base_address, detail_address] = user.USER_ADDR?.split("/") || [
+            "",
+            "",
+          ];
 
-          const [tel_first, tel_mid, tel_last] = user.USER_TEL?.split("-") || ["010", "", ""];
+          const [tel_first, tel_mid, tel_last] = user.USER_TEL?.split("-") || [
+            "010",
+            "",
+            "",
+          ];
 
           setDeliveryInfo({
             name: user.USER_NAME || "",
@@ -96,7 +106,6 @@ const Order = () => {
       console.error("회원정보 조회 오류:", err);
     }
   };
-
 
   // 결제 기능
   const goToPayment = async () => {
@@ -121,19 +130,23 @@ const Order = () => {
 
     try {
       // const response = await axios.post(`${API_BASE_URL}/order/pay/${from === 'direct' ? 'direct' : tempOrderId}`, {
-      const response = await axios.post(`${API_BASE_URL}/order/pay/${tempOrderId}`, {
-        tempOrderId: tempOrderId,
-        from,
-        checkedProducts,
-        product,
-        totalPrice,
-        email,
-        deliveryInfo,
-        receiveInfo,
-      }, {
-        headers: { Authorization: `Bearer ${token}` },
-        withCredentials: true
-      });
+      const response = await axios.post(
+        `${API_BASE_URL}/order/pay/${tempOrderId}`,
+        {
+          tempOrderId: tempOrderId,
+          from,
+          checkedProducts,
+          product,
+          totalPrice,
+          email,
+          deliveryInfo,
+          receiveInfo,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        }
+      );
 
       if (response.data.success) {
         const orderNo = response.data.orderNo;
@@ -176,10 +189,9 @@ const Order = () => {
   };
 
   useEffect(() => {
-    console.log('order')
-    setToken(sessionStorage.getItem('token'));
-  }, [])
-
+    console.log("order");
+    setToken(sessionStorage.getItem("token"));
+  }, []);
 
   // 장바구니 비우기
   const clearCart = async () => {
@@ -221,16 +233,14 @@ const Order = () => {
   }, [from, directOptions, tempOrderId]);
 
   useEffect(() => {
-    const token = sessionStorage.getItem('token');
+    const token = sessionStorage.getItem("token");
     setToken(token);
 
     if (token) {
-      const email = JSON.parse(atob(token.split('.')[1]))?.email; // JWT 디코딩 (email 추출)
+      const email = JSON.parse(atob(token.split(".")[1]))?.email; // JWT 디코딩 (email 추출)
       if (email) getUserInfo(email);
     }
   }, []);
-
-
 
   useEffect(() => {
     if (from === "direct" && Array.isArray(directOptions)) {
@@ -245,14 +255,13 @@ const Order = () => {
     }
   }, [from, directOptions, tempOrderId]);
 
-
   useEffect(() => {
     console.log("cartItems changed", cartItems);
   }, [cartItems]);
 
   // 로그인 상태 체크
   useEffect(() => {
-    const token = sessionStorage.getItem('token');
+    const token = sessionStorage.getItem("token");
     console.log(token);
     if (token) {
       setIsLoggedIn(true);
@@ -265,18 +274,18 @@ const Order = () => {
     setIsLoggedIn(!!token);
   }, [token]);
 
-
-  const totalPrice = from === "direct"
-    ? checkedProducts?.reduce((sum, item) => {
-      const productPrice = product?.PRODUCT_PRICE || 0;
-      const optionPrice = item?.OPTION_PRICE || 0;
-      return sum + (productPrice + optionPrice) * item.quantity;
-    }, 0)
-    : cartItems.reduce((sum, item) => {
-      const productPrice = item.product_price || 0;
-      const optionPrice = item.option_price || 0;
-      return sum + (productPrice + optionPrice) * item.quantity;
-    }, 0);
+  const totalPrice =
+    from === "direct"
+      ? checkedProducts?.reduce((sum, item) => {
+          const productPrice = product?.PRODUCT_PRICE || 0;
+          const optionPrice = item?.OPTION_PRICE || 0;
+          return sum + (productPrice + optionPrice) * item.quantity;
+        }, 0)
+      : cartItems.reduce((sum, item) => {
+          const productPrice = item.product_price || 0;
+          const optionPrice = item.option_price || 0;
+          return sum + (productPrice + optionPrice) * item.quantity;
+        }, 0);
 
   return (
     <Wrapper className="marginTop wrap" id="shipping">
@@ -287,56 +296,56 @@ const Order = () => {
 
         {/* 장바구니 리스트 */}
         {!loading &&
-          from === "direct" &&
-          Array.isArray(checkedProducts) &&
-          checkedProducts.length > 0
+        from === "direct" &&
+        Array.isArray(checkedProducts) &&
+        checkedProducts.length > 0
           ? checkedProducts.map((item) => {
-            console.log('checkedProducts :', item);
-            const productKey = `product:${product.PRODUCT_NO}:option:${item.OPTION_NO}`;
-            return (
-              <Order_Wrapper key={`direct:${item.OPTION_NO}`}>
-                <Title>{product.PRODUCT_NAME}</Title>
-                <Text>옵션명: {item.OPTION_TITLE}</Text>
-                <Text>수량: {item.quantity}</Text>
-                <hr />
-                <Title>
-                  {/* 금액:{" "} */}
-                  {(product.PRODUCT_PRICE + item.OPTION_PRICE) *
-                    item.quantity}
-                  원
-                </Title>
-                <Button_Wrapper_100 className="grid2">
-                  <Button
-                    btnTxt="옵션/수량 수정"
-                    onClick={() =>
-                      openEditModal({
-                        ...item,
-                        product_name: product.product_name,
-                        product_price: product.product_price,
-                        product_no: product.product_no,
-                        option_title: item.option_title,
-                        option_price: item.option_price,
-                        option_no: item.option_no,
-                        // product_name: product.PRODUCT_NAME,
-                        // product_price: product.PRODUCT_PRICE,
-                        // product_no: product.PRODUCT_NO,
-                        // option_title: item.OPTION_TITLE,
-                        // option_price: item.OPTION_PRICE,
-                        // option_no: item.OPTION_NO,
-                      })
-                    }
-                  />
-                  <Button
-                    btnTxt="옵션 삭제"
-                    onClick={onRemove(item.OPTION_NO)}
-                  />
-                </Button_Wrapper_100>
-              </Order_Wrapper>
-            );
-          })
+              console.log("checkedProducts :", item);
+              const productKey = `product:${product.PRODUCT_NO}:option:${item.OPTION_NO}`;
+              return (
+                <Order_Wrapper key={`direct:${item.OPTION_NO}`}>
+                  <Title>{product.PRODUCT_NAME}</Title>
+                  <Text>옵션명: {item.OPTION_TITLE}</Text>
+                  <Text>수량: {item.quantity}</Text>
+                  <hr />
+                  <Title>
+                    {/* 금액:{" "} */}
+                    {(product.PRODUCT_PRICE + item.OPTION_PRICE) *
+                      item.quantity}
+                    원
+                  </Title>
+                  <Button_Wrapper_100 className="grid2">
+                    <Button
+                      btnTxt="옵션/수량 수정"
+                      onClick={() =>
+                        openEditModal({
+                          ...item,
+                          product_name: product.product_name,
+                          product_price: product.product_price,
+                          product_no: product.product_no,
+                          option_title: item.option_title,
+                          option_price: item.option_price,
+                          option_no: item.option_no,
+                          // product_name: product.PRODUCT_NAME,
+                          // product_price: product.PRODUCT_PRICE,
+                          // product_no: product.PRODUCT_NO,
+                          // option_title: item.OPTION_TITLE,
+                          // option_price: item.OPTION_PRICE,
+                          // option_no: item.OPTION_NO,
+                        })
+                      }
+                    />
+                    <Button
+                      btnTxt="옵션 삭제"
+                      onClick={onRemove(item.OPTION_NO)}
+                    />
+                  </Button_Wrapper_100>
+                </Order_Wrapper>
+              );
+            })
           : !loading && cartItems.length > 0
-            ? cartItems.map((item) => {
-              console.log('cartItems :', item);
+          ? cartItems.map((item) => {
+              console.log("cartItems :", item);
               const productKey = `product:${item.product_no}:option:${item.option_no}`;
               return (
                 <Order_Wrapper key={productKey}>
@@ -360,7 +369,7 @@ const Order = () => {
                 </Order_Wrapper>
               );
             })
-            : !loading && <h2>장바구니가 비어있습니다.</h2>}
+          : !loading && <h2>장바구니가 비어있습니다.</h2>}
 
         {/* 합계 금액 */}
         <Text>합계 금액 : {totalPrice.toLocaleString()} 원</Text>
@@ -407,9 +416,7 @@ const Order = () => {
                   setCheckedProducts((prev) =>
                     prev.map((opt) =>
                       // opt.OPTION_NO === selectedProduct.option_no
-                      opt.OPTION_NO === option_no
-                        ? { ...opt, quantity }
-                        : opt
+                      opt.OPTION_NO === option_no ? { ...opt, quantity } : opt
                     )
                   );
                 } else {
