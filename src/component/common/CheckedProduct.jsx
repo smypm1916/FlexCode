@@ -41,7 +41,16 @@ const CheckedProduct = ({
                 <Container_Bucket key={option.OPTION_NO}>
                   <Bucket_Text>
                     <Text>{option.OPTION_TITLE}</Text>
-                    <Text>{option.OPTION_PRICE}원</Text>
+                    <Text>
+                      {Intl.NumberFormat("ko-KR").format(
+                        options.reduce(
+                          (total, opt) =>
+                            total +
+                            (product.PRODUCT_PRICE + opt.OPTION_PRICE),
+                          0
+                        )
+                      )}{" "}
+                      원</Text>
                     <Text>재고: {option.OPTION_STATE} 개</Text>
                   </Bucket_Text>
                   <Bucket_option>
