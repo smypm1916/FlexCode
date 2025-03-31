@@ -176,7 +176,7 @@ const ProductInfo = () => {
                // }
                if (tempDetail[0].PRODUCT_IMG) {
                   // PRODUCT_IMG에 저장된 이미지 파일명들을 '*'을 기준으로 나눔
-                  const imageNames = tempDetail[0].PRODUCT_IMG.split("*");
+                  const imageNames = tempDetail[0].PRODUCT_IMG.split("$");
                   // 이미지 파일 이름에서 불필요한 공백 제거 및 실제 파일명에 맞게 처리
                   const validImageNames = imageNames.map((img) => img.trim());
                   // 추출된 이미지 파일명을 화면에 출력할 수 있도록 변수 혹은 상태에 설정
@@ -334,7 +334,11 @@ const ProductInfo = () => {
                               </div>
                               <div style={{ display: "flex", alignItems: "center" }}>
                                  <Select
-                                    options={Array.from({ length: 10 }, (_, i) => ({
+                                    // options={Array.from({ length: 10 }, (_, i) => ({
+                                    //    value: i + 1,
+                                    //    label: `${i + 1}개`,
+                                    // }))}
+                                    options={Array.from({ length: currentOption.OPTION_STATE }, (_, i) => ({
                                        value: i + 1,
                                        label: `${i + 1}개`,
                                     }))}
