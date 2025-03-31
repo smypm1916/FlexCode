@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const oracledb = require("oracledb");
 const { executeQuery, dbConfig } = require("../config/oracledb");
-const { redisClient } = require("./cart")
+
+
 // 주문 취소
 router.put("/cancel/:orderNo", async (req, res) => {
   const orderNo = req.params.orderNo;
@@ -125,9 +126,18 @@ router.post("/pay/:tempOrderId", async (req, res) => {
         option_no: item.OPTION_NO,
       });
     }
+    // // Redis에서 해당 유저의 장바구니 초기화
+    // const cartKey = req.session?.user?.email
+    //   ? `cart:${req.session.user.email}`
+    //   : `cart:session_${req.sessionID}`;
+
+    // // 장바구니 전체 삭제
+    // await redisClient.del(cartKey);
 
     // 응답을 한 번만 보냄
     res.json({ success: true, message: "결제 및 주문 저장 완료", orderNo });
+
+
   } catch (err) {
     // 오류 발생 시 응답을 보내기 전에 다시 응답을 보내지 않도록 처리
     console.error("결제 처리 오류:", err);
