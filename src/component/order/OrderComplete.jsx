@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Button from "../common/Button";
 import {
    Button_Wrapper_100,
    Container_Style,
@@ -11,6 +10,7 @@ import {
 } from "../../style/Common_Style";
 import { System_message } from "../../style/ProductLists_Style";
 import { Text } from "../../style/Product_Detail_Style";
+import Button from "../common/Button";
 
 
 //!! 사이트 정렬
@@ -60,6 +60,7 @@ const OrderComplete = () => {
       setIsLoggedIn(!!token);
    }, []);
 
+
    if (loading)
       return <System_message className="Inner_con">LOADING</System_message>;
    if (error)
@@ -84,12 +85,12 @@ const OrderComplete = () => {
                         <Text>상품번호: {item.PRODUCT_NO}</Text>
                         <p>옵션번호: {item.OPTION_NO}</p>
                         <p>수량: {item.PRODUCT_QUANTITY}</p>
-                        <p>
+                        {/* <p>
                            가격:{" "}
                            {(item.PRODUCT_PRICE + item.OPTION_PRICE) *
                               item.PRODUCT_QUANTITY}{" "}
                            원
-                        </p>
+                        </p> */}
                      </div>
                   ))
                ) : (

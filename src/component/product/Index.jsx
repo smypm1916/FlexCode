@@ -34,8 +34,27 @@ const Index = () => {
           "http://localhost:8080/api/products/lists",
           { params }
         );
+
         if (res.data && res.data.success) {
-          const newProducts = res.data.data || [];
+          let newProducts = res.data.data || [];
+
+          // 이미지 파싱 로직 추가
+          newProducts = newProducts.map((product) => {
+            if (product.PRODUCT_IMG && typeof product.PRODUCT_IMG === "string") {
+              const images = product.PRODUCT_IMG.split("*").map((img) => img.trim()).filter(Boolean);
+              return {
+                ...product,
+                PRODUCT_IMG: images[0] || "", // 첫 번째 이미지 또는 빈 문자열
+                PRODUCT_IMG_LIST: images,     // 전체 리스트도 필요하면 추가
+              };
+            }
+            return {
+              ...product,
+              PRODUCT_IMG: "",
+              PRODUCT_IMG_LIST: [],
+            };
+          });
+
           setProducts((prev) =>
             reset ? newProducts : [...prev, ...newProducts]
           );
@@ -50,6 +69,41 @@ const Index = () => {
     },
     [page, loading, searchKeyword, selectedCategory, hasMore]
   );
+
+  // const fetchProducts = useCallback(
+  //   async (reset = false) => {
+  //     if (loading || (!hasMore && !reset)) return;
+
+  //     setLoading(true);
+  //     const currentPage = reset ? 1 : page;
+  //     const params = {
+  //       page: currentPage,
+  //       limit: 9,
+  //       keyword: searchKeyword,
+  //       category: selectedCategory,
+  //     };
+
+  //     try {
+  //       const res = await axios.get(
+  //         "http://localhost:8080/api/products/lists",
+  //         { params }
+  //       );
+  //       if (res.data && res.data.success) {
+  //         const newProducts = res.data.data || [];
+  //         setProducts((prev) =>
+  //           reset ? newProducts : [...prev, ...newProducts]
+  //         );
+  //         setHasMore(newProducts.length === 9);
+  //         setPage(currentPage + 1);
+  //       }
+  //     } catch (error) {
+  //       console.error("상품 불러오기 오류", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   },
+  //   [page, loading, searchKeyword, selectedCategory, hasMore]
+  // );
 
   // 검색 초기화
   const handleResetSearch = () => {
