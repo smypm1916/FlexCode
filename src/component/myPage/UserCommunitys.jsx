@@ -39,7 +39,7 @@ const UserCommunitys = ({ nickname, profile }) => {
     return <Title>작성한 커뮤니티 글이 없습니다.</Title>;
   }
   return communitys.length > 0 ? (
-    <Wrapper_Post className="nonePadding">
+    <Wrapper_Post className="nonePadding borderBottom">
       <User_Status_Row className="borderBottom">
         <Title>나의 커뮤니티</Title>
 
