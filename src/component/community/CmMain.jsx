@@ -11,7 +11,7 @@ import {
 import {
   Chat_icon,
   Container01,
-  Search_Box
+  Search_Box,
 } from "../../style/Community_Style";
 import LoginModal from "../account/LoginModal";
 import Button from "../common/Button";
@@ -34,7 +34,6 @@ const CmMain = () => {
   const [showModal, setShowModal] = useState(false);
   const filterPosts = () => {
     if (posts.length === 0) return [];
-    // 12 - 3 * (1-1)    start = 12
     const start = posts.length - cnt * (pageNum - 1);
     12 / 3 ? -1 : 12 - 3;
     9;
@@ -42,12 +41,10 @@ const CmMain = () => {
     return posts.slice(end, start).reverse();
   };
   const getPosts = async () => {
-    console.log("진입?");
     const response = await axios.get("http://localhost:8080/api/post/paging");
     setAllPosts(response.data); // 원본 데이터 저장
     console.log("받아온 데이터:", response.data);
     setPosts(response.data);
-    console.log("전체 ---");
   };
   const searchOptions = [
     { value: "opTitle", label: "제목" },
@@ -141,7 +138,7 @@ const CmMain = () => {
           </Search_Box>
         </Input_Wrapper>
         <Chat_icon onClick={openChat}>
-          {/* <img src={`${imgPath}/Chat_icon.png`} /> */}
+          <img src={`${imgPath}/Chat_icon.png`} />
         </Chat_icon>
         <Container_Style className="CmPost">
           {posts.length > 0 ? (
