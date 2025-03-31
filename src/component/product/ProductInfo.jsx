@@ -334,7 +334,11 @@ const ProductInfo = () => {
                               </div>
                               <div style={{ display: "flex", alignItems: "center" }}>
                                  <Select
-                                    options={Array.from({ length: 10 }, (_, i) => ({
+                                    // options={Array.from({ length: 10 }, (_, i) => ({
+                                    //    value: i + 1,
+                                    //    label: `${i + 1}개`,
+                                    // }))}
+                                    options={Array.from({ length: currentOption.OPTION_STATE }, (_, i) => ({
                                        value: i + 1,
                                        label: `${i + 1}개`,
                                     }))}
