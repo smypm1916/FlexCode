@@ -45,6 +45,11 @@ export const Image_Wrapper = styled.div`
   img {
     width: 100%;
   }
+
+  &.detailimg {
+    width: 60%;
+    margin: 0 auto;
+  }
 `;
 //container01 상품 정보 텍스트 컨테이너
 export const Text_wrapper = styled.div`
