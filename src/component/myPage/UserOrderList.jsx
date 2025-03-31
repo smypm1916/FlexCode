@@ -152,6 +152,13 @@ const UserOrderList = () => {
             ))}
           </div>
         )}
+        <div>
+          <Button
+            className={"returnToMyPage"}
+            btnTxt={"마이페이지"}
+            onClick={() => navigate("/mypage")}
+          />
+        </div>
       </Container_Style>
     </Wrapper>
   );
