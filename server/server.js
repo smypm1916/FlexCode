@@ -66,7 +66,6 @@ io.use((socket, next) => {
   }
 });
 
-
 // WebSocket 연결 이벤트
 io.on("connection", (socket) => {
   console.log("클라이언트 연결됨:", socket.id);
@@ -151,9 +150,8 @@ io.use(async (socket, next) => {
 
 // 정적 파일 제공(프로필 이미지 경로 설정)
 // const imagePath = "C:/Users/codms/Documents/FlexCode/src/assets/imgs";
-// console.log("프로필 이미지 절대경로:", imagePath); 
+// console.log("프로필 이미지 절대경로:", imagePath);
 // app.use("/uploads", express.static(imagePath));
-
 
 // 라우터 등록
 app.use(sessionMiddleware);
