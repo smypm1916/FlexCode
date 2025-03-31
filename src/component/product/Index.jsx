@@ -41,7 +41,7 @@ const Index = () => {
           // 이미지 파싱 로직 추가
           newProducts = newProducts.map((product) => {
             if (product.PRODUCT_IMG && typeof product.PRODUCT_IMG === "string") {
-              const images = product.PRODUCT_IMG.split("*").map((img) => img.trim()).filter(Boolean);
+              const images = product.PRODUCT_IMG.split("$").map((img) => img.trim()).filter(Boolean);
               return {
                 ...product,
                 PRODUCT_IMG: images[0] || "", // 첫 번째 이미지 또는 빈 문자열
