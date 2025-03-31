@@ -18,6 +18,7 @@ import {
 } from "../../style/List_Style";
 import Button from "../common/Button";
 import FileUpload from "../common/FileUpload";
+import { System_message } from "../../style/ProductLists_Style";
 
 const CmDetail = () => {
   const storedToken = sessionStorage.getItem("token");
