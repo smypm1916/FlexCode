@@ -30,7 +30,7 @@ const UserOrders = ({ email }) => {
       const productImages = parsed.map((order) => {
         // 첫번째 상품의 첫번째 이미지만 가져옴
         const firstItem = order.ITEMS[0];
-        return firstItem.product_img.split("*")[0].trim(); // 첫번째 이미지만 추출
+        return firstItem.product_img.split("$")[0].trim(); // 첫번째 이미지만 추출
       });
 
       console.log("상품 이미지 : ", productImages);
