@@ -13,6 +13,8 @@ const UserOrders = ({ email }) => {
   const navigate = useNavigate();
   const imgPath = import.meta.env.VITE_IMG_PATH;
 
+  const [productImgs, setProductImgs] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchGetOrder(email); // 데이터 가져오기
@@ -24,6 +26,15 @@ const UserOrders = ({ email }) => {
         ITEMS: JSON.parse(order.ITEMS),
       }));
       setOrders(parsed); // 상태 업데이트
+      // 이미지 추출
+      const productImages = parsed.map((order) => {
+        // 첫번째 상품의 첫번째 이미지만 가져옴
+        const firstItem = order.ITEMS[0];
+        return firstItem.product_img.split("*")[0].trim(); // 첫번째 이미지만 추출
+      });
+
+      console.log("상품 이미지 : ", productImages);
+      setProductImgs(productImages);
     };
     fetchData();
   }, [email]);
@@ -41,7 +52,7 @@ const UserOrders = ({ email }) => {
           더보기
         </Text>
       </User_Status_Row>
-      {orders.slice(0, 3).map((order) => (
+      {orders.slice(0, 3).map((order, index) => (
         <Input_Wrapper
           className="flex userOrder"
           key={order.ORDER_NO}
@@ -53,7 +64,7 @@ const UserOrders = ({ email }) => {
           style={{ border: "1px solid #ccc", margin: "20px", padding: "15px" }}
         >
           <ul>
-            {order.ITEMS.slice(0, 1).map((item, index) => (
+            {order.ITEMS.slice(0, 1).map((item, itemindex) => (
               <li
                 key={index}
                 style={{
@@ -63,7 +74,7 @@ const UserOrders = ({ email }) => {
                 }}
               >
                 <img
-                  src={`${imgPath}/${item.product_img}`}
+                  src={`${imgPath}/${productImgs[index]}`}
                   alt={item.product_name}
                   width="150"
                   height="150"

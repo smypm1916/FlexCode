@@ -25,6 +25,8 @@ const UserOrderDetail = () => {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
 
+  const [productImgs, setProductImgs] = useState(null);
+
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     if (token) {
@@ -84,6 +86,14 @@ const UserOrderDetail = () => {
           ITEMS: JSON.parse(data.ITEMS), // ITEMS 파싱
         };
         setOrder(parsedData); // 상태 업데이트
+        // 이미지 추출
+        const productImages = parsedData.ITEMS.map((item) => {
+          // item.product_img가 '*'로 구분된 이미지들을 포함하므로, 이를 분리하여 배열로 반환
+          return item.product_img.split("*").map((img) => img.trim());
+        });
+
+        console.log("상품 이미지 내역:", productImages);
+        setProductImgs(productImages);
       }
     };
     if (id) fetchData(); // id가 있을 경우에만 fetchData 실행
@@ -118,12 +128,12 @@ const UserOrderDetail = () => {
       <Container_Style className="wrap">
         {/* 주문상품정보 */}
         <div>
+          <h2>Order</h2>
           {order.ITEMS.map((item, index) => (
             <Order_Wrapper key={index} className="borderBottom">
-              <h2>Order</h2>
               <Input_Wrapper>
                 <img
-                  src={`${imgPath}/${item.product_img}`} // 상품 이미지 경로
+                  src={`${imgPath}/${productImgs[index][0]}`} // 상품 이미지 경로
                   alt={item.product_name}
                   style={{ width: "100px", height: "100px" }}
                 />
@@ -194,7 +204,7 @@ const UserOrderDetail = () => {
           <Button
             type="button"
             onClick={() => {
-              navigate("/userOrder-list", { state: { email } });
+              navigate("/userOrder-list", { state: { email, orders } });
             }}
             btnTxt={"목록으로"}
           />

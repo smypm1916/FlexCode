@@ -7,10 +7,10 @@ import {
   Wrapper,
 } from "../../style/Common_Style";
 import { Button_Pagination } from "../../style/Community_Style";
-import { Title } from "../../style/Product_Detail_Style";
+import { Text, Title } from "../../style/Product_Detail_Style";
 import Button from "../common/Button";
 import { fetchGetOrder } from "./MyPageAPI";
-import { Order_Wrapper } from "../../style/Mypage_Style";
+import { Order_Wrapper, User_Status_Row } from "../../style/Mypage_Style";
 
 const UserOrderList = () => {
   const [orders, setOrders] = useState([]);
@@ -18,8 +18,10 @@ const UserOrderList = () => {
   const { email } = location.state || {};
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // 한 페이지당 5개씩 표시
+  const itemsPerPage = 3; // 한 페이지당 5개씩 표시
   const imgPath = import.meta.env.VITE_IMG_PATH;
+
+  const [productImgs, setProductImgs] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,6 +34,15 @@ const UserOrderList = () => {
         ITEMS: JSON.parse(order.ITEMS),
       }));
       setOrders(parsed); // 상태 업데이트
+      // 이미지 추출
+      const productImages = parsed.map((order) => {
+        // 첫번째 상품의 첫번째 이미지만 가져옴
+        const firstItem = order.ITEMS[0];
+        return firstItem.product_img.split("*")[0].trim(); // 첫번째 이미지만 추출
+      });
+
+      console.log("상품 이미지 : ", productImages);
+      setProductImgs(productImages);
     };
     fetchData();
   }, [email]);
@@ -44,7 +55,6 @@ const UserOrderList = () => {
   // 총 페이지 개수 계산
   const totalPages = Math.ceil(orders.length / itemsPerPage);
 
-  // !!
   if (Array.isArray(orders) && orders.length === 0) {
     return <h2>구매내역이 없습니다.</h2>;
   }
@@ -52,109 +62,103 @@ const UserOrderList = () => {
   return (
     <Wrapper className="wrap marginTop" id="order">
       <Container_Style className="wrap">
-        {orders.length > 0 ? (
-          <div>
-            <Order_Wrapper className="borderBottom">
-              <Title>나의 구매내역</Title>
-            </Order_Wrapper>
-            {currentPosts.length > 0}
-            <ul>
-              {currentPosts.map((order) => {
-                return (
-                  <Order_Wrapper
-                    className="borderBottom marginTop"
-                    key={order.ORDER_NO}
-                    onClick={() =>
-                      navigate(`/userOrder_detail/${order.ORDER_NO}`, {
-                        state: { orders },
-                      })
-                    }
-                  >
-                    {order.ITEMS.slice(0, 1).map((item, index) => (
-                      <Input_Wrapper className="flex" key={index}>
-                        <img
-                          src={`${imgPath}/${item.product_img}`}
-                          alt={item.product_name}
-                          width="150"
-                          height="150"
-                        />
+        <User_Status_Row className="borderBottom">
+          <Title>나의 구매내역</Title>
+        </User_Status_Row>
 
-                        <Order_Wrapper className="gap5px">
-                          {" "}
-                          <h4>
-                            {order.ITEMS.length > 1 ? (
-                              <p>
-                                {order.ITEMS[0].product_name} 외{" "}
-                                {order.ITEMS.length - 1}개<h4>주문상품</h4>
-                              </p>
-                            ) : (
-                              <p>{order.ITEMS[0].product_name}</p>
-                            )}
-                          </h4>
-                          <p>
-                            주문일자 :{" "}
-                            {new Date(order.ORDER_DATE).toLocaleString(
-                              "ko-KR",
-                              {
-                                year: "numeric",
-                                month: "2-digit",
-                                day: "2-digit",
-                              }
-                            )}
-                          </p>
-                          <p>
-                            주문상태 :{" "}
-                            {order.ORDER_STATE === 0 ? "주문취소" : "주문완료"}
-                          </p>
-                          <p>총 금액: {order.TOTAL_PRICE.toLocaleString()}원</p>
-                        </Order_Wrapper>
-                      </Input_Wrapper>
-                    ))}
-                  </Order_Wrapper>
-                );
-              })}
+        {currentPosts.map((order, index) => (
+          <div
+            key={order.ORDER_NO}
+            className="flex userOrder"
+            onClick={() =>
+              navigate(`/userOrder_detail/${order.ORDER_NO}`, {
+                state: { orders },
+              })
+            }
+            style={{
+              border: "1px solid #ccc",
+              margin: "20px",
+              padding: "15px",
+              cursor: "pointer",
+            }}
+          >
+            <ul>
+              {order.ITEMS.slice(0, 1).map((item) => (
+                <li
+                  key={item.product_no}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <img
+                    src={`${imgPath}/${productImgs[indexOfFirstPost + index]}`}
+                    alt={item.product_name}
+                    width="150"
+                    height="150"
+                  />
+                  <div style={{ marginLeft: "10px" }}>
+                    {order.ITEMS.length > 1 ? (
+                      <h4>
+                        {item.product_name} 외 {order.ITEMS.length - 1}개
+                      </h4>
+                    ) : (
+                      <h4>{item.product_name}</h4>
+                    )}
+                  </div>
+                </li>
+              ))}
             </ul>
+
+            <Order_Wrapper>
+              <p>
+                주문일자 :{" "}
+                {new Date(order.ORDER_DATE).toLocaleDateString("ko-KR")}
+              </p>
+              <p>
+                주문상태 : {order.ORDER_STATE === 0 ? "주문취소" : "주문완료"}
+              </p>
+              <p>총 금액: {order.TOTAL_PRICE.toLocaleString()}원</p>
+            </Order_Wrapper>
           </div>
-        ) : (
-          <div>
-            <h2>작성한 커뮤니티 글이 없습니다.</h2>
+        ))}
+
+        {/*페이징 버튼*/}
+        {totalPages > 1 && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "20px 0",
+            }}
+          >
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i + 1}
+                onClick={() => setCurrentPage(i + 1)}
+                style={{
+                  margin: "0 5px",
+                  padding: "5px 10px",
+                  backgroundColor: currentPage === i + 1 ? "black" : "white",
+                  color: currentPage === i + 1 ? "white" : "black",
+                  border: "1px solid black",
+                  cursor: "pointer",
+                  borderRadius: "5px",
+                }}
+              >
+                {i + 1}
+              </button>
+            ))}
           </div>
         )}
-      </Container_Style>
-      {/* 페이지네이션 버튼 */}
-      {totalPages > 1 && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            margin: "20px 0",
-          }}
-        >
-          {Array.from({ length: totalPages }, (_, i) => (
-            <Button_Pagination
-              key={i + 1}
-              onClick={() => setCurrentPage(i + 1)}
-              style={{
-                margin: "0 5px",
-                padding: "5px 10px",
-                color: currentPage === i + 1 ? "#bb9393" : "black",
-                cursor: "pointer",
-                borderRadius: "5px",
-              }}
-            >
-              {i + 1}
-            </Button_Pagination>
-          ))}
-        </div>
-      )}
-      <Container_Style>
-        <Button_Wrapper_100 className="grid1">
+        <div>
           <Button
             className={"returnToMyPage"}
             btnTxt={"마이페이지"}
             onClick={() => navigate("/mypage")}
           />
-        </Button_Wrapper_100>
+        </div>
       </Container_Style>
     </Wrapper>
   );
