@@ -24,6 +24,8 @@ const UserOrderDetail = () => {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
 
+  const [productImgs, setProductImgs] = useState(null);
+
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     if (token) {
@@ -83,6 +85,14 @@ const UserOrderDetail = () => {
           ITEMS: JSON.parse(data.ITEMS), // ITEMS 파싱
         };
         setOrder(parsedData); // 상태 업데이트
+        // 이미지 추출
+        const productImages = parsedData.ITEMS.map((item) => {
+          // item.product_img가 '*'로 구분된 이미지들을 포함하므로, 이를 분리하여 배열로 반환
+          return item.product_img.split("*").map((img) => img.trim());
+        });
+
+        console.log("상품 이미지 내역:", productImages);
+        setProductImgs(productImages);
       }
     };
     if (id) fetchData(); // id가 있을 경우에만 fetchData 실행
@@ -121,10 +131,14 @@ const UserOrderDetail = () => {
         <div>
           {order.ITEMS.map((item, index) => (
             <div key={index} style={{ marginBottom: "20px" }}>
+              {/* 상품 이미지들 출력 */}
               <img
-                src={`${imgPath}/${item.product_img}`} // 상품 이미지 경로
-                alt={item.product_name}
-                style={{ width: "100px", height: "100px" }}
+                src={`${imgPath}/${productImgs[index][0]}`} // 상품 이미지 경로
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  marginRight: "10px",
+                }}
               />
               <div>상품명: {item.product_name}</div>
               <div>선택옵션: {item.option_name}</div>
@@ -152,19 +166,12 @@ const UserOrderDetail = () => {
       <div style={{ marginBottom: "20px" }}>
         <div>
           <h2>Total</h2>
-
         </div>
-        {/* 총 주문 금액 */}
-        <div style={{ marginBottom: "20px" }}>
-          <div>
-            <h2>Total</h2>
-          </div>
-          <div>주문상품건수: {order.ITEMS.length} 건</div>
-          <div>배송비: 2,500원</div>
-          <div>
-            총 합계 금액:{" "}
-            {Intl.NumberFormat("ko-KR").format(order.TOTAL_PRICE + 2500)}원
-          </div>
+        <div>주문상품건수: {order.ITEMS.length} 건</div>
+        <div>배송비: 2,500원</div>
+        <div>
+          총 합계 금액:{" "}
+          {Intl.NumberFormat("ko-KR").format(order.TOTAL_PRICE + 2500)}원
         </div>
         <div>
           주문일자: {new Date(order.ORDER_DATE).toISOString().slice(0, 10)}

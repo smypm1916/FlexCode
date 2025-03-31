@@ -13,6 +13,8 @@ const UserOrders = ({ email }) => {
   const navigate = useNavigate();
   const imgPath = import.meta.env.VITE_IMG_PATH;
 
+  const [productImgs, setProductImgs] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchGetOrder(email); // 데이터 가져오기
@@ -24,6 +26,15 @@ const UserOrders = ({ email }) => {
         ITEMS: JSON.parse(order.ITEMS),
       }));
       setOrders(parsed); // 상태 업데이트
+      // 이미지 추출
+      const productImages = parsed.map((order) => {
+        // 첫번째 상품의 첫번째 이미지만 가져옴
+        const firstItem = order.ITEMS[0];
+        return firstItem.product_img.split("*")[0].trim(); // 첫번째 이미지만 추출
+      });
+
+      console.log("상품 이미지 : ", productImages);
+      setProductImgs(productImages);
     };
     fetchData();
   }, [email]);
@@ -41,7 +52,7 @@ const UserOrders = ({ email }) => {
           더보기
         </Text>
       </User_Status_Row>
-      {orders.slice(0, 3).map((order) => (
+      {orders.slice(0, 3).map((order, index) => (
         <Input_Wrapper
           className="flex userOrder"
           key={order.ORDER_NO}
@@ -64,33 +75,36 @@ const UserOrders = ({ email }) => {
           <p>총 금액: {order.TOTAL_PRICE.toLocaleString()}원</p>
           <h4>주문상품</h4>
           <ul>
-            {order.ITEMS.slice(0, 1).map((item, index) => (
-              <li
-                key={index}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "10px",
-                }}
-              >
-                <img
-                  src={`${imgPath}/${item.product_img}`}
-                  alt={item.product_name}
-                  width="150"
-                  height="150"
-                />
-                <div style={{ marginLeft: "10px" }}>
-                  {order.ITEMS.length > 1 ? (
-                    <p>
-                      {order.ITEMS[0].product_name} 외 {order.ITEMS.length - 1}
-                      개
-                    </p>
-                  ) : (
-                    <p>{order.ITEMS[0].product_name}</p>
-                  )}
-                </div>
-              </li>
-            ))}
+            {order.ITEMS.slice(0, 1).map((item, itemIndex) => {
+              // orders 배열의 index에 맞는 productImgs의 첫 번째 이미지를 가져옴
+              const productImage = productImgs[index]; // 해당 주문에 대한 첫 번째 이미지
+              return (
+                <li
+                  key={itemIndex}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <img
+                    src={`${imgPath}/${productImage}`} // 해당 주문에 대한 첫 번째 이미지를 사용
+                    width="150"
+                    height="150"
+                    alt={item.product_name}
+                  />
+                  <div style={{ marginLeft: "10px" }}>
+                    {order.ITEMS.length > 1 ? (
+                      <p>
+                        {item.product_name} 외 {order.ITEMS.length - 1} 개
+                      </p>
+                    ) : (
+                      <p>{item.product_name}</p>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </Input_Wrapper>
       ))}

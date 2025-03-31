@@ -16,8 +16,10 @@ const UserOrderList = () => {
   const { email } = location.state || {};
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // 한 페이지당 5개씩 표시
+  const itemsPerPage = 3; // 한 페이지당 5개씩 표시
   const imgPath = import.meta.env.VITE_IMG_PATH;
+
+  const [productImgs, setProductImgs] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,6 +32,15 @@ const UserOrderList = () => {
         ITEMS: JSON.parse(order.ITEMS),
       }));
       setOrders(parsed); // 상태 업데이트
+      // 이미지 추출
+      const productImages = parsed.map((order) => {
+        // 첫번째 상품의 첫번째 이미지만 가져옴
+        const firstItem = order.ITEMS[0];
+        return firstItem.product_img.split("*")[0].trim(); // 첫번째 이미지만 추출
+      });
+
+      console.log("상품 이미지 : ", productImages);
+      setProductImgs(productImages);
     };
     fetchData();
   }, [email]);
@@ -42,7 +53,7 @@ const UserOrderList = () => {
   // 총 페이지 개수 계산
   const totalPages = Math.ceil(orders.length / itemsPerPage);
 
-  // !! 
+  // !!
   if (Array.isArray(orders) && orders.length === 0) {
     return <h2>구매내역이 없습니다.</h2>;
   }
@@ -55,7 +66,7 @@ const UserOrderList = () => {
             <Title>나의 구매내역</Title>
             {currentPosts.length > 0}
             <ul>
-              {currentPosts.map((order) => {
+              {currentPosts.map((order, index) => {
                 return (
                   <div
                     key={order.ORDER_NO}
@@ -85,33 +96,37 @@ const UserOrderList = () => {
                     <p>총 금액: {order.TOTAL_PRICE.toLocaleString()}원</p>
                     <h4>주문상품</h4>
                     <ul>
-                      {order.ITEMS.slice(0, 1).map((item, index) => (
-                        <li
-                          key={index}
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            marginBottom: "10px",
-                          }}
-                        >
-                          <img
-                            src={`${imgPath}/${item.product_img}`}
-                            alt={item.product_name}
-                            width="150"
-                            height="150"
-                          />
-                          <div style={{ marginLeft: "10px" }}>
-                            {order.ITEMS.length > 1 ? (
-                              <p>
-                                {order.ITEMS[0].product_name} 외{" "}
-                                {order.ITEMS.length - 1}개
-                              </p>
-                            ) : (
-                              <p>{order.ITEMS[0].product_name}</p>
-                            )}
-                          </div>
-                        </li>
-                      ))}
+                      {order.ITEMS.slice(0, 1).map((item, itemIndex) => {
+                        // orders 배열의 index에 맞는 productImgs의 첫 번째 이미지를 가져옴
+                        const productImage = productImgs[index]; // 해당 주문에 대한 첫 번째 이미지
+                        return (
+                          <li
+                            key={itemIndex}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              marginBottom: "10px",
+                            }}
+                          >
+                            <img
+                              src={`${imgPath}/${productImage}`} // 해당 주문에 대한 첫 번째 이미지를 사용
+                              width="150"
+                              height="150"
+                              alt={item.product_name}
+                            />
+                            <div style={{ marginLeft: "10px" }}>
+                              {order.ITEMS.length > 1 ? (
+                                <p>
+                                  {item.product_name} 외{" "}
+                                  {order.ITEMS.length - 1} 개
+                                </p>
+                              ) : (
+                                <p>{item.product_name}</p>
+                              )}
+                            </div>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                 );
@@ -120,7 +135,7 @@ const UserOrderList = () => {
           </div>
         ) : (
           <div>
-            <h2>작성한 커뮤니티 글이 없습니다.</h2>
+            <h2>구매내역이 없습니다.</h2>
           </div>
         )}
       </Container_Style>
