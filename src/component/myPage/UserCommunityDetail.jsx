@@ -18,6 +18,7 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import FileUpload from "../common/FileUpload";
 import { jwtDecode } from "jwt-decode";
+import { Order_Wrapper } from "../../style/Mypage_Style";
 
 const UserCommunityDetail = () => {
   const token = sessionStorage.getItem("token");

@@ -81,17 +81,17 @@ const UserCommunityList = () => {
                       })
                     }
                     key={post.COMMUNITY_NO}
-                    className="border p-2 mb-2"
+                    className="border p-2 mb-2 gap0"
                   >
                     <List_Column key={post.COMMUNITY_NO}>
+                      <img
+                        src={`${imgPath}/${userProfileImg}`}
+                        width="100"
+                        height="100"
+                      />
                       <p>{post.COMMUNITY_TITLE}</p>
                       <List_Profile>
                         <p>작성자</p>
-                        <img
-                          src={`${imgPath}/${userProfileImg}`}
-                          width="100"
-                          height="100"
-                        />
                         <p>{post.USER_NICKNAME}</p>
                       </List_Profile>
                       <List_Profile>
