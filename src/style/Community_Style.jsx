@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const Container01 = styled.h2`
   width: -webkit-fill-available;
   padding: 20px;
-  background: url("src/style/img/Launching_banner.png") no-repeat;
+  background: url("/src/assets/imgs/Launching_banner.png") no-repeat;
   background-size: cover;
   background-position: center;
   display: flex;
@@ -146,16 +146,15 @@ export const Chat_icon = styled.div`
   display: flex;
   border-radius: 100%;
   box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.1);
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   transition: all 0.5s;
   background-color: white;
   position: fixed;
   right: 10%;
   bottom: 10%;
-  z-index: 300;
+  padding: 10px;
   &:hover {
-    background-color: #bb9393;
     box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.1);
   }
 

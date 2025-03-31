@@ -13,6 +13,8 @@ const UserOrders = ({ email }) => {
   const navigate = useNavigate();
   const imgPath = import.meta.env.VITE_IMG_PATH;
 
+  const [productImgs, setProductImgs] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchGetOrder(email); // 데이터 가져오기
@@ -24,6 +26,15 @@ const UserOrders = ({ email }) => {
         ITEMS: JSON.parse(order.ITEMS),
       }));
       setOrders(parsed); // 상태 업데이트
+      // 이미지 추출
+      const productImages = parsed.map((order) => {
+        // 첫번째 상품의 첫번째 이미지만 가져옴
+        const firstItem = order.ITEMS[0];
+        return firstItem.product_img.split("*")[0].trim(); // 첫번째 이미지만 추출
+      });
+
+      console.log("상품 이미지 : ", productImages);
+      setProductImgs(productImages);
     };
     fetchData();
   }, [email]);
@@ -41,7 +52,7 @@ const UserOrders = ({ email }) => {
           더보기
         </Text>
       </User_Status_Row>
-      {orders.slice(0, 3).map((order) => (
+      {orders.slice(0, 3).map((order, index) => (
         <Input_Wrapper
           className="flex userOrder"
           key={order.ORDER_NO}
@@ -52,17 +63,6 @@ const UserOrders = ({ email }) => {
           }
           style={{ border: "1px solid #ccc", margin: "20px", padding: "15px" }}
         >
-          <p>
-            주문일자 :{" "}
-            {new Date(order.ORDER_DATE).toLocaleString("ko-KR", {
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-            })}
-          </p>
-          <p>주문상태 : {order.ORDER_STATE === 0 ? "주문취소" : "주문완료"}</p>
-          <p>총 금액: {order.TOTAL_PRICE.toLocaleString()}원</p>
-          <h4>주문상품</h4>
           <ul>
             {order.ITEMS.slice(0, 1).map((item, index) => (
               <li
@@ -81,17 +81,32 @@ const UserOrders = ({ email }) => {
                 />
                 <div style={{ marginLeft: "10px" }}>
                   {order.ITEMS.length > 1 ? (
-                    <p>
+                    <h4>
                       {order.ITEMS[0].product_name} 외 {order.ITEMS.length - 1}
                       개
-                    </p>
+                    </h4>
                   ) : (
-                    <p>{order.ITEMS[0].product_name}</p>
+                    <h4>{order.ITEMS[0].product_name}</h4>
                   )}
                 </div>
               </li>
             ))}
           </ul>
+          '
+          <Order_Wrapper>
+            <p>
+              주문일자 :{" "}
+              {new Date(order.ORDER_DATE).toLocaleString("ko-KR", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              })}
+            </p>
+            <p>
+              주문상태 : {order.ORDER_STATE === 0 ? "주문취소" : "주문완료"}
+            </p>
+            <p>총 금액: {order.TOTAL_PRICE.toLocaleString()}원</p>
+          </Order_Wrapper>
         </Input_Wrapper>
       ))}
     </Order_Wrapper>

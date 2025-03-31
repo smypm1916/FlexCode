@@ -3,12 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   Button_Wrapper_100,
   Container_Style,
+  Input_Wrapper,
   Wrapper,
 } from "../../style/Common_Style";
 import { Button_Pagination } from "../../style/Community_Style";
 import { Title } from "../../style/Product_Detail_Style";
 import Button from "../common/Button";
 import { fetchGetOrder } from "./MyPageAPI";
+import { Order_Wrapper } from "../../style/Mypage_Style";
 
 const UserOrderList = () => {
   const [orders, setOrders] = useState([]);
@@ -16,8 +18,10 @@ const UserOrderList = () => {
   const { email } = location.state || {};
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // 한 페이지당 5개씩 표시
+  const itemsPerPage = 3; // 한 페이지당 5개씩 표시
   const imgPath = import.meta.env.VITE_IMG_PATH;
+
+  const [productImgs, setProductImgs] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,6 +34,15 @@ const UserOrderList = () => {
         ITEMS: JSON.parse(order.ITEMS),
       }));
       setOrders(parsed); // 상태 업데이트
+      // 이미지 추출
+      const productImages = parsed.map((order) => {
+        // 첫번째 상품의 첫번째 이미지만 가져옴
+        const firstItem = order.ITEMS[0];
+        return firstItem.product_img.split("*")[0].trim(); // 첫번째 이미지만 추출
+      });
+
+      console.log("상품 이미지 : ", productImages);
+      setProductImgs(productImages);
     };
     fetchData();
   }, [email]);
@@ -42,7 +55,7 @@ const UserOrderList = () => {
   // 총 페이지 개수 계산
   const totalPages = Math.ceil(orders.length / itemsPerPage);
 
-  // !! 
+  // !!
   if (Array.isArray(orders) && orders.length === 0) {
     return <h2>구매내역이 없습니다.</h2>;
   }
@@ -50,112 +63,87 @@ const UserOrderList = () => {
   return (
     <Wrapper className="wrap marginTop" id="order">
       <Container_Style className="wrap">
-        {orders.length > 0 ? (
-          <div>
-            <Title>나의 구매내역</Title>
-            {currentPosts.length > 0}
-            <ul>
-              {currentPosts.map((order) => {
-                return (
-                  <div
-                    key={order.ORDER_NO}
-                    onClick={() =>
-                      navigate(`/userOrder_detail/${order.ORDER_NO}`, {
-                        state: { orders },
-                      })
-                    }
-                    style={{
-                      border: "1px solid #ccc",
-                      margin: "20px",
-                      padding: "15px",
-                    }}
-                  >
-                    <p>
-                      주문일자 :{" "}
-                      {new Date(order.ORDER_DATE).toLocaleString("ko-KR", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                      })}
-                    </p>
-                    <p>
-                      주문상태 :{" "}
-                      {order.ORDER_STATE === 0 ? "주문취소" : "주문완료"}
-                    </p>
-                    <p>총 금액: {order.TOTAL_PRICE.toLocaleString()}원</p>
-                    <h4>주문상품</h4>
-                    <ul>
-                      {order.ITEMS.slice(0, 1).map((item, index) => (
-                        <li
-                          key={index}
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            marginBottom: "10px",
-                          }}
-                        >
-                          <img
-                            src={`${imgPath}/${item.product_img}`}
-                            alt={item.product_name}
-                            width="150"
-                            height="150"
-                          />
-                          <div style={{ marginLeft: "10px" }}>
-                            {order.ITEMS.length > 1 ? (
-                              <p>
-                                {order.ITEMS[0].product_name} 외{" "}
-                                {order.ITEMS.length - 1}개
-                              </p>
-                            ) : (
-                              <p>{order.ITEMS[0].product_name}</p>
-                            )}
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                );
-              })}
-            </ul>
-          </div>
-        ) : (
-          <div>
-            <h2>작성한 커뮤니티 글이 없습니다.</h2>
-          </div>
-        )}
-      </Container_Style>
-      {/* 페이지네이션 버튼 */}
-      {totalPages > 1 && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            margin: "20px 0",
-          }}
-        >
-          {Array.from({ length: totalPages }, (_, i) => (
-            <Button_Pagination
-              key={i + 1}
-              onClick={() => setCurrentPage(i + 1)}
-              style={{
-                margin: "0 5px",
-                padding: "5px 10px",
-                color: currentPage === i + 1 ? "#bb9393" : "black",
-                cursor: "pointer",
-                borderRadius: "5px",
-              }}
-            >
-              {i + 1}
-            </Button_Pagination>
+        {/* 주문상품정보 */}
+        <div>
+          {order.ITEMS.map((item, index) => (
+            <Order_Wrapper key={index} className="borderBottom">
+              <h2>Order</h2>
+              <Input_Wrapper>
+                <img
+                  src={`${imgPath}/${item.product_img}`} // 상품 이미지 경로
+                  alt={item.product_name}
+                  style={{ width: "100px", height: "100px" }}
+                />
+                <Order_Wrapper className="gap5px">
+                  <h4>{item.product_name}</h4>
+                  <Input_Wrapper className="flex">
+                    <div>선택옵션: {item.option_name}</div>
+                    <div>수량: {item.product_quantity}</div>
+                  </Input_Wrapper>
+                  <Input_Wrapper className="flex">
+                    <div>
+                      상품금액:{" "}
+                      {Intl.NumberFormat("ko-KR").format(
+                        item.product_price * item.product_quantity
+                      )}{" "}
+                      원
+                    </div>
+
+                    <div>
+                      옵션금액:{" "}
+                      {Intl.NumberFormat("ko-KR").format(
+                        item.option_price * item.product_quantity
+                      )}{" "}
+                      원
+                    </div>
+                  </Input_Wrapper>
+                </Order_Wrapper>
+              </Input_Wrapper>
+            </Order_Wrapper>
           ))}
         </div>
-      )}
-      <Container_Style>
-        <Button_Wrapper_100 className="grid1">
+        {/* 총 주문 금액 */}
+        <Order_Wrapper className="borderBottom">
+          <h2>Total</h2>
+          <Order_Wrapper className="gap5px">
+            <div>주문상품건수: {order.ITEMS.length} 건</div>
+            <div>배송비: 2,500원</div>
+            <div>
+              총 합계 금액:{" "}
+              {Intl.NumberFormat("ko-KR").format(order.TOTAL_PRICE + 2500)}원
+            </div>
+            <div>
+              주문일자: {new Date(order.ORDER_DATE).toISOString().slice(0, 10)}
+            </div>
+          </Order_Wrapper>
+        </Order_Wrapper>
+        {/* 주문자 정보 */}
+        <Order_Wrapper className="borderBottom">
+          <h2>주문자정보</h2>
+          <Order_Wrapper className="gap5px">
+            <div>받는사람: {userData.USER_NAME}</div>
+            <div>배송지주소: {userData.USER_ADDR}</div>
+            <div>전화번호: {userData.USER_TEL}</div>
+            <div>이메일: {userData.USER_EMAIL}</div>
+          </Order_Wrapper>
+        </Order_Wrapper>
+        {/* 주문취소/목록 버튼 */}
+        <Button_Wrapper_100 className="grid2">
+          {order.ORDER_STATE !== 0 ? (
+            <>
+              <Button
+                type="button"
+                onClick={handleCancelOrder}
+                btnTxt={"주문취소"}
+              />
+            </>
+          ) : null}
           <Button
-            className={"returnToMyPage"}
-            btnTxt={"마이페이지"}
-            onClick={() => navigate("/mypage")}
+            type="button"
+            onClick={() => {
+              navigate("/userOrder-list", { state: { email } });
+            }}
+            btnTxt={"목록으로"}
           />
         </Button_Wrapper_100>
       </Container_Style>

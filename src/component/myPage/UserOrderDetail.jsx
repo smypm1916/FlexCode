@@ -13,6 +13,7 @@ import {
 } from "../../style/Common_Style";
 import { Title } from "../../style/Modal_Style";
 import { System_message } from "../../style/ProductLists_Style";
+import { Order_Wrapper } from "../../style/Mypage_Style";
 
 const UserOrderDetail = () => {
   const [email, setEmail] = useState("");
@@ -23,6 +24,8 @@ const UserOrderDetail = () => {
   const imgPath = import.meta.env.VITE_IMG_PATH;
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
+
+  const [productImgs, setProductImgs] = useState(null);
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -83,6 +86,14 @@ const UserOrderDetail = () => {
           ITEMS: JSON.parse(data.ITEMS), // ITEMS 파싱
         };
         setOrder(parsedData); // 상태 업데이트
+        // 이미지 추출
+        const productImages = parsedData.ITEMS.map((item) => {
+          // item.product_img가 '*'로 구분된 이미지들을 포함하므로, 이를 분리하여 배열로 반환
+          return item.product_img.split("*").map((img) => img.trim());
+        });
+
+        console.log("상품 이미지 내역:", productImages);
+        setProductImgs(productImages);
       }
     };
     if (id) fetchData(); // id가 있을 경우에만 fetchData 실행
@@ -113,93 +124,93 @@ const UserOrderDetail = () => {
   };
 
   return (
-    <div>
-      {/* 주문상품정보 */}
-      <div>
-        <h2>Order</h2>
-
+    <Wrapper className="wrap marginTop" id="order">
+      <Container_Style className="wrap">
+        {/* 주문상품정보 */}
         <div>
           {order.ITEMS.map((item, index) => (
-            <div key={index} style={{ marginBottom: "20px" }}>
-              <img
-                src={`${imgPath}/${item.product_img}`} // 상품 이미지 경로
-                alt={item.product_name}
-                style={{ width: "100px", height: "100px" }}
-              />
-              <div>상품명: {item.product_name}</div>
-              <div>선택옵션: {item.option_name}</div>
-              <div>수량: {item.product_quantity}</div>
-              <div>
-                상품금액:{" "}
-                {Intl.NumberFormat("ko-KR").format(
-                  item.product_price * item.product_quantity
-                )}{" "}
-                원
-              </div>
+            <Order_Wrapper key={index} className="borderBottom">
+              <h2>Order</h2>
+              <Input_Wrapper>
+                <img
+                  src={`${imgPath}/${productImgs[index][0]}`} // 상품 이미지 경로
+                  alt={item.product_name}
+                  style={{ width: "100px", height: "100px" }}
+                />
+                <Order_Wrapper className="gap5px">
+                  <h4>{item.product_name}</h4>
+                  <Input_Wrapper className="flex">
+                    <div>선택옵션: {item.option_name}</div>
+                    <div>수량: {item.product_quantity}</div>
+                  </Input_Wrapper>
+                  <Input_Wrapper className="flex">
+                    <div>
+                      상품금액:{" "}
+                      {Intl.NumberFormat("ko-KR").format(
+                        item.product_price * item.product_quantity
+                      )}{" "}
+                      원
+                    </div>
 
-              <div>
-                옵션금액:{" "}
-                {Intl.NumberFormat("ko-KR").format(
-                  item.option_price * item.product_quantity
-                )}{" "}
-                원
-              </div>
-            </div>
+                    <div>
+                      옵션금액:{" "}
+                      {Intl.NumberFormat("ko-KR").format(
+                        item.option_price * item.product_quantity
+                      )}{" "}
+                      원
+                    </div>
+                  </Input_Wrapper>
+                </Order_Wrapper>
+              </Input_Wrapper>
+            </Order_Wrapper>
           ))}
         </div>
-      </div>
-      {/* 총 주문 금액 */}
-      <div style={{ marginBottom: "20px" }}>
-        <div>
-          <h2>Total</h2>
-
-        </div>
         {/* 총 주문 금액 */}
-        <div style={{ marginBottom: "20px" }}>
-          <div>
-            <h2>Total</h2>
-          </div>
-          <div>주문상품건수: {order.ITEMS.length} 건</div>
-          <div>배송비: 2,500원</div>
-          <div>
-            총 합계 금액:{" "}
-            {Intl.NumberFormat("ko-KR").format(order.TOTAL_PRICE + 2500)}원
-          </div>
-        </div>
-        <div>
-          주문일자: {new Date(order.ORDER_DATE).toISOString().slice(0, 10)}
-        </div>
-      </div>
-      {/* 주문자 정보 */}
-      <div style={{ marginBottom: "20px" }}>
-        <div>
+        <Order_Wrapper className="borderBottom">
+          <h2>Total</h2>
+          <Order_Wrapper className="gap5px">
+            <div>주문상품건수: {order.ITEMS.length} 건</div>
+            <div>배송비: 2,500원</div>
+            <div>
+              총 합계 금액:{" "}
+              {Intl.NumberFormat("ko-KR").format(order.TOTAL_PRICE + 2500)}원
+            </div>
+            <div>
+              주문일자: {new Date(order.ORDER_DATE).toISOString().slice(0, 10)}
+            </div>
+          </Order_Wrapper>
+        </Order_Wrapper>
+        {/* 주문자 정보 */}
+        <Order_Wrapper className="borderBottom">
           <h2>주문자정보</h2>
-        </div>
-        <div>받는사람: {userData.USER_NAME}</div>
-        <div>배송지주소: {userData.USER_ADDR}</div>
-        <div>전화번호: {userData.USER_TEL}</div>
-        <div>이메일: {userData.USER_EMAIL}</div>
-      </div>
-      {/* 주문취소/목록 버튼 */}
-      <div>
-        {order.ORDER_STATE !== 0 ? (
-          <>
-            <Button
-              type="button"
-              onClick={handleCancelOrder}
-              btnTxt={"주문취소"}
-            />
-          </>
-        ) : null}
-        <Button
-          type="button"
-          onClick={() => {
-            navigate("/userOrder-list", { state: { email } });
-          }}
-          btnTxt={"목록으로"}
-        />
-      </div>
-    </div>
+          <Order_Wrapper className="gap5px">
+            <div>받는사람: {userData.USER_NAME}</div>
+            <div>배송지주소: {userData.USER_ADDR}</div>
+            <div>전화번호: {userData.USER_TEL}</div>
+            <div>이메일: {userData.USER_EMAIL}</div>
+          </Order_Wrapper>
+        </Order_Wrapper>
+        {/* 주문취소/목록 버튼 */}
+        <Button_Wrapper_100 className="grid2">
+          {order.ORDER_STATE !== 0 ? (
+            <>
+              <Button
+                type="button"
+                onClick={handleCancelOrder}
+                btnTxt={"주문취소"}
+              />
+            </>
+          ) : null}
+          <Button
+            type="button"
+            onClick={() => {
+              navigate("/userOrder-list", { state: { email } });
+            }}
+            btnTxt={"목록으로"}
+          />
+        </Button_Wrapper_100>
+      </Container_Style>
+    </Wrapper>
   );
 };
 

@@ -175,10 +175,16 @@ const ProductInfo = () => {
                //    setProductImages(splitImages);
                // }
                if (tempDetail[0].PRODUCT_IMG) {
-                  const matches = tempDetail[0].PRODUCT_IMG.match(/\*[^*]+\.(png|jpg|jpeg|gif)/gi);
-                  if (matches) {
-                     setProductImages(matches.map(img => img.trim()));
-                  }
+                  // PRODUCT_IMG에 저장된 이미지 파일명들을 '*'을 기준으로 나눔
+                  const imageNames = tempDetail[0].PRODUCT_IMG.split("*");
+                  // 이미지 파일 이름에서 불필요한 공백 제거 및 실제 파일명에 맞게 처리
+                  const validImageNames = imageNames.map((img) => img.trim());
+                  // 추출된 이미지 파일명을 화면에 출력할 수 있도록 변수 혹은 상태에 설정
+                  setProductImages(validImageNames);
+                  // const matches = tempDetail[0].PRODUCT_IMG.match(/\*[^*]+\.(png|jpg|jpeg|gif)/gi);
+                  // if (matches) {
+                  //    setProductImages(matches.map(img => img.trim()));
+                  // }
                }
             } else {
                setProduct({});
@@ -200,10 +206,11 @@ const ProductInfo = () => {
       }
       try {
          const resOptions = await axios.get(
-            `${API_BASE_URL}/options/detail/${product_no}`, {
-            withCredentials: true,
-            headers: { Accept: "application/json; charset=utf-8" },
-         }
+            `${API_BASE_URL}/options/detail/${product_no}`,
+            {
+               withCredentials: true,
+               headers: { Accept: "application/json; charset=utf-8" },
+            }
          );
          if (resOptions.data?.success) {
             setOptions(resOptions.data.data || []);
@@ -376,27 +383,28 @@ const ProductInfo = () => {
                   <img src="src/style/img/shirts.png" alt="" />
                   <img src="src/style/img/shirts.png" alt="" />
                </Image_Wrapper> */}
-               {productImages.length > 0 ? productImages.map((img, idx) => (
-                  <Image_Wrapper>
-                     <img
-                        key={idx + 1}
-                        src={`${imgPath}` + `${img}`}
-                        // alt={`상품 이미지 ${idx + 1}`}
-                        style={{ width: '100%', marginBottom: '20px' }}
-                     />
-                  </Image_Wrapper>
-               )) :
-                  (<Image_Wrapper>
+               {productImages.length > 0 ? (
+                  productImages.map((img, idx) => (
+                     <Image_Wrapper className="detailimg">
+                        <img
+                           key={idx + 1}
+                           src={`${imgPath}` + `${img}`}
+                           // alt={`상품 이미지 ${idx + 1}`}
+                           style={{ width: "100%", marginBottom: "20px" }}
+                        />
+                     </Image_Wrapper>
+                  ))
+               ) : (
+                  <Image_Wrapper className="detailimg">
                      <img src="src/style/img/shirts.png" alt="" />
                      <img src="src/style/img/shirts.png" alt="" />
                      <img src="src/style/img/shirts.png" alt="" />
                   </Image_Wrapper>
-                  )}
+               )}
             </Container02>
             <Divide_Box>
                <p>DETAIL INFO</p>
                {true ? <></> : <></>}
-
             </Divide_Box>
 
             {/* 컨테이너 3 - 상세 정보 */}
