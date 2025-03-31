@@ -1,9 +1,5 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import Button from "../common/Button";
-import { fetchGetOrder } from "./MyPageAPI";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Button_Wrapper_100,
   Container_Style,
@@ -11,6 +7,8 @@ import {
 } from "../../style/Common_Style";
 import { Button_Pagination } from "../../style/Community_Style";
 import { Title } from "../../style/Product_Detail_Style";
+import Button from "../common/Button";
+import { fetchGetOrder } from "./MyPageAPI";
 
 const UserOrderList = () => {
   const [orders, setOrders] = useState([]);
@@ -44,6 +42,7 @@ const UserOrderList = () => {
   // 총 페이지 개수 계산
   const totalPages = Math.ceil(orders.length / itemsPerPage);
 
+  // !! 
   if (Array.isArray(orders) && orders.length === 0) {
     return <h2>구매내역이 없습니다.</h2>;
   }

@@ -74,6 +74,32 @@ const ShippingAddress = ({ title, data, setData, isReadOnly }) => {
           <Modal
             isOpen={isPostCodeOpen}
             onRequestClose={() => setIsPostCodeOpen(false)}
+            style={{
+              overlay: {
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "rgba(0, 0, 0, 0.5)", // 배경색
+                zIndex: 300,
+              },
+              content: {
+                width: "40%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "20px",
+                position: "static", // static으로 변경
+                background: "white",
+                padding: "20px",
+                borderRadius: "0",
+                border: "none",
+                padding: "50px",
+              },
+            }}
           >
             <PostCodeModal
               onClose={() => setIsPostCodeOpen(false)}

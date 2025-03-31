@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import LoginModal from "../account/LoginModal";
-import Button from "../common/Button";
 import {
   Button_Wrapper_100,
   Container_Style,
   Wrapper,
 } from "../../style/Common_Style";
-
+import LoginModal from "../account/LoginModal";
+import Button from "../common/Button";
 const SignUpSuccess = () => {
   const navigate = useNavigate();
 

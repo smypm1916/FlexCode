@@ -32,6 +32,7 @@ import { System_message } from "../../style/ProductLists_Style";
 
 const ProductInfo = () => {
   const { product_no } = useParams();
+  const [productImages, setProductImages] = useState([]);
   const [product, setProduct] = useState({});
   const [options, setOptions] = useState([]);
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
@@ -54,22 +55,6 @@ const ProductInfo = () => {
   } = useCart();
 
   const API_BASE_URL = "http://localhost:8080/api";
-
-  //로그인 후 토큰 저장
-
-  //    const res = await axios.post(
-  //       `${API_BASE_URL}/cart/auth/login`,
-  //       {
-  //          user_email,
-  //          user_password,
-  //       },
-  //       { withCredentials: true }
-  //    );
-  //    if (res.data.success) {
-  //       localStorage.setItem("token", res.data.token);
-  //       await fetchCart();
-  //    }
-  // };
 
   // 옵션 삭제
   const onRemove = (OPTION_NO) => {
@@ -174,7 +159,7 @@ const ProductInfo = () => {
         `${API_BASE_URL}/products/detail/${product_no}`,
         {
           withCredentials: true,
-          headers: { Accept: "application/json" },
+          headers: { Accept: "application/json; charset=utf-8" },
         }
       );
       if (res.data?.success) {
@@ -182,6 +167,25 @@ const ProductInfo = () => {
         const tempDetail = res.data.data;
         if (Array.isArray(tempDetail) && tempDetail.length > 0) {
           setProduct(tempDetail[0]); // 객체 저장
+          // if (tempDetail[0].PRODUCT_IMG) {
+          //    const splitImages = tempDetail[0].PRODUCT_IMG
+          //       .split('*')
+          //       .map((img) => img.trim())
+          //       .filter(Boolean); // 빈 문자열 제거
+          //    setProductImages(splitImages);
+          // }
+          if (tempDetail[0].PRODUCT_IMG) {
+            // PRODUCT_IMG에 저장된 이미지 파일명들을 '*'을 기준으로 나눔
+            const imageNames = tempDetail[0].PRODUCT_IMG.split("*");
+            // 이미지 파일 이름에서 불필요한 공백 제거 및 실제 파일명에 맞게 처리
+            const validImageNames = imageNames.map((img) => img.trim());
+            // 추출된 이미지 파일명을 화면에 출력할 수 있도록 변수 혹은 상태에 설정
+            setProductImages(validImageNames);
+            // const matches = tempDetail[0].PRODUCT_IMG.match(/\*[^*]+\.(png|jpg|jpeg|gif)/gi);
+            // if (matches) {
+            //    setProductImages(matches.map(img => img.trim()));
+            // }
+          }
         } else {
           setProduct({});
         }
@@ -205,7 +209,7 @@ const ProductInfo = () => {
         `${API_BASE_URL}/options/detail/${product_no}`,
         {
           withCredentials: true,
-          headers: { Accept: "application/json" },
+          headers: { Accept: "application/json; charset=utf-8" },
         }
       );
       if (resOptions.data?.success) {
@@ -223,21 +227,6 @@ const ProductInfo = () => {
     setIsCartModalOpen(false);
   };
 
-  // // 주문 페이지로 이동
-  // const goToOrder = () => {
-  //    if (checkedProducts.length === 0) {
-  //       alert("옵션을 선택하세요.");
-  //       return;
-  //    }
-
-  //    navigate(`/order/direct`, {
-  //       state: {
-  //          from: "direct",
-  //          product,
-  //          checkedProducts,
-  //       },
-  //    });
-  // };
   const goToOrder = () => {
     const currentOrderId = localTempOrderId || tempOrderId;
     if (!currentOrderId) {
@@ -281,11 +270,24 @@ const ProductInfo = () => {
       <Container_Style>
         <Container01>
           {/* 이미지 */}
+          {/* <Image_Wrapper>
+                  <img
+                     src={`${imgPath}/${product?.PRODUCT_IMG}`}
+                     alt={product?.PRODUCT_NAME}
+                  />
+               </Image_Wrapper> */}
           <Image_Wrapper>
-            <img
-              src={`${imgPath}/${product?.PRODUCT_IMG}`}
-              alt={product?.PRODUCT_NAME}
-            />
+            {productImages.length > 0 ? (
+              <img
+                src={`${imgPath}/${productImages[0]}`}
+                alt={product?.PRODUCT_NAME}
+              />
+            ) : (
+              <img
+                src={`${imgPath}/${product?.PRODUCT_IMG}`}
+                alt={product?.PRODUCT_NAME}
+              />
+            )}
           </Image_Wrapper>
 
           {/* 상품정보 */}
@@ -293,7 +295,6 @@ const ProductInfo = () => {
             <Text_wrapper>
               <Text_box className="column">
                 <Text>{product.PRODUCT_TYPE}</Text>
-
                 <h1>{product.PRODUCT_NAME}</h1>
               </Text_box>
               <Text_box>
@@ -378,15 +379,33 @@ const ProductInfo = () => {
 
         {/* 컨테이너 2 */}
         <Container02>
-          <Image_Wrapper>
-            <img src="src/style/img/shirts.png" alt="" />
-            <img src="src/style/img/shirts.png" alt="" />
-            <img src="src/style/img/shirts.png" alt="" />
-          </Image_Wrapper>
+          {/* <Image_Wrapper>
+                  <img src="src/style/img/shirts.png" alt="" />
+                  <img src="src/style/img/shirts.png" alt="" />
+                  <img src="src/style/img/shirts.png" alt="" />
+               </Image_Wrapper> */}
+          {productImages.length > 0 ? (
+            productImages.map((img, idx) => (
+              <Image_Wrapper>
+                <img
+                  key={idx + 1}
+                  src={`${imgPath}` + `${img}`}
+                  // alt={`상품 이미지 ${idx + 1}`}
+                  style={{ width: "100%", marginBottom: "20px" }}
+                />
+              </Image_Wrapper>
+            ))
+          ) : (
+            <Image_Wrapper>
+              <img src="src/style/img/shirts.png" alt="" />
+              <img src="src/style/img/shirts.png" alt="" />
+              <img src="src/style/img/shirts.png" alt="" />
+            </Image_Wrapper>
+          )}
         </Container02>
-
         <Divide_Box>
           <p>DETAIL INFO</p>
+          {true ? <></> : <></>}
         </Divide_Box>
 
         {/* 컨테이너 3 - 상세 정보 */}
@@ -397,56 +416,9 @@ const ProductInfo = () => {
             </Info_Title>
             <Info_Text>
               <Info_Text_Box>
-                <p>소재</p>
+                <p>RCS 인증된 재활용 폴리에스터</p>
                 <Info_Wrapper>
-                  <p>
-                    RCS 인증된 재활용 폴리에스터
-                    <br />
-                    RCS(Recycled Claim Standard) 인증 설명
-                  </p>
-                </Info_Wrapper>
-              </Info_Text_Box>
-            </Info_Text>
-          </Info_Wrapper>
-          <Info_Wrapper>
-            <Info_Title>
-              <p>배송</p>
-            </Info_Title>
-            <Info_Text>
-              <Info_Text_Box>
-                <p>
-                  매장으로 배송 <br />
-                  무료
-                </p>
-                <Info_Wrapper>
-                  <p>
-                    영업일 기준 2-3일 이내 배송.
-                    <br />이 옵션은 부피가 큰 HOME 상품이 포함된 주문에는 사용할
-                    수 없습니다.
-                  </p>
-                </Info_Wrapper>
-              </Info_Text_Box>
-            </Info_Text>
-          </Info_Wrapper>
-          <Info_Wrapper>
-            <Info_Title>
-              <p>교환 및 환불</p>
-            </Info_Title>
-            <Info_Text>
-              <Info_Text_Box>
-                <p>
-                  매장에서 반품 <br />
-                  무료
-                  <br />
-                  자택 수거 서비스 <br />₩ 2,900
-                </p>
-                <Info_Wrapper>
-                  <p>
-                    HOME 제품은 Select No HOME 매장에서도 반품하실 수 있습니다.
-                    <br />
-                    반품 비용은 반품 요청 건당 적용되며 환불 금액에서
-                    차감됩니다.
-                  </p>
+                  <p>RCS(Recycled Claim Standard) 인증 설명</p>
                 </Info_Wrapper>
               </Info_Text_Box>
             </Info_Text>
