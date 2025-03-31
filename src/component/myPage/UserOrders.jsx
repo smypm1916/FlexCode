@@ -64,7 +64,7 @@ const UserOrders = ({ email }) => {
           style={{ border: "1px solid #ccc", margin: "20px", padding: "15px" }}
         >
           <ul>
-            {order.ITEMS.slice(0, 1).map((item, index) => (
+            {order.ITEMS.slice(0, 1).map((item, itemindex) => (
               <li
                 key={index}
                 style={{
@@ -74,7 +74,7 @@ const UserOrders = ({ email }) => {
                 }}
               >
                 <img
-                  src={`${imgPath}/${item.product_img}`}
+                  src={`${imgPath}/${productImgs[index]}`}
                   alt={item.product_name}
                   width="150"
                   height="150"
