@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const Container01 = styled.h2`
   width: -webkit-fill-available;
   padding: 20px;
-  background: url("src/asset/imgs/Launching_banner.png") no-repeat;
+  background: url("src/assets/imgs/Launching_banner.png") no-repeat;
   background-size: cover;
   background-position: center;
   display: flex;
