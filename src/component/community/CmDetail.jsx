@@ -61,7 +61,7 @@ const CmDetail = () => {
     }
   };
   const deleteHandler = async () => {
-    let ok = confirm("really?");
+    let ok = confirm("本当に削除しますか？");
     if (ok) {
       const response = await axios.delete(
         `http://localhost:8080/api/post/delete/${id}`
@@ -185,12 +185,6 @@ const CmDetail = () => {
                 <img src={`${imgPath}/${post.COMMUNITY_IMG}`} />
               ) : null}
             </List_Content>
-          </Input_Wrapper>
-          <Input_Wrapper>
-            <div>
-              <label>작성일</label>
-            </div>
-            <div>{post.COMMUNITY_DATE}</div>
           </Input_Wrapper>
           <Button_Wrapper_100>
             {nickname === post.USER_NICKNAME ? (
