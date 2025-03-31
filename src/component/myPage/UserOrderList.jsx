@@ -3,12 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   Button_Wrapper_100,
   Container_Style,
+  Input_Wrapper,
   Wrapper,
 } from "../../style/Common_Style";
 import { Button_Pagination } from "../../style/Community_Style";
 import { Title } from "../../style/Product_Detail_Style";
 import Button from "../common/Button";
 import { fetchGetOrder } from "./MyPageAPI";
+import { Order_Wrapper } from "../../style/Mypage_Style";
 
 const UserOrderList = () => {
   const [orders, setOrders] = useState([]);
@@ -42,7 +44,7 @@ const UserOrderList = () => {
   // 총 페이지 개수 계산
   const totalPages = Math.ceil(orders.length / itemsPerPage);
 
-  // !! 
+  // !!
   if (Array.isArray(orders) && orders.length === 0) {
     return <h2>구매내역이 없습니다.</h2>;
   }
@@ -52,68 +54,63 @@ const UserOrderList = () => {
       <Container_Style className="wrap">
         {orders.length > 0 ? (
           <div>
-            <Title>나의 구매내역</Title>
+            <Order_Wrapper className="borderBottom">
+              <Title>나의 구매내역</Title>
+            </Order_Wrapper>
             {currentPosts.length > 0}
             <ul>
               {currentPosts.map((order) => {
                 return (
-                  <div
+                  <Order_Wrapper
+                    className="borderBottom marginTop"
                     key={order.ORDER_NO}
                     onClick={() =>
                       navigate(`/userOrder_detail/${order.ORDER_NO}`, {
                         state: { orders },
                       })
                     }
-                    style={{
-                      border: "1px solid #ccc",
-                      margin: "20px",
-                      padding: "15px",
-                    }}
                   >
-                    <p>
-                      주문일자 :{" "}
-                      {new Date(order.ORDER_DATE).toLocaleString("ko-KR", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                      })}
-                    </p>
-                    <p>
-                      주문상태 :{" "}
-                      {order.ORDER_STATE === 0 ? "주문취소" : "주문완료"}
-                    </p>
-                    <p>총 금액: {order.TOTAL_PRICE.toLocaleString()}원</p>
-                    <h4>주문상품</h4>
-                    <ul>
-                      {order.ITEMS.slice(0, 1).map((item, index) => (
-                        <li
-                          key={index}
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            marginBottom: "10px",
-                          }}
-                        >
-                          <img
-                            src={`${imgPath}/${item.product_img}`}
-                            alt={item.product_name}
-                            width="150"
-                            height="150"
-                          />
-                          <div style={{ marginLeft: "10px" }}>
+                    {order.ITEMS.slice(0, 1).map((item, index) => (
+                      <Input_Wrapper className="flex" key={index}>
+                        <img
+                          src={`${imgPath}/${item.product_img}`}
+                          alt={item.product_name}
+                          width="150"
+                          height="150"
+                        />
+
+                        <Order_Wrapper className="gap5px">
+                          {" "}
+                          <h4>
                             {order.ITEMS.length > 1 ? (
                               <p>
                                 {order.ITEMS[0].product_name} 외{" "}
-                                {order.ITEMS.length - 1}개
+                                {order.ITEMS.length - 1}개<h4>주문상품</h4>
                               </p>
                             ) : (
                               <p>{order.ITEMS[0].product_name}</p>
                             )}
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                          </h4>
+                          <p>
+                            주문일자 :{" "}
+                            {new Date(order.ORDER_DATE).toLocaleString(
+                              "ko-KR",
+                              {
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit",
+                              }
+                            )}
+                          </p>
+                          <p>
+                            주문상태 :{" "}
+                            {order.ORDER_STATE === 0 ? "주문취소" : "주문완료"}
+                          </p>
+                          <p>총 금액: {order.TOTAL_PRICE.toLocaleString()}원</p>
+                        </Order_Wrapper>
+                      </Input_Wrapper>
+                    ))}
+                  </Order_Wrapper>
                 );
               })}
             </ul>

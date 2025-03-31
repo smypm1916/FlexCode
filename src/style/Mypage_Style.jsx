@@ -52,6 +52,19 @@ export const Order_Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  &.borderBottom {
+    border-bottom: 1px solid black;
+    padding-bottom: 20px;
+  }
+
+  &.marginTop {
+    margin-top: 20px;
+  }
+
+  &.gap5px {
+    gap: 5px;
+  }
 `;
 
 // ---------------------- post -------------------
