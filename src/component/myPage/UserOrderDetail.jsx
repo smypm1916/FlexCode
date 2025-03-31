@@ -128,9 +128,9 @@ const UserOrderDetail = () => {
       <Container_Style className="wrap">
         {/* 주문상품정보 */}
         <div>
+          <h2>Order</h2>
           {order.ITEMS.map((item, index) => (
             <Order_Wrapper key={index} className="borderBottom">
-              <h2>Order</h2>
               <Input_Wrapper>
                 <img
                   src={`${imgPath}/${productImgs[index][0]}`} // 상품 이미지 경로
@@ -204,7 +204,7 @@ const UserOrderDetail = () => {
           <Button
             type="button"
             onClick={() => {
-              navigate("/userOrder-list", { state: { email } });
+              navigate("/userOrder-list", { state: { email, orders } });
             }}
             btnTxt={"목록으로"}
           />
