@@ -386,7 +386,7 @@ const ProductInfo = () => {
                </Image_Wrapper> */}
           {productImages.length > 0 ? (
             productImages.map((img, idx) => (
-              <Image_Wrapper>
+              <Image_Wrapper className="detailimg">
                 <img
                   key={idx + 1}
                   src={`${imgPath}` + `${img}`}
@@ -396,7 +396,7 @@ const ProductInfo = () => {
               </Image_Wrapper>
             ))
           ) : (
-            <Image_Wrapper>
+            <Image_Wrapper className="detailimg">
               <img src="src/style/img/shirts.png" alt="" />
               <img src="src/style/img/shirts.png" alt="" />
               <img src="src/style/img/shirts.png" alt="" />

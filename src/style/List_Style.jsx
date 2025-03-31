@@ -26,7 +26,7 @@ export const List_Column = styled.div`
   width: -webkit-fill-available;
   width: -moz-available;
   display: grid;
-  grid-template-columns: 1fr 3fr 2fr 2fr;
+  grid-template-columns: 1fr 3fr 1.5fr 1.5fr;
   align-items: center;
 `;
 

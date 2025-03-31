@@ -63,49 +63,50 @@ const UserOrders = ({ email }) => {
           }
           style={{ border: "1px solid #ccc", margin: "20px", padding: "15px" }}
         >
-          <p>
-            주문일자 :{" "}
-            {new Date(order.ORDER_DATE).toLocaleString("ko-KR", {
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-            })}
-          </p>
-          <p>주문상태 : {order.ORDER_STATE === 0 ? "주문취소" : "주문완료"}</p>
-          <p>총 금액: {order.TOTAL_PRICE.toLocaleString()}원</p>
-          <h4>주문상품</h4>
           <ul>
-            {order.ITEMS.slice(0, 1).map((item, itemIndex) => {
-              // orders 배열의 index에 맞는 productImgs의 첫 번째 이미지를 가져옴
-              const productImage = productImgs[index]; // 해당 주문에 대한 첫 번째 이미지
-              return (
-                <li
-                  key={itemIndex}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginBottom: "10px",
-                  }}
-                >
-                  <img
-                    src={`${imgPath}/${productImage}`} // 해당 주문에 대한 첫 번째 이미지를 사용
-                    width="150"
-                    height="150"
-                    alt={item.product_name}
-                  />
-                  <div style={{ marginLeft: "10px" }}>
-                    {order.ITEMS.length > 1 ? (
-                      <p>
-                        {item.product_name} 외 {order.ITEMS.length - 1} 개
-                      </p>
-                    ) : (
-                      <p>{item.product_name}</p>
-                    )}
-                  </div>
-                </li>
-              );
-            })}
+            {order.ITEMS.slice(0, 1).map((item, index) => (
+              <li
+                key={index}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "10px",
+                }}
+              >
+                <img
+                  src={`${imgPath}/${item.product_img}`}
+                  alt={item.product_name}
+                  width="150"
+                  height="150"
+                />
+                <div style={{ marginLeft: "10px" }}>
+                  {order.ITEMS.length > 1 ? (
+                    <h4>
+                      {order.ITEMS[0].product_name} 외 {order.ITEMS.length - 1}
+                      개
+                    </h4>
+                  ) : (
+                    <h4>{order.ITEMS[0].product_name}</h4>
+                  )}
+                </div>
+              </li>
+            ))}
           </ul>
+          '
+          <Order_Wrapper>
+            <p>
+              주문일자 :{" "}
+              {new Date(order.ORDER_DATE).toLocaleString("ko-KR", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              })}
+            </p>
+            <p>
+              주문상태 : {order.ORDER_STATE === 0 ? "주문취소" : "주문완료"}
+            </p>
+            <p>총 금액: {order.TOTAL_PRICE.toLocaleString()}원</p>
+          </Order_Wrapper>
         </Input_Wrapper>
       ))}
     </Order_Wrapper>
