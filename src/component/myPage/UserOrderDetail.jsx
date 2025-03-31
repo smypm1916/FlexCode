@@ -89,7 +89,7 @@ const UserOrderDetail = () => {
         // 이미지 추출
         const productImages = parsedData.ITEMS.map((item) => {
           // item.product_img가 '*'로 구분된 이미지들을 포함하므로, 이를 분리하여 배열로 반환
-          return item.product_img.split("*").map((img) => img.trim());
+          return item.product_img.split("$").map((img) => img.trim());
         });
 
         console.log("상품 이미지 내역:", productImages);
