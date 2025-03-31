@@ -40,8 +40,6 @@ const CmPost = ({ handleSubmit, post }) => {
           </Profile_Img>
         </List_Profile>
         <p>{post.COMMUNITY_TITLE}</p>
-        <p>조회수</p>
-        <p>{post.COMMUNITY_READCNT}</p>
         <List_Profile>
           <p>작성자</p>
           <p>{post.USER_NICKNAME}</p>
@@ -55,6 +53,10 @@ const CmPost = ({ handleSubmit, post }) => {
         {post.COMMUNITY_IMG ? (
           <img src={`${imgPath}/${post.COMMUNITY_IMG}`} />
         ) : null}
+        <List_Profile>
+          <p>조회수</p>
+          <p>{post.COMMUNITY_READCNT}</p>
+        </List_Profile>
       </List_Content>
     </Pagination_List>
   );
