@@ -18,86 +18,55 @@ module.exports = (redisClient) => {
       const guestCartData = await redisClient.hGetAll(guestCartId);
       const userCartData = await redisClient.hGetAll(userCartId);
       const mergedCart = {};
-      console.log(userCartData);
-      // console.log(tempOrderId)
+
+      // 기존 사용자 카트 아이템 복사
       Object.entries(userCartData).forEach(([key, value]) => {
         if (key !== "tempOrderId") {
-          const guestItem = JSON.parse(value);
-          console.log("user section -----------------------------");
-          console.log(guestItem);
-          console.log(userCartData[key]);
-          userCartData[key].quantity += guestItem.quantity;
-          console.log(userCartData[key]);
+          mergedCart[key] = JSON.parse(value);
         }
       });
 
+      // 게스트 카트 데이터 병합
       Object.entries(guestCartData).forEach(([key, value]) => {
         if (key === "tempOrderId") return;
-        try {
-          const guestItem = JSON.parse(value);
-          console.log("=============================");
-          console.log(guestItem);
-          console.log("=============================");
-          console.log(mergeCart[key]);
-          if (mergedCart[key]) {
-            mergedCart[key].quantity += guestItem.quantity;
-            mergedCart[key].updatedAt = new Date().toISOString();
-          } else {
-            mergedCart[key] = guestItem;
-          }
-        } catch (err) {
-          console.error("Guest cart parsing error:", err, value);
+
+        const guestItem = JSON.parse(value);
+        if (mergedCart[key]) {
+          mergedCart[key].quantity += guestItem.quantity;
+          mergedCart[key].updatedAt = new Date().toISOString();
+        } else {
+          mergedCart[key] = guestItem;
         }
       });
 
       await redisClient.del(guestCartId);
 
-      // const redisHSetArgs = [];
-      // Object.entries(mergedCart).forEach(([key, item]) => {
-      //    redisHSetArgs.push(key, JSON.stringify(item));
-      // });
-
-      // if (redisHSetArgs.length > 0) {
-      //    await redisClient.hSet(userCartId, redisHSetArgs);
-      // }
-      // if (Object.keys(mergedCart).length > 0) {
-      //    await redisClient.hSet(userCartId, {
-      //       ...Object.entries(mergedCart).reduce((acc, [key, item]) => ({
-      //          ...acc,
-      //          [key]: JSON.stringify(item),
-      //       }), {}),
-      //       guestSessionId,
-      //    });
-      // }
-
+      // Redis 저장
       if (Object.keys(mergedCart).length > 0) {
-        const redisHSetArgs = Object.entries(mergedCart).flatMap(
-          ([key, item]) => [key, JSON.stringify(item)]
-        );
+        const redisHSetArgs = Object.entries(mergedCart).flatMap(([key, item]) => [
+          key, JSON.stringify(item)
+        ]);
 
-        // guestSessionId를 추가하려면, 다시 배열로 추가
         redisHSetArgs.push("guestSessionId", guestSessionId);
-
         await redisClient.hSet(userCartId, ...redisHSetArgs);
       }
 
+      // tempOrderId 처리
       const tempOrderId =
         userCartData.tempOrderId ||
         guestCartData.tempOrderId ||
         generateTempOrderId();
-      await redisClient.hSet(userCartId, "tempOrderId", tempOrderId);
 
-      // await redisClient.del(guestCartId);
+      await redisClient.hSet(userCartId, "tempOrderId", tempOrderId);
       await redisClient.expire(userCartId, CART_TTL);
-      console.log(mergedCart);
+
       return mergedCart;
     } catch (error) {
       console.error("Cart merge error:", error);
-      console.error("장바구니 병합 오류:", error.message);
-      console.error(error.stack); // 스택 추적 정보 출력
       throw new Error("장바구니 병합 실패");
     }
   }
+
 
   // 토큰 인증
   const authenticateToken = async (req, res, next) => {
