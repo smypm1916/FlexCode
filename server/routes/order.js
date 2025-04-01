@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const oracledb = require("oracledb");
 const { executeQuery, dbConfig } = require("../config/oracledb");
+const redisClient = require("../config/redis");
+
 
 
 // 주문 취소
@@ -133,6 +135,12 @@ router.post("/pay/:tempOrderId", async (req, res) => {
 
     // // 장바구니 전체 삭제
     // await redisClient.del(cartKey);
+
+    const cartKey = req.session?.user?.email
+      ? `cart:${req.session.user.email}`
+      : `cart:session_${req.sessionID}`;
+    await redisClient.del(cartKey);
+
 
     // 응답을 한 번만 보냄
     res.json({ success: true, message: "결제 및 주문 저장 완료", orderNo });
