@@ -30,7 +30,7 @@ const UserOrders = ({ email }) => {
       const productImages = parsed.map((order) => {
         // 첫번째 상품의 첫번째 이미지만 가져옴
         const firstItem = order.ITEMS[0];
-        return firstItem.product_img.split("*")[0].trim(); // 첫번째 이미지만 추출
+        return firstItem.product_img.split("$")[0].trim(); // 첫번째 이미지만 추출
       });
 
       console.log("상품 이미지 : ", productImages);
@@ -64,7 +64,7 @@ const UserOrders = ({ email }) => {
           style={{ border: "1px solid #ccc", margin: "20px", padding: "15px" }}
         >
           <ul>
-            {order.ITEMS.slice(0, 1).map((item, index) => (
+            {order.ITEMS.slice(0, 1).map((item, itemindex) => (
               <li
                 key={index}
                 style={{
@@ -74,7 +74,7 @@ const UserOrders = ({ email }) => {
                 }}
               >
                 <img
-                  src={`${imgPath}/${item.product_img}`}
+                  src={`${imgPath}/${productImgs[index]}`}
                   alt={item.product_name}
                   width="150"
                   height="150"
