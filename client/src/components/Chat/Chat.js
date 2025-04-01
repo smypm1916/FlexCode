@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import queryString from "query-string";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import io from "socket.io-client";
-import "./Chat.css";
 import InfoBar from "../InfoBar/InfoBar";
 import Input from "../Input/Input";
 import Messages from "../Messages/Messages";
+import "./Chat.css";
 //import TextContainer from "../TextContainer/TextContainer";
 
 let socket;
@@ -17,7 +17,7 @@ const Chat = () => {
   //const [users, setUsers] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const ENDPOINT = "http://localhost:5000";
+  const ENDPOINT = "http://localhost:5900";
 
   useEffect(() => {
     const { name, room } = queryString.parse(location?.search || "");
