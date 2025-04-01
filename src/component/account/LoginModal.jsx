@@ -23,8 +23,8 @@ const ButtonContainer = styled.div`
 
 const Button_Modal_Login = styled.button`
   width: -webkit-fill-available;
-  background-color: ${(props) => (props.primary ? "white" : "white")};
-  color: ${(props) => (props.primary ? "black" : "black")};
+  background-color: ${(props) => (props.$primary ? "white" : "white")};
+  color: ${(props) => (props.$primary ? "black" : "black")};
   padding: 10px 15px;
   border: none;
   cursor: pointer;
@@ -236,7 +236,7 @@ const LoginModal = ({ onClose }) => {
               type={"text"}
               name={"login_email"}
               placeholder={"EMAIL"}
-              value={login_email}
+              value={login_email || ""}
               onChange={handleChange}
             />
           </Input_Box>
@@ -245,7 +245,7 @@ const LoginModal = ({ onClose }) => {
               type={"password"}
               name={"login_password"}
               placeholder={"PW"}
-              value={login_password}
+              value={login_password || ""}
               onChange={handleChange}
             />
           </Input_Box>
@@ -263,7 +263,7 @@ const LoginModal = ({ onClose }) => {
           </Link_box>
         </Conwrapper>
         <ButtonContainer>
-          <Button_Modal_Login primary onClick={handleLogin}>
+          <Button_Modal_Login $primary onClick={handleLogin}>
             LOGIN
           </Button_Modal_Login>
         </ButtonContainer>
