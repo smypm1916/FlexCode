@@ -21,17 +21,17 @@ const SignUpSuccess = () => {
   return (
     <Wrapper className="wrap nomargin" id="success">
       <Container_Style className="RegComplete wrap">
-        <div className="signUpSuccess-message">회원가입이 완료되었습니다!</div>
+        <div className="signUpSuccess-message">Registration completed!</div>
         <Button_Wrapper_100 className="grid2">
           <Button
             className={"login"}
-            btnTxt={"로그인"}
+            btnTxt={"LOGIN"}
             onClick={() => setShowModal(true)}
           />
           {showModal && <LoginModal onClose={() => setShowModal(false)} />}
           <Button
             className={"linkIndex"}
-            btnTxt={"메인페이지"}
+            btnTxt={"MAIN"}
             onClick={() => navigate("/")}
           />
         </Button_Wrapper_100>

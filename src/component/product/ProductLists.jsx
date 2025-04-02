@@ -15,9 +15,12 @@ const ProductLists = ({ products, loading, fetchMore, hasMore }) => {
 
   useEffect(() => {
     if (!hasMore || loading) return;
-    const observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) fetchMore();
-    }, { rootMargin: "20px", threshold: 1 });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) fetchMore();
+      },
+      { rootMargin: "20px", threshold: 1 }
+    );
 
     if (loader.current) observer.observe(loader.current);
 
@@ -28,24 +31,32 @@ const ProductLists = ({ products, loading, fetchMore, hasMore }) => {
     <Container_Style>
       <Title>SHOPPING</Title>
       <ProductList_Wrapper>
-        {products.map((product) => (
+        {products.map((product, index) => (
           <ProductList_ItemBox
-            key={product.PRODUCT_NO}
+            // key={product.PRODUCT_NO}
+            key={`${product.PRODUCT_NO}-${index}`}
             onClick={() => navigate(`/detail/${product.PRODUCT_NO}`)}
           >
-            <img src={`${imgPath}/${product.PRODUCT_IMG}`} alt={product.PRODUCT_NAME} />
+            <img
+              src={`${imgPath}/${product.PRODUCT_IMG}`}
+              alt={product.PRODUCT_NAME}
+            />
             <Text_wrapper>
               <h3>{product.PRODUCT_NAME}</h3>
               <p>{product.PRODUCT_TYPE}</p>
-              <p>{product.PRODUCT_PRICE} 원</p>
+              <p>{product.PRODUCT_PRICE} ¥</p>
             </Text_wrapper>
           </ProductList_ItemBox>
         ))}
-        {loading && <System_message><p>Loading...</p></System_message>}
+        {loading && (
+          <System_message>
+            <p>Loading...</p>
+          </System_message>
+        )}
         <div ref={loader} />
       </ProductList_Wrapper>
     </Container_Style>
-  )
+  );
 };
 
 export default ProductLists;

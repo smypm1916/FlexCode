@@ -16,7 +16,7 @@ import Button from "../common/Button";
 import CheckedProduct from "../common/CheckedProduct";
 import { useCart } from "../common/useCart";
 import ShippingAddress from "./ShippingAddress";
-
+//import jwt_decode from "jwt-decode";
 /*  
     1. 모든/일부 상품 선택
     2. 상품 옵션/수량 수정 ok
@@ -111,7 +111,7 @@ const Order = () => {
   const goToPayment = async () => {
     sessionStorage.getItem("token");
     if (!token) {
-      alert("로그인이 필요합니다.");
+      alert("You are not logged in.");
       setIsLoginModalOpen(true); // 로그인 모달 열기
       return;
     }
@@ -122,7 +122,7 @@ const Order = () => {
     // }
 
     if (!deliveryInfo.email_id || !deliveryInfo.email_domain) {
-      alert("이메일 정보를 정확히 입력해주세요.");
+      alert("Input an correct e-mail address.");
       return;
     }
 
@@ -152,11 +152,11 @@ const Order = () => {
         const orderNo = response.data.orderNo;
         navigate(`/order-complete/${orderNo}`);
       } else {
-        alert("결제 처리 실패: " + response.data.message);
+        alert("Failed in paying process: " + response.data.message);
       }
     } catch (error) {
       console.error("결제 오류:", error);
-      alert("결제 중 오류가 발생했습니다.");
+      alert("Failed in paying process.");
     }
   };
 
@@ -204,30 +204,13 @@ const Order = () => {
   };
 
   useEffect(() => {
-    if (from === "direct" && Array.isArray(directOptions)) {
+    if (Array.isArray(directOptions)) {
       setCheckedProducts(directOptions);
-      // 바로구매에서 온 경우: cartItems 대신 directOptions 사용
-      console.log("바로구매로 전달된 상품:", product);
-      console.log("선택된 옵션들:", directOptions);
-    } else {
-      // 일반 장바구니 주문
-      fetchCart();
-    }
-  }, [directOptions]);
-
-  useEffect(() => {
-    fetchCart();
-  }, [tempOrderId]);
-
-  useEffect(() => {
-    if (from === "direct" && Array.isArray(directOptions)) {
-      setCheckedProducts(directOptions);
-      // 바로구매일 때는 장바구니를 fetch하지 않음
       console.log("바로구매 상품:", product, directOptions);
     } else if (tempOrderId) {
-      // 장바구니 기반 구매일 때만 fetchCart 호출
       fetchCart(tempOrderId);
     } else {
+      ``
       setError("주문 정보가 올바르지 않습니다.");
     }
   }, [from, directOptions, tempOrderId]);
@@ -238,22 +221,17 @@ const Order = () => {
 
     if (token) {
       const email = JSON.parse(atob(token.split(".")[1]))?.email; // JWT 디코딩 (email 추출)
+      //const decoded = jwt_decode(token);
+      //const email = decoded?.email;
       if (email) getUserInfo(email);
     }
+    // if (token) {
+    //   const decoded = jwt_decode(token);
+    //   const email = decoded?.email;
+    //   if (email) getUserInfo(email);
+    // }
   }, []);
 
-  useEffect(() => {
-    if (from === "direct" && Array.isArray(directOptions)) {
-      setCheckedProducts(directOptions);
-      // 바로구매일 때는 장바구니를 fetch하지 않음
-      console.log("바로구매 상품:", product, directOptions);
-    } else if (tempOrderId) {
-      // 장바구니 기반 구매일 때만 fetchCart 호출
-      fetchCart(tempOrderId);
-    } else {
-      setError("주문 정보가 올바르지 않습니다.");
-    }
-  }, [from, directOptions, tempOrderId]);
 
   useEffect(() => {
     console.log("cartItems changed", cartItems);
@@ -275,104 +253,111 @@ const Order = () => {
   }, [token]);
 
   const totalPrice =
-    from === "direct"
-      ? checkedProducts?.reduce((sum, item) => {
-          const productPrice = product?.PRODUCT_PRICE || 0;
-          const optionPrice = item?.OPTION_PRICE || 0;
-          return sum + (productPrice + optionPrice) * item.quantity;
-        }, 0)
-      : cartItems.reduce((sum, item) => {
-          const productPrice = item.product_price || 0;
-          const optionPrice = item.option_price || 0;
-          return sum + (productPrice + optionPrice) * item.quantity;
-        }, 0);
+    checkedProducts?.reduce((sum, item) => {
+      const productPrice = product?.PRODUCT_PRICE || 0;
+      const optionPrice = item?.OPTION_PRICE || 0;
+      return sum + (productPrice + optionPrice) * item.quantity;
+    }, 0)
+
+  // const totalPrice =
+  //   from === "direct"
+  //     ? checkedProducts?.reduce((sum, item) => {
+  //       const productPrice = product?.PRODUCT_PRICE || 0;
+  //       const optionPrice = item?.OPTION_PRICE || 0;
+  //       return sum + (productPrice + optionPrice) * item.quantity;
+  //     }, 0)
+  //     : cartItems.reduce((sum, item) => {
+  //       const productPrice = item.product_price || 0;
+  //       const optionPrice = item.option_price || 0;
+  //       return sum + (productPrice + optionPrice) * item.quantity;
+  //     }, 0);
 
   return (
     <Wrapper className="marginTop wrap" id="shipping">
       <Container_Style>
         {/* <h1>주문 번호 : {tempOrderId}</h1> */}
         {loading && <System_message>...LOADING...</System_message>}
-        {error && <System_messagep>{error}</System_messagep>}
+        {error && <System_message>{error}</System_message>}
 
         {/* 장바구니 리스트 */}
         {!loading &&
-        from === "direct" &&
-        Array.isArray(checkedProducts) &&
-        checkedProducts.length > 0
+          // from === "direct" &&
+          Array.isArray(checkedProducts) &&
+          checkedProducts.length > 0
           ? checkedProducts.map((item) => {
-              console.log("checkedProducts :", item);
-              const productKey = `product:${product.PRODUCT_NO}:option:${item.OPTION_NO}`;
-              return (
-                <Order_Wrapper key={`direct:${item.OPTION_NO}`}>
-                  <Title>{product.PRODUCT_NAME}</Title>
-                  <Text>옵션명: {item.OPTION_TITLE}</Text>
-                  <Text>수량: {item.quantity}</Text>
-                  <hr />
-                  <Title>
-                    {/* 금액:{" "} */}
-                    {(product.PRODUCT_PRICE + item.OPTION_PRICE) *
-                      item.quantity}
-                    원
-                  </Title>
-                  <Button_Wrapper_100 className="grid2">
-                    <Button
-                      btnTxt="옵션/수량 수정"
-                      onClick={() =>
-                        openEditModal({
-                          ...item,
-                          product_name: product.product_name,
-                          product_price: product.product_price,
-                          product_no: product.product_no,
-                          option_title: item.option_title,
-                          option_price: item.option_price,
-                          option_no: item.option_no,
-                          // product_name: product.PRODUCT_NAME,
-                          // product_price: product.PRODUCT_PRICE,
-                          // product_no: product.PRODUCT_NO,
-                          // option_title: item.OPTION_TITLE,
-                          // option_price: item.OPTION_PRICE,
-                          // option_no: item.OPTION_NO,
-                        })
-                      }
-                    />
-                    <Button
-                      btnTxt="옵션 삭제"
-                      onClick={onRemove(item.OPTION_NO)}
-                    />
-                  </Button_Wrapper_100>
-                </Order_Wrapper>
-              );
-            })
+            console.log("checkedProducts :", item);
+            const productKey = `product:${product.PRODUCT_NO}:option:${item.OPTION_NO}`;
+            return (
+              <Order_Wrapper key={`${item.OPTION_NO}`}>
+                <Title>{product.PRODUCT_NAME}</Title>
+                <Text>Option Title : {item.OPTION_TITLE}</Text>
+                <Text>Count : {item.quantity}</Text>
+                <hr />
+                <Title>
+                  {/* 금액:{" "} */}
+                  {(product.PRODUCT_PRICE + item.OPTION_PRICE) *
+                    item.quantity}
+                  원
+                </Title>
+                <Button_Wrapper_100 className="grid2">
+                  <Button
+                    btnTxt="Change Option"
+                    onClick={() =>
+                      openEditModal({
+                        ...item,
+                        product_name: product.product_name,
+                        product_price: product.product_price,
+                        product_no: product.product_no,
+                        option_title: item.option_title,
+                        option_price: item.option_price,
+                        option_no: item.option_no,
+                        // product_name: product.PRODUCT_NAME,
+                        // product_price: product.PRODUCT_PRICE,
+                        // product_no: product.PRODUCT_NO,
+                        // option_title: item.OPTION_TITLE,
+                        // option_price: item.OPTION_PRICE,
+                        // option_no: item.OPTION_NO,
+                      })
+                    }
+                  />
+                  <Button
+                    btnTxt="Delete Option"
+                    onClick={onRemove(item.OPTION_NO)}
+                  />
+                </Button_Wrapper_100>
+              </Order_Wrapper>
+            );
+          })
           : !loading && cartItems.length > 0
-          ? cartItems.map((item) => {
+            ? cartItems.map((item) => {
               console.log("cartItems :", item);
               const productKey = `product:${item.product_no}:option:${item.option_no}`;
               return (
                 <Order_Wrapper key={productKey}>
-                  <Title>상품명: {item.product_name}</Title>
-                  <Text>옵션명: {item.option_title}</Text>
-                  <Text>수량: {item.quantity}</Text>
+                  <Title>Product Name : {item.product_name}</Title>
+                  <Text>Option Title : {item.option_title}</Text>
+                  <Text>Count : {item.quantity}</Text>
                   <Text>
-                    금액:{" "}
+                    Total Price:{" "}
                     {(item.product_price + item.option_price) * item.quantity}원
                   </Text>
                   <Button_Wrapper_100>
                     <Button
-                      btnTxt="옵션 수정"
+                      btnTxt="Change Option"
                       onClick={() => openEditModal(item)}
                     />
                     <Button
-                      btnTxt="옵션 삭제"
+                      btnTxt="Delete Option"
                       onClick={() => removeFromCart(productKey)}
                     />
                   </Button_Wrapper_100>
                 </Order_Wrapper>
               );
             })
-          : !loading && <h2>장바구니가 비어있습니다.</h2>}
+            : !loading && <h2>Cart is empty.</h2>}
 
         {/* 합계 금액 */}
-        <Text>합계 금액 : {totalPrice.toLocaleString()} 원</Text>
+        <Text>Total Price : {totalPrice.toLocaleString()} ¥</Text>
 
         {/* 옵션 변경 모달 */}
         <ReactModal
@@ -444,7 +429,7 @@ const Order = () => {
 
         {/* 배송&수령 정보 */}
         <ShippingAddress
-          title="주문자 정보"
+          title="Order User"
           data={deliveryInfo}
           setData={setDeliveryInfo}
         />
@@ -454,10 +439,10 @@ const Order = () => {
             checked={isSame}
             onChange={handleCheckboxChange}
           />{" "}
-          주문자 정보와 동일
+          Same as Order User
         </label>
         <ShippingAddress
-          title="받는 사람"
+          title="Shipping Address"
           data={receiveInfo}
           setData={setReceiveInfo}
           isReadOnly={isSame}
@@ -465,8 +450,8 @@ const Order = () => {
 
         {/* 결제/취소 */}
         <Button_Wrapper_100 className="grid2">
-          <Button btnTxt="결제하기" onClick={goToPayment} />
-          <Button btnTxt="돌아가기" onClick={goToHome} />
+          <Button btnTxt="Pay" onClick={goToPayment} />
+          <Button btnTxt="Return" onClick={goToHome} />
         </Button_Wrapper_100>
         <ReactModal
           isOpen={isLoginModalOpen}

@@ -45,11 +45,11 @@ const FindId = ({ onBack, onClose }) => {
     e.preventDefault();
 
     if (!userName) {
-      alert("이름을 입력해주세요.");
+      alert("Please Enter your Name");
       return;
     }
     if (!mid_tel || !last_tel) {
-      alert("전화번호를 입력해주세요.");
+      alert("Please Enter your Phone Number");
       return;
     }
 
@@ -59,36 +59,35 @@ const FindId = ({ onBack, onClose }) => {
 
       const response = await axios.post(
         "http://localhost:8080/api/users/findId",
-        findIdData,
-        {
-          headers: { "Content-Type": " p" },
-        }
+        findIdData
+        // {
+        // }
       );
 
       console.log("이메일 찾기 응답:", response.data);
       setFindEmail(
         response.data.success
-          ? "회원님의 이메일은 " + response.data.user_email + "입니다."
-          : "이메일을 찾을 수 없습니다."
+          ? "Email Search Result : " + response.data.user_email
+          : "Can not find email, Please Check your name and tel"
       );
     } catch (error) {
-      console.error("이메일 찾기 실패:", error);
-      setFindEmail("서버 오류 발생");
+      console.error("Failed email search : ", error);
+      setFindEmail("Server Error");
     }
   };
 
   return (
     <Container_Modal>
       <Modal_Wrapper>
-        <Title>이메일 찾기</Title>
+        <Title>Find Email</Title>
 
         {/* 이름 입력 */}
         <Input_Wrapper>
-          <label>이름</label>
+          <label>Name</label>
           <Input_Box>
             <Input_Style
               type="text"
-              placeholder="이름을 입력하세요"
+              placeholder="Please Enter your Name"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
             />
@@ -97,7 +96,7 @@ const FindId = ({ onBack, onClose }) => {
 
         {/* 전화번호 입력 */}
         <Input_Wrapper>
-          <label>TEL</label>
+          <label>Tel</label>
           <Phone_Box>
             <Select_Style value={first_tel} onChange={handleSelectTelChange}>
               <option value="010">010</option>
@@ -137,10 +136,10 @@ const FindId = ({ onBack, onClose }) => {
         <Button_Wrapper_100 className="grid2">
           <Button
             className="findId"
-            btnTxt="아이디 찾기"
+            btnTxt="Search Email"
             onClick={handleFindId}
           />
-          <Button className="cancel" btnTxt="취소" onClick={onBack} />
+          <Button className="cancel" btnTxt="Cancel" onClick={onBack} />
         </Button_Wrapper_100>
       </Modal_Wrapper>
     </Container_Modal>

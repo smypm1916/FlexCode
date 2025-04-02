@@ -46,7 +46,7 @@ const UserProfile = ({ email, nickname, profile }) => {
       console.log("회원 정보 조회 응답:", response.data);
 
       if (response.data.success) {
-        alert("회원정보 조회 성공!");
+        //alert("회원정보 조회 성공!");
 
         const userInfo = response.data.result.rows[0];
 
@@ -74,11 +74,11 @@ const UserProfile = ({ email, nickname, profile }) => {
         }, 100);
       } else {
         console.log(response.data.message);
-        alert("회원정보 조회 실패!");
+        alert("Failed to retrieve user information!");
       }
     } catch (error) {
       console.error("회원정보 조회 요청 실패:", error);
-      alert("API 요청에 실패하였습니다.");
+      alert("API request failed.");
     }
   };
 
@@ -90,10 +90,10 @@ const UserProfile = ({ email, nickname, profile }) => {
         </Profile_Img>
         <User_Status_Column>
           <User_Status_Row className="grid2">
-            {userNickname}님
+            {userNickname}
             <Button
               className={"updateUser"}
-              btnTxt={"회원정보 수정"}
+              btnTxt={"Edit Profile"}
               onClick={handleGetUser}
             />
           </User_Status_Row>

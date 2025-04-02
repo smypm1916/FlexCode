@@ -128,12 +128,12 @@ const UserCommunityDetail = () => {
           </List_Profile>
           <Input_Wrapper>
             <div>
-              <label>작성일</label>
+              <label>Date Created</label>
             </div>
             <div>{post.COMMUNITY_DATE}</div>
           </Input_Wrapper>
           <Input_Wrapper>
-            <label>제목</label>
+            <label>Title</label>
             {editMode ? (
               <Input_Box>
                 <Input_Style
@@ -149,7 +149,7 @@ const UserCommunityDetail = () => {
           </Input_Wrapper>
           <Input_Wrapper>
             <div>
-              <label>내용</label>
+              <label>Content</label>
             </div>
             <List_Content>
               {!editMode ? (
@@ -183,21 +183,21 @@ const UserCommunityDetail = () => {
                   <Button
                     type="button"
                     onClick={() => setEditMode(!editMode)}
-                    btnTxt={"취소"}
+                    btnTxt={"Cancel"}
                   />
-                  <Button type="submit" btnTxt={"완료"} />
+                  <Button type="submit" btnTxt={"Complete"} />
                 </>
               ) : (
                 <>
                   <Button
                     type="button"
                     onClick={updateHandler}
-                    btnTxt={"수정하기"}
+                    btnTxt={"EDIT"}
                   />
                   <Button
                     type="button"
                     onClick={deleteHandler}
-                    btnTxt={"삭제하기"}
+                    btnTxt={"DELETE"}
                   />
                 </>
               )
@@ -207,7 +207,7 @@ const UserCommunityDetail = () => {
               onClick={() => {
                 navigate("/userCommunity-list", { state: { nickname } });
               }}
-              btnTxt={"목록으로"}
+              btnTxt={"Back to List"}
             />
           </Button_Wrapper_100>
         </Container_Style>

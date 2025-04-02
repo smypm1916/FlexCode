@@ -21,7 +21,7 @@ const PostCodeModal = ({ onClose, onSelectAddress }) => {
         <DaumPostcodeEmbed onComplete={completeHandler} />
         <Button
           className={"addressModalClose"}
-          btnTxt={"닫기"}
+          btnTxt={"CLOSE"}
           onClick={onClose}
         />
       </Modal_Wrapper>

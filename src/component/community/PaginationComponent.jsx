@@ -25,7 +25,7 @@ export function PaginationComponent({
         disabled={pageNum === 1}
         className="border px-3 py-1"
       >
-        이전
+        Prev
       </Button_Before>
 
       {Array.from({ length: pageCount }, (_, i) => i + 1).map((num) => (
@@ -46,7 +46,7 @@ export function PaginationComponent({
         className="border px-3 py-1"
       >
         {" "}
-        다음
+        Next
       </Button_After>
     </Pagination_Wrapper>
   );

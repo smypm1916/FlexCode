@@ -30,7 +30,7 @@ const UserOrders = ({ email }) => {
       const productImages = parsed.map((order) => {
         // 첫번째 상품의 첫번째 이미지만 가져옴
         const firstItem = order.ITEMS[0];
-        return firstItem.product_img.split("*")[0].trim(); // 첫번째 이미지만 추출
+        return firstItem.product_img.split("$")[0].trim(); // 첫번째 이미지만 추출
       });
 
       console.log("상품 이미지 : ", productImages);
@@ -42,14 +42,14 @@ const UserOrders = ({ email }) => {
   return orders.length > 0 ? (
     <Order_Wrapper>
       <User_Status_Row className="borderBottom">
-        <Title>나의 구매내역</Title>
+        <Title>My Orders</Title>
         <Text
           className="more"
           onClick={() => {
             navigate("/userOrder-list", { state: { email } });
           }}
         >
-          더보기
+          view more
         </Text>
       </User_Status_Row>
       {orders.slice(0, 3).map((order, index) => (
@@ -64,7 +64,7 @@ const UserOrders = ({ email }) => {
           style={{ border: "1px solid #ccc", margin: "20px", padding: "15px" }}
         >
           <ul>
-            {order.ITEMS.slice(0, 1).map((item, index) => (
+            {order.ITEMS.slice(0, 1).map((item, itemindex) => (
               <li
                 key={index}
                 style={{
@@ -74,7 +74,7 @@ const UserOrders = ({ email }) => {
                 }}
               >
                 <img
-                  src={`${imgPath}/${item.product_img}`}
+                  src={`${imgPath}/${productImgs[index]}`}
                   alt={item.product_name}
                   width="150"
                   height="150"
@@ -82,8 +82,8 @@ const UserOrders = ({ email }) => {
                 <div style={{ marginLeft: "10px" }}>
                   {order.ITEMS.length > 1 ? (
                     <h4>
-                      {order.ITEMS[0].product_name} 외 {order.ITEMS.length - 1}
-                      개
+                      {order.ITEMS[0].product_name} and {order.ITEMS.length - 1}{" "}
+                      more items
                     </h4>
                   ) : (
                     <h4>{order.ITEMS[0].product_name}</h4>
@@ -95,7 +95,7 @@ const UserOrders = ({ email }) => {
           '
           <Order_Wrapper>
             <p>
-              주문일자 :{" "}
+              Order Date :{" "}
               {new Date(order.ORDER_DATE).toLocaleString("ko-KR", {
                 year: "numeric",
                 month: "2-digit",
@@ -103,17 +103,18 @@ const UserOrders = ({ email }) => {
               })}
             </p>
             <p>
-              주문상태 : {order.ORDER_STATE === 0 ? "주문취소" : "주문완료"}
+              Order State :{" "}
+              {order.ORDER_STATE === 0 ? "Cancelled" : "Completed"}
             </p>
-            <p>총 금액: {order.TOTAL_PRICE.toLocaleString()}원</p>
+            <p>Total Price: {order.TOTAL_PRICE.toLocaleString()}円</p>
           </Order_Wrapper>
         </Input_Wrapper>
       ))}
     </Order_Wrapper>
   ) : (
     <Order_Wrapper>
-      <h2>나의 구매내역</h2>
-      <p>구매내역이 없습니다.</p>
+      <h2>My Orders</h2>
+      <p>No orders found.</p>
     </Order_Wrapper>
   );
 };
