@@ -87,12 +87,12 @@ const CmAdd = () => {
           </List_Profile>
           <Input_Wrapper>
             <div className="CmAddTitle">
-              <label>제목</label>
+              <label>Title</label>
             </div>
             <Input_Box>
               <Input_Style
                 type="text"
-                placeholder="제목을 입력하세요"
+                placeholder="Enter Tilte"
                 onChange={(e) => setTitle(e.target.value)}
                 name="community_title"
                 value={community_title}
@@ -101,20 +101,20 @@ const CmAdd = () => {
           </Input_Wrapper>
           <Input_Wrapper>
             <div>
-              <label>내용</label>
+              <label>Content</label>
             </div>
             <Input_Box>
               <Textarea_Style
                 type="textarea"
                 name="community_content"
                 value={community_content}
-                placeholder="내용을 입력하세요"
+                placeholder="Enter Content"
                 onChange={(e) => setContent(e.target.value)}
               />
             </Input_Box>
           </Input_Wrapper>
           <Input_Wrapper>
-            <label>사진 등록</label>
+            <label>Upload img</label>
             <Input_Box>
               <FileUpload
                 type="file"
@@ -123,12 +123,11 @@ const CmAdd = () => {
             </Input_Box>
           </Input_Wrapper>
           <Button_Wrapper_100 className="grid2">
-            <Button onClick={handleSubmit} btnTxt={"글쓰기"}>
-              글쓰기
-            </Button>
-            <Button btnTxt={"뒤로가기"} onClick={() => navigate("/community")}>
-              뒤로가기
-            </Button>
+            <Button
+              btnTxt={"back"}
+              onClick={() => navigate("/community")}
+            ></Button>
+            <Button onClick={handleSubmit} btnTxt={"write"}></Button>
           </Button_Wrapper_100>
         </Container_Style>
       </form>

@@ -59,10 +59,10 @@ const FindId = ({ onBack, onClose }) => {
 
       const response = await axios.post(
         "http://localhost:8080/api/users/findId",
-        findIdData,
-        {
-          headers: { "Content-Type": " p" },
-        }
+        findIdData
+        // {
+        //   headers: { "Content-Type": "application/json" },
+        // }
       );
 
       console.log("이메일 찾기 응답:", response.data);

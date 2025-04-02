@@ -47,8 +47,8 @@ const CmMain = () => {
     setPosts(response.data);
   };
   const searchOptions = [
-    { value: "opTitle", label: "제목" },
-    { value: "opUser", label: "작성자" },
+    { value: "opTitle", label: "TITLE" },
+    { value: "opUser", label: "WRITER" },
   ];
   const searchHandler = () => {
     if (!searchKeyword) {
@@ -150,9 +150,7 @@ const CmMain = () => {
           )}
         </Container_Style>
         <Input_Wrapper>
-          <Button btnTxt={"글쓰기"} onClick={() => navigate("/CmAdd")}>
-            글쓰기
-          </Button>
+          <Button btnTxt={"Write"} onClick={() => navigate("/CmAdd")}></Button>
         </Input_Wrapper>
         <PaginationComponent
           totalItems={posts.length}
