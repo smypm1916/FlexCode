@@ -31,7 +31,7 @@ const DeleteUserCheck = () => {
     console.log("유저 이메일:", userEmail);
     console.log("입력한 비밀번호:", userPassword);
     if (!userPassword) {
-      alert("비밀번호를 입력해주세요.");
+      alert("Please Enter your Password");
       return;
     }
     try {
@@ -49,12 +49,12 @@ const DeleteUserCheck = () => {
         console.log("회원정보조회 정상");
         handleDeleteUser();
       } else {
-        alert("비밀번호가 일치하지 않습니다.");
+        alert("Do Not Match Passwords");
         setUserPassword("");
       }
     } catch (error) {
       console.error("회원정보 조회 요청 실패:", error);
-      alert("회원정보 조회 중 오류가 발생했습니다.");
+      alert("Server Error");
     }
   };
 
@@ -72,27 +72,27 @@ const DeleteUserCheck = () => {
       console.log("회원정보 삭제 서버 응답:", response.data);
 
       if (response.data.success) {
-        alert("회원정보가 삭제되었습니다.");
+        alert("Your account information has been deleted.");
         sessionStorage.removeItem("token");
         navigate("/");
       } else {
-        alert("회원정보 삭제에 실패하였습니다.");
+        alert("Failed to delete account information.");
       }
     } catch (error) {
       console.error("회원정보 삭제 요청 실패:", error);
-      alert("회원정보 삭제 중 오류가 발생했습니다.");
+      alert("Server Error");
     }
   };
 
   return (
     <Wrapper className="wrap" id="delete">
       <Container_Style className="wrap gap">
-        <Title>회원탈퇴</Title>
+        <Title>Delete Account</Title>
         <Input_Box>
           <TextInput
             type={"password"}
             name={"password"}
-            placeholder={"PW"}
+            placeholder={"Please Enter your Password"}
             value={userPassword}
             onChange={(e) => {
               setUserPassword(e.target.value);
@@ -102,7 +102,7 @@ const DeleteUserCheck = () => {
         <Button_Wrapper_100 className="grid1">
           <Button
             className={"deleteUser"}
-            btnTxt={"회원탈퇴"}
+            btnTxt={"Delete Account"}
             onClick={handleCheckPw}
           />
         </Button_Wrapper_100>

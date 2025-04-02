@@ -56,14 +56,14 @@ const UserOrderList = () => {
   const totalPages = Math.ceil(orders.length / itemsPerPage);
 
   if (Array.isArray(orders) && orders.length === 0) {
-    return <h2>구매내역이 없습니다.</h2>;
+    return <h2>No orders found.</h2>;
   }
 
   return (
     <Wrapper className="wrap marginTop" id="order">
       <Container_Style className="wrap">
         <User_Status_Row className="borderBottom">
-          <Title>나의 구매내역</Title>
+          <Title>My Orders</Title>
         </User_Status_Row>
 
         {currentPosts.map((order, index) => (
@@ -113,13 +113,14 @@ const UserOrderList = () => {
 
             <Order_Wrapper>
               <p>
-                주문일자 :{" "}
+                Order Date :{" "}
                 {new Date(order.ORDER_DATE).toLocaleDateString("ko-KR")}
               </p>
               <p>
-                주문상태 : {order.ORDER_STATE === 0 ? "주문취소" : "주문완료"}
+                Order State :{" "}
+                {order.ORDER_STATE === 0 ? "Cancelled" : "Completed"}
               </p>
-              <p>총 금액: {order.TOTAL_PRICE.toLocaleString()}원</p>
+              <p>Total Price : {order.TOTAL_PRICE.toLocaleString()}円</p>
             </Order_Wrapper>
           </div>
         ))}
@@ -155,7 +156,7 @@ const UserOrderList = () => {
         <div>
           <Button
             className={"returnToMyPage"}
-            btnTxt={"마이페이지"}
+            btnTxt={"MYPAGE"}
             onClick={() => navigate("/mypage")}
           />
         </div>
