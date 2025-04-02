@@ -49,11 +49,11 @@ const FindPw = ({ onBack }) => {
 
   const handleFindUser = async () => {
     if (!userName) {
-      alert("이름을 입력해주세요.");
+      alert("Please Enter Your Name");
       return;
     }
     if (!email_id) {
-      alert("이메일을 입력해주세요");
+      alert("Please Enter Your Email");
       return;
     }
     try {
@@ -68,13 +68,11 @@ const FindPw = ({ onBack }) => {
         setFindPwView("reset"); // 등록된 유저일 경우 비밀번호 재설정 화면으로 전환
         setErrorMessage(""); // 에러 메시지 초기화
       } else {
-        setErrorMessage(
-          "등록된 사용자가 없습니다. 이름과 이메일을 다시 확인해주세요."
-        );
+        setErrorMessage("Can Not Find User, Please Check Your Name and Email");
       }
     } catch (error) {
-      console.error("비밀번호 찾기 요청 실패:", error);
-      setErrorMessage("서버 오류가 발생했습니다. 다시 시도해주세요.");
+      console.error("Faild Search User Account : ", error);
+      setErrorMessage("Server Error");
     }
   };
 
@@ -118,14 +116,16 @@ const FindPw = ({ onBack }) => {
 
   const handleUpdatePw = async () => {
     if (!userPassword) {
-      alert("비밀번호를 입력해주세요");
+      alert("Please Enter Password");
       return;
     }
     if (!userPasswordCheck) {
-      alert("비밀번호를 입력해주세요");
+      alert("Please Enter Password");
     }
     if (!passwordValid) {
-      alert("비밀번호는 영어+숫자+특수문자 조합으로 8자 이상이어야 합니다.");
+      alert(
+        "Password must be 8 characters or more, including letters, numbers, and special characters."
+      );
       return;
     }
     try {
@@ -137,15 +137,15 @@ const FindPw = ({ onBack }) => {
         }
       );
       if (response.data.success) {
-        alert("비밀번호가 재설정되었습니다.");
+        alert("Your password has been successfully reset.");
         onBack();
       } else {
-        alert("비밀번호 재설정에 실패하였습니다. 다시 시도해주세요.");
+        alert("Failed to reset the password. Please try again.");
         return;
       }
     } catch (error) {
-      console.error("비밀번호 재설정 요청 실패:", error);
-      alert("비밀번호 재설정에 실패하였습니다. 다시 시도해주세요.");
+      console.error("Failed Reset Password : ", error);
+      alert("Failed to reset the password. Please try again.");
     }
   };
   return (
@@ -153,16 +153,16 @@ const FindPw = ({ onBack }) => {
       {findPwView === "check" && (
         <Modal_Wrapper>
           <div className="findPw-title">
-            <Title>비밀번호 찾기</Title>
+            <Title>Reset Password</Title>
           </div>
           <Input_Wrapper>
             <div className="findPw-name-label">
-              <label>이름</label>
+              <label>Name</label>
             </div>
             <Input_Box>
               <Input_Style
                 type="text"
-                placeholder="이름을 입력하세요"
+                placeholder="Please Enter Your Name"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
               />
@@ -175,7 +175,7 @@ const FindPw = ({ onBack }) => {
                 <Input_Style
                   type="text"
                   name="email_id"
-                  placeholder="EMAIL을 입력하세요"
+                  placeholder="Please Enter Your Email"
                   value={email_id}
                   onChange={handleInputEmailChange}
                 />
@@ -207,44 +207,45 @@ const FindPw = ({ onBack }) => {
             </button> */}
             <Button
               className={"findPw"}
-              btnTxt={"비밀번호 재설정"}
+              btnTxt={"Reset Password"}
               onClick={handleFindUser}
             />
-            <Button className={"calcel"} btnTxt={"취소"} onClick={onBack} />
+            <Button className={"calcel"} btnTxt={"Cancel"} onClick={onBack} />
           </Button_Wrapper_100>
         </Modal_Wrapper>
       )}
       {findPwView === "reset" && (
         <Modal_Wrapper>
           <div className="findPw-title">
-            <Title>비밀번호 재설정</Title>
+            <Title>Reset Password</Title>
           </div>
           <Input_Wrapper>
             <div className="findPw-password-label">
-              <label>새 비밀번호</label>
+              <label>New Password</label>
             </div>
             <Input_Box>
               <Input_Style
                 type="password"
                 name="userPassword"
-                placeholder="비밀번호를 입력하세요"
+                placeholder="Please Enter New Password"
                 value={userPassword}
                 onChange={handlePwChange}
               />
             </Input_Box>
           </Input_Wrapper>
           <p style={{ color: "gray", fontSize: "10px" }}>
-            비밀번호는 영어+숫자+특수문자 조합으로 8자 이상이어야 합니다.
+            Password must be 8 characters or more, including letters, numbers,
+            and special characters.
           </p>
           <Input_Wrapper>
             <div className="findPw-password-check_label">
-              <label>비밀번호 확인</label>
+              <label>Check Password</label>
             </div>
             <Input_Box>
               <Input_Style
                 type="password"
                 name="userPasswordCheck"
-                placeholder="비밀번호를 입력하세요"
+                placeholder="Please Enter Password"
                 value={userPasswordCheck}
                 onChange={handlePwChange}
               />
@@ -252,16 +253,16 @@ const FindPw = ({ onBack }) => {
           </Input_Wrapper>
           {passwordMatch === false && (
             <p style={{ color: "red", fontSize: "10px" }}>
-              비밀번호가 일치하지 않습니다.
+              Passwords do not match.
             </p>
           )}
           <Button_Wrapper_100>
             <Button
               className={"resetPw"}
-              btnTxt={"설정하기"}
+              btnTxt={"Set Password"}
               onClick={handleUpdatePw}
             />
-            <Button className={"cancel"} btnTxt={"취소"} onClick={onBack} />
+            <Button className={"cancel"} btnTxt={"Cancel"} onClick={onBack} />
           </Button_Wrapper_100>
         </Modal_Wrapper>
       )}

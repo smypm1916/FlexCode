@@ -54,7 +54,7 @@ const UserCommunityList = () => {
   // }
 
   if (Array.isArray(communitys) && communitys.length === 0) {
-    return <h2>작성한 커뮤니티 글이 없습니다.</h2>;
+    return <h2>No community posts found.</h2>;
   }
 
   return (
@@ -62,13 +62,13 @@ const UserCommunityList = () => {
       <Container_Style className="wrap">
         {communitys.length > 0 ? (
           <div>
-            <h2>작성한 커뮤니티글</h2>
+            <h2>My Communitys</h2>
             <Button
               type="button"
               onClick={() => {
                 navigate("/userCommunity_add", { state: { communitys } });
               }}
-              btnTxt={"글쓰기"}
+              btnTxt={"WRITE"}
             />
             {currentPosts.length > 0}
             <ul>
@@ -86,7 +86,7 @@ const UserCommunityList = () => {
                     <List_Column key={post.COMMUNITY_NO}>
                       <p>{post.COMMUNITY_TITLE}</p>
                       <List_Profile>
-                        <p>작성자</p>
+                        <p>Writer</p>
                         <img
                           src={`${imgPath}/${userProfileImg}`}
                           width="100"
@@ -95,7 +95,7 @@ const UserCommunityList = () => {
                         <p>{post.USER_NICKNAME}</p>
                       </List_Profile>
                       <List_Profile>
-                        <p>작성일자</p>
+                        <p>Date Created</p>
                         <p>
                           {" "}
                           {new Date(post.COMMUNITY_DATE).toLocaleString(
@@ -123,7 +123,7 @@ const UserCommunityList = () => {
           </div>
         ) : (
           <div>
-            <h2>작성한 커뮤니티 글이 없습니다.</h2>
+            <h2>No community posts found.</h2>
           </div>
         )}
         {/* 페이지네이션 버튼 */}
@@ -157,7 +157,7 @@ const UserCommunityList = () => {
         <div>
           <Button
             className={"returnToMyPage"}
-            btnTxt={"마이페이지"}
+            btnTxt={"MYPAGE"}
             onClick={() => navigate("/mypage")}
           />
         </div>
