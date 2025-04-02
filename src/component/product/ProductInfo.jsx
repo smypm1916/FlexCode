@@ -118,7 +118,6 @@ const ProductInfo = () => {
     setCurrentQuantity(1);
   };
 
-
   // 수량 변경 핸들러
   const handleQuantityChange = (e) => {
     const quantity = parseInt(e.target.value);
