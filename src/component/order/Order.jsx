@@ -16,7 +16,7 @@ import Button from "../common/Button";
 import CheckedProduct from "../common/CheckedProduct";
 import { useCart } from "../common/useCart";
 import ShippingAddress from "./ShippingAddress";
-
+//import jwt_decode from "jwt-decode";
 /*  
     1. 모든/일부 상품 선택
     2. 상품 옵션/수량 수정 ok
@@ -238,8 +238,15 @@ const Order = () => {
 
     if (token) {
       const email = JSON.parse(atob(token.split(".")[1]))?.email; // JWT 디코딩 (email 추출)
+      //const decoded = jwt_decode(token);
+      //const email = decoded?.email;
       if (email) getUserInfo(email);
     }
+    // if (token) {
+    //   const decoded = jwt_decode(token);
+    //   const email = decoded?.email;
+    //   if (email) getUserInfo(email);
+    // }
   }, []);
 
   useEffect(() => {
@@ -292,7 +299,7 @@ const Order = () => {
       <Container_Style>
         {/* <h1>주문 번호 : {tempOrderId}</h1> */}
         {loading && <System_message>...LOADING...</System_message>}
-        {error && <System_messagep>{error}</System_messagep>}
+        {error && <System_message>{error}</System_message>}
 
         {/* 장바구니 리스트 */}
         {!loading &&
