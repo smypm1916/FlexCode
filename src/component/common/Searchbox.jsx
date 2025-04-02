@@ -18,17 +18,17 @@ const Searchbox = ({ onSearch, onReset }) => {
         <Input_Box>
           <TextInput
             type="search"
-            placeholder="검색어 입력"
+            placeholder="Type in"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />
         </Input_Box>
-        <Button onClick={handleSearch} btnTxt="검색" />
+        <Button onClick={handleSearch} btnTxt="Search" />
         <Button onClick={() => {
           setKeyword(""),
             onReset();
-        }} btnTxt="초기화" />
+        }} btnTxt="Reset" />
       </Search_Box>
     </Container_Style>
   );

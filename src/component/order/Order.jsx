@@ -111,7 +111,7 @@ const Order = () => {
   const goToPayment = async () => {
     sessionStorage.getItem("token");
     if (!token) {
-      alert("로그인이 필요합니다.");
+      alert("You are not logged in.");
       setIsLoginModalOpen(true); // 로그인 모달 열기
       return;
     }
@@ -122,7 +122,7 @@ const Order = () => {
     // }
 
     if (!deliveryInfo.email_id || !deliveryInfo.email_domain) {
-      alert("이메일 정보를 정확히 입력해주세요.");
+      alert("Input an correct e-mail address.");
       return;
     }
 
@@ -152,11 +152,11 @@ const Order = () => {
         const orderNo = response.data.orderNo;
         navigate(`/order-complete/${orderNo}`);
       } else {
-        alert("결제 처리 실패: " + response.data.message);
+        alert("Failed in paying process: " + response.data.message);
       }
     } catch (error) {
       console.error("결제 오류:", error);
-      alert("결제 중 오류가 발생했습니다.");
+      alert("Failed in paying process.");
     }
   };
 
@@ -290,8 +290,8 @@ const Order = () => {
             return (
               <Order_Wrapper key={`${item.OPTION_NO}`}>
                 <Title>{product.PRODUCT_NAME}</Title>
-                <Text>옵션명: {item.OPTION_TITLE}</Text>
-                <Text>수량: {item.quantity}</Text>
+                <Text>Option Title : {item.OPTION_TITLE}</Text>
+                <Text>Count : {item.quantity}</Text>
                 <hr />
                 <Title>
                   {/* 금액:{" "} */}
@@ -301,7 +301,7 @@ const Order = () => {
                 </Title>
                 <Button_Wrapper_100 className="grid2">
                   <Button
-                    btnTxt="옵션/수량 수정"
+                    btnTxt="Change Option"
                     onClick={() =>
                       openEditModal({
                         ...item,
@@ -321,7 +321,7 @@ const Order = () => {
                     }
                   />
                   <Button
-                    btnTxt="옵션 삭제"
+                    btnTxt="Delete Option"
                     onClick={onRemove(item.OPTION_NO)}
                   />
                 </Button_Wrapper_100>
@@ -334,30 +334,30 @@ const Order = () => {
               const productKey = `product:${item.product_no}:option:${item.option_no}`;
               return (
                 <Order_Wrapper key={productKey}>
-                  <Title>상품명: {item.product_name}</Title>
-                  <Text>옵션명: {item.option_title}</Text>
-                  <Text>수량: {item.quantity}</Text>
+                  <Title>Product Name : {item.product_name}</Title>
+                  <Text>Option Title : {item.option_title}</Text>
+                  <Text>Count : {item.quantity}</Text>
                   <Text>
-                    금액:{" "}
+                    Total Price:{" "}
                     {(item.product_price + item.option_price) * item.quantity}원
                   </Text>
                   <Button_Wrapper_100>
                     <Button
-                      btnTxt="옵션 수정"
+                      btnTxt="Change Option"
                       onClick={() => openEditModal(item)}
                     />
                     <Button
-                      btnTxt="옵션 삭제"
+                      btnTxt="Delete Option"
                       onClick={() => removeFromCart(productKey)}
                     />
                   </Button_Wrapper_100>
                 </Order_Wrapper>
               );
             })
-            : !loading && <h2>장바구니가 비어있습니다.</h2>}
+            : !loading && <h2>Cart is empty.</h2>}
 
         {/* 합계 금액 */}
-        <Text>합계 금액 : {totalPrice.toLocaleString()} 원</Text>
+        <Text>Total Price : {totalPrice.toLocaleString()} ¥</Text>
 
         {/* 옵션 변경 모달 */}
         <ReactModal
@@ -429,7 +429,7 @@ const Order = () => {
 
         {/* 배송&수령 정보 */}
         <ShippingAddress
-          title="주문자 정보"
+          title="Order User"
           data={deliveryInfo}
           setData={setDeliveryInfo}
         />
@@ -439,10 +439,10 @@ const Order = () => {
             checked={isSame}
             onChange={handleCheckboxChange}
           />{" "}
-          주문자 정보와 동일
+          Same as Order User
         </label>
         <ShippingAddress
-          title="받는 사람"
+          title="Shipping Address"
           data={receiveInfo}
           setData={setReceiveInfo}
           isReadOnly={isSame}
@@ -450,8 +450,8 @@ const Order = () => {
 
         {/* 결제/취소 */}
         <Button_Wrapper_100 className="grid2">
-          <Button btnTxt="결제하기" onClick={goToPayment} />
-          <Button btnTxt="돌아가기" onClick={goToHome} />
+          <Button btnTxt="Pay" onClick={goToPayment} />
+          <Button btnTxt="Return" onClick={goToHome} />
         </Button_Wrapper_100>
         <ReactModal
           isOpen={isLoginModalOpen}

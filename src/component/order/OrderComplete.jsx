@@ -71,20 +71,20 @@ const OrderComplete = () => {
    return (
       <Wrapper className="wrap" id="shipping">
          <Container_Style>
-            <Title>주문이 완료되었습니다!</Title>
+            <Title>Order Completed</Title>
 
             <Input_Wrapper>
-               <p>주문번호</p>
+               <p>Order No</p>
                <p>{orderNo}</p>
             </Input_Wrapper>
             <div>
-               <Title>주문 상품</Title>
+               <Title>Ordered Products</Title>
                {Array.isArray(orderItems) && orderItems.length > 0 ? (
                   orderItems.map((item, idx) => (
                      <div key={idx}>
-                        <Text>상품번호: {item.PRODUCT_NO}</Text>
-                        <p>옵션번호: {item.OPTION_NO}</p>
-                        <p>수량: {item.PRODUCT_QUANTITY}</p>
+                        <Text>Product No : {item.PRODUCT_NO}</Text>
+                        <p>Option No : {item.OPTION_NO}</p>
+                        <p>Count : {item.PRODUCT_QUANTITY}</p>
                         {/* <p>
                            가격:{" "}
                            {(item.PRODUCT_PRICE + item.OPTION_PRICE) *
@@ -94,17 +94,17 @@ const OrderComplete = () => {
                      </div>
                   ))
                ) : (
-                  <p>주문 상품 정보가 없습니다.</p>
+                  <p>none</p>
                )}
             </div>
             {/* 합계 금액 */}
             <div>
-               <h3>합계 금액: {totalPrice.toLocaleString()} 원</h3>
+               <h3>Total Price : {totalPrice.toLocaleString()} ¥</h3>
             </div>
 
             {/* 주문자 정보 (간략화된 예시) */}
             <div>
-               <h3>주문자 이메일</h3>
+               <h3>Order User e-mail</h3>
                <p>{orderInfo?.USER_EMAIL}</p>
             </div>
 
@@ -112,7 +112,7 @@ const OrderComplete = () => {
 
             {/* 결제/취소 */}
             <Button_Wrapper_100>
-               <Button btnTxt="돌아가기" onClick={() => navigate("/")} />
+               <Button btnTxt="Return" onClick={() => navigate("/")} />
             </Button_Wrapper_100>
          </Container_Style>
       </Wrapper>
@@ -460,7 +460,7 @@ export default OrderComplete;
 // //                 <p>옵션번호: {item.OPTION_NO}</p>
 // //                 <p>수량: {item.PRODUCT_QUANTITY}</p>
 // //                 <p>
-// //                   가격:{" "}
+// : { " " }
 // //                   {(item.PRODUCT_PRICE + item.OPTION_PRICE) *
 // //                     item.PRODUCT_QUANTITY}{" "}
 // //                   원

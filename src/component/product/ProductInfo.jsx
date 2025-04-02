@@ -98,7 +98,7 @@ const ProductInfo = () => {
     const selected = options.find((opt) => opt.OPTION_NO === OPTION_NO);
 
     if (!selected || selected.OPTION_STATE <= 0) {
-      alert("해당 옵션은 품절입니다.");
+      alert("Currently run out of stock!");
       setCurrentOption(null);
       setCurrentQuantity(1);
       return;
@@ -230,7 +230,7 @@ const ProductInfo = () => {
   const goToOrder = () => {
     const currentOrderId = localTempOrderId || tempOrderId;
     if (!currentOrderId) {
-      alert("장바구니가 비어있거나 아직 주문정보가 준비되지 않았습니다.");
+      alert("Cart is empty or Order information isn't ready");
       return;
     }
     navigate(`/order/${tempOrderId}`, {
@@ -298,18 +298,18 @@ const ProductInfo = () => {
                 <h1>{product.PRODUCT_NAME}</h1>
               </Text_box>
               <Text_box>
-                <Title>판매 가격</Title>
-                <Text>{product.PRODUCT_PRICE} 원</Text>
+                <Title>Price</Title>
+                <Text>{product.PRODUCT_PRICE} ¥</Text>
               </Text_box>
 
               {/* 옵션 선택 */}
               <Select
                 className={"optionName"}
                 options={[
-                  { value: "", label: "옵션 선택" },
+                  { value: "", label: "Choose Options" },
                   ...options.map((opt) => ({
                     value: opt.OPTION_NO,
-                    label: `${opt.OPTION_TITLE} (+${opt.OPTION_PRICE} 원) ${opt.OPTION_STATE <= 0 ? "(품절)" : ""
+                    label: `${opt.OPTION_TITLE} (+${opt.OPTION_PRICE} ¥) ${opt.OPTION_STATE <= 0 ? "(Out of stock)" : ""
                       }`,
                     disabled: opt.OPTION_STATE <= 0,
                   })),
@@ -330,7 +330,7 @@ const ProductInfo = () => {
                   >
                     <div>
                       <Title>{currentOption.OPTION_TITLE}</Title>
-                      <Text>+{currentOption.OPTION_PRICE} 원</Text>
+                      <Text>+{currentOption.OPTION_PRICE} ¥</Text>
                     </div>
                     <div style={{ display: "flex", alignItems: "center" }}>
                       <Select
@@ -342,13 +342,13 @@ const ProductInfo = () => {
                           { length: currentOption.OPTION_STATE },
                           (_, i) => ({
                             value: i + 1,
-                            label: `${i + 1}개`,
+                            label: `${i + 1}pcs`,
                           })
                         )}
                         onChange={handleQuantityChange}
                         defaultValue={1}
                       />
-                      <Button btnTxt="추가" onClick={addOptionHandler} />
+                      <Button btnTxt="ADD" onClick={addOptionHandler} />
                     </div>
                   </div>
                 </div>
@@ -368,11 +368,11 @@ const ProductInfo = () => {
 
             {/* 버튼 */}
             <Button_Wrapper_100 className="grid2">
-              <Button onClick={goToOrder} btnTxt="바로구매" />
+              <Button onClick={goToOrder} btnTxt="Buy Now" />
               <Button
                 onClick={addToCartHandler}
                 disabled={cartLoading || checkedProducts.length === 0}
-                btnTxt="장바구니"
+                btnTxt="Cart"
               />
               {/* 장바구니 모달 출현 */}
             </Button_Wrapper_100>
@@ -418,13 +418,13 @@ const ProductInfo = () => {
         <Container03>
           <Info_Wrapper>
             <Info_Title>
-              <p>상세 정보</p>
+              <p>Detailed Informations</p>
             </Info_Title>
             <Info_Text>
               <Info_Text_Box>
-                <p>RCS 인증된 재활용 폴리에스터</p>
+                {/* <p>RCS 인증된 재활용 폴리에스터</p> */}
                 <Info_Wrapper>
-                  <p>RCS(Recycled Claim Standard) 인증 설명</p>
+                  {/* <p>RCS(Recycled Claim Standard) 인증 설명</p> */}
                 </Info_Wrapper>
               </Info_Text_Box>
             </Info_Text>

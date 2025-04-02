@@ -131,19 +131,19 @@ const CmDetail = () => {
           </List_Profile>
           <Input_Wrapper>
             <div>
-              <label>조회수</label>
+              <label>View</label>
             </div>
             <div>{post.COMMUNITY_READCNT}</div>
           </Input_Wrapper>
           <Input_Wrapper>
             <div>
-              <label>작성일</label>
+              <label>Date</label>
             </div>
             <div>{post.COMMUNITY_DATE}</div>
           </Input_Wrapper>
 
           <Input_Wrapper>
-            <label>제목</label>
+            <label>Title</label>
             {editMode ? (
               <Input_Box>
                 <Input_Style
@@ -159,7 +159,7 @@ const CmDetail = () => {
           </Input_Wrapper>
           <Input_Wrapper>
             <div>
-              <label>내용</label>
+              <label>Content</label>
             </div>
             <List_Content>
               {!editMode ? (
@@ -193,24 +193,22 @@ const CmDetail = () => {
                   <Button
                     type="button"
                     onClick={() => setEditMode(!editMode)}
-                    btnTxt={"취소"}
+                    btnTxt={"Back"}
                   />
-                  <Button type="submit" btnTxt={"완료"} />
+                  <Button type="submit" btnTxt={"Submit"} />
                 </>
               ) : (
                 <>
                   <Button
                     type="button"
                     onClick={updateHandler}
-                    btnTxt={"수정하기"}
+                    btnTxt={"Update"}
                   />
                   <Button
                     type="button"
                     onClick={deleteHandler}
-                    btnTxt={"삭제하기"}
-                  >
-                    삭제하기
-                  </Button>
+                    btnTxt={"Delete"}
+                  ></Button>
                 </>
               )
             ) : null}
