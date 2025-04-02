@@ -174,7 +174,7 @@ const SignUp = () => {
   // 이메일 중복 확인 요청(axios 사용)
   const checkEmailDuplicate = async () => {
     if (!userEmail.email_id) {
-      alert("이메일을 입력하세요.");
+      alert("Please Enter your Email");
       return;
     }
     try {
@@ -191,21 +191,21 @@ const SignUp = () => {
       if (response.data.exists) {
         // 받아온 데이터가 true일 경우
         console.log("response 데이터 : " + response.data.exists);
-        setEmailCheckResult("이미 사용중인 이메일입니다.");
+        setEmailCheckResult("This email is already in use.");
       } else {
         console.log("response 데이터 : " + response.data.exists);
-        setEmailCheckResult("사용 가능한 이메일입니다.");
+        setEmailCheckResult("This email is available.");
       }
     } catch (error) {
       console.error("이메일 중복 확인 요청 실패 :", error);
-      setEmailCheckResult("오류 발생");
+      setEmailCheckResult("Server Error");
     }
   };
 
   // 닉네임 중복 확인 요청
   const checkNicknameDuplicate = async () => {
     if (!user_nickname) {
-      alert("닉네임을 입력하세요.");
+      alert("Please Enter your Nickname");
       return;
     }
     try {
@@ -222,14 +222,14 @@ const SignUp = () => {
       if (response.data.exists) {
         // 받아온 데이터가 true일 경우
         console.log("response 데이터 : " + response.data.exists);
-        setNicknameCheckResult("이미 사용중인 닉네임입니다.");
+        setNicknameCheckResult("This nickname is already in use.");
       } else {
         console.log("response 데이터 : " + response.data.exists);
-        setNicknameCheckResult("사용 가능한 닉네임입니다.");
+        setNicknameCheckResult("This nickname is available.");
       }
     } catch (error) {
       console.error("닉네임 중복 확인 요청 실패 : ", error);
-      setNicknameCheckResult("오류발생");
+      setNicknameCheckResult("Server Error");
     }
   };
 
@@ -254,23 +254,25 @@ const SignUp = () => {
       !base_address ||
       !detail_address
     ) {
-      alert("회원가입시 필요한 필수항목을 입력해주세요.");
+      alert("Please enter all required information to sign up.");
       return;
     }
-    if (emailCheckResult !== "사용 가능한 이메일입니다.") {
-      alert("이메일 중복확인을 해주세요.");
+    if (emailCheckResult !== "This email is available.") {
+      alert("Please check if this email is already taken.");
       return;
     }
     if (!passwordValid) {
-      alert("비밀번호는 영어+숫자+특수문자 조합으로 8자 이상이어야 합니다.");
+      alert(
+        "Password must be 8 characters or more, including letters, numbers, and special characters."
+      );
       return;
     }
     if (!passwordMatch) {
-      alert("비밀번호 일치여부를 확인해주세요.");
+      alert("Passwords do not match.");
       return;
     }
-    if (nicknameCheckResult !== "사용 가능한 닉네임입니다.") {
-      alert("닉네임 중복확인을 해주세요.");
+    if (nicknameCheckResult !== "This nickname is available.") {
+      alert("Please check if this nickname is already taken.");
       return;
     }
 
@@ -331,7 +333,7 @@ const SignUp = () => {
       }
     } catch (error) {
       console.error("회원가입 요청 실패:", error);
-      alert("회원가입 중 오류가 발생했습니다.");
+      alert("Something went wrong during sign-up. Please try again.");
     }
   };
 
@@ -339,17 +341,17 @@ const SignUp = () => {
     <Wrapper className="wrap marginTop" id="register">
       <Container_Style className="wrap">
         <div className="signUp-title">
-          <h2>회원가입</h2>
+          <h2>REGISTER</h2>
         </div>
         <Input_Wrapper>
           <div className="signUp-name-label">
-            <label>이름</label>
+            <label>NAME</label>
           </div>
           <Input_Box>
             <TextInput
               type={"text"}
               name={"user_name"}
-              placeholder={"이름을 입력하세요"}
+              placeholder={"Please Enter your Name"}
               value={signUpForm.user_name}
               onChange={handleChange}
             />
@@ -405,7 +407,7 @@ const SignUp = () => {
                 <TextInput
                   type={"text"}
                   name={"email_id"}
-                  placeholder={"EMAIL 입력"}
+                  placeholder={"Please Enter your Email"}
                   value={userEmail.email_id}
                   onChange={handleInputEmailChange}
                 />
@@ -429,7 +431,7 @@ const SignUp = () => {
             </Email_Box>
             <Button
               className={"checkEmail"}
-              btnTxt={"중복확인"}
+              btnTxt={"Check Duplicate"}
               onClick={checkEmailDuplicate}
             />
           </Email_Input>
@@ -438,30 +440,31 @@ const SignUp = () => {
         {emailCheckResult !== null && <p>{emailCheckResult}</p>}
         <Input_Wrapper>
           <div className="signUp-pw-label">
-            <label>비밀번호</label>
+            <label>PASSWORD</label>
           </div>
           <Input_Box>
             <TextInput
               type={"password"}
               name={"user_password"}
-              placeholder={"비밀번호를 입력하세요"}
+              placeholder={"Please Enter your Password"}
               value={signUpForm.user_password}
               onChange={handleChange}
             />
           </Input_Box>
         </Input_Wrapper>
         <p style={{ color: "gray", fontSize: "10px" }}>
-          비밀번호는 영어+숫자+특수문자 조합으로 8자 이상이어야 합니다.
+          Password must be 8 characters or more, including letters, numbers, and
+          special characters.
         </p>
         <Input_Wrapper>
           <div className="signUp-pw-check-label">
-            <label>비밀번호 확인</label>
+            <label>PASSWORD CHECK</label>
           </div>
           <Input_Box>
             <TextInput
               type={"password"}
               name={"user_password_check"}
-              placeholder={"비밀번호를 입력하세요"}
+              placeholder={"Please Enter your Password Again"}
               value={signUpForm.user_password_check}
               onChange={handleChange}
             />
@@ -469,17 +472,17 @@ const SignUp = () => {
         </Input_Wrapper>
         {passwordMatch === false && (
           <p style={{ color: "red", fontSize: "10px" }}>
-            비밀번호가 일치하지 않습니다.
+            Passwords do not match.
           </p>
         )}
         <Input_Wrapper>
           <div className="signUp-baseAddr-label">
-            <label>기본주소</label>
+            <label>ADDRESS 1</label>
           </div>
           <Post_Wrapper>
             <Button
               className={"searchAddr"}
-              btnTxt={"도로명/지번 주소검색"}
+              btnTxt={"Search"}
               onClick={handleOpenPostCode}
             />
             <BaseAddress>
@@ -529,13 +532,13 @@ const SignUp = () => {
         </Input_Wrapper>
         <Input_Wrapper>
           <div className="signUp-detailAddr-label">
-            <label>상세주소</label>
+            <label>ADDRESS 2</label>
           </div>
           <Input_Box>
             <TextInput
               type={"text"}
               name={"detail_address"}
-              placeholder={"상세주소를 입력하세요"}
+              placeholder={"Please Enter your Address"}
               value={userAddress.detail_address}
               onChange={handleInputAddressChange}
             />
@@ -543,14 +546,14 @@ const SignUp = () => {
         </Input_Wrapper>
         <Input_Wrapper>
           <div className="signUp-nickname-label">
-            <label>닉네임 설정</label>
+            <label>NICKNAME</label>
           </div>
           <Nickname_Box>
             <Input_Box>
               <TextInput
                 type={"text"}
                 name={"user_nickname"}
-                placeholder={"닉네임을 입력하세요"}
+                placeholder={"Please Enter your Nickname"}
                 value={user_nickname}
                 onChange={handleChange}
               />
@@ -559,7 +562,7 @@ const SignUp = () => {
               className={"checkNickname"}
               name={"user_nickname"}
               value={signUpForm.user_nickname}
-              btnTxt={"중복확인"}
+              btnTxt={"Check Duplicate"}
               onClick={checkNicknameDuplicate}
             />
           </Nickname_Box>
@@ -567,7 +570,7 @@ const SignUp = () => {
         {nicknameCheckResult && <p>{nicknameCheckResult}</p>}
         <Input_Wrapper>
           <div className="signUp-profileImg-label">
-            <label>프로필 사진</label>
+            <label>PROFILE IMAGE</label>
           </div>
           <Input_Box>
             <FileUpload accpet={"image/*"} onChange={handleFileChange} />
@@ -576,12 +579,12 @@ const SignUp = () => {
         <Button_Wrapper>
           <Button
             className={"signUp"}
-            btnTxt={"회원가입"}
+            btnTxt={"SIGNUP"}
             onClick={handleRegister}
           />
           <Button
             className={"cancel"}
-            btnTxt={"취소"}
+            btnTxt={"CANCEL"}
             onClick={() => navigate("/")}
           />
         </Button_Wrapper>

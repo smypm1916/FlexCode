@@ -65,7 +65,7 @@ export const fetchGetOrderDetail = async (id) => {
     }
   } catch (error) {
     console.error("회원 주문정보 조회 요청 실패", error);
-    alert("API 요청에 실패하였습니다.");
+    alert("API request failed.");
     return null;
   }
 };

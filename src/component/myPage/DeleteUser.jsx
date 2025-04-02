@@ -9,11 +9,12 @@ const DeleteUser = () => {
   return (
     <User_Status_Row className="grid2">
       <p>
-        탈퇴하시겠습니까? 개인 정보 보호 약관에 따라 개인 정보가 파기됩니다.
+        Do you want to withdraw your account? Your personal data will be deleted
+        according to our privacy policy.
       </p>
       <Button
         className={"deleteUser"}
-        btnTxt={"회원탈퇴"}
+        btnTxt={"Delete Account"}
         onClick={() => navigate("/deleteAccount")}
       />
     </User_Status_Row>

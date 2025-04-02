@@ -36,12 +36,12 @@ const UserCommunitys = ({ nickname, profile }) => {
   }, [nickname, profile]);
 
   if (Array.isArray(communitys) && communitys.length === 0) {
-    return <Title>작성한 커뮤니티 글이 없습니다.</Title>;
+    return <Title>No community posts found.</Title>;
   }
   return communitys.length > 0 ? (
     <Wrapper_Post className="nonePadding">
       <User_Status_Row className="borderBottom">
-        <Title>나의 커뮤니티</Title>
+        <Title>My Communitys</Title>
 
         <Text
           className="more"
@@ -51,7 +51,7 @@ const UserCommunitys = ({ nickname, profile }) => {
             });
           }}
         >
-          더보기
+          view more
         </Text>
       </User_Status_Row>
       {communitys.slice(0, 3).map((post) => {
@@ -71,11 +71,11 @@ const UserCommunitys = ({ nickname, profile }) => {
               </Profile_Img>
               <p>{post.COMMUNITY_TITLE}</p>
               <List_Profile>
-                <p>작성자</p>
+                <p>Writer</p>
                 <p>{post.USER_NICKNAME}</p>
               </List_Profile>
               <List_Profile>
-                <p>작성일자</p>
+                <p>Date Created</p>
                 <p>
                   {" "}
                   {new Date(post.COMMUNITY_DATE).toLocaleString("ko-KR", {
@@ -99,8 +99,8 @@ const UserCommunitys = ({ nickname, profile }) => {
     </Wrapper_Post>
   ) : (
     <Wrapper_Post>
-      <Title>나의 커뮤니티</Title>
-      <Title>작성한 커뮤니티 글이 없습니다.</Title>
+      <Title>My Communitys</Title>
+      <Title>No community posts found.</Title>
     </Wrapper_Post>
   );
 };

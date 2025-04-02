@@ -118,7 +118,6 @@ const ProductInfo = () => {
     setCurrentQuantity(1);
   };
 
-
   // 수량 변경 핸들러
   const handleQuantityChange = (e) => {
     const quantity = parseInt(e.target.value);
@@ -331,7 +330,7 @@ const ProductInfo = () => {
                   >
                     <div>
                       <Title>{currentOption.OPTION_TITLE}</Title>
-                      <Text>+{currentOption.OPTION_PRICE} 원</Text>
+                      <Text>+{currentOption.OPTION_PRICE} ¥</Text>
                     </div>
                     <div style={{ display: "flex", alignItems: "center" }}>
                       <Select
@@ -419,13 +418,13 @@ const ProductInfo = () => {
         <Container03>
           <Info_Wrapper>
             <Info_Title>
-              <p>상세 정보</p>
+              <p>Detailed Informations</p>
             </Info_Title>
             <Info_Text>
               <Info_Text_Box>
-                <p>RCS 인증된 재활용 폴리에스터</p>
+                {/* <p>RCS 인증된 재활용 폴리에스터</p> */}
                 <Info_Wrapper>
-                  <p>RCS(Recycled Claim Standard) 인증 설명</p>
+                  {/* <p>RCS(Recycled Claim Standard) 인증 설명</p> */}
                 </Info_Wrapper>
               </Info_Text_Box>
             </Info_Text>

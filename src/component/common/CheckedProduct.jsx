@@ -104,7 +104,7 @@ const CheckedProduct = ({
                       0
                     )
                   )}{" "}
-                  원
+                  ¥
                 </Title>
               </div>
             </>

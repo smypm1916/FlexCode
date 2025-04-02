@@ -126,7 +126,7 @@ const ModifyUserProfile = () => {
   // 닉네임 중복 확인 요청
   const checkNicknameDuplicate = async () => {
     if (!user_nickname) {
-      alert("닉네임을 입력하세요.");
+      alert("Please Enter your Nickname");
       return;
     }
     try {
@@ -139,16 +139,16 @@ const ModifyUserProfile = () => {
       if (response.data.exists) {
         // 받아온 데이터가 true일 경우
         console.log("response 데이터 : " + response.data.exists);
-        setNicknameCheckResult("이미 사용중인 닉네임입니다.");
+        setNicknameCheckResult("This nickname is already in use.");
         setIsNicknameChecked(false);
       } else {
         console.log("response 데이터 : " + response.data.exists);
-        setNicknameCheckResult("사용 가능한 닉네임입니다.");
+        setNicknameCheckResult("This nickname is available.");
         setIsNicknameChecked(true);
       }
     } catch (error) {
       console.error("닉네임 중복 확인 요청 실패 : ", error);
-      setNicknameCheckResult("오류발생");
+      setNicknameCheckResult("Server Error");
     }
   };
 
@@ -165,7 +165,7 @@ const ModifyUserProfile = () => {
   // 비밀번호 확인 요청
   const handleCheckPassword = async () => {
     if (!user_password) {
-      alert("비밀번호를 입력하세요.");
+      alert("Please Enter your Password");
       return;
     }
 
@@ -182,10 +182,10 @@ const ModifyUserProfile = () => {
 
       if (response.data.success) {
         // 받아온 데이터가 true일 경우
-        alert("비밀번호 확인 완료");
+        alert("Password confirmed");
         setIsPasswordChecked(true);
       } else {
-        alert("비밀번호가 일치하지 않습니다.");
+        alert("Passwords do not match.");
         setIsPasswordChecked(false);
       }
     } catch (error) {
@@ -204,17 +204,17 @@ const ModifyUserProfile = () => {
       !detail_address ||
       !user_nickname
     ) {
-      alert("필수항목을 입력해주세요.");
+      alert("Please enter all required information to edit profile.");
       return;
     }
 
     if (user_nickname !== userData.USER_NICKNAME && !isNicknameChecked) {
-      alert("닉네임 중복 확인을 해주세요.");
+      alert("Please check if this nickname is already taken.");
       return;
     }
 
     if (!isPasswordChecked) {
-      alert("비밀번호 확인을 해주세요");
+      alert("Passwords do not match.");
       return;
     }
 
@@ -259,15 +259,15 @@ const ModifyUserProfile = () => {
       console.log("회원정보 수정 서버 응답:", response.data);
 
       if (response.data.success) {
-        alert("회원정보가 수정되었습니다.");
+        alert("Your profile has been updated.");
         sessionStorage.setItem("token", response.data.token); // 수정된 유저 정보로 발급된 토큰 sessionStorage에 저장
         navigate("/mypage");
       } else {
-        alert("회원정보 수정에 실패하였습니다.");
+        alert("Failed to update profile.");
       }
     } catch (error) {
       console.error("회원정보 수정 요청 실패:", error);
-      alert("회원정보 수정 중 오류가 발생했습니다.");
+      alert("Server Error");
     }
   };
 
@@ -277,17 +277,17 @@ const ModifyUserProfile = () => {
         <Wrapper className="wrap" id="register">
           <Container_Style className="wrap">
             <div className="signUp-title">
-              <h2>회원정보 수정</h2>
+              <h2>Edit Profile</h2>
             </div>
             <Input_Wrapper>
               <div className="signUp-name-label">
-                <label>이름</label>
+                <label>NAME</label>
               </div>
               <Input_Box>
                 <TextInput
                   type={"text"}
                   name={"user_name"}
-                  placeholder={"이름을 입력하세요"}
+                  placeholder={"Please Enter your Name"}
                   value={user_name}
                   onChange={handleChange}
                 />
@@ -343,7 +343,7 @@ const ModifyUserProfile = () => {
                     <TextInput
                       type={"text"}
                       name={"email_id"}
-                      placeholder={"EMAIL 입력"}
+                      placeholder={"Please Enter your Email"}
                       value={userData.USER_EMAIL.email_id}
                       disabled
                     />
@@ -369,12 +369,12 @@ const ModifyUserProfile = () => {
             </Input_Wrapper>
             <Input_Wrapper>
               <div className="signUp-baseAddr-label">
-                <label>기본주소</label>
+                <label>ADDRESS 1</label>
               </div>
               <Post_Wrapper>
                 <Button
                   className={"searchAddr"}
-                  btnTxt={"도로명/지번 주소검색"}
+                  btnTxt={"Search"}
                   onClick={handleOpenPostCode}
                 />
                 <BaseAddress>
@@ -424,13 +424,13 @@ const ModifyUserProfile = () => {
             </Input_Wrapper>
             <Input_Wrapper>
               <div className="signUp-detailAddr-label">
-                <label>상세주소</label>
+                <label>ADDRESS 2</label>
               </div>
               <Input_Box>
                 <TextInput
                   type={"text"}
                   name={"detail_address"}
-                  placeholder={"상세주소를 입력하세요"}
+                  placeholder={"Please Enter your Address"}
                   value={detail_address}
                   onChange={handleInputAddressChange}
                 />
@@ -438,21 +438,21 @@ const ModifyUserProfile = () => {
             </Input_Wrapper>
             <Input_Wrapper>
               <div className="signUp-nickname-label">
-                <label>닉네임 설정</label>
+                <label>NICKNAME</label>
               </div>
               <Nickname_Box>
                 <Input_Box>
                   <TextInput
                     type={"text"}
                     name={"user_nickname"}
-                    placeholder={"닉네임을 입력하세요"}
+                    placeholder={"Please Enter your Nickname"}
                     value={user_nickname}
                     onChange={handleChange}
                   />
                 </Input_Box>
                 <Button
                   className={"checkNickname"}
-                  btnTxt={"중복확인"}
+                  btnTxt={"Check Duplicate"}
                   onClick={checkNicknameDuplicate}
                 />
                 {nicknameCheckResult && <p>{nicknameCheckResult}</p>}
@@ -461,7 +461,7 @@ const ModifyUserProfile = () => {
             {/* {nicknameCheckResult && <p>{nicknameCheckResult}</p>} */}
             <Input_Wrapper>
               <div className="signUp-profileImg-label">
-                <label>프로필 사진</label>
+                <label>PROFILE IMAGE</label>
               </div>
               <Input_Box>
                 <FileUpload accpet={"image/*"} onChange={handleFileChange} />
@@ -469,13 +469,13 @@ const ModifyUserProfile = () => {
             </Input_Wrapper>
             <Input_Wrapper>
               <div className="signUp-pw-label">
-                <label>비밀번호</label>
+                <label>PASSWORD</label>
               </div>
               <Input_Box>
                 <TextInput
                   type={"password"}
                   name={"user_password"}
-                  placeholder={"비밀번호를 입력하세요"}
+                  placeholder={"Please Enter your Password"}
                   // value={user_password}
                   onChange={handleChange}
                 />
@@ -483,25 +483,25 @@ const ModifyUserProfile = () => {
             </Input_Wrapper>
             <Button
               className={"checkPw"}
-              btnTxt={"비밀번호 확인"}
+              btnTxt={"Confirm Password"}
               onClick={handleCheckPassword}
             />
             <Button_Wrapper>
               <Button
                 className={"signUp"}
-                btnTxt={"정보수정"}
+                btnTxt={"EDIT"}
                 onClick={handleModifyUser}
               />
               <Button
                 className={"cancel"}
-                btnTxt={"취소"}
+                btnTxt={"CANCEL"}
                 onClick={() => navigate("/myPage")}
               />
             </Button_Wrapper>
           </Container_Style>
         </Wrapper>
       ) : (
-        <p>회원 정보를 불러오는 중...</p> // 데이터가 없으면 로딩 메시지 출력
+        <p>loading...</p> // 데이터가 없으면 로딩 메시지 출력
       )}
     </Wrapper>
   );

@@ -23,9 +23,9 @@ const Pick = () => {
             <img src="src\style\img\blue_hat.png" />
           </Pick_img>
           <Pick_Text>
-            <Text>MD</Text>
+            <Text>MD's Pick</Text>
             <Text>Vinnie Hat</Text>
-            <Text>12,000¥</Text>
+            <Text>12,000 ¥ </Text>
           </Pick_Text>
         </Pick_Box>
         <Pick_Box onClick={() => navigate(`/detail/24`)} >
@@ -35,7 +35,7 @@ const Pick = () => {
           <Pick_Text>
             <Text>For All Atmosphere</Text>
             <Text>White Shirts</Text>
-            <Text>13,000¥</Text>
+            <Text>13,000 ¥ </Text>
           </Pick_Text>
         </Pick_Box>
       </Pick_Wrapper>

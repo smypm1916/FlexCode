@@ -57,7 +57,7 @@ const Conwrapper = styled.div`
 `;
 
 const LoginModal = ({ onClose }) => {
-  console.log("onClose 확인:", onClose);
+  console.log("onClose Check:", onClose);
 
   const { refreshCart } = useCart();
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
@@ -84,7 +84,7 @@ const LoginModal = ({ onClose }) => {
     try {
       onClose();
     } catch (error) {
-      console.error("onClose 실행 중 오류 발생:", error);
+      console.error("onClose Error :", error);
     }
   };
 
@@ -108,11 +108,11 @@ const LoginModal = ({ onClose }) => {
     e.preventDefault();
     // 필수 입력값 확인
     if (!login_email) {
-      alert("이메일을 입력해주세요.");
+      alert("Please Enter your Email");
       return;
     }
     if (!login_password) {
-      alert("패스워드를 입력해주세요.");
+      alert("Please Enter your Password");
       return;
     }
 
@@ -162,13 +162,13 @@ const LoginModal = ({ onClose }) => {
           onClose();
         } else {
           console.error("장바구니 병합 실패:", cartMergeResponse.data.message);
-          alert("장바구니 병합 실패");
+          alert("Failed Cart Merge");
           navigate("/");
           onClose();
         }
       } else {
         console.log(response.data.exists);
-        alert("이메일 또는 패스워드를 확인해주세요.");
+        alert("Login Failed, Please Check your Email, Password");
         setLoginForm({
           login_email: "",
           login_password: "",
@@ -176,7 +176,7 @@ const LoginModal = ({ onClose }) => {
       }
     } catch (error) {
       console.error("로그인 요청 실패:", error);
-      alert("이메일 또는 패스워드를 확인해주세요.");
+      alert("Login Failed, Please Check your Email, Password");
       setLoginForm({
         login_email: "",
         login_password: "",
@@ -235,7 +235,7 @@ const LoginModal = ({ onClose }) => {
             <Input_Style
               type={"text"}
               name={"login_email"}
-              placeholder={"EMAIL"}
+              placeholder={"Please Enter your Email"}
               value={login_email || ""}
               onChange={handleChange}
             />
@@ -244,7 +244,7 @@ const LoginModal = ({ onClose }) => {
             <Input_Style
               type={"password"}
               name={"login_password"}
-              placeholder={"PW"}
+              placeholder={"Please Enter your Password"}
               value={login_password || ""}
               onChange={handleChange}
             />
@@ -256,10 +256,10 @@ const LoginModal = ({ onClose }) => {
                 onClose();
               }}
             >
-              회원가입
+              REGISTER
             </a>
-            <a onClick={handleFindId}>ID 찾기</a>
-            <a onClick={handleFindPw}>비밀번호 찾기</a>
+            <a onClick={handleFindId}>Search Email</a>
+            <a onClick={handleFindPw}>Reset Password</a>
           </Link_box>
         </Conwrapper>
         <ButtonContainer>

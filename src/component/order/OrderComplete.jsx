@@ -460,7 +460,7 @@ export default OrderComplete;
 // //                 <p>옵션번호: {item.OPTION_NO}</p>
 // //                 <p>수량: {item.PRODUCT_QUANTITY}</p>
 // //                 <p>
-// //                   가격:{" "}
+// : { " " }
 // //                   {(item.PRODUCT_PRICE + item.OPTION_PRICE) *
 // //                     item.PRODUCT_QUANTITY}{" "}
 // //                   원
