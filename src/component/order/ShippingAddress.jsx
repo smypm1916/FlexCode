@@ -41,7 +41,7 @@ const ShippingAddress = ({ title, data, setData, isReadOnly }) => {
     <Container_Style className="Shipping">
       <Title>{title}</Title>
       <Input_Wrapper>
-        <label>이름</label>
+        <label>Name</label>
         <Input_Box>
           <TextInput
             name="name"
