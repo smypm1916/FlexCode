@@ -44,7 +44,7 @@ const ProductLists = ({ products, loading, fetchMore, hasMore }) => {
             <Text_wrapper>
               <h3>{product.PRODUCT_NAME}</h3>
               <p>{product.PRODUCT_TYPE}</p>
-              <p>{product.PRODUCT_PRICE} 원</p>
+              <p>{product.PRODUCT_PRICE} ¥</p>
             </Text_wrapper>
           </ProductList_ItemBox>
         ))}

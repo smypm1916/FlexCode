@@ -23,9 +23,9 @@ const Pick = () => {
             <img src="src\style\img\blue_hat.png" />
           </Pick_img>
           <Pick_Text>
-            <Text>MD가 추천하는 핫한 액세서리</Text>
-            <Text>블루 올 비니</Text>
-            <Text>12,000원</Text>
+            <Text>MD</Text>
+            <Text>Vinnie Hat</Text>
+            <Text>12,000¥</Text>
           </Pick_Text>
         </Pick_Box>
         <Pick_Box onClick={() => navigate(`/detail/24`)} >
@@ -33,9 +33,9 @@ const Pick = () => {
             <img src="src/style/img/shirts.png" />
           </Pick_img>
           <Pick_Text>
-            <Text>무난한 패션의 대명사</Text>
-            <Text>화이트 셔츠</Text>
-            <Text>13,000원</Text>
+            <Text>For All Atmosphere</Text>
+            <Text>White Shirts</Text>
+            <Text>13,000¥</Text>
           </Pick_Text>
         </Pick_Box>
       </Pick_Wrapper>

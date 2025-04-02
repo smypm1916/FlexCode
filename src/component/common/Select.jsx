@@ -22,7 +22,7 @@ const Select = ({
           </option>
         ))
       ) : (
-        <option value="">데이터 없음</option>
+        <option value="">None</option>
       )}
     </Select_Style>
   );

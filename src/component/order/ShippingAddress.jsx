@@ -1,15 +1,5 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import PostCodeModal from "../account/PostCodeModal";
-import Button from "../common/Button";
-import Select from "../common/Select";
-import TextInput from "../common/TextInput";
-import {
-  Email_Box,
-  Phone_Box,
-  Phone_Input,
-  Post_Wrapper,
-} from "../../style/SignUp_Style";
 import {
   BaseAddress,
   Container_Style,
@@ -17,6 +7,15 @@ import {
   Input_Wrapper,
   Title,
 } from "../../style/Common_Style";
+import {
+  Email_Box,
+  Phone_Box,
+  Post_Wrapper
+} from "../../style/SignUp_Style";
+import PostCodeModal from "../account/PostCodeModal";
+import Button from "../common/Button";
+import Select from "../common/Select";
+import TextInput from "../common/TextInput";
 
 const ShippingAddress = ({ title, data, setData, isReadOnly }) => {
   const [isPostCodeOpen, setIsPostCodeOpen] = useState(false);
@@ -46,7 +45,7 @@ const ShippingAddress = ({ title, data, setData, isReadOnly }) => {
         <Input_Box>
           <TextInput
             name="name"
-            placeholder="이름을 입력하세요"
+            placeholder="Name"
             value={data.name}
             onChange={handleChange}
             readOnly={isReadOnly}
@@ -54,17 +53,17 @@ const ShippingAddress = ({ title, data, setData, isReadOnly }) => {
         </Input_Box>
       </Input_Wrapper>
       <Input_Wrapper>
-        <label>기본주소</label>
+        <label></label>
         <Post_Wrapper>
           <Button
-            btnTxt="주소검색"
+            btnTxt="Searching Address"
             onClick={() => setIsPostCodeOpen(true)}
             disabled={isReadOnly}
           />
           <BaseAddress>
             <TextInput
               name="base_address"
-              placeholder="기본주소를 입력하세요"
+              placeholder="Address 1"
               value={data.base_address}
               onChange={handleChange}
               readOnly
@@ -109,11 +108,11 @@ const ShippingAddress = ({ title, data, setData, isReadOnly }) => {
         </Post_Wrapper>
       </Input_Wrapper>
       <Input_Wrapper>
-        <label>상세주소</label>
+        <label>Address 2</label>
         <Input_Box>
           <TextInput
             name="detail_address"
-            placeholder="상세주소를 입력하세요"
+            placeholder="Address 2"
             value={data.detail_address}
             onChange={handleChange}
             readOnly={isReadOnly}
@@ -121,7 +120,7 @@ const ShippingAddress = ({ title, data, setData, isReadOnly }) => {
         </Input_Box>
       </Input_Wrapper>
       <Input_Wrapper>
-        <label>전화번호</label>
+        <label>Tel No.</label>
         <Phone_Box>
           <Select
             options={[
@@ -163,7 +162,7 @@ const ShippingAddress = ({ title, data, setData, isReadOnly }) => {
           <Input_Box>
             <TextInput
               name="email_id"
-              placeholder="e-mail을 입력하세요"
+              placeholder="E-mail Address"
               value={data.email_id}
               onChange={handleChange}
               readOnly={isReadOnly}
