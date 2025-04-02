@@ -62,6 +62,9 @@ router.post("/pay/:tempOrderId", async (req, res) => {
     const now = new Date();
 
     const items = checkedProducts;
+
+    console.log(product);
+    const pItems = product;
     // 주문 수량 검사 추가
     const validateStockSql = `SELECT OPTION_STATE FROM PRODUCT_OPTION WHERE OPTION_NO = :option_no`;
     for (const item of items) {
@@ -107,9 +110,15 @@ router.post("/pay/:tempOrderId", async (req, res) => {
       console.log(item);
       await executeQuery(itemInsertSql, {
         orderNo,
+        // productNo: item.product_no,
+        // productPrice: item.product_price,
+        // optionNo: item.option_no,
+        // optionPrice: item.option_price,
         productNo: item.PRODUCT_NO,
-        productPrice: item.OPTION_PRICE,
+        // productPrice: item.OPTION_PRICE,
+        productPrice: pItems.PRODUCT_PRICE,
         optionNo: item.OPTION_NO,
+        // optionPrice: item.OPTION_PRICE,
         optionPrice: item.OPTION_PRICE,
         quantity: item.quantity,
       });
