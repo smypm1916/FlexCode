@@ -15,7 +15,7 @@ const getPosts = async () => {
   FROM 
     ${community_info.tableName} c, user_account u where c.user_nickname = u.user_nickname
   ORDER BY 
-    ${community_info.columns.community_date}
+    ${community_info.columns.community_no}
 `;
   return await executeQuery(query);
 };
