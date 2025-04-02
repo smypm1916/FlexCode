@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const oracledb = require("oracledb");
 const { executeQuery, dbConfig } = require("../config/oracledb");
+const redisClient = require("../config/redis");
+
 
 
 // 주문 취소
@@ -60,6 +62,9 @@ router.post("/pay/:tempOrderId", async (req, res) => {
     const now = new Date();
 
     const items = checkedProducts;
+
+    console.log(product);
+    const pItems = product;
     // 주문 수량 검사 추가
     const validateStockSql = `SELECT OPTION_STATE FROM PRODUCT_OPTION WHERE OPTION_NO = :option_no`;
     for (const item of items) {
@@ -105,9 +110,15 @@ router.post("/pay/:tempOrderId", async (req, res) => {
       console.log(item);
       await executeQuery(itemInsertSql, {
         orderNo,
+        // productNo: item.product_no,
+        // productPrice: item.product_price,
+        // optionNo: item.option_no,
+        // optionPrice: item.option_price,
         productNo: item.PRODUCT_NO,
-        productPrice: item.OPTION_PRICE,
+        // productPrice: item.OPTION_PRICE,
+        productPrice: pItems.PRODUCT_PRICE,
         optionNo: item.OPTION_NO,
+        // optionPrice: item.OPTION_PRICE,
         optionPrice: item.OPTION_PRICE,
         quantity: item.quantity,
       });
@@ -133,6 +144,12 @@ router.post("/pay/:tempOrderId", async (req, res) => {
 
     // // 장바구니 전체 삭제
     // await redisClient.del(cartKey);
+
+    const cartKey = req.session?.user?.email
+      ? `cart:${req.session.user.email}`
+      : `cart:session_${req.sessionID}`;
+    await redisClient.del(cartKey);
+
 
     // 응답을 한 번만 보냄
     res.json({ success: true, message: "결제 및 주문 저장 완료", orderNo });
