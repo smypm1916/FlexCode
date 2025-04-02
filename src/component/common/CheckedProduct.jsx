@@ -50,8 +50,8 @@ const CheckedProduct = ({
                           0
                         )
                       )}{" "}
-                      원</Text>
-                    <Text>재고: {option.OPTION_STATE} 개</Text>
+                      ¥</Text>
+                    <Text>Stock : {option.OPTION_STATE} pcs</Text>
                   </Bucket_Text>
                   <Bucket_option>
                     <Button
@@ -94,7 +94,7 @@ const CheckedProduct = ({
               {/* 총 합계 금액 */}
               <div style={{ marginTop: "20px", textAlign: "right" }}>
                 <Title>
-                  합계 금액:{" "}
+                  Total Price:{" "}
                   {Intl.NumberFormat("ko-KR").format(
                     options.reduce(
                       (total, opt) =>
@@ -109,7 +109,7 @@ const CheckedProduct = ({
               </div>
             </>
           ) : (
-            <p>선택된 옵션이 없습니다.</p>
+            <p>None selected</p>
           )}
         </div>
       </Container_Style>
@@ -117,12 +117,12 @@ const CheckedProduct = ({
   } else {
     // order
     if (!cartItems || cartItems.length === 0) {
-      return <p>장바구니가 비어있습니다.</p>;
+      return <p>Cart is Empty</p>;
     }
     const items = cartItems || [];
     return (
       <Container_Style className="Bucket noPaddingBorder">
-        <Title>옵션/수량 수정</Title>
+        <Title>Change Option</Title>
         {items.map((item) => {
           const productKey = `product:${item.product_no}:option:${item.option_no}`;
           return (
@@ -131,7 +131,7 @@ const CheckedProduct = ({
 
               {/* 수량 변경 */}
               <Text>
-                수량:{" "}
+                Count :{" "}
                 <input
                   type="number"
                   min={1}
@@ -147,7 +147,7 @@ const CheckedProduct = ({
               </Text>
 
               <Title>
-                합계 금액:{" "}
+                Total Price :{" "}
                 {((item.product_price || 0) + (item.option_price || 0)) *
                   item.quantity}
                 원
@@ -157,7 +157,7 @@ const CheckedProduct = ({
 
               {/* 삭제 */}
               <Button
-                btnTxt="삭제"
+                btnTxt="Delete"
                 onClick={() => removeFromCart(productKey)}
               />
             </div>
