@@ -236,7 +236,7 @@ const ProductInfo = () => {
     }
     navigate(`/order/${tempOrderId}`, {
       state: {
-        from: "direct",
+        // from: "direct",
         product,
         checkedProducts,
       },
@@ -310,9 +310,8 @@ const ProductInfo = () => {
                   { value: "", label: "옵션 선택" },
                   ...options.map((opt) => ({
                     value: opt.OPTION_NO,
-                    label: `${opt.OPTION_TITLE} (+${opt.OPTION_PRICE} 원) ${
-                      opt.OPTION_STATE <= 0 ? "(품절)" : ""
-                    }`,
+                    label: `${opt.OPTION_TITLE} (+${opt.OPTION_PRICE} 원) ${opt.OPTION_STATE <= 0 ? "(품절)" : ""
+                      }`,
                     disabled: opt.OPTION_STATE <= 0,
                   })),
                 ]}
