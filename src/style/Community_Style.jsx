@@ -130,6 +130,10 @@ export const Pagination_List = styled.div`
   gap: 20px;
   padding: 20px;
   border-bottom: 1px solid black;
+
+  &.gap0 {
+    gap: 0;
+  }
 `;
 
 export const Search_Box = styled.div`

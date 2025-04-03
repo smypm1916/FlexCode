@@ -15,6 +15,7 @@ import {
 
 import { Link_box } from "../../style/Modal_Style";
 import { useCart } from "../common/useCart";
+import ReactModal from "react-modal";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -185,15 +186,15 @@ const LoginModal = ({ onClose }) => {
   };
 
   return isFindId ? (
-    <Container_Modal>
+    <ReactModal>
       <FindId onBack={handleBackToLogin} />
-    </Container_Modal>
+    </ReactModal>
   ) : isFindPw ? (
-    <Container_Modal>
+    <ReactModal>
       <FindPw onBack={handleBackToLogin} />
-    </Container_Modal>
+    </ReactModal>
   ) : (
-    <Container_Modal
+    <ReactModal
       onRequestClose={onClose}
       shouldCloseOnOverlayClick={true}
       shouldCloseOnEsc={true}
@@ -201,7 +202,7 @@ const LoginModal = ({ onClose }) => {
       <Modal_Wrapper>
         <ButtonContainer>
           <ButtonClose onClick={handleClose}>
-            <img src="src/style/img/closebutton.png" alt="닫기 버튼" />
+            <img src="src/assets/imgs/closebutton.png" alt="닫기 버튼" />
           </ButtonClose>
         </ButtonContainer>
         <Title>LOGIN</Title>
@@ -268,7 +269,7 @@ const LoginModal = ({ onClose }) => {
           </Button_Modal_Login>
         </ButtonContainer>
       </Modal_Wrapper>
-    </Container_Modal>
+    </ReactModal>
   );
 };
 

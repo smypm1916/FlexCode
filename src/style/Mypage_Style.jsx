@@ -61,6 +61,9 @@ export const Order_Wrapper = styled.div`
   &.marginTop {
     margin-top: 20px;
   }
+  &.marginBottom {
+    margin-bottom: 20px;
+  }
 
   &.gap5px {
     gap: 5px;
@@ -76,5 +79,9 @@ export const Wrapper_Post = styled.div`
 
   &.nonePadding {
     padding: 0;
+  }
+
+  &.borderBottom {
+    border-bottom: 1px solid black;
   }
 `;
