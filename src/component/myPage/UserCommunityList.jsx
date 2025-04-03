@@ -20,7 +20,7 @@ const UserCommunityList = () => {
   const { nickname, profile } = location.state || {}; // state에서 nickname, profile 가져오기
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // 한 페이지당 5개씩 표시
+  const itemsPerPage = 3; // 한 페이지당 5개씩 표시
   const imgPath = import.meta.env.VITE_IMG_PATH;
 
   useEffect(() => {
