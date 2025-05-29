@@ -12,6 +12,7 @@ import {
 import { Pagination_List } from "../../style/Community_Style";
 import { fetchGetCommunity } from "../myPage/MyPageAPI";
 import { Container_Style, Wrapper } from "../../style/Common_Style";
+import { Order_Wrapper } from "../../style/Mypage_Style";
 
 const UserCommunityList = () => {
   const [communitys, setCommunitys] = useState([]);
@@ -62,7 +63,9 @@ const UserCommunityList = () => {
       <Container_Style className="wrap">
         {communitys.length > 0 ? (
           <div>
-            <h2>작성한 커뮤니티글</h2>
+            <Order_Wrapper className="marginBottom">
+              <h2>작성한 커뮤니티글</h2>
+            </Order_Wrapper>
             <Button
               type="button"
               onClick={() => {
@@ -81,17 +84,17 @@ const UserCommunityList = () => {
                       })
                     }
                     key={post.COMMUNITY_NO}
-                    className="border p-2 mb-2"
+                    className="border p-2 mb-2 gap0"
                   >
                     <List_Column key={post.COMMUNITY_NO}>
+                      <img
+                        src={`${imgPath}/${userProfileImg}`}
+                        width="100"
+                        height="100"
+                      />
                       <p>{post.COMMUNITY_TITLE}</p>
                       <List_Profile>
                         <p>작성자</p>
-                        <img
-                          src={`${imgPath}/${userProfileImg}`}
-                          width="100"
-                          height="100"
-                        />
                         <p>{post.USER_NICKNAME}</p>
                       </List_Profile>
                       <List_Profile>
