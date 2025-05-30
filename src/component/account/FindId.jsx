@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState } from "react";
 import Button from "../common/Button";
 
-// 스타일 임포트
 import {
   Button_Wrapper_100,
   Container_Modal,
@@ -17,7 +16,6 @@ import { Phone_Box } from "../../style/Modal_Style";
 import { Text } from "../../style/Product_Detail_Style";
 
 const FindId = ({ onBack, onClose }) => {
-  // 상태 관리
   const [findEmail, setFindEmail] = useState(null);
   const [userName, setUserName] = useState("");
 
@@ -30,7 +28,6 @@ const FindId = ({ onBack, onClose }) => {
   const { first_tel, mid_tel, last_tel } = userTel;
   const full_tel = `${first_tel}-${mid_tel}-${last_tel}`;
 
-  // 전화번호 변경 핸들러
   const handleSelectTelChange = (e) => {
     setUserTel((prev) => ({ ...prev, first_tel: e.target.value }));
   };
@@ -45,17 +42,17 @@ const FindId = ({ onBack, onClose }) => {
     e.preventDefault();
 
     if (!userName) {
-      alert("이름을 입력해주세요.");
+      alert("名前を入力してください");
       return;
     }
     if (!mid_tel || !last_tel) {
-      alert("전화번호를 입력해주세요.");
+      alert("電話番号を入力してください");
       return;
     }
 
     try {
       const findIdData = { name: userName, tel: full_tel };
-      console.log("보낼 데이터:", findIdData);
+      console.log("送信データ:", findIdData);
 
       const response = await axios.post(
         "http://localhost:8080/api/users/findId",
@@ -65,37 +62,35 @@ const FindId = ({ onBack, onClose }) => {
         }
       );
 
-      console.log("이메일 찾기 응답:", response.data);
+      console.log("メールアドレス確認レスポンス:", response.data);
       setFindEmail(
         response.data.success
-          ? "회원님의 이메일은 " + response.data.user_email + "입니다."
-          : "이메일을 찾을 수 없습니다."
+          ? "会員のメールアドレスは " + response.data.user_email + "です。"
+          : "メールアドレスが見つかりませんでした。"
       );
     } catch (error) {
-      console.error("이메일 찾기 실패:", error);
-      setFindEmail("서버 오류 발생");
+      console.error("メールアドレス検索失敗", error);
+      setFindEmail("サーバーエラーが発生しました。");
     }
   };
 
   return (
     <Container_Modal>
       <Modal_Wrapper>
-        <Title>이메일 찾기</Title>
+        <Title>メールアドレス探し</Title>
 
-        {/* 이름 입력 */}
         <Input_Wrapper>
-          <label>이름</label>
+          <label>名前</label>
           <Input_Box>
             <Input_Style
               type="text"
-              placeholder="이름을 입력하세요"
+              placeholder="名前を入力してください"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
             />
           </Input_Box>
         </Input_Wrapper>
 
-        {/* 전화번호 입력 */}
         <Input_Wrapper>
           <label>TEL</label>
           <Phone_Box>
@@ -137,10 +132,10 @@ const FindId = ({ onBack, onClose }) => {
         <Button_Wrapper_100 className="grid2">
           <Button
             className="findId"
-            btnTxt="아이디 찾기"
+            btnTxt="IDを探す"
             onClick={handleFindId}
           />
-          <Button className="cancel" btnTxt="취소" onClick={onBack} />
+          <Button className="cancel" btnTxt="キャンセル" onClick={onBack} />
         </Button_Wrapper_100>
       </Modal_Wrapper>
     </Container_Modal>
