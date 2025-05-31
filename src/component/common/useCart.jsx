@@ -28,7 +28,7 @@ export const useCart = () => {
       } catch (err) {
          // !!계속 403발생중
          if (err.response?.status === 403) {
-            alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
+            alert("ログインセッションが切れました。再度ログインしてください。");
          } else {
             setError(err.response?.data?.message || err.message);
             console.log('fetchcart error : ', err.message);

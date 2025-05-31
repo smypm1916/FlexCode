@@ -1,11 +1,9 @@
-import React from "react";
 import DaumPostcodeEmbed from "react-daum-postcode";
-import Button from "../common/Button";
 import {
   Container_Modal,
-  Modal_Wrapper,
-  Post_Modal_Wrapper,
+  Modal_Wrapper
 } from "../../style/Common_Style";
+import Button from "../common/Button";
 
 const PostCodeModal = ({ onClose, onSelectAddress }) => {
   const completeHandler = (data) => {
@@ -21,7 +19,7 @@ const PostCodeModal = ({ onClose, onSelectAddress }) => {
         <DaumPostcodeEmbed onComplete={completeHandler} />
         <Button
           className={"addressModalClose"}
-          btnTxt={"닫기"}
+          btnTxt={"閉じる"}
           onClick={onClose}
         />
       </Modal_Wrapper>

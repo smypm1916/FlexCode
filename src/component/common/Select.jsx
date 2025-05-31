@@ -1,4 +1,3 @@
-import React from "react";
 import { Select_Style } from "../../style/Common_Style";
 
 const Select = ({
@@ -22,7 +21,7 @@ const Select = ({
           </option>
         ))
       ) : (
-        <option value="">데이터 없음</option>
+        <option value="">データなし</option>
       )}
     </Select_Style>
   );

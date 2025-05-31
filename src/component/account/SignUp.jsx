@@ -16,7 +16,6 @@ import Select from "../common/Select";
 import TextInput from "../common/TextInput";
 import PostCodeModal from "./PostCodeModal";
 
-import { Navigate } from "react-router-dom";
 import { Button_Wrapper } from "../../style/Product_Detail_Style";
 import {
   Email_Box,
@@ -174,7 +173,7 @@ const SignUp = () => {
   // 이메일 중복 확인 요청(axios 사용)
   const checkEmailDuplicate = async () => {
     if (!userEmail.email_id) {
-      alert("이메일을 입력하세요.");
+      alert("EMAILを入力してください。");
       return;
     }
     try {
@@ -191,21 +190,21 @@ const SignUp = () => {
       if (response.data.exists) {
         // 받아온 데이터가 true일 경우
         console.log("response 데이터 : " + response.data.exists);
-        setEmailCheckResult("이미 사용중인 이메일입니다.");
+        setEmailCheckResult("すでに使用中のメールアドレス");
       } else {
         console.log("response 데이터 : " + response.data.exists);
-        setEmailCheckResult("사용 가능한 이메일입니다.");
+        setEmailCheckResult("使用可能なメールアドレス");
       }
     } catch (error) {
       console.error("이메일 중복 확인 요청 실패 :", error);
-      setEmailCheckResult("오류 발생");
+      setEmailCheckResult("エラー発生");
     }
   };
 
   // 닉네임 중복 확인 요청
   const checkNicknameDuplicate = async () => {
     if (!user_nickname) {
-      alert("닉네임을 입력하세요.");
+      alert("ニックネームを入力してください");
       return;
     }
     try {
@@ -222,14 +221,14 @@ const SignUp = () => {
       if (response.data.exists) {
         // 받아온 데이터가 true일 경우
         console.log("response 데이터 : " + response.data.exists);
-        setNicknameCheckResult("이미 사용중인 닉네임입니다.");
+        setNicknameCheckResult("すでに使用中のニックネーム");
       } else {
         console.log("response 데이터 : " + response.data.exists);
-        setNicknameCheckResult("사용 가능한 닉네임입니다.");
+        setNicknameCheckResult("使用可能なニックネーム");
       }
     } catch (error) {
       console.error("닉네임 중복 확인 요청 실패 : ", error);
-      setNicknameCheckResult("오류발생");
+      setNicknameCheckResult("エラー発生");
     }
   };
 
@@ -254,23 +253,23 @@ const SignUp = () => {
       !base_address ||
       !detail_address
     ) {
-      alert("회원가입시 필요한 필수항목을 입력해주세요.");
+      alert("必須項目を入力してください");
       return;
     }
-    if (emailCheckResult !== "사용 가능한 이메일입니다.") {
-      alert("이메일 중복확인을 해주세요.");
+    if (emailCheckResult !== "使用可能なメールアドレス") {
+      alert("EMAIL重複確認をしてください。");
       return;
     }
     if (!passwordValid) {
-      alert("비밀번호는 영어+숫자+특수문자 조합으로 8자 이상이어야 합니다.");
+      alert("パスワードの形式を確認してください。");
       return;
     }
     if (!passwordMatch) {
-      alert("비밀번호 일치여부를 확인해주세요.");
+      alert("パスワードが一致しません。");
       return;
     }
-    if (nicknameCheckResult !== "사용 가능한 닉네임입니다.") {
-      alert("닉네임 중복확인을 해주세요.");
+    if (nicknameCheckResult !== "使用可能なニックネーム") {
+      alert("ニックネーム重複確認をしてください。");
       return;
     }
 
@@ -339,17 +338,17 @@ const SignUp = () => {
     <Wrapper className="wrap marginTop" id="register">
       <Container_Style className="wrap">
         <div className="signUp-title">
-          <h2>회원가입</h2>
+          <h2>会員登録</h2>
         </div>
         <Input_Wrapper>
           <div className="signUp-name-label">
-            <label>이름</label>
+            <label>氏名</label>
           </div>
           <Input_Box>
             <TextInput
               type={"text"}
               name={"user_name"}
-              placeholder={"이름을 입력하세요"}
+              placeholder={"氏名"}
               value={signUpForm.user_name}
               onChange={handleChange}
             />
@@ -405,7 +404,7 @@ const SignUp = () => {
                 <TextInput
                   type={"text"}
                   name={"email_id"}
-                  placeholder={"EMAIL 입력"}
+                  placeholder={"EMAIL"}
                   value={userEmail.email_id}
                   onChange={handleInputEmailChange}
                 />
@@ -429,7 +428,7 @@ const SignUp = () => {
             </Email_Box>
             <Button
               className={"checkEmail"}
-              btnTxt={"중복확인"}
+              btnTxt={"重複確認"}
               onClick={checkEmailDuplicate}
             />
           </Email_Input>
@@ -444,18 +443,18 @@ const SignUp = () => {
             <TextInput
               type={"password"}
               name={"user_password"}
-              placeholder={"비밀번호를 입력하세요"}
+              placeholder={"パスワード"}
               value={signUpForm.user_password}
               onChange={handleChange}
             />
           </Input_Box>
         </Input_Wrapper>
         <p style={{ color: "gray", fontSize: "10px" }}>
-          비밀번호는 영어+숫자+특수문자 조합으로 8자 이상이어야 합니다.
+          パスワードは8文字以上で、英字、数字、記号を含めてください。
         </p>
         <Input_Wrapper>
           <div className="signUp-pw-check-label">
-            <label>비밀번호 확인</label>
+            <label>パスワード確認</label>
           </div>
           <Input_Box>
             <TextInput
@@ -469,17 +468,17 @@ const SignUp = () => {
         </Input_Wrapper>
         {passwordMatch === false && (
           <p style={{ color: "red", fontSize: "10px" }}>
-            비밀번호가 일치하지 않습니다.
+            パスワードが一致しません。
           </p>
         )}
         <Input_Wrapper>
           <div className="signUp-baseAddr-label">
-            <label>기본주소</label>
+            <label>住所1</label>
           </div>
           <Post_Wrapper>
             <Button
               className={"searchAddr"}
-              btnTxt={"도로명/지번 주소검색"}
+              btnTxt={"住所検索"}
               onClick={handleOpenPostCode}
             />
             <BaseAddress>
@@ -529,13 +528,13 @@ const SignUp = () => {
         </Input_Wrapper>
         <Input_Wrapper>
           <div className="signUp-detailAddr-label">
-            <label>상세주소</label>
+            <label>住所2</label>
           </div>
           <Input_Box>
             <TextInput
               type={"text"}
               name={"detail_address"}
-              placeholder={"상세주소를 입력하세요"}
+              placeholder={"住所2"}
               value={userAddress.detail_address}
               onChange={handleInputAddressChange}
             />
@@ -543,14 +542,14 @@ const SignUp = () => {
         </Input_Wrapper>
         <Input_Wrapper>
           <div className="signUp-nickname-label">
-            <label>닉네임 설정</label>
+            <label>ニックネーム設定</label>
           </div>
           <Nickname_Box>
             <Input_Box>
               <TextInput
                 type={"text"}
                 name={"user_nickname"}
-                placeholder={"닉네임을 입력하세요"}
+                placeholder={"ニックネーム"}
                 value={user_nickname}
                 onChange={handleChange}
               />
@@ -559,7 +558,7 @@ const SignUp = () => {
               className={"checkNickname"}
               name={"user_nickname"}
               value={signUpForm.user_nickname}
-              btnTxt={"중복확인"}
+              btnTxt={"重複確認"}
               onClick={checkNicknameDuplicate}
             />
           </Nickname_Box>
@@ -567,7 +566,7 @@ const SignUp = () => {
         {nicknameCheckResult && <p>{nicknameCheckResult}</p>}
         <Input_Wrapper>
           <div className="signUp-profileImg-label">
-            <label>프로필 사진</label>
+            <label>プロフィール写真</label>
           </div>
           <Input_Box>
             <FileUpload accpet={"image/*"} onChange={handleFileChange} />
@@ -576,12 +575,12 @@ const SignUp = () => {
         <Button_Wrapper>
           <Button
             className={"signUp"}
-            btnTxt={"회원가입"}
+            btnTxt={"会員登録"}
             onClick={handleRegister}
           />
           <Button
             className={"cancel"}
-            btnTxt={"취소"}
+            btnTxt={"キャンセル"}
             onClick={() => navigate("/")}
           />
         </Button_Wrapper>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Container_Style, Input_Box, Title } from "../../style/Common_Style";
 import { Search_Box } from "../../style/SearchBox_Style";
 import Button from "./Button";
@@ -18,17 +18,17 @@ const Searchbox = ({ onSearch, onReset }) => {
         <Input_Box>
           <TextInput
             type="search"
-            placeholder="검색어 입력"
+            placeholder="検索キーワード"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />
         </Input_Box>
-        <Button onClick={handleSearch} btnTxt="검색" />
+        <Button onClick={handleSearch} btnTxt="検索" />
         <Button onClick={() => {
           setKeyword(""),
             onReset();
-        }} btnTxt="초기화" />
+        }} btnTxt="リセット" />
       </Search_Box>
     </Container_Style>
   );

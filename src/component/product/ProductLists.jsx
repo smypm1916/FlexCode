@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container_Style, Title } from "../../style/Common_Style";
 import {
@@ -44,7 +44,7 @@ const ProductLists = ({ products, loading, fetchMore, hasMore }) => {
             <Text_wrapper>
               <h3>{product.PRODUCT_NAME}</h3>
               <p>{product.PRODUCT_TYPE}</p>
-              <p>{product.PRODUCT_PRICE} 원</p>
+              <p>{product.PRODUCT_PRICE} 円</p>
             </Text_wrapper>
           </ProductList_ItemBox>
         ))}

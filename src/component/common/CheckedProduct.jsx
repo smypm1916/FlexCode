@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Container_Style, Title } from "../../style/Common_Style";
 import {
@@ -94,7 +93,7 @@ const CheckedProduct = ({
               {/* 총 합계 금액 */}
               <div style={{ marginTop: "20px", textAlign: "right" }}>
                 <Title>
-                  합계 금액:{" "}
+                  合計金額:{" "}
                   {Intl.NumberFormat("ko-KR").format(
                     options.reduce(
                       (total, opt) =>
@@ -104,12 +103,12 @@ const CheckedProduct = ({
                       0
                     )
                   )}{" "}
-                  원
+                  円
                 </Title>
               </div>
             </>
           ) : (
-            <p>선택된 옵션이 없습니다.</p>
+            <p>選択されたオプションが存在しません</p>
           )}
         </div>
       </Container_Style>
@@ -117,12 +116,12 @@ const CheckedProduct = ({
   } else {
     // order
     if (!cartItems || cartItems.length === 0) {
-      return <p>장바구니가 비어있습니다.</p>;
+      return <p>カートが空です</p>;
     }
     const items = cartItems || [];
     return (
       <Container_Style className="Bucket noPaddingBorder">
-        <Title>옵션/수량 수정</Title>
+        <Title>オプション・数量変更</Title>
         {items.map((item) => {
           const productKey = `product:${item.product_no}:option:${item.option_no}`;
           return (
@@ -131,7 +130,7 @@ const CheckedProduct = ({
 
               {/* 수량 변경 */}
               <Text>
-                수량:{" "}
+                数量:{" "}
                 <input
                   type="number"
                   min={1}
@@ -147,7 +146,7 @@ const CheckedProduct = ({
               </Text>
 
               <Title>
-                합계 금액:{" "}
+                合計金額:{" "}
                 {((item.product_price || 0) + (item.option_price || 0)) *
                   item.quantity}
                 원
@@ -157,7 +156,7 @@ const CheckedProduct = ({
 
               {/* 삭제 */}
               <Button
-                btnTxt="삭제"
+                btnTxt="削除"
                 onClick={() => removeFromCart(productKey)}
               />
             </div>

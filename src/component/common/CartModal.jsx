@@ -45,16 +45,16 @@ const CartModal = ({ isOpen, onClose, goToOrder }) => {
         },
       }}
     >
-      <Title>장바구니에 추가 되었습니다</Title>
+      <Title>カートに追加されました</Title>
 
       {/* 장바구니 상품 리스트 */}
       {/* <div> */}
       {/* <CheckedProduct cartItems={cartItems} /> */}
       {/* </div> */}
       <Button_Wrapper_100 className="grid2">
-        <Button btnTxt="주문하기" onClick={goToOrder} />
+        <Button btnTxt="注文する" onClick={goToOrder} />
 
-        <Button onClick={onClose} btnTxt="닫기"></Button>
+        <Button onClick={onClose} btnTxt="閉じる"></Button>
       </Button_Wrapper_100>
     </ReactModal>
   );

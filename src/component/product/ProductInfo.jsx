@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Button_Wrapper_100,
@@ -67,7 +67,7 @@ const ProductInfo = () => {
 
   const addToCartHandler = async () => {
     if (checkedProducts.length === 0) {
-      alert("옵션을 선택하세요.");
+      alert("オプションを選択してください");
       return;
     }
 
@@ -98,7 +98,7 @@ const ProductInfo = () => {
     const selected = options.find((opt) => opt.OPTION_NO === OPTION_NO);
 
     if (!selected || selected.OPTION_STATE <= 0) {
-      alert("해당 옵션은 품절입니다.");
+      alert("該当オプションは在庫切れです。");
       setCurrentOption(null);
       setCurrentQuantity(1);
       return;
@@ -230,7 +230,7 @@ const ProductInfo = () => {
   const goToOrder = () => {
     const currentOrderId = localTempOrderId || tempOrderId;
     if (!currentOrderId) {
-      alert("장바구니가 비어있거나 아직 주문정보가 준비되지 않았습니다.");
+      alert("カートが空いているか、注文情報が存在しません。");
       return;
     }
     navigate(`/order/${tempOrderId}`, {
@@ -298,7 +298,7 @@ const ProductInfo = () => {
                 <h1>{product.PRODUCT_NAME}</h1>
               </Text_box>
               <Text_box>
-                <Title>판매 가격</Title>
+                <Title>価格</Title>
                 <Text>{product.PRODUCT_PRICE} 원</Text>
               </Text_box>
 
@@ -306,10 +306,10 @@ const ProductInfo = () => {
               <Select
                 className={"optionName"}
                 options={[
-                  { value: "", label: "옵션 선택" },
+                  { value: "", label: "オプション" },
                   ...options.map((opt) => ({
                     value: opt.OPTION_NO,
-                    label: `${opt.OPTION_TITLE} (+${opt.OPTION_PRICE} 원) ${opt.OPTION_STATE <= 0 ? "(품절)" : ""
+                    label: `${opt.OPTION_TITLE} (+${opt.OPTION_PRICE} 円) ${opt.OPTION_STATE <= 0 ? "(品切れ)" : ""
                       }`,
                     disabled: opt.OPTION_STATE <= 0,
                   })),
@@ -330,7 +330,7 @@ const ProductInfo = () => {
                   >
                     <div>
                       <Title>{currentOption.OPTION_TITLE}</Title>
-                      <Text>+{currentOption.OPTION_PRICE} 원</Text>
+                      <Text>+{currentOption.OPTION_PRICE} 円</Text>
                     </div>
                     <div style={{ display: "flex", alignItems: "center" }}>
                       <Select
@@ -348,7 +348,7 @@ const ProductInfo = () => {
                         onChange={handleQuantityChange}
                         defaultValue={1}
                       />
-                      <Button btnTxt="추가" onClick={addOptionHandler} />
+                      <Button btnTxt="追加" onClick={addOptionHandler} />
                     </div>
                   </div>
                 </div>
@@ -368,11 +368,11 @@ const ProductInfo = () => {
 
             {/* 버튼 */}
             <Button_Wrapper_100 className="grid2">
-              <Button onClick={goToOrder} btnTxt="바로구매" />
+              <Button onClick={goToOrder} btnTxt="すぐ買う" />
               <Button
                 onClick={addToCartHandler}
                 disabled={cartLoading || checkedProducts.length === 0}
-                btnTxt="장바구니"
+                btnTxt="カートに追加"
               />
               {/* 장바구니 모달 출현 */}
             </Button_Wrapper_100>

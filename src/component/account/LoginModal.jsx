@@ -57,10 +57,10 @@ const Conwrapper = styled.div`
 `;
 
 const LoginModal = ({ onClose }) => {
-  console.log("onClose 확인:", onClose);
+  console.log("onClose 確認:", onClose);
 
   const { refreshCart } = useCart();
-  const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
+  const navigate = useNavigate();
 
   const [isFindId, setIsFindId] = useState(false);
   const [isFindPw, setIsFindPw] = useState(false);
@@ -84,7 +84,7 @@ const LoginModal = ({ onClose }) => {
     try {
       onClose();
     } catch (error) {
-      console.error("onClose 실행 중 오류 발생:", error);
+      console.error("onClose 失敗:", error);
     }
   };
 
@@ -108,16 +108,16 @@ const LoginModal = ({ onClose }) => {
     e.preventDefault();
     // 필수 입력값 확인
     if (!login_email) {
-      alert("이메일을 입력해주세요.");
+      alert("EMAILを入力してください。");
       return;
     }
     if (!login_password) {
-      alert("패스워드를 입력해주세요.");
+      alert("パスワードを入力してください。");
       return;
     }
 
     try {
-      // 로그인 API 요청
+      // ログインAPIリクエスト
       const response = await axios.post(
         "http://localhost:8080/api/users/login",
         {
@@ -126,22 +126,18 @@ const LoginModal = ({ onClose }) => {
         }
       );
       console.log("로그인 응답:", response.data);
-      // alert(response.data.success);
-      // 로그인 성공 시 장바구니 병합 요청
+      // ログイン成功時にカートをマージング
       if (response.data.success) {
-        // 로그인 성공 시 토큰 저장
+        // ログイン成功時にトークを保存
 
-        // 기존 저장 방법
-        // sessionStorage.setItem("token", response.data.token);
-
-        // 로컬 스토리지에 저장
+        // ローカルストレージにトークン保存
         const token = response.data.token;
         sessionStorage.setItem("token", token);
 
-        // 게스트 세션
+        // ゲストセッション
         const guestSessionId = localStorage.getItem("tempOrderId");
 
-        // 카트 병합
+        // カートマージAPIリクエスト
         const cartMergeResponse = await axios.post(
           "http://localhost:8080/api/cart/auth/login",
           { user_email: login_email, guestSessionId },
@@ -152,31 +148,31 @@ const LoginModal = ({ onClose }) => {
         );
 
         if (cartMergeResponse.data.success) {
-          // 새로운 tempOrderId 저장
+          // 新規 tempOrderId 保存
           const newTempOrderId = cartMergeResponse.data.tempOrderId;
 
-          // tempOrderId와 카트 갱신
+          // tempOrderIdとカート更新
           await refreshCart(newTempOrderId);
 
           navigate("/");
           onClose();
         } else {
-          console.error("장바구니 병합 실패:", cartMergeResponse.data.message);
-          alert("장바구니 병합 실패");
+          console.error("カートマージング失敗", cartMergeResponse.data.message);
+          alert("カートマージング失敗");
           navigate("/");
           onClose();
         }
       } else {
         console.log(response.data.exists);
-        alert("이메일 또는 패스워드를 확인해주세요.");
+        alert("EMAILまたはパスワードが間違っています。");
         setLoginForm({
           login_email: "",
           login_password: "",
         });
       }
     } catch (error) {
-      console.error("로그인 요청 실패:", error);
-      alert("이메일 또는 패스워드를 확인해주세요.");
+      console.error("ログイン・リクエスト失敗:", error);
+      alert("EMAILまたはパスワードが間違っています。");
       setLoginForm({
         login_email: "",
         login_password: "",
@@ -201,36 +197,11 @@ const LoginModal = ({ onClose }) => {
       <Modal_Wrapper>
         <ButtonContainer>
           <ButtonClose onClick={handleClose}>
-            <img src="src/style/img/closebutton.png" alt="닫기 버튼" />
+            <img src="src/style/img/closebutton.png" alt="閉じる" />
           </ButtonClose>
         </ButtonContainer>
-        <Title>LOGIN</Title>
+        <Title>ログイン</Title>
         <Conwrapper>
-          {/* <TextInput
-            type={"text"}
-            name={"login_email"}
-            placeholder={"EMAIL"}
-            value={login_email}
-            onChange={handleChange}
-          />
-          <TextInput
-            type={"password"}
-            name={"login_password"}
-            placeholder={"PW"}
-            value={login_password}
-            onChange={handleChange}
-          /> */}
-          {/* <LinksContainer>
-            <div>
-              <a onClick={handleSignUp}>회원가입</a>
-            </div>
-            <div>
-              <a onClick={handleFindId}>이메일 찾기</a>
-            </div>
-            <div>
-              <a onClick={handleFindPw}>비밀번호 찾기</a>
-            </div>
-          </LinksContainer> */}
           <Input_Box>
             <Input_Style
               type={"text"}
@@ -256,10 +227,10 @@ const LoginModal = ({ onClose }) => {
                 onClose();
               }}
             >
-              회원가입
+              会員登録
             </a>
-            <a onClick={handleFindId}>ID 찾기</a>
-            <a onClick={handleFindPw}>비밀번호 찾기</a>
+            <a onClick={handleFindId}>ID探し</a>
+            <a onClick={handleFindPw}>パスワード探し</a>
           </Link_box>
         </Conwrapper>
         <ButtonContainer>

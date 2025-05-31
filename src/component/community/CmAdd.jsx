@@ -1,3 +1,7 @@
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Button_Wrapper_100,
   Container_Style,
@@ -5,17 +9,13 @@ import {
   Input_Style,
   Input_Wrapper,
   Textarea_Style,
-  Wrapper,
   Title,
+  Wrapper,
 } from "../../style/Common_Style";
 import { List_Profile, Profile_Img } from "../../style/List_Style";
+import LoginModal from "../account/LoginModal";
 import Button from "../common/Button";
 import FileUpload from "../common/FileUpload";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import LoginModal from "../account/LoginModal";
 
 const CmAdd = () => {
   const [community_title, setTitle] = useState("");
