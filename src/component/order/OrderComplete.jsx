@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
    Button_Wrapper_100,
@@ -40,10 +40,10 @@ const OrderComplete = () => {
             setOrderInfo(res.data.orderInfo);
             setOrderItems(res.data.orderItems);
          } else {
-            setError('주문 정보를 불러올 수 없습니다.');
+            setError('注文情報を取得できません');
          }
       } catch (err) {
-         setError('에러 발생: ' + err.message);
+         setError('エラー発生' + err.message);
       } finally {
          console.log('orderInfo : ', orderInfo);
          console.log('orderItems : ', orderItems);
@@ -71,20 +71,20 @@ const OrderComplete = () => {
    return (
       <Wrapper className="wrap" id="shipping">
          <Container_Style>
-            <Title>주문이 완료되었습니다!</Title>
+            <Title>注文 成功</Title>
 
             <Input_Wrapper>
-               <p>주문번호</p>
+               <p>注文番号</p>
                <p>{orderNo}</p>
             </Input_Wrapper>
             <div>
-               <Title>주문 상품</Title>
+               <Title>注文した商品</Title>
                {Array.isArray(orderItems) && orderItems.length > 0 ? (
                   orderItems.map((item, idx) => (
                      <div key={idx}>
-                        <Text>상품번호: {item.PRODUCT_NO}</Text>
-                        <p>옵션번호: {item.OPTION_NO}</p>
-                        <p>수량: {item.PRODUCT_QUANTITY}</p>
+                        <Text>商品番号: {item.PRODUCT_NO}</Text>
+                        <p>オプション番号: {item.OPTION_NO}</p>
+                        <p>数量: {item.PRODUCT_QUANTITY}</p>
                         {/* <p>
                            가격:{" "}
                            {(item.PRODUCT_PRICE + item.OPTION_PRICE) *
@@ -94,17 +94,17 @@ const OrderComplete = () => {
                      </div>
                   ))
                ) : (
-                  <p>주문 상품 정보가 없습니다.</p>
+                  <p>注文した商品情報が存在しません</p>
                )}
             </div>
             {/* 합계 금액 */}
             <div>
-               <h3>합계 금액: {totalPrice.toLocaleString()} 원</h3>
+               <h3>合計金額: {totalPrice.toLocaleString()} 円</h3>
             </div>
 
             {/* 주문자 정보 (간략화된 예시) */}
             <div>
-               <h3>주문자 이메일</h3>
+               <h3>注文したユーザーのメールアドレス</h3>
                <p>{orderInfo?.USER_EMAIL}</p>
             </div>
 
@@ -112,7 +112,7 @@ const OrderComplete = () => {
 
             {/* 결제/취소 */}
             <Button_Wrapper_100>
-               <Button btnTxt="돌아가기" onClick={() => navigate("/")} />
+               <Button btnTxt="ホーム" onClick={() => navigate("/")} />
             </Button_Wrapper_100>
          </Container_Style>
       </Wrapper>

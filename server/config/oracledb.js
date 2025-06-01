@@ -4,6 +4,8 @@ const oracledb = require("oracledb");
 require("dotenv").config();
 
 // TNS_ADMIN 환경 변수 설정
+console.log(process.env.TNS_ADMIN);
+
 process.env.TNS_ADMIN = process.env.TNS_ADMIN;
 
 // Oracle DB 설정 (TNS 방식)
@@ -12,6 +14,11 @@ const dbConfig = {
   password: process.env.ORACLE_PASSWORD,
   connectString: process.env.ORACLE_TNS_ALIAS, // TNS 방식 적용
 };
+// 起動時にTNS_ADMINをprocess.envに必ず設定する
+if (!process.env.TNS_ADMIN) {
+  console.error('TNS_ADMIN is not set! Please check your .env');
+  process.exit(1);
+}
 
 // Oracle DB 연결 함수
 async function getConnection() {

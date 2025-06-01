@@ -59,7 +59,7 @@ const Order = () => {
 
   const API_BASE_URL = "http://localhost:8080/api";
 
-  // 주문자 기본 정보 조회
+  // 注文者情報
   const getUserInfo = async (email) => {
     try {
       const response = await axios.post(
@@ -76,8 +76,7 @@ const Order = () => {
       if (response.data.success) {
         const user = response.data.result.rows[0]; // 오라클은 rows 배열로 옴
         if (user) {
-          // 주소는 "기본주소/상세주소"로 저장되어 있다고 가정
-          const [base_address, detail_address] = user.USER_ADDR?.split("/") || [
+          const [base_address, detail_address] = user.USER_ADDR?.split(",") || [
             "",
             "",
           ];
@@ -107,26 +106,28 @@ const Order = () => {
     }
   };
 
-  // 결제 기능
+  // 決済
   const goToPayment = async () => {
     sessionStorage.getItem("token");
     if (!token) {
-      alert("로그인이 필요합니다.");
+      alert("ログインしてください");
       setIsLoginModalOpen(true); // 로그인 모달 열기
       return;
     }
-    // if (!isLoggedIn) {
-    // alert("로그인이 필요합니다!!");
-    // setIsLoginModalOpen(true); // 로그인 모달 열기
-    // return;
-    // }
 
     if (!deliveryInfo.email_id || !deliveryInfo.email_domain) {
-      alert("이메일 정보를 정확히 입력해주세요.");
+      alert("正しいEMAILアドレスではありません");
       return;
     }
 
     const email = `${deliveryInfo.email_id}@${deliveryInfo.email_domain}`;
+
+    if (!Object.values(receiveInfo).every(
+      (value) => value !== ""
+    )) {
+      alert("受取人情報を全て入力してください");
+      return;
+    }
 
     try {
       // const response = await axios.post(`${API_BASE_URL}/order/pay/${from === 'direct' ? 'direct' : tempOrderId}`, {
@@ -152,15 +153,15 @@ const Order = () => {
         const orderNo = response.data.orderNo;
         navigate(`/order-complete/${orderNo}`);
       } else {
-        alert("결제 처리 실패: " + response.data.message);
+        alert("決済失敗: " + response.data.message);
       }
     } catch (error) {
-      console.error("결제 오류:", error);
-      alert("결제 중 오류가 발생했습니다.");
+      console.error("決済エラー:", error);
+      alert("決済に失敗しました。もう一度お試しください。");
     }
   };
 
-  // 옵션 삭제
+  // オプション削除
   const onRemove = (OPTION_NO) => {
     return () => {
       setCheckedProducts((prev) =>
@@ -193,7 +194,7 @@ const Order = () => {
     setToken(sessionStorage.getItem("token"));
   }, []);
 
-  // 장바구니 비우기
+  // カートクリア
   const clearCart = async () => {
     // const token = localStorage.getItem("token");
     await axios.delete(`${API_BASE_URL}/cart/clear`, {
@@ -206,12 +207,12 @@ const Order = () => {
   useEffect(() => {
     if (Array.isArray(directOptions)) {
       setCheckedProducts(directOptions);
-      console.log("바로구매 상품:", product, directOptions);
+      console.log("すぐ買う:", product, directOptions);
     } else if (tempOrderId) {
       fetchCart(tempOrderId);
     } else {
       ``
-      setError("주문 정보가 올바르지 않습니다.");
+      setError("注文情報が正しくありません");
     }
   }, [from, directOptions, tempOrderId]);
 
@@ -237,7 +238,7 @@ const Order = () => {
     console.log("cartItems changed", cartItems);
   }, [cartItems]);
 
-  // 로그인 상태 체크
+  // ログイン状態チェック
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     console.log(token);
@@ -279,7 +280,7 @@ const Order = () => {
         {loading && <System_message>...LOADING...</System_message>}
         {error && <System_message>{error}</System_message>}
 
-        {/* 장바구니 리스트 */}
+        {/* カートリスト */}
         {!loading &&
           // from === "direct" &&
           Array.isArray(checkedProducts) &&
@@ -290,8 +291,8 @@ const Order = () => {
             return (
               <Order_Wrapper key={`${item.OPTION_NO}`}>
                 <Title>{product.PRODUCT_NAME}</Title>
-                <Text>옵션명: {item.OPTION_TITLE}</Text>
-                <Text>수량: {item.quantity}</Text>
+                <Text>オプション: {item.OPTION_TITLE}</Text>
+                <Text>数量: {item.quantity}</Text>
                 <hr />
                 <Title>
                   {/* 금액:{" "} */}
@@ -301,7 +302,7 @@ const Order = () => {
                 </Title>
                 <Button_Wrapper_100 className="grid2">
                   <Button
-                    btnTxt="옵션/수량 수정"
+                    btnTxt="オプション・数量変更"
                     onClick={() =>
                       openEditModal({
                         ...item,
@@ -321,7 +322,7 @@ const Order = () => {
                     }
                   />
                   <Button
-                    btnTxt="옵션 삭제"
+                    btnTxt="クリア"
                     onClick={onRemove(item.OPTION_NO)}
                   />
                 </Button_Wrapper_100>
@@ -334,30 +335,30 @@ const Order = () => {
               const productKey = `product:${item.product_no}:option:${item.option_no}`;
               return (
                 <Order_Wrapper key={productKey}>
-                  <Title>상품명: {item.product_name}</Title>
-                  <Text>옵션명: {item.option_title}</Text>
-                  <Text>수량: {item.quantity}</Text>
+                  <Title>商品: {item.product_name}</Title>
+                  <Text>オプション: {item.option_title}</Text>
+                  <Text>数量: {item.quantity}</Text>
                   <Text>
-                    금액:{" "}
+                    金額:{" "}
                     {(item.product_price + item.option_price) * item.quantity}원
                   </Text>
                   <Button_Wrapper_100>
                     <Button
-                      btnTxt="옵션 수정"
+                      btnTxt="オプション変更"
                       onClick={() => openEditModal(item)}
                     />
                     <Button
-                      btnTxt="옵션 삭제"
+                      btnTxt="オプション削除"
                       onClick={() => removeFromCart(productKey)}
                     />
                   </Button_Wrapper_100>
                 </Order_Wrapper>
               );
             })
-            : !loading && <h2>장바구니가 비어있습니다.</h2>}
+            : !loading && <h2>カートが空いています。</h2>}
 
         {/* 합계 금액 */}
-        <Text>합계 금액 : {totalPrice.toLocaleString()} 원</Text>
+        <Text>合計金額 : {totalPrice.toLocaleString()} 円</Text>
 
         {/* 옵션 변경 모달 */}
         <ReactModal
@@ -429,7 +430,7 @@ const Order = () => {
 
         {/* 배송&수령 정보 */}
         <ShippingAddress
-          title="주문자 정보"
+          title="注文したユーザー"
           data={deliveryInfo}
           setData={setDeliveryInfo}
         />
@@ -439,10 +440,10 @@ const Order = () => {
             checked={isSame}
             onChange={handleCheckboxChange}
           />{" "}
-          주문자 정보와 동일
+          注文したユーザー情報と同じ
         </label>
         <ShippingAddress
-          title="받는 사람"
+          title="受取人"
           data={receiveInfo}
           setData={setReceiveInfo}
           isReadOnly={isSame}
@@ -450,8 +451,8 @@ const Order = () => {
 
         {/* 결제/취소 */}
         <Button_Wrapper_100 className="grid2">
-          <Button btnTxt="결제하기" onClick={goToPayment} />
-          <Button btnTxt="돌아가기" onClick={goToHome} />
+          <Button btnTxt="買う" onClick={goToPayment} />
+          <Button btnTxt="戻る" onClick={goToHome} />
         </Button_Wrapper_100>
         <ReactModal
           isOpen={isLoginModalOpen}

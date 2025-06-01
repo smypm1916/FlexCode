@@ -437,7 +437,7 @@ const SignUp = () => {
         {emailCheckResult !== null && <p>{emailCheckResult}</p>}
         <Input_Wrapper>
           <div className="signUp-pw-label">
-            <label>비밀번호</label>
+            <label>パスワード</label>
           </div>
           <Input_Box>
             <TextInput
@@ -460,7 +460,7 @@ const SignUp = () => {
             <TextInput
               type={"password"}
               name={"user_password_check"}
-              placeholder={"비밀번호를 입력하세요"}
+              placeholder={"パスワードを入力してください"}
               value={signUpForm.user_password_check}
               onChange={handleChange}
             />
