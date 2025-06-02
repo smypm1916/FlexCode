@@ -49,8 +49,8 @@ const CheckedProduct = ({
                           0
                         )
                       )}{" "}
-                      원</Text>
-                    <Text>재고: {option.OPTION_STATE} 개</Text>
+                      円</Text>
+                    <Text>在庫: {option.OPTION_STATE} 個</Text>
                   </Bucket_Text>
                   <Bucket_option>
                     <Button
@@ -93,7 +93,7 @@ const CheckedProduct = ({
               {/* 총 합계 금액 */}
               <div style={{ marginTop: "20px", textAlign: "right" }}>
                 <Title>
-                  合計金額:{" "}
+                  合計:{" "}
                   {Intl.NumberFormat("ko-KR").format(
                     options.reduce(
                       (total, opt) =>
@@ -146,10 +146,10 @@ const CheckedProduct = ({
               </Text>
 
               <Title>
-                合計金額:{" "}
+                合計:{" "}
                 {((item.product_price || 0) + (item.option_price || 0)) *
                   item.quantity}
-                원
+                円
               </Title>
 
               {/* <p>합계 금액: {(item.PRODUCT_PRICE + item.OPTION_PRICE) * item.quantity}원</p> */}

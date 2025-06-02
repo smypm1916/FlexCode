@@ -299,7 +299,7 @@ const ProductInfo = () => {
               </Text_box>
               <Text_box>
                 <Title>価格</Title>
-                <Text>{product.PRODUCT_PRICE} 원</Text>
+                <Text>{product.PRODUCT_PRICE} 円</Text>
               </Text_box>
 
               {/* 옵션 선택 */}
@@ -342,7 +342,7 @@ const ProductInfo = () => {
                           { length: currentOption.OPTION_STATE },
                           (_, i) => ({
                             value: i + 1,
-                            label: `${i + 1}개`,
+                            label: `${i + 1}個`,
                           })
                         )}
                         onChange={handleQuantityChange}
