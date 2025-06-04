@@ -10,9 +10,8 @@ export const useCart = () => {
    const [loading, setLoading] = useState(false);
    const [error, setError] = useState(null);
 
-   // 장바구니 조회 (무조건 이메일로 레디스 조회)
+   // カート読み取り(EMAIL)
    const fetchCart = async () => {
-
       setLoading(true);
       try {
          const token = sessionStorage.getItem('token');

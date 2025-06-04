@@ -8,7 +8,7 @@ import {
   Title,
   Wrapper,
 } from "../../style/Common_Style";
-import { Order_Wrapper } from "../../style/Mypage_Style";
+import { Order_Wrapper } from "../../style/Mypage_Style.jsx";
 import { System_message } from "../../style/ProductLists_Style";
 import { Text } from "../../style/Product_Detail_Style";
 import LoginModal from "../account/LoginModal";
@@ -28,9 +28,12 @@ const Order = () => {
   const [token, setToken] = useState(sessionStorage.getItem("token"));
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from;
-  const product = location.state?.product;
-  const directOptions = location.state?.checkedProducts;
+  const {
+    from = "cart", // デフォルトはカート購入
+    product,
+    checkedProducts: directOptions = [], // direct購入時の選択オプション
+  } = location.state || {}; // stateが無い場合も考慮
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -196,7 +199,7 @@ const Order = () => {
 
   // カートクリア
   const clearCart = async () => {
-    // const token = localStorage.getItem("token");
+    // ゲストカート含め全削除
     await axios.delete(`${API_BASE_URL}/cart/clear`, {
       withCredentials: true,
       headers: { Authorization: `Bearer ${token}` },
@@ -206,12 +209,11 @@ const Order = () => {
 
   useEffect(() => {
     if (Array.isArray(directOptions)) {
-      setCheckedProducts(directOptions);
+      setCheckedProducts(directOptions); // すぐ買うのオプション反映
       console.log("すぐ買う:", product, directOptions);
     } else if (tempOrderId) {
-      fetchCart(tempOrderId);
+      fetchCart(); // 既存カート読み込み
     } else {
-      ``
       setError("注文情報が正しくありません");
     }
   }, [from, directOptions, tempOrderId]);
@@ -298,7 +300,7 @@ const Order = () => {
                   {/* 금액:{" "} */}
                   {(product.PRODUCT_PRICE + item.OPTION_PRICE) *
                     item.quantity}
-                  원
+                  円
                 </Title>
                 <Button_Wrapper_100 className="grid2">
                   <Button
@@ -337,10 +339,10 @@ const Order = () => {
                 <Order_Wrapper key={productKey}>
                   <Title>商品: {item.product_name}</Title>
                   <Text>オプション: {item.option_title}</Text>
+                  <Text>価格: {item.product_price + item.option_price} 円</Text>
                   <Text>数量: {item.quantity}</Text>
                   <Text>
-                    金額:{" "}
-                    {(item.product_price + item.option_price) * item.quantity}원
+                    合計 : {(item.product_price + item.option_price) * item.quantity} 円
                   </Text>
                   <Button_Wrapper_100>
                     <Button
@@ -358,7 +360,7 @@ const Order = () => {
             : !loading && <h2>カートが空いています。</h2>}
 
         {/* 합계 금액 */}
-        <Text>合計金額 : {totalPrice.toLocaleString()} 円</Text>
+        <Text>合計 : {totalPrice.toLocaleString()} 円</Text>
 
         {/* 옵션 변경 모달 */}
         <ReactModal
@@ -401,17 +403,19 @@ const Order = () => {
                 if (from === "direct") {
                   setCheckedProducts((prev) =>
                     prev.map((opt) =>
-                      // opt.OPTION_NO === selectedProduct.option_no
-                      opt.OPTION_NO === option_no ? { ...opt, quantity } : opt
+                      opt.OPTION_NO === selectedProduct.option_no
+                        ? { ...opt, quantity }
+                        : opt
                     )
                   );
                 } else {
-                  // updateCartQuantity(product_no, quantity);
-                  updateCartQuantity(PRODUCT_NO, OPTION_NO, quantity);
+                  updateCartQuantity(product_no, quantity);
+                  // updateCartQuantity(PRODUCT_NO, OPTION_NO, quantity);
                 }
               }}
               removeFromCart={(productKey) => {
                 if (from === "direct") {
+                  // 選択中リストから該当オプションを削除
                   setCheckedProducts((prev) =>
                     prev.filter(
                       (opt) =>

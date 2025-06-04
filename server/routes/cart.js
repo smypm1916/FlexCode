@@ -7,12 +7,14 @@ module.exports = (redisClient) => {
   const getCartKey = (req) => {
     const userCartId = req.session?.user?.email;
     const guestCartId = req.sessionID;
-    return userCartId ? `cart:${userCartId}` : `cart:session_${guestCartId}`;
+    return userCartId ? `cart:user:${userCartId}` : `cart:guest:${guestCartId}`;
   };
 
+  // 臨時注文ID生成
   const generateTempOrderId = () =>
     `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
+  // カートマージング
   async function mergeCart(guestCartId, userCartId, guestSessionId) {
     try {
       const guestCartData = await redisClient.hGetAll(guestCartId);
@@ -95,7 +97,7 @@ module.exports = (redisClient) => {
     next();
   };
 
-  // 로그인 시 장바구니 병합
+  // ログイン時、カートマージング
   router.post("/auth/login", async (req, res) => {
     try {
       const { user_email, guestSessionId } = req.body;
@@ -166,10 +168,11 @@ module.exports = (redisClient) => {
         })
         .filter(Boolean);
 
-      // 비어있으면 tempOrderId가 없을 수 있음
-      if (!tempOrderId && parsedCart.length > 0) {
+      // ゲスト初訪問時も仮注文IDを生成して保持
+      if (!tempOrderId) {
         tempOrderId = generateTempOrderId();
         await redisClient.hSet(cartKey, "tempOrderId", tempOrderId);
+        await redisClient.expire(cartKey, CART_TTL);
       }
 
       return res.status(200).json({
@@ -332,7 +335,7 @@ module.exports = (redisClient) => {
     try {
       const { productKey } = req.body;
       const key = getCartKey(req);
-      await redisClient.hDel(key, productKey);
+      await redisClient.del(key);
       res
         .status(200)
         .json({ success: true, message: "장바구니가 비워졌습니다." });

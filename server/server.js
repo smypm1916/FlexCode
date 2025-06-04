@@ -50,6 +50,7 @@ io.use(async (socket, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // redisに保存されたトークンをとの比較
     const storedToken = await redisClient.get(`token:${decoded.email}`);
     if (storedToken !== token) return next(new Error("JWT 토큰 불일치"));
     socket.user = decoded;
@@ -103,11 +104,11 @@ const sessionMiddleware = session({
   secret: process.env.JWT_SECRET || "your_secret_key",
   resave: false,
   saveUninitialized: false,
-  rolling: true,
+  rolling: true, // リクエストごとにセッション更新
   cookie: { maxAge: 30 * 60 * 1000 },
 });
 app.use(sessionMiddleware);
-io.engine.use(sessionMiddleware);
+io.engine.use(sessionMiddleware); // socket.ioとexpress-session統合
 
 // 공통 미들웨어
 app.use(cookieParser());

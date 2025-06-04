@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Category_Box, Category_Wrapper } from "../../style/Category_Style";
 import { Container_Style, Title } from "../../style/Common_Style";
 
@@ -23,7 +23,7 @@ const Category = ({ onSelectCategory }) => {
             key={i}
             onClick={() => onSelectCategory(category.PRODUCT_TYPE)}
           >
-            <img src="" alt="" />
+            {/* <img src="" alt="" /> */}
             <p>{category.PRODUCT_TYPE}</p>
           </Category_Box>
         ))}

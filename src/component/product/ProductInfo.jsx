@@ -223,19 +223,27 @@ const ProductInfo = () => {
 
   // 장바구니 모달 닫기
   const closeCartModal = () => {
-    Products([]);
+    setCheckedProducts([]); // 選択したオプション初期化Ï
     setIsCartModalOpen(false);
   };
 
-  const goToOrder = () => {
-    const currentOrderId = localTempOrderId || tempOrderId;
+  const goToOrder = async () => {
+    let currentOrderId = localTempOrderId || tempOrderId;
+    if (!currentOrderId) {
+      // tempOrderIdが無い場合はカート情報를読み込んで仮IDを生成
+      await fetchCart();
+      currentOrderId =
+        localTempOrderId || tempOrderId || localStorage.getItem("tempOrderId");
+    }
     if (!currentOrderId) {
       alert("カートが空いているか、注文情報が存在しません。");
       return;
     }
-    navigate(`/order/${tempOrderId}`, {
+    // navigate(`/order/${currentOrderId}`, {
+    const orderId = currentOrderId;
+    navigate(`/order/${orderId}`, {
       state: {
-        // from: "direct",
+        from: "direct",
         product,
         checkedProducts,
       },
